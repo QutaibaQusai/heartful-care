@@ -10,13 +10,13 @@ class IntroPage extends StatelessWidget {
         children: [
           Center(
             child: Image.asset(
-              'images/nurseIntroPage.png',
-              height: 360,
+              'images/intro_pageOne.jpg',
+              width: MediaQuery.of(context).size.width,
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
           const Text(
             "Register yourself !",
             style: TextStyle(
@@ -34,17 +34,17 @@ class IntroPage extends StatelessWidget {
                   color: Color.fromARGB(255, 95, 94, 94),
                   height: 1.8,
                   fontSize: 16)),
-          const SizedBox(
-            height: 30,
-          ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 width: 10,
                 height: 10,
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: Color(0xFF1C8892),
                 ),
@@ -52,8 +52,8 @@ class IntroPage extends StatelessWidget {
               Container(
                 width: 10,
                 height: 10,
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.all(5),
+                decoration:const  BoxDecoration(
                   shape: BoxShape.circle,
                   color: Color(0xFF1C8892),
                 ),
