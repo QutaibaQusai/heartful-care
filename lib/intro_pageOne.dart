@@ -1,95 +1,111 @@
 import 'package:flutter/material.dart';
+import 'package:test/content_model.dart';
 
-class IntroPage extends StatelessWidget {
+class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
+
+  @override
+  State<IntroPage> createState() => _IntroPage();
+}
+
+class _IntroPage extends State<IntroPage> {
+  int currentIndex = 0;
+  late PageController _controller;
+
+  @override
+  void initState() {
+    _controller = PageController(initialPage: 0);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          Center(
-            child: Image.asset(
-              'images/intro_pageOne.jpg',
-              width: MediaQuery.of(context).size.width,
-            ),
+          Expanded(
+            child: PageView.builder(
+                controller: _controller,
+                itemCount: contents.length,
+                onPageChanged: (int index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                itemBuilder: (_, i) {
+                  return Column(
+                    children: [
+                      Image.asset(contents[i].image,
+                          width: MediaQuery.of(context).size.width),
+                      Text(
+                        contents[i].title,
+                        style: const TextStyle(
+                            color: Color(0xFF1C8892),
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                          textAlign: TextAlign.center,
+                          contents[i].discription,
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 29, 17, 17),
+                              height: 1.8,
+                              fontSize: 16))
+                    ],
+                  );
+                }),
           ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          const Text(
-            "Register yourself !",
-            style: TextStyle(
-                color: Color(0xFF1C8892),
-                fontSize: 35,
-                fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-              textAlign: TextAlign.center,
-              "Register yourself to find the best services available\n for you and a lot of nurse centers who offer\n home care.",
-              style: TextStyle(
-                  color: Color.fromARGB(255, 95, 94, 94),
-                  height: 1.8,
-                  fontSize: 16)),
-          // const SizedBox(
-          //   height: 30,
-          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 10,
-                height: 10,
-                margin: const EdgeInsets.all(5),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF1C8892),
+            children: List.generate(
+                contents.length, (index) => buildDot(index, context)),
+          ),
+          Container(
+            height: 60,
+            width: double.infinity,
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                //if (currentIndex == contents.length - 1) {}
+                _controller.nextPage(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.bounceIn,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xFF1C8892), // Text color
+                padding: const EdgeInsets.only(top: 12, bottom: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
                 ),
               ),
-              Container(
-                width: 10,
-                height: 10,
-                margin: const EdgeInsets.all(5),
-                decoration:const  BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF1C8892),
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0xFF1C8892),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0))),
-                    onPressed: () {},
-                    child: const Padding(
-                      padding: EdgeInsets.only(top: 12, bottom: 12),
-                      child: Text(
-                        "Next",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              child: Text(
+                  currentIndex == contents.length - 1 ? "Get Started" : "Next"),
+            ),
           )
         ],
+      ),
+    );
+  }
+
+  Container buildDot(int index, BuildContext context) {
+    return Container(
+      height: 10,
+      width: currentIndex == index ? 25 : 10,
+      margin: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFF1C8892),
       ),
     );
   }
