@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test/content_model.dart';
+import 'package:test/Home.dart';
+import 'package:test/model/content_model.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
@@ -22,6 +23,20 @@ class _IntroPage extends State<IntroPage> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void onNextButtonPressed() {
+    _controller.nextPage(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.bounceIn,
+    );
+  }
+
+  void onGetStartedButtonPressed() {
+    // Handle the action for the "Get Started" button.
+    Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+      return Home();
+    }));
   }
 
   @override
@@ -74,13 +89,9 @@ class _IntroPage extends State<IntroPage> {
             width: double.infinity,
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              onPressed: () {
-                //if (currentIndex == contents.length - 1) {}
-                _controller.nextPage(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.bounceIn,
-                );
-              },
+              onPressed: currentIndex == contents.length - 1
+                  ? onGetStartedButtonPressed
+                  : onNextButtonPressed,
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF1C8892), // Text color
