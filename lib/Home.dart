@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/login.dart';
 import 'package:test/sections/medical_devices.dart';
+import 'package:test/sections/nurse_centers.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -56,7 +60,13 @@ class _HomeState extends State<Home> {
                         borderRadius: BorderRadius.circular(10), // <-- Radius
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      // Navigate to the second page when the button is pressed
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LogIn()),
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
@@ -75,38 +85,102 @@ class _HomeState extends State<Home> {
             ),
           ),
           Expanded(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: SizedBox(
-                child: Row(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Medical()),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.green,
-                            child: Center(
-                              child: Text("qutaiba"),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Center(
+                  child: Wrap(
+                spacing: 20.0,
+                runSpacing: 20.0,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      // Navigate to the second page when the first box is tapped
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NurseCenters()),
+                      );
+                    },
+                    child: SizedBox(
+                        width: 170.0,
+                        height: 170.0,
+                        child: Card(
+                          color: Colors.white,
+                          elevation: 9.0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "images/nurse.png",
+                                    width: 90.0,
+                                  ),
+                                  const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  const Text(
+                                    "Nurse Center",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // Navigate to the second page when the first box is tapped
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Medical()),
+                      );
+                    },
+                    child: SizedBox(
+                      width: 170.0,
+                      height: 170.0,
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 9.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  "images/medicalD.png",
+                                  width: 70.0,
+                                ),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                const Text(
+                                  "Medical Devices",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                    Column(
-                      children: [],
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                ],
+              )),
             ),
           ),
           Container(
