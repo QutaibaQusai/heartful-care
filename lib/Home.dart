@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
         children: [
           Container(
             // this line for making a divided screen
-            height: MediaQuery.of(context).size.height / 2.2,
+            height: MediaQuery.of(context).size.height / 2.7,
             width: MediaQuery.of(context).size.width,
 
             decoration: BoxDecoration(
@@ -62,10 +62,10 @@ class _HomeState extends State<Home> {
                     ),
                     onPressed: () {
                       // Navigate to the second page when the button is pressed
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LogIn()),
-                      );
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (ctx) {
+                        return Login_screen();
+                      }));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -102,9 +102,10 @@ class _HomeState extends State<Home> {
                     },
                     child: SizedBox(
                         width: 170.0,
-                        height: 170.0,
+                        height: 270.0,
                         child: Card(
                           color: Colors.white,
+                          // shadow
                           elevation: 9.0,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0)),
@@ -112,21 +113,23 @@ class _HomeState extends State<Home> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Image.asset(
-                                    "images/nurse.png",
-                                    width: 90.0,
+                                    "images/nurse-card-home.png",
+                                    width: 130.0,
                                   ),
                                   const SizedBox(
                                     height: 10.0,
                                   ),
-                                  const Text(
+                                  Text(
                                     "Nurse Center",
                                     style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.0,
-                                    ),
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        fontFamily:
+                                            GoogleFonts.poppins().fontFamily),
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -145,9 +148,12 @@ class _HomeState extends State<Home> {
                     },
                     child: SizedBox(
                       width: 170.0,
-                      height: 170.0,
+                      height: 270.0,
                       child: Card(
                         color: Colors.white,
+
+                        // color: const Color(0xFF89CFF0),
+                        // 89cff0
                         elevation: 9.0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0)),
@@ -155,21 +161,23 @@ class _HomeState extends State<Home> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  "images/medicalD.png",
-                                  width: 70.0,
+                                  "images/WhatsApp_Image_2023-11-03_at_19.30.49_c6ac0fb0-removebg-preview-removebg-preview.png",
+                                  width: 150.0,
                                 ),
                                 const SizedBox(
                                   height: 10.0,
                                 ),
-                                const Text(
+                                Text(
                                   "Medical Devices",
                                   style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                  ),
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                      fontFamily:
+                                          GoogleFonts.poppins().fontFamily),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
