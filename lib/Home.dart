@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/login.dart';
+import 'package:test/screens/login_screen.dart';
 import 'package:test/sections/medical_devices.dart';
 import 'package:test/sections/nurse_centers.dart';
 
@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
                       // Navigate to the second page when the button is pressed
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (ctx) {
-                        return Login_screen();
+                        return const LogInScreen();
                       }));
                     },
                     child: Padding(

@@ -2,7 +2,7 @@ class Content {
   String image;
   String title;
   String discription;
-
+// this page for the intro page
   Content({this.image = '', this.title = '', this.discription = ''});
 }
 
