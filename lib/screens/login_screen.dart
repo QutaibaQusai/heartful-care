@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Home.dart';
 import 'package:test/screens/signup_screen.dart';
 
@@ -12,62 +13,118 @@ class LogInScreen extends StatefulWidget {
 class _LogInScreenState extends State<LogInScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
+  bool showHidePassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                "images/logo2.png",
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              reusableTextField("Enter UserName", Icons.person_outline, false,
-                  _emailTextController),
-              const SizedBox(
-                height: 20,
-              ),
-              reusableTextField("Enter Password", Icons.lock_outline, true,
-                  _passwordTextController),
-              const SizedBox(
-                height: 20,
-              ),
-              SignInSignUpButton(context, "LOG IN", () {
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              "images/logo2.png",
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            // calling methods
+            TextField(
+              controller: _emailTextController,
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                  prefixIcon: const Icon(
+                    Icons.person_outline,
+                    color: Color(0xFF1C8892),
+                  ),
+                  labelText: "UserName",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0))),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              obscureText: showHidePassword,
+              controller: _passwordTextController,
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                  prefixIcon: const Icon(
+                    Icons.lock_outline,
+                    color: Color(0xFF1C8892),
+                  ),
+                  labelText: "Enter Password",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  suffixIcon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {});
+                        showHidePassword = !showHidePassword;
+                      },
+                      icon: Icon(showHidePassword
+                          ? Icons.remove_red_eye
+                          : Icons.visibility_off),
+                    ),
+                  )),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Forget Password?",
+                    style: TextStyle(
+                        color: Colors.grey[600],
+                        fontFamily: GoogleFonts.poppins().fontFamily),
+                  ),
+                ),
+              ],
+            ),
+
+            signInSignUpButton(
+              context,
+              "LOG IN",
+              () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Home()));
-              }),
-              signUpOption(),
-            ],
-          ),
+              },
+            ),
+            signUpOption(),
+          ],
         ),
       ),
     );
   }
 
 // this method for the sign up option in the right
-  Row signUpOption() {
+  Widget signUpOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Don't have account?",
-            style: TextStyle(color: Colors.black, fontSize: 15)),
+        Text(
+          "Don't have account?",
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+              fontFamily: GoogleFonts.poppins().fontFamily),
+        ),
         GestureDetector(
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => SignInScreen()));
           },
-          child: const Text(
-            " Sign Up",
+          child: Text(
+            " Sign Up".toUpperCase(),
             style: TextStyle(
                 color: const Color(0xFF1C8892),
                 fontWeight: FontWeight.bold,
-                fontSize: 20),
+                fontSize: 17,
+                fontFamily: GoogleFonts.poppins().fontFamily),
           ),
         )
       ],
@@ -75,34 +132,8 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 }
 
-// the reusable method for the labels
-TextField reusableTextField(String text, IconData icon, bool isPasswordType,
-    TextEditingController controller) {
-  return TextField(
-    controller: controller,
-    obscureText: isPasswordType,
-    enableSuggestions: !isPasswordType,
-    autocorrect: !isPasswordType,
-    cursorColor: Colors.white,
-    decoration: InputDecoration(
-      prefixIcon: Icon(
-        icon,
-        color: const Color(0xFF1C8892),
-      ),
-      labelText: text,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-    ),
-    keyboardType: isPasswordType
-        ? TextInputType.visiblePassword
-        : TextInputType.emailAddress,
-  );
-}
-
 // this method for the LOG IN button
-Container SignInSignUpButton(
-    BuildContext context, String title, Function onTap) {
+Widget signInSignUpButton(BuildContext context, String title, Function onTap) {
   return Container(
     width: MediaQuery.of(context).size.width,
     height: 50,
