@@ -106,10 +106,10 @@ class _LogInScreenState extends State<LogInScreen> {
                                 ),
                               ),
                               prefixIcon: const Icon(
-                                Icons.person_outline,
+                                Icons.mail_outline,
                                 color: Colors.white,
                               ),
-                              labelText: "UserName",
+                              labelText: "E-mail",
                               labelStyle: TextStyle(
                                   color: Colors.white,
                                   fontFamily:
@@ -186,7 +186,13 @@ class _LogInScreenState extends State<LogInScreen> {
                                     top: 5, left: 18.0, right: 18.0, bottom: 5),
                                 child: ElevatedButton(
                                   style: ButtonStyle(),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    // Navigate to the second page when the button is pressed
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(builder: (ctx) {
+                                      return const Home();
+                                    }));
+                                  },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 13),
@@ -250,7 +256,7 @@ class _LogInScreenState extends State<LogInScreen> {
 }
 
 // this method for the LOG IN button
-Widget signInSignUpButton(BuildContext context, String title, Function onTap) {
+/*Widget signInSignUpButton(BuildContext context, String title, Function onTap) {
   return Container(
     width: MediaQuery.of(context).size.width,
     height: 50,
@@ -276,4 +282,4 @@ Widget signInSignUpButton(BuildContext context, String title, Function onTap) {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
     ),
   );
-}
+}*/

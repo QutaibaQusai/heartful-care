@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Home.dart';
 import 'package:test/model/content_model.dart';
 
@@ -74,7 +75,7 @@ class _IntroPage extends State<IntroPage> {
                           style: const TextStyle(
                               color: Color.fromARGB(255, 29, 17, 17),
                               height: 1.8,
-                              fontSize: 16))
+                              fontSize: 14))
                     ],
                   );
                 }),
@@ -85,7 +86,7 @@ class _IntroPage extends State<IntroPage> {
                 contents.length, (index) => buildDot(index, context)),
           ),
           Container(
-            height: 60,
+            height: 70,
             width: double.infinity,
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
@@ -101,7 +102,12 @@ class _IntroPage extends State<IntroPage> {
                 ),
               ),
               child: Text(
-                  currentIndex == contents.length - 1 ? "Get Started" : "Next"),
+                currentIndex == contents.length - 1 ? "Get Started" : "Next",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                ),
+              ),
             ),
           )
         ],
@@ -111,9 +117,9 @@ class _IntroPage extends State<IntroPage> {
 
   Container buildDot(int index, BuildContext context) {
     return Container(
-      height: 10,
-      width: currentIndex == index ? 25 : 10,
-      margin: const EdgeInsets.all(5),
+      height: 9,
+      width: currentIndex == index ? 15 : 10,
+      margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: const Color(0xFF1C8892),

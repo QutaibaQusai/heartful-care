@@ -9,13 +9,13 @@ class Content {
 List<Content> contents = [
   Content(
     title: 'Register yourself !',
-    image: 'images/intro_pageOne.jpg',
+    image: 'images/intro_page.jpg',
     discription:
         "Register yourself to find the best services available\n for you and a lot of nurse centers who offer\n home care.",
   ),
   Content(
     title: 'Medical Devices !',
-    image: 'images/intro_pageTwo.png',
+    image: 'images/1.jpg',
     discription:
         " Find the best medical devices available for you and explore a wide range of healthcare \nequipment.",
   ),
