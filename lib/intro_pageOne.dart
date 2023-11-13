@@ -40,6 +40,14 @@ class _IntroPage extends State<IntroPage> {
     }));
   }
 
+  void onSkipButtonPressed() {
+    // Handle the action for the "Skip" button.
+    // You can navigate to the next screen or perform any other action here.
+    Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+      return Home();
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,6 +88,24 @@ class _IntroPage extends State<IntroPage> {
                   );
                 }),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: onSkipButtonPressed,
+              child: Text(
+                "Skip",
+                style: TextStyle(
+                  color: Colors.grey, // Customize the color
+                  fontSize: 15,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                  //decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
@@ -98,7 +124,7 @@ class _IntroPage extends State<IntroPage> {
                 backgroundColor: const Color(0xFF1C8892), // Text color
                 padding: const EdgeInsets.only(top: 12, bottom: 12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
+                  borderRadius: BorderRadius.circular(90),
                 ),
               ),
               child: Text(
