@@ -79,6 +79,7 @@ class _IntroPage extends State<IntroPage> {
                           Image.asset(
                             contents[i].image,
                             width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height / 1.7,
                           ),
                           Align(
                             alignment: Alignment.topRight,
@@ -131,7 +132,8 @@ class _IntroPage extends State<IntroPage> {
             Container(
               height: 70,
               width: double.infinity,
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(
+                  left: 10, right: 10, top: 10, bottom: 10),
               child: ElevatedButton(
                 onPressed: currentIndex == contents.length - 1
                     ? onGetStartedButtonPressed
@@ -152,9 +154,6 @@ class _IntroPage extends State<IntroPage> {
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 1,
             ),
             Container(
               height: 70,

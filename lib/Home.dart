@@ -156,7 +156,6 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-                    Text("  ")
                   ],
                 ),
               ),
@@ -210,67 +209,62 @@ class _HomeState extends State<Home> {
       padding: const EdgeInsets.all(12.0),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          onTap: () {
-            print("object");
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset(
-                sections.sectionImage,
-                width: 100,
-              ),
-              Column(
-                children: [
-                  Text(
-                    sections.sectionName,
-                    style: TextStyle(
-                        color: Color(0xFF1C8892),
-                        fontSize: 24,
-                        fontFamily: GoogleFonts.titilliumWeb().fontFamily,
-                        height: 1.9,
-                        fontWeight: FontWeight.bold),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Image.asset(
+              sections.sectionImage,
+              width: 100,
+            ),
+            Column(
+              children: [
+                Text(
+                  sections.sectionName,
+                  style: TextStyle(
+                      color: Color(0xFF1C8892),
+                      fontSize: 24,
+                      fontFamily: GoogleFonts.titilliumWeb().fontFamily,
+                      height: 1.9,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  sections.sectionDis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey[700],
                   ),
-                  Text(
-                    sections.sectionDis,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () {
-                      if (sections.sectionName == "Nurse centers") {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => NurseCenters()));
-                      } else if (sections.sectionName == "Medical devices") {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Medical()));
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          'See More',
-                          style: TextStyle(
-                            color: Color(0xFF1C8892),
-                            fontSize: 13,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
+                ),
+                SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () {
+                    if (sections.sectionName == "Nurse centers") {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => NurseCenters()));
+                    } else if (sections.sectionName == "Medical devices") {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Medical()));
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        'See More',
+                        style: TextStyle(
                           color: Color(0xFF1C8892),
+                          fontSize: 13,
+                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
-                      ],
-                    ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: Color(0xFF1C8892),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
