@@ -1,10 +1,12 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart'; // Import for CupertinoIcons
+//import 'package:flutter/cupertino.dart'; // Import for CupertinoIcons
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:test/model/sections.dart';
+import 'package:test/sections/medical_devices.dart';
+import 'package:test/sections/nurse_centers.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key});
@@ -14,7 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  @override
   final items = const [
     Icon(
       FontAwesomeIcons.user,
@@ -192,7 +193,7 @@ class _HomeState extends State<Home> {
       items: items,
       index: index,
       height: 55,
-      buttonBackgroundColor: Colors.transparent,
+      buttonBackgroundColor: const Color(0x00000000),
       backgroundColor: Colors.transparent,
       color: Color(0xFF1C8892),
       //0xFF1C8892
@@ -225,6 +226,7 @@ class _HomeState extends State<Home> {
                   Text(
                     sections.sectionName,
                     style: TextStyle(
+                        color: Color(0xFF1C8892),
                         fontSize: 24,
                         fontFamily: GoogleFonts.titilliumWeb().fontFamily,
                         height: 1.9,
@@ -232,9 +234,39 @@ class _HomeState extends State<Home> {
                   ),
                   Text(
                     sections.sectionDis,
-                    style: TextStyle(fontSize: 17, color: Colors.grey[700]),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey[700],
+                    ),
                   ),
-                  
+                  SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () {
+                      if (sections.sectionName == "Nurse centers") {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => NurseCenters()));
+                      } else if (sections.sectionName == "Medical devices") {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Medical()));
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'See More',
+                          style: TextStyle(
+                            color: Color(0xFF1C8892),
+                            fontSize: 13,
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Color(0xFF1C8892),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ],

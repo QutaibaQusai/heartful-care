@@ -1,48 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
-  final TextEditingController _emailTextController = TextEditingController();
+  //final TextEditingController _emailTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forgot Password'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: _emailTextController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: 'Enter Email',
-                prefixIcon: Icon(Icons.email, color: const Color(0xFF1C8892)),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+          //title: Text('Forgot Password'),
+          ),
+      backgroundColor: Colors.white,
+      body: Container(
+        child: SafeArea(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+            child: Column(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Forget \nPassword",
+                        style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                            letterSpacing: 1),
+                      ),
+                      Text(
+                        "Select which contact details should we use to reset your password:",
+                        style: TextStyle(
+                            fontSize: 17,
+                            height: 2.4,
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                            //fontWeight: FontWeight.w600,
+                            color: Colors.grey[700]),
+                      )
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Implement password reset logic here
-                // Call your backend API to send reset password email
-                String email = _emailTextController.text;
-                // Call your API or authentication service here to initiate password reset
-                print('Reset password email sent to $email');
-              },
-              child: Text('Reset Password'),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                primary: const Color(0xFF1C8892),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/home.dart';
 import 'package:test/screens/signup_screen.dart';
+import 'package:test/screens/forgot_password_screen.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -167,7 +168,13 @@ class _LogInScreenState extends State<LogInScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ForgotPasswordScreen()));
+                              },
                               child: Text(
                                 "Forget Password?",
                                 style: TextStyle(
