@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:test/Profile/account.dart';
+import 'package:test/Settings/First_page.dart';
 import 'package:test/model/sections.dart';
 import 'package:test/sections/medical_devices.dart';
 import 'package:test/sections/nurse_centers.dart';
@@ -195,11 +197,21 @@ class _HomeState extends State<Home> {
       buttonBackgroundColor: const Color(0x00000000),
       backgroundColor: Colors.transparent,
       color: Color(0xFF1C8892),
-      //0xFF1C8892
       onTap: (selectedIndex) {
         setState(() {
           index = selectedIndex;
         });
+
+        // Handle navigation for "gear" and "user" icons
+        if (selectedIndex == 0) {
+          // Navigate to user page
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => Account()));
+        } else if (selectedIndex == 2) {
+          // Navigate to gear page
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => SettingFirstPage()));
+        }
       },
     );
   }

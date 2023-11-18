@@ -78,8 +78,8 @@ class _IntroPage extends State<IntroPage> {
                         children: [
                           Image.asset(
                             contents[i].image,
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height / 1.7,
+                            //width: MediaQuery.of(context).size.width,
+                            //height: MediaQuery.of(context).size.height / 2.1,
                           ),
                           Align(
                             alignment: Alignment.topRight,
