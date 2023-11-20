@@ -56,125 +56,127 @@ class _HomeState extends State<Home> {
     //
   ];
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 2.5,
-              decoration: BoxDecoration(
-                color: Color(0xFF1C8892),
-                borderRadius: BorderRadius.circular(0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const CircleAvatar(
-                              radius: 20,
-                              backgroundImage: AssetImage("images/logo2.png"),
-                            ),
-                            SizedBox(width: 8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  greeting(),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey, // Change as needed
-                                  ),
-                                ),
-                                Text(
-                                  "Sarah Abu Zaid",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        CircleAvatar(
-                          radius: 20,
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.white,
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Iconsax.notification,
-                              size: 20,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                    Text(
-                      "How are you feeling \ntoday?",
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontFamily: GoogleFonts.poppins().fontFamily,
-                        letterSpacing: 1,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      width: double.infinity,
-                      height: 55,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(1000),
-                        color: Colors.white,
-                      ),
-                      child: Row(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 2.5,
+                decoration: BoxDecoration(
+                  color: Color(0xFF1C8892),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Icon(FontAwesomeIcons.search),
-                          SizedBox(width: 8),
-                          Flexible(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(color: Colors.grey),
-                                hintText: 'Search here',
-                                border: InputBorder.none,
+                          Row(
+                            children: [
+                              const CircleAvatar(
+                                radius: 20,
+                                backgroundImage: AssetImage("images/logo2.png"),
+                              ),
+                              SizedBox(width: 8),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    greeting(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey, // Change as needed
+                                    ),
+                                  ),
+                                  Text(
+                                    "Sarah Abu Zaid",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          CircleAvatar(
+                            radius: 20,
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.white,
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Iconsax.notification,
+                                size: 20,
                               ),
                             ),
-                          ),
+                          )
                         ],
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 30),
+                      Text(
+                        "How are you feeling \ntoday?",
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontFamily: GoogleFonts.poppins().fontFamily,
+                          letterSpacing: 1,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        width: double.infinity,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(1000),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(FontAwesomeIcons.search),
+                            SizedBox(width: 8),
+                            Flexible(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  hintText: 'Search here',
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // Text("data")
-            Expanded(
-              child: ListView.builder(
-                itemCount: mySectionList.length,
-                itemBuilder: (context, index) {
-                  return tile(mySectionList[index]);
-                },
+              // Text("data")
+              Expanded(
+                child: ListView.builder(
+                  itemCount: mySectionList.length,
+                  itemBuilder: (context, index) {
+                    return tile(mySectionList[index]);
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        bottomNavigationBar: bottonNav(),
       ),
-      bottomNavigationBar: bottonNav(),
     );
   }
 
@@ -193,10 +195,12 @@ class _HomeState extends State<Home> {
     return CurvedNavigationBar(
       items: items,
       index: index,
+
       height: 55,
       buttonBackgroundColor: const Color(0x00000000),
       backgroundColor: Colors.transparent,
       color: Color(0xFF1C8892),
+      // onTap: (index) => setState(()=> this. index=index),
       onTap: (selectedIndex) {
         setState(() {
           index = selectedIndex;
