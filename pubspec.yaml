@@ -42,7 +42,6 @@ dependencies:
   iconsax: ^0.0.8
   flutter_screenutil: ^5.9.0
   font_awesome_flutter: ^10.6.0
-  curved_navigation_bar: ^1.0.3
 
 
 dev_dependencies:

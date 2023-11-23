@@ -1,6 +1,4 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/cupertino.dart'; // Import for CupertinoIcons
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -18,22 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final items = const [
-    Icon(
-      FontAwesomeIcons.user,
-      size: 30,
-    ),
-    ImageIcon(
-      AssetImage("images/logoo.png"),
-      size: 35,
-    ),
-    Icon(
-      FontAwesomeIcons.gear,
-      size: 30,
-    )
-  ];
-  int index = 1;
-
   // list of object
   List<Sections> mySectionList = [
     Sections(
@@ -57,125 +39,168 @@ class _HomeState extends State<Home> {
   ];
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Column(
+      child: DefaultTabController(
+        length: 3,
+        initialIndex: 1,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: TabBarView(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 2.5,
-                decoration: BoxDecoration(
-                  color: Color(0xFF1C8892),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Account(),
+              Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 2.5,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF1C8892),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 20, top: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const CircleAvatar(
-                                radius: 20,
-                                backgroundImage: AssetImage("images/logo2.png"),
-                              ),
-                              SizedBox(width: 8),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  Text(
-                                    greeting(),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey, // Change as needed
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) => Account()));
+                                    },
+                                    child: const CircleAvatar(
+                                      radius: 20,
+                                      backgroundImage:
+                                          AssetImage("images/logo2.png"),
                                     ),
                                   ),
-                                  Text(
-                                    "Sarah Abu Zaid",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  SizedBox(width: 8),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        greeting(),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color:
+                                              Colors.grey, // Change as needed
+                                        ),
+                                      ),
+                                      Text(
+                                        "Sarah Abu Zaid",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
+                              ),
+                              CircleAvatar(
+                                radius: 20,
+                                foregroundColor: Colors.black,
+                                backgroundColor: Colors.white,
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Iconsax.notification,
+                                    size: 20,
+                                  ),
+                                ),
                               )
                             ],
                           ),
-                          CircleAvatar(
-                            radius: 20,
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.white,
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Iconsax.notification,
-                                size: 20,
-                              ),
+                          SizedBox(height: 30),
+                          Text(
+                            "How are you feeling \ntoday?",
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
+                              fontFamily: GoogleFonts.poppins().fontFamily,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.bold,
                             ),
-                          )
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            width: double.infinity,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(1000),
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(FontAwesomeIcons.search),
+                                SizedBox(width: 8),
+                                Flexible(
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      hintText: 'Search here',
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(height: 30),
-                      Text(
-                        "How are you feeling \ntoday?",
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        width: double.infinity,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1000),
-                          color: Colors.white,
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(FontAwesomeIcons.search),
-                            SizedBox(width: 8),
-                            Flexible(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: 'Search here',
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
+                  // Text("data")
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: mySectionList.length,
+                      itemBuilder: (context, index) {
+                        return tile(mySectionList[index]);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SettingFirstPage()
+            ],
+          ),
+          bottomNavigationBar: TabBar(
+            
+            labelColor: Color(0xFF1C8892),
+            labelStyle: GoogleFonts.poppins(),
+            indicatorColor: Colors.transparent,
+            tabs: [
+              Tab(
+                text: " Profile",
+                icon: Icon(FontAwesomeIcons.user),
+                iconMargin: EdgeInsets.only(bottom: 8),
+              ),
+              Tab(
+                text: "Home",
+                icon: Image.asset(
+                  "images/logo2.png",
+                  width: 35,
                 ),
               ),
-              // Text("data")
-              Expanded(
-                child: ListView.builder(
-                  itemCount: mySectionList.length,
-                  itemBuilder: (context, index) {
-                    return tile(mySectionList[index]);
-                  },
-                ),
-              ),
+              Tab(
+                text: "Settings",
+                icon: Icon(FontAwesomeIcons.gear),
+                iconMargin: EdgeInsets.only(bottom: 8),
+              )
             ],
           ),
         ),
-        bottomNavigationBar: bottonNav(),
       ),
     );
   }
@@ -189,35 +214,6 @@ class _HomeState extends State<Home> {
       return 'Good Afternoon';
     }
     return 'Good Evening';
-  }
-
-  Widget bottonNav() {
-    return CurvedNavigationBar(
-      items: items,
-      index: index,
-
-      height: 55,
-      buttonBackgroundColor: const Color(0x00000000),
-      backgroundColor: Colors.transparent,
-      color: Color(0xFF1C8892),
-      // onTap: (index) => setState(()=> this. index=index),
-      onTap: (selectedIndex) {
-        setState(() {
-          index = selectedIndex;
-        });
-
-        // Handle navigation for "gear" and "user" icons
-        if (selectedIndex == 0) {
-          // Navigate to user page
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Account()));
-        } else if (selectedIndex == 2) {
-          // Navigate to gear page
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => SettingFirstPage()));
-        }
-      },
-    );
   }
 
   Widget tile(Sections sections) {
