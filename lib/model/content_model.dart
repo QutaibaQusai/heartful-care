@@ -11,7 +11,7 @@ List<Content> contents = [
     title: 'Register yourself !',
     image: 'images/intro_page.jpg',
     discription:
-        "Register yourself to find the best services available\n for you and a lot of nurse centers who offer\n home care.",
+        "Register yourself to find the best services available for you and a lot of nurse centers who offer home care.",
   ),
   Content(
     title: 'Medical Devices !',

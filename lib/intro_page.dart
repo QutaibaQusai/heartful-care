@@ -57,6 +57,7 @@ class _IntroPage extends State<IntroPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             Expanded(
@@ -95,7 +96,7 @@ class _IntroPage extends State<IntroPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         child: Column(
                           children: [
                             Text(
@@ -109,14 +110,21 @@ class _IntroPage extends State<IntroPage> {
                             const SizedBox(
                               height: 20,
                             ),
-                            Text(
-                              contents[i].discription,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 29, 17, 17),
-                                height: 1.8,
-                                fontSize: 14,
-                              ),
+                            Column(
+                              children: [
+                                Flexible(
+                                  flex: 0,
+                                  child: Text(
+                                    contents[i].discription,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Color.fromARGB(255, 29, 17, 17),
+                                      height: 1.8,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

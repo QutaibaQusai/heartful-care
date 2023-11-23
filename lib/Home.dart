@@ -45,6 +45,8 @@ class _HomeState extends State<Home> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: TabBarView(
+            //TODO swipe between bar
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Account(),
               Column(
@@ -161,7 +163,6 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  // Text("data")
                   Expanded(
                     child: ListView.builder(
                       itemCount: mySectionList.length,
@@ -176,7 +177,6 @@ class _HomeState extends State<Home> {
             ],
           ),
           bottomNavigationBar: TabBar(
-            
             labelColor: Color(0xFF1C8892),
             labelStyle: GoogleFonts.poppins(),
             indicatorColor: Colors.transparent,
