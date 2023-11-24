@@ -108,7 +108,7 @@ class _IntroPage extends State<IntroPage> {
                               ),
                             ),
                             const SizedBox(
-                              height: 20,
+                              height: 30,
                             ),
                             Column(
                               children: [
