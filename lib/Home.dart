@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:test/Profile/account.dart';
-import 'package:test/Settings/First_page.dart';
+import 'package:test/Settings/settings_home_page.dart';
 import 'package:test/model/sections.dart';
 import 'package:test/sections/medical_devices.dart';
 import 'package:test/sections/nurse_centers.dart';
@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
                                     child: const CircleAvatar(
                                       radius: 20,
                                       backgroundImage:
-                                          AssetImage("images/logo2.png"),
+                                          AssetImage("images/profile.webp"),
                                     ),
                                   ),
                                   SizedBox(width: 8),

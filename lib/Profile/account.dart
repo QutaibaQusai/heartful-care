@@ -88,7 +88,7 @@ class _Account extends State<Account> {
                     ],
                   ),
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 1.45,
+                  height: MediaQuery.of(context).size.height / 1.42,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -115,14 +115,7 @@ class _Account extends State<Account> {
                           child: Column(
                             children: [
                               Row(
-                                children: [
-                                  // Text(
-                                  //   "Personal information",
-                                  //   style: TextStyle(
-                                  //       fontSize: 18,
-                                  //       fontWeight: FontWeight.bold),
-                                  // ),
-                                ],
+                                children: [],
                               ),
                               Card(
                                   margin: EdgeInsets.all(8),

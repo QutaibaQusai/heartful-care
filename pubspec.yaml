@@ -29,10 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
-    sdk: flutter
-  image_picker: ^1.0.4
-
-
+   sdk: flutter
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -42,6 +39,8 @@ dependencies:
   iconsax: ^0.0.8
   flutter_screenutil: ^5.9.0
   font_awesome_flutter: ^10.6.0
+  flutter_settings_screens: ^0.3.3-null-safety+2
+
 
 
 dev_dependencies:
