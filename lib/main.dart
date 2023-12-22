@@ -5,8 +5,9 @@ import 'package:test/intro_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //this line for firebase
   await Firebase.initializeApp();
-  //this line for the langauge
+  //this line for the language
   await Settings.init(cacheProvider: SharePreferenceCache());
   runApp(const MyApp());
 }

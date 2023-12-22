@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:test/home.dart';
 import 'package:test/screens/signup_screen.dart';
 import 'package:test/screens/forgot_password_screen.dart';
+import 'package:test/utils/firebase_auth.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -18,10 +19,10 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SafeArea(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
           child: Padding(
             padding:
                 const EdgeInsets.only(top: 25, left: 25, right: 25, bottom: 25),
@@ -193,12 +194,20 @@ class _LogInScreenState extends State<LogInScreen> {
                                     top: 5, left: 18.0, right: 18.0, bottom: 5),
                                 child: ElevatedButton(
                                   style: ButtonStyle(),
-                                  onPressed: () {
-                                    // Navigate to the second page when the button is pressed
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(builder: (ctx) {
-                                      return const Home();
-                                    }));
+                                  onPressed: ()async {
+                                  
+                                    final x =await MyFirebaseAuth().signIn(
+                                        context: context,
+                                        email: _emailTextController.text,
+                                        password: _passwordTextController.text);
+                                    if (x != null) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Home(),
+                                        ),
+                                      );
+                                    }
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -262,31 +271,3 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 }
 
-// this method for the LOG IN button
-/*Widget signInSignUpButton(BuildContext context, String title, Function onTap) {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    height: 50,
-    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
-    child: ElevatedButton(
-      onPressed: () {
-        onTap();
-      },
-      child: Text(
-        title,
-        style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-      ),
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.pressed)) {
-              return Colors.black26;
-            }
-            return const Color(0xFF1C8892);
-          }),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
-    ),
-  );
-}*/
