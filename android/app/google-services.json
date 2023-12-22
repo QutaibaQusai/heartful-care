@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1065380581069",
+    "project_id": "heartful-care-ffbd7",
+    "storage_bucket": "heartful-care-ffbd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065380581069:android:1a45d5d07721b3d4012384",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgAQ2E8nTPSEwozoS5huPBSe4b-mw2S3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

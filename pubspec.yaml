@@ -40,6 +40,7 @@ dependencies:
   flutter_screenutil: ^5.9.0
   font_awesome_flutter: ^10.6.0
   flutter_settings_screens: ^0.3.3-null-safety+2
+  firebase_core: ^2.24.2
 
 
 
