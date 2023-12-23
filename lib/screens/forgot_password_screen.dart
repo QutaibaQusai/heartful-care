@@ -85,8 +85,17 @@ class ForgotPasswordScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                       //TODO
+                       
+
+
+
+                        
+
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                               color: Color(0xFF1C8892),

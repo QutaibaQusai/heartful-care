@@ -101,7 +101,7 @@ class _Account extends State<Account> {
                           ),
                         ),
                         Text(
-                          "Sarah abu zaid",
+                          "Quatiba Qusai Makahle",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class _Account extends State<Account> {
                                     leading: Icon(Icons.email),
                                     iconColor: Color(0xFF1C8892),
                                     title: Text('Email'),
-                                    subtitle: Text('Sarah@gmail.com'),
+                                    subtitle: Text('Quatiba@gmail.com'),
                                   )),
                               Card(
                                   margin: EdgeInsets.all(8),

@@ -6,13 +6,14 @@ class MyFirebaseAuth {
   // firebase instance
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<UserCredential>? createAccount(
+  Future<User?> createAccount(
       {required BuildContext context,
       required String email,
-      required String password}) {
+      required String password}) async {
     try {
-      return auth.createUserWithEmailAndPassword(
+      UserCredential result = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      return result.user;
     } catch (e) {
       final error = e as FirebaseAuthException;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -39,6 +40,29 @@ class MyFirebaseAuth {
       UserCredential result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       return result.user;
+    } catch (e) {
+      final error = e as FirebaseAuthException;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            error.message!,
+            style: TextStyle(
+                fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+          ),
+        ),
+      );
+      return null;
+    }
+  }
+
+  forgetPassword({
+    required BuildContext context,
+    required String email,
+  }) async {
+    try {
+      return await auth.sendPasswordResetEmail(email: email);
     } catch (e) {
       final error = e as FirebaseAuthException;
       ScaffoldMessenger.of(context).showSnackBar(

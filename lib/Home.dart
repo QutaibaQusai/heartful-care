@@ -96,7 +96,7 @@ class _HomeState extends State<Home> {
                                         ),
                                       ),
                                       Text(
-                                        "Sarah Abu Zaid",
+                                        "qutaiba qusai",
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,

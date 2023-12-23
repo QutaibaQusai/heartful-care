@@ -264,10 +264,12 @@ class _SignInScreen extends State<SignInScreen> {
                                         ),
                                       );
                                     } else {
-                                      var x = MyFirebaseAuth().createAccount(
-                                          email: emailTextController.text,
-                                          password: passwordTextController.text,
-                                          context: context);
+                                      var x = await MyFirebaseAuth()
+                                          .createAccount(
+                                              email: emailTextController.text,
+                                              password:
+                                                  passwordTextController.text,
+                                              context: context);
                                       if (x != null) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
