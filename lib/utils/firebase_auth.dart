@@ -47,7 +47,7 @@ class MyFirebaseAuth {
           behavior: SnackBarBehavior.floating,
           content: Text(
             error.message!,
-            style: TextStyle( 
+            style: TextStyle(
                 fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
           ),
         ),

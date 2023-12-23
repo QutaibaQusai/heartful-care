@@ -213,7 +213,24 @@ class _SignInScreen extends State<SignInScreen> {
                                 child: ElevatedButton(
                                   style: ButtonStyle(),
                                   onPressed: () async {
-                                    if (emailTextController.text.isEmpty) {
+                                    if (fullNameTextController.text.isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: Color(0xFF1C8892),
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            "Please Enter your Full Name",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontFamily:
+                                                    GoogleFonts.poppins()
+                                                        .fontFamily),
+                                          ),
+                                        ),
+                                      );
+                                    } else if (emailTextController
+                                        .text.isEmpty) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
@@ -254,9 +271,19 @@ class _SignInScreen extends State<SignInScreen> {
                                       if (x != null) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
-                                              const SnackBar(
+                                              SnackBar(
+                                                backgroundColor:
+                                                    Color(0xFF1C8892),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
                                                 content: Text(
-                                                    "Logged In Successfully"),
+                                                  "Logged In Successfully",
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontFamily:
+                                                          GoogleFonts.poppins()
+                                                              .fontFamily),
+                                                ),
                                               ),
                                             )
                                             .closed

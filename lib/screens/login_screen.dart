@@ -13,8 +13,8 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
-  TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _emailTextController = TextEditingController();
+  TextEditingController passwordTextController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
   bool showHidePassword = true;
 
   @override
@@ -85,10 +85,11 @@ class _LogInScreenState extends State<LogInScreen> {
                           height: 30,
                         ),
                         TextField(
+                          keyboardType: TextInputType.emailAddress,
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: GoogleFonts.poppins().fontFamily),
-                          controller: _emailTextController,
+                          controller: emailTextController,
                           cursorColor: Colors.white,
                           decoration: InputDecoration(
                               focusedBorder: OutlineInputBorder(
@@ -123,7 +124,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         TextField(
                           style: TextStyle(color: Colors.white),
                           obscureText: showHidePassword,
-                          controller: _passwordTextController,
+                          controller: passwordTextController,
                           cursorColor: Colors.white,
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -194,19 +195,54 @@ class _LogInScreenState extends State<LogInScreen> {
                                     top: 5, left: 18.0, right: 18.0, bottom: 5),
                                 child: ElevatedButton(
                                   style: ButtonStyle(),
-                                  onPressed: ()async {
-                                  
-                                    final x =await MyFirebaseAuth().signIn(
-                                        context: context,
-                                        email: _emailTextController.text,
-                                        password: _passwordTextController.text);
-                                    if (x != null) {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const Home(),
+                                  onPressed: () async {
+                                    if (emailTextController.text.isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: Color(0xFF1C8892),
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            "Please Enter your E-mail",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontFamily:
+                                                    GoogleFonts.poppins()
+                                                        .fontFamily),
+                                          ),
                                         ),
                                       );
+                                    } else if (passwordTextController
+                                        .text.isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: Color(0xFF1C8892),
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            "Please Enter your Password",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontFamily:
+                                                    GoogleFonts.poppins()
+                                                        .fontFamily),
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      final x = await MyFirebaseAuth().signIn(
+                                          context: context,
+                                          email: emailTextController.text,
+                                          password:
+                                              passwordTextController.text);
+                                      if (x != null) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const Home(),
+                                          ),
+                                        );
+                                      }
                                     }
                                   },
                                   child: Padding(
@@ -270,4 +306,3 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 }
-
