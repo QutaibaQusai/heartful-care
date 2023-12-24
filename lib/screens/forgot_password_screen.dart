@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/screens/sendPasswordResetEmail.dart';
+import 'package:test/utils/firebase_auth.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   //final TextEditingController _emailTextController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +41,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         "Select which contact details should we use to reset your password:",
                         style: TextStyle(
                             fontSize: 17,
-                            height: 2.4,
+                            height: 1.6,
                             fontFamily: GoogleFonts.poppins().fontFamily,
                             //fontWeight: FontWeight.w600,
                             color: Colors.grey[700]),
@@ -85,16 +91,15 @@ class ForgotPasswordScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      
+
                       InkWell(
                         onTap: () {
-                       //TODO
-                       
-
-
-
-                        
-
+                          //TODO
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SendPasswordResetEmail()),
+                          );
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -138,6 +143,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+
+                      // TODO new work
                     ],
                   ),
                 ),

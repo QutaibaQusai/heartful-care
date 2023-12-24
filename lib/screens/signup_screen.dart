@@ -85,6 +85,7 @@ class _SignInScreen extends State<SignInScreen> {
                           height: 30,
                         ),
                         TextField(
+                          keyboardType: TextInputType.name,
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: GoogleFonts.poppins().fontFamily),
@@ -121,6 +122,7 @@ class _SignInScreen extends State<SignInScreen> {
                           height: 20,
                         ),
                         TextField(
+                          keyboardType: TextInputType.emailAddress,
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: GoogleFonts.poppins().fontFamily),
@@ -157,6 +159,7 @@ class _SignInScreen extends State<SignInScreen> {
                           height: 20,
                         ),
                         TextField(
+                          keyboardType: TextInputType.visiblePassword,
                           style: TextStyle(color: Colors.white),
                           obscureText: showHidePassword,
                           controller: passwordTextController,
@@ -345,6 +348,10 @@ class _SignInScreen extends State<SignInScreen> {
           ),
           GestureDetector(
             onTap: () {
+              // Navigator.of(context).pushAndRemoveUntil(
+              //     MaterialPageRoute(builder: (context) => LogInScreen()),
+              //     (Route<dynamic> route) => false);
+
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LogInScreen()));
             },

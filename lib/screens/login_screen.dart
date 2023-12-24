@@ -122,6 +122,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           height: 20,
                         ),
                         TextField(
+                          keyboardType: TextInputType.visiblePassword,
                           style: TextStyle(color: Colors.white),
                           obscureText: showHidePassword,
                           controller: passwordTextController,
@@ -289,6 +290,10 @@ class _LogInScreenState extends State<LogInScreen> {
           ),
           GestureDetector(
             onTap: () {
+              // Navigator.of(context).pushAndRemoveUntil(
+              //     MaterialPageRoute(builder: (context) => SignInScreen()),
+              //     (Route<dynamic> route) => false);
+
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SignInScreen()));
             },
