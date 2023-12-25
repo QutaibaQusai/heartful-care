@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/sections/AllDevicesPage.dart';
 
 class Medical extends StatelessWidget {
   const Medical({Key? key}) : super(key: key);
@@ -173,7 +174,7 @@ class Medical extends StatelessWidget {
                           fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
-                      GestureDetector(
+                      /*GestureDetector(
                         onTap: () {
                           // Add your onTap logic here
                         },
@@ -184,7 +185,7 @@ class Medical extends StatelessWidget {
                             fontSize: 16,
                           ),
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
@@ -216,7 +217,11 @@ class Medical extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Add your onTap logic here
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AllDevicesPage()),
+                          );
                         },
                         child: Text(
                           "See All",
@@ -255,7 +260,7 @@ class Medical extends StatelessWidget {
       width: 100,
       height: 100,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         color: Color(0xFF1C8892),
       ),
       child: Column(
@@ -263,8 +268,8 @@ class Medical extends StatelessWidget {
         children: [
           Image.asset(
             imagePath,
-            width: 65,
-            height: 65,
+            width: 70,
+            height: 70,
             fit: BoxFit.cover,
           ),
           SizedBox(height: 8),
@@ -287,7 +292,7 @@ class Medical extends StatelessWidget {
       width: 200,
       height: 200,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         color: Color(0xFF1C8892),
       ),
       child: Column(
@@ -295,8 +300,8 @@ class Medical extends StatelessWidget {
         children: [
           Image.asset(
             imagePath,
-            width: 80,
-            height: 80,
+            width: 100,
+            height: 100,
             fit: BoxFit.cover,
           ),
           SizedBox(height: 8),
@@ -304,7 +309,7 @@ class Medical extends StatelessWidget {
             text,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 15,
               fontFamily: GoogleFonts.poppins().fontFamily,
             ),
             textAlign: TextAlign.center,
