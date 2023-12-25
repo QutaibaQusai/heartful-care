@@ -351,9 +351,7 @@ class _SignInScreen extends State<SignInScreen> {
               // Navigator.of(context).pushAndRemoveUntil(
               //     MaterialPageRoute(builder: (context) => LogInScreen()),
               //     (Route<dynamic> route) => false);
-
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LogInScreen()));
+              Navigator.pop(context);
             },
             child: Text(
               " Log in ",

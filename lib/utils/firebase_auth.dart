@@ -63,32 +63,30 @@ class MyFirebaseAuth {
     required String email,
   }) async {
     try {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Container(
-            width: 100,
-            height: 100,
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
-              ),
-              backgroundColor:
-                  Colors.white, // Change this to your desired color
-              content: Text(
-                "Check your email",
-                style: TextStyle(
-                  color: Colors.black, // Change this to your desired text color
-                ),
-              ),
-            ),
-          );
-        },
-      );
+      // showDialog(
+      //   context: context,
+      //   builder: (context) {
+      //     return Container(
+      //       width: 100,
+      //       height: 100,
+      //       child: AlertDialog(
+      //         shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.zero,
+      //         ),
+      //         backgroundColor: Colors.white,
+      //         content: Text(
+      //           "Check your email",
+      //           style: TextStyle(
+      //             color: Colors.black,
+      //           ),
+      //         ),
+      //       ),
+      //     );
+      //   },
+      // );
       return await auth.sendPasswordResetEmail(email: email.trim());
     } catch (e) {
       final error = e as FirebaseAuthException;
-
       showDialog(
         context: context,
         builder: (context) {
@@ -96,11 +94,11 @@ class MyFirebaseAuth {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.zero,
             ),
-            backgroundColor: Colors.white, // Change this to your desired color
+            backgroundColor: Colors.white,
             content: Text(
               error.message!,
               style: TextStyle(
-                color: Colors.black, // Change this to your desired text color
+                color: Colors.black,
               ),
             ),
           );
@@ -110,20 +108,3 @@ class MyFirebaseAuth {
     }
   }
 }
-
-
-
-
-
-
- // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     backgroundColor: Color(0xFF1C8892),
-      //     behavior: SnackBarBehavior.floating,
-      //     content: Text(
-      //       error.message!,
-      //       style: TextStyle(
-      //           fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
-      //     ),
-      //   ),
-      // );
