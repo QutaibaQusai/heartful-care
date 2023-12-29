@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/intro_page.dart';
 
 class SettingFirstPage extends StatefulWidget {
   const SettingFirstPage({Key? key}) : super(key: key);
@@ -212,7 +213,11 @@ class _SettingFirstPage extends State<SettingFirstPage> {
             TextButton(
               onPressed: () {
                 // Perform logout action
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
+
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => IntroPage()),
+                    (Route<dynamic> route) => false);
               },
               child: Text('Yes'),
             ),
