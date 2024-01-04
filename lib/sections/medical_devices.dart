@@ -167,15 +167,29 @@ class _MedicalState extends State<Medical> {
               buildPageViewDots(),
               SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  'All Medical Devices',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
-                  ),
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'All Medical Devices',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontFamily: GoogleFonts.poppins().fontFamily,
+                      ),
+                    ),
+                    Text(
+                      'See All',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(
+                            0xFF1C8892), // You can change the color as needed
+                        fontFamily: GoogleFonts.poppins().fontFamily,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               tile()
@@ -187,10 +201,10 @@ class _MedicalState extends State<Medical> {
   }
 
   Widget buildSpecialOfferPage(int index) {
-    List<String> titles = ["Today's offer", "Today's offer"];
+    List<String> titles = ["        Today's offer", "       Today's offer"];
     List<String> descriptions = [
-      "Get a discount of 20% \non selected items!",
-      "Buy one, get one free\non all medical devices!"
+      "   Get a discount of 20% \n    on selected items!",
+      "   Buy one, get one free\n   on all medical devices!"
     ];
 
     return Padding(
@@ -206,7 +220,7 @@ class _MedicalState extends State<Medical> {
             ClipRRect(
               borderRadius: BorderRadius.circular(22),
               child: Image.asset(
-                "images/WhatsApp Image 2024-01-04 at 2.25.53 PM.jpeg",
+                "images/pngtree-medical-device-frame-tool-needle-png-image_6597190.png",
                 width: double.infinity,
                 height: 120,
                 fit: BoxFit.cover,
@@ -301,17 +315,15 @@ class _MedicalState extends State<Medical> {
       child: Container(
           width: double.infinity,
           height: 100,
-          // color: Color(11101010),
-          // color: Colors.red,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 2,
-                offset: Offset(0, 2), // changes position of shadow
+                offset: Offset(0, 5), // changes position of shadow
               ),
             ],
           ),
@@ -322,22 +334,29 @@ class _MedicalState extends State<Medical> {
                 Image.asset("images/pressure.png"),
                 quantity > 0
                     ? Positioned(
+                        bottom: 25,
+                        left: 3,
                         child: Container(
-                        child: CircleAvatar(
-                          radius: 13,
-                          backgroundColor: Colors.black,
-                          child: Text(
-                            "$quantity",
-                            style: TextStyle(color: Colors.white),
+                          child: CircleAvatar(
+                            radius: 13,
+                            backgroundColor: Colors.black,
+                            child: Text(
+                              "$quantity",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
-                        ),
-                      ))
+                        ))
                     : Container()
               ]),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Pressure Device"),
+                  Text(
+                    "Pressure Device",
+                    style: TextStyle(
+                      fontFamily: GoogleFonts.poppins().fontFamily,
+                    ),
+                  ),
                   Row(
                     children: [
                       Icon(
@@ -345,7 +364,12 @@ class _MedicalState extends State<Medical> {
                         color: Colors.yellow,
                         size: 18,
                       ),
-                      Text("4.8"),
+                      Text(
+                        "4.8",
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.poppins().fontFamily,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
