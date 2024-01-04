@@ -12,6 +12,8 @@ class _MedicalState extends State<Medical> {
   TextEditingController searchController = TextEditingController();
   int currentPage = 0;
   PageController pageController = PageController();
+  double price = 2.35;
+  int quantity = 0;
 
   // List of location options
   final List<String> locationOptions = ['Amman, Jordan', 'Irbid', 'Madaba'];
@@ -176,6 +178,7 @@ class _MedicalState extends State<Medical> {
                   ),
                 ),
               ),
+              tile()
             ],
           ),
         ),
@@ -291,4 +294,102 @@ class _MedicalState extends State<Medical> {
       ),
     );
   }
+
+  Widget tile() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Container(
+          width: double.infinity,
+          height: 100,
+          // color: Color(11101010),
+          // color: Colors.red,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(0, 2), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Stack(children: [
+                Image.asset("images/pressure.png"),
+                quantity > 0
+                    ? Positioned(
+                        child: Container(
+                        child: CircleAvatar(
+                          radius: 13,
+                          backgroundColor: Colors.black,
+                          child: Text(
+                            "$quantity",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ))
+                    : Container()
+              ]),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Pressure Device"),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: Colors.yellow,
+                        size: 18,
+                      ),
+                      Text("4.8"),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {});
+                          if (quantity == 0) {
+                            return;
+                          } else
+                            (quantity = quantity - 1);
+                          //   setState(() {});
+                          // if (quantity == 0) {
+                          //   return;
+                          // } else {
+                          // //   quantity = quantity - 1;
+                          // //  quantity= quantity * item.itemPrice;
+                          // }
+                          price = price * quantity;
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.squareMinus,
+                          size: 28,
+                        ),
+                      ),
+                      Text(price.toStringAsFixed(2)),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {});
+                          quantity = quantity + 1;
+                          price = price * quantity;
+                        },
+                        icon: Icon(FontAwesomeIcons.squarePlus, size: 28),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          )),
+    );
+  }
+
+  // void totalPrice() {
+  //   totalPrice = price * quantity;
+  // }
 }
