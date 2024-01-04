@@ -138,6 +138,7 @@ class _MedicalState extends State<Medical> {
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black,
+                    fontWeight: FontWeight.bold,
                     fontFamily: GoogleFonts.poppins().fontFamily,
                   ),
                 ),
@@ -183,10 +184,10 @@ class _MedicalState extends State<Medical> {
   }
 
   Widget buildSpecialOfferPage(int index) {
-    List<String> titles = ["Special Offer 1", "Special Offer 2"];
+    List<String> titles = ["Today's offer", "Today's offer"];
     List<String> descriptions = [
-      "Get a discount of 20% on selected items!",
-      "Buy one, get one free on all medical devices!"
+      "Get a discount of 20% \non selected items!",
+      "Buy one, get one free\non all medical devices!"
     ];
 
     return Padding(
@@ -202,7 +203,7 @@ class _MedicalState extends State<Medical> {
             ClipRRect(
               borderRadius: BorderRadius.circular(22),
               child: Image.asset(
-                "images/WhatsApp Image 2024-01-01 at 14.28.49_f2030761.jpg",
+                "images/WhatsApp Image 2024-01-04 at 2.25.53 PM.jpeg",
                 width: double.infinity,
                 height: 120,
                 fit: BoxFit.cover,
@@ -244,7 +245,7 @@ class _MedicalState extends State<Medical> {
                     ),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -254,7 +255,7 @@ class _MedicalState extends State<Medical> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                       child: Text(
-                        "Today's Offer",
+                        "Order Now",
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
