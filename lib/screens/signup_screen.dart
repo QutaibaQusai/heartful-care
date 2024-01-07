@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Home.dart';
-import 'package:test/screens/login_screen.dart';
 import 'package:test/utils/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -12,9 +13,9 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreen extends State<SignInScreen> {
-  TextEditingController passwordTextController = TextEditingController();
-  TextEditingController emailTextController = TextEditingController();
-  TextEditingController fullNameTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
+  final emailTextController = TextEditingController();
+  final fullNameTextController = TextEditingController();
   bool showHidePassword = true;
 
   @override
@@ -216,6 +217,14 @@ class _SignInScreen extends State<SignInScreen> {
                                 child: ElevatedButton(
                                   style: ButtonStyle(),
                                   onPressed: () async {
+                                    CollectionReference users =
+                                        FirebaseFirestore.instance
+                                            .collection('users');
+                                    users.add({
+                                      'fullname': fullNameTextController.text,
+                                      'email': emailTextController.text,
+                                      'password': passwordTextController.text
+                                    });
                                     if (fullNameTextController.text.isEmpty) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
