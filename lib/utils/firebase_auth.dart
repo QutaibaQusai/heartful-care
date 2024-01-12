@@ -1,3 +1,4 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -63,27 +64,6 @@ class MyFirebaseAuth {
     required String email,
   }) async {
     try {
-      // showDialog(
-      //   context: context,
-      //   builder: (context) {
-      //     return Container(
-      //       width: 100,
-      //       height: 100,
-      //       child: AlertDialog(
-      //         shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.zero,
-      //         ),
-      //         backgroundColor: Colors.white,
-      //         content: Text(
-      //           "Check your email",
-      //           style: TextStyle(
-      //             color: Colors.black,
-      //           ),
-      //         ),
-      //       ),
-      //     );
-      //   },
-      // );
       return await auth.sendPasswordResetEmail(email: email.trim());
     } catch (e) {
       final error = e as FirebaseAuthException;

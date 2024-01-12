@@ -305,11 +305,9 @@ class _SignInScreen extends State<SignInScreen> {
                                               () => Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const Home(),
-                                                ),
+                                                builder: (context) => Home(userEmail: emailTextController.text),
                                               ),
-                                            );
+                                            ));
                                       }
                                     }
                                   },

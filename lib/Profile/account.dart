@@ -41,7 +41,7 @@ class _Account extends State<Account> {
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Home()));
+                    .push(MaterialPageRoute(builder: (context) => Home(userEmail: '',)));
               },
               color: Color(0xFF1C8892),
             ),

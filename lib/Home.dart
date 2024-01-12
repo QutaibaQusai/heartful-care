@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,13 +10,38 @@ import 'package:test/sections/medical_devices.dart';
 import 'package:test/sections/nurse_centers.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key});
+  final String userEmail;
+  const Home({Key? key, required this.userEmail});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  String userName = ""; // Store the user's name
+  @override
+  void initState() {
+    super.initState();
+    fetchUserName(); // Fetch the user's name when the widget is created
+  }
+
+  void fetchUserName() async {
+    try {
+      var userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: widget.userEmail)
+          .get();
+
+      if (userDoc.docs.isNotEmpty) {
+        setState(() {
+          userName = userDoc.docs[0]['fullname'];
+        });
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
   // list of object
   List<Sections> mySectionList = [
     Sections(
@@ -96,7 +122,9 @@ class _HomeState extends State<Home> {
                                         ),
                                       ),
                                       Text(
-                                        "qutaiba qusai",
+                                        userName.isNotEmpty
+                                            ? userName
+                                            : "Guest",
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,

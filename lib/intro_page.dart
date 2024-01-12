@@ -37,13 +37,13 @@ class _IntroPage extends State<IntroPage> {
 
   void onGetStartedButtonPressed() {
     Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-      return Home();
+      return Home(userEmail: '',);
     }));
   }
 
   void onSkipButtonPressed() {
     Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-      return Home();
+      return Home(userEmail: '',);
     }));
   }
 

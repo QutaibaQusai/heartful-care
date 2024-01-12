@@ -233,6 +233,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                         ),
                                       );
                                     } else {
+                                      // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);
                                       final x = await MyFirebaseAuth().signIn(
                                           context: context,
                                           email: emailTextController.text,
@@ -242,7 +243,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const Home(),
+                                            builder: (context) => Home(userEmail: emailTextController.text),
                                           ),
                                         );
                                       }
