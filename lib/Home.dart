@@ -18,11 +18,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String userName = ""; // Store the user's name
+  String userName = ""; // Store the user's name
   @override
   void initState() {
     super.initState();
-    fetchUserName(); // Fetch the user's name when the widget is created
+    fetchUserName(); // Fetch the user's name when the widget is created
   }
 
   void fetchUserName() async {
@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
         });
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      print('Error fetching user data: $e');
     }
   }
 
@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
             "images/WhatsApp_Image_2023-11-03_at_19.30.49_c6ac0fb0-removebg-preview-removebg-preview.png",
         sectionName: "Medical devices",
         sectionDis:
-            "Explore our comprehensive range\n of medical devices available \nfor purchase or rent."),
+            "Explore our comprehensive range\n of medical devices available \nfor purchase or rent."),
 
     //   Sections(
     //       sectionImage: "images/24.jpg",

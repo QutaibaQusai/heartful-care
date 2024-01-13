@@ -6,7 +6,8 @@ import 'package:test/home.dart';
 //import 'package:google_fonts/google_fonts.dart';
 
 class Account extends StatefulWidget {
-  const Account({super.key});
+  const Account(
+      {super.key});
 
   @override
   State<Account> createState() => _Account();
@@ -40,8 +41,10 @@ class _Account extends State<Account> {
             child: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Home(userEmail: '',)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Home(
+                          userEmail: '',
+                        )));
               },
               color: Color(0xFF1C8892),
             ),
