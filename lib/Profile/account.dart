@@ -12,7 +12,6 @@ class Account extends StatefulWidget {
 }
 
 class _Account extends State<Account> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

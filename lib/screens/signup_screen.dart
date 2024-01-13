@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Home.dart';
 import 'package:test/utils/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_core/firebase_core.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -223,7 +222,7 @@ class _SignInScreen extends State<SignInScreen> {
                                     users.add({
                                       'fullname': fullNameTextController.text,
                                       'email': emailTextController.text,
-                                      'password': passwordTextController.text
+                                      //'password': passwordTextController.text
                                     });
                                     if (fullNameTextController.text.isEmpty) {
                                       ScaffoldMessenger.of(context)
@@ -302,12 +301,15 @@ class _SignInScreen extends State<SignInScreen> {
                                             )
                                             .closed
                                             .whenComplete(
-                                              () => Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                builder: (context) => Home(userEmail: emailTextController.text),
-                                              ),
-                                            ));
+                                                () => Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => Home(
+                                                            userEmail:
+                                                                emailTextController
+                                                                    .text),
+                                                      ),
+                                                    ));
                                       }
                                     }
                                   },
