@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
     fetchUserName(); // Fetch the user's name when the widget is created
   }
 
+
   void fetchUserName() async {
     try {
       var userDoc = await FirebaseFirestore.instance
@@ -74,7 +75,8 @@ class _HomeState extends State<Home> {
             //TODO swipe between bar
             physics: NeverScrollableScrollPhysics(),
             children: [
-              Account(),
+              Account(userEmail: widget.userEmail,
+          userName:userName,),
               Column(
                 children: [
                   Container(
@@ -100,7 +102,8 @@ class _HomeState extends State<Home> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
-                                              builder: (context) => Account()));
+                                              builder: (context) => Account( userEmail: widget.userEmail,
+          userName:userName,)));
                                     },
                                     child: const CircleAvatar(
                                       radius: 20,

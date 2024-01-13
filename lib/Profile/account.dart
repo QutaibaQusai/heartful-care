@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/home.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-//import 'package:google_fonts/google_fonts.dart';
 
 class Account extends StatefulWidget {
-  const Account({super.key});
+  final String userEmail;
+  final String userName;
+  const Account({super.key, required this.userEmail, required this.userName});
 
   @override
   State<Account> createState() => _Account();
 }
 
 class _Account extends State<Account> {
-  // bool showPassword = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: 100,
         title: Text(
           'Profile',
@@ -40,8 +39,9 @@ class _Account extends State<Account> {
             child: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Home(userEmail: '',)));
+                Navigator.of(context).pop();
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (context) => Home(userEmail:"" )));
               },
               color: Color(0xFF1C8892),
             ),
@@ -101,7 +101,9 @@ class _Account extends State<Account> {
                           ),
                         ),
                         Text(
-                          "Quatiba Qusai Makahle",
+                          widget.userName.isNotEmpty
+                              ? widget.userName
+                              : "Guest",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -123,7 +125,11 @@ class _Account extends State<Account> {
                                     leading: Icon(Icons.email),
                                     iconColor: Color(0xFF1C8892),
                                     title: Text('Email'),
-                                    subtitle: Text('Quatiba@gmail.com'),
+                                    subtitle: Text(
+                                      widget.userEmail.isNotEmpty
+                                          ? widget.userEmail
+                                          : "Guest",
+                                    ),
                                   )),
                               Card(
                                   margin: EdgeInsets.all(8),
