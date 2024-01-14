@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:test/Settings/YourAccountInfoPage.dart';
+import 'package:test/Settings/YourChangeEmailPage.dart';
+import 'package:test/Settings/YourChangePassPage.dart';
+import 'package:test/Settings/YourSavedAddress.dart';
 import 'package:test/intro_page.dart';
 
 class SettingFirstPage extends StatefulWidget {
@@ -38,16 +42,20 @@ class _SettingFirstPage extends State<SettingFirstPage> {
           children: [
             buildSectionHeader(Icons.person, "Account"),
             buildAccountOption(context, "Account Info"),
+            SizedBox(height: 5),
             buildAccountOption(context, "Saved Addresses"),
+            SizedBox(height: 5),
             buildAccountOption(context, "Change Email"),
+            SizedBox(height: 5),
             buildAccountOption(context, "Change Password"),
+            SizedBox(height: 5),
             Divider(height: 20, thickness: 0.5),
             SizedBox(height: 10),
             buildSectionHeader(Icons.notifications, "Notifications"),
             buildNotificationOption(context, "News for you", notification1,
                 (value) => setState(() => notification1 = value)),
-            buildNotificationOption(context, "App updates", notification2,
-                (value) => setState(() => notification2 = value)),
+            // buildNotificationOption(context, "App updates", notification2,
+            //(value) => setState(() => notification2 = value)),
             Divider(height: 20, thickness: 0.5),
             SizedBox(height: 10),
             buildSectionHeader(Icons.language, "Language"),
@@ -84,9 +92,35 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     );
   }
 
-  GestureDetector buildAccountOption(BuildContext context, String title) {
-    return GestureDetector(
-      onTap: () {},
+  InkWell buildAccountOption(BuildContext context, String title) {
+    return InkWell(
+      onTap: () {
+        if (title == "Account Info") {
+          // Navigate to the desired page (replace YourAccountInfoPage with the actual page class)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => YourAccountInfoPage()),
+          );
+        }
+        if (title == "Change Email") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => YourChangeEmailPage()),
+          );
+        }
+        if (title == "Saved Addresses") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => YourSavedAddress()),
+          );
+        }
+        if (title == "Change Password") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => YourChangePassPage()),
+          );
+        } else {}
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
         child: Row(
