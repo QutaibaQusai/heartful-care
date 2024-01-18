@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/Settings/YourAccountInfoPage.dart';
 
 class Account extends StatefulWidget {
   final String userEmail;
@@ -56,7 +57,13 @@ class _Account extends State<Account> {
               child: IconButton(
                 icon: Icon(Icons.edit),
                 color: Color(0xFF1C8892),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const YourAccountInfoPage()),
+                  );
+                },
               ),
             ),
           ),
@@ -136,15 +143,7 @@ class _Account extends State<Account> {
                                     leading: Icon(Icons.call),
                                     iconColor: Color(0xFF1C8892),
                                     title: Text('Phone Number'),
-                                    subtitle: Text('0790976671'),
-                                  )),
-                              Card(
-                                  margin: EdgeInsets.all(8),
-                                  child: ListTile(
-                                    leading: Icon(FontAwesomeIcons.locationDot),
-                                    iconColor: Color(0xFF1C8892),
-                                    title: Text('Address'),
-                                    subtitle: Text('Jordan'),
+                                    subtitle: Text(''),
                                   )),
                               Card(
                                   margin: EdgeInsets.all(8),
@@ -152,7 +151,15 @@ class _Account extends State<Account> {
                                     leading: Icon(FontAwesomeIcons.idCard),
                                     iconColor: Color(0xFF1C8892),
                                     title: Text('National ID'),
-                                    subtitle: Text('2000491788'),
+                                    subtitle: Text(''),
+                                  )),
+                              Card(
+                                  margin: EdgeInsets.all(8),
+                                  child: ListTile(
+                                    leading: Icon(FontAwesomeIcons.calendar),
+                                    iconColor: Color(0xFF1C8892),
+                                    title: Text('Data of birth'),
+                                    subtitle: Text(''),
                                   )),
                             ],
                           ),

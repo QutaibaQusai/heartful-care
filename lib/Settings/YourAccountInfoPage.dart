@@ -90,7 +90,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
-                enabled: isEditing,
+                enabled: false,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
@@ -98,9 +98,16 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
               ),
               SizedBox(height: 16),
               TextField(
+                  enabled: isEditing,
+                  decoration: InputDecoration(
+                    labelText: 'Full name',
+                    border: OutlineInputBorder(),
+                  )),
+              SizedBox(height: 16),
+              TextField(
                 enabled: isEditing,
                 decoration: InputDecoration(
-                  labelText: 'Full name',
+                  labelText: 'Phone Number',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -123,6 +130,14 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                   text: selectedDate != null
                       ? formatDate(selectedDate!, [dd, '/', mm, '/', yyyy])
                       : "",
+                ),
+              ),
+              SizedBox(height: 16),
+              TextField(
+                enabled: isEditing,
+                decoration: InputDecoration(
+                  labelText: 'National ID',
+                  border: OutlineInputBorder(),
                 ),
               ),
               SizedBox(height: 16),
@@ -200,12 +215,12 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text(
-                            'Delete Account',
+                            'Submit your data',
                             style: TextStyle(
                                 fontSize: 20, color: Color(0xFF1C8892)),
                           ),
                           content: Text(
-                              'Are you sure you want to delete your account?'),
+                              'Are you sure you want to submit your data?'),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -241,7 +256,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                     ),
                   ),
                   child: Text(
-                    'Delete Account',
+                    'Submit',
                     style: TextStyle(fontSize: 18, color: Color(0xFF1C8892)),
                   ),
                 ),
