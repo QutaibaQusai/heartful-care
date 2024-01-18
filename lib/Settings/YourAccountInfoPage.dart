@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:date_format/date_format.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class YourAccountInfoPage extends StatefulWidget {
   const YourAccountInfoPage({Key? key}) : super(key: key);
@@ -14,6 +14,11 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
   DateTime? selectedDate;
   String? selectedGender;
   bool receiveOffers = false;
+  final fullNameTextController = TextEditingController();
+  final PhoneNumberTextController = TextEditingController();
+  final nationalIdTextController = TextEditingController();
+  final dateOfBirthTextController = TextEditingController();
+  final genderTextController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showCustomDatePicker(context);
@@ -21,6 +26,10 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        dateOfBirthTextController.text = formatDate(
+          picked,
+          [dd, '/', mm, '/', yyyy],
+        );
       });
     }
   }
@@ -98,6 +107,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
               ),
               SizedBox(height: 16),
               TextField(
+                  controller: fullNameTextController,
                   enabled: isEditing,
                   decoration: InputDecoration(
                     labelText: 'Full name',
@@ -105,6 +115,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                   )),
               SizedBox(height: 16),
               TextField(
+                controller: PhoneNumberTextController,
                 enabled: isEditing,
                 decoration: InputDecoration(
                   labelText: 'Phone Number',
@@ -134,6 +145,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
               ),
               SizedBox(height: 16),
               TextField(
+                controller: nationalIdTextController,
                 enabled: isEditing,
                 decoration: InputDecoration(
                   labelText: 'National ID',
@@ -223,10 +235,18 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                               'Are you sure you want to submit your data?'),
                           actions: [
                             TextButton(
-                              onPressed: () {
-                                // Perform delete account action
-                                _deleteAccount();
-                                Navigator.of(context).pop();
+                              onPressed: () async {
+                                CollectionReference users = FirebaseFirestore
+                                    .instance
+                                    .collection('users');
+                                users.add({
+                                  'Fullname': fullNameTextController.text,
+                                  'Phone Number':
+                                      PhoneNumberTextController.text,
+                                  'NationalID': nationalIdTextController.text,
+                                  'DateOfBirth': dateOfBirthTextController.text,
+                                  'Gender': selectedGender,
+                                });
                               },
                               child: Text(
                                 'Yes',
