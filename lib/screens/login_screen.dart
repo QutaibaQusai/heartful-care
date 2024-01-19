@@ -243,7 +243,9 @@ class _LogInScreenState extends State<LogInScreen> {
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => Home(userEmail: emailTextController.text),
+                                            builder: (context) => Home(
+                                                userEmail:
+                                                    emailTextController.text),
                                           ),
                                         );
                                       }
@@ -301,7 +303,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   MaterialPageRoute(builder: (context) => SignInScreen()));
             },
             child: Text(
-              " Join now ".toUpperCase(),
+              " sign up ".toUpperCase(),
               style: TextStyle(
                   color: const Color(0xFF1C8892),
                   fontWeight: FontWeight.bold,

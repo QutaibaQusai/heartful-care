@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/WhoAreYou.dart';
 import 'package:test/home.dart';
 import 'package:test/model/content_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -37,13 +38,17 @@ class _IntroPage extends State<IntroPage> {
 
   void onGetStartedButtonPressed() {
     Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-      return Home(userEmail: '',);
+      return Home(
+        userEmail: '',
+      );
     }));
   }
 
   void onSkipButtonPressed() {
     Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-      return Home(userEmail: '',);
+      return Home(
+        userEmail: '',
+      );
     }));
   }
 
@@ -190,11 +195,11 @@ class _IntroPage extends State<IntroPage> {
                         onTap: () {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (ctx) {
-                            return LogInScreen();
+                            return WhoAreYou();
                           }));
                         },
                         child: Text(
-                          "Sign in",
+                          "Join now",
                           style: TextStyle(
                               color: const Color(0xFF1C8892),
                               fontSize: 16,
