@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/WhoAreYou.dart';
+import 'package:test/whoAreYou.dart';
 import 'package:test/home.dart';
 import 'package:test/model/content_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
