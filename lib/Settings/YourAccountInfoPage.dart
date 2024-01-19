@@ -1,15 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class YourAccountInfoPage extends StatefulWidget {
-  const YourAccountInfoPage({Key? key}) : super(key: key);
+  final String userEmail;
+
+  const YourAccountInfoPage({Key? key, required this.userEmail})
+      : super(key: key);
 
   @override
   State<YourAccountInfoPage> createState() => _YourAccountInfoPageState();
 }
 
 class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
+  String userName = ""; // Store the user's name
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserEmail(); // Fetch the user's name when the widget is created
+  }
+
+  void fetchUserEmail() async {
+    try {
+      var userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: widget.userEmail)
+          .get();
+
+      if (userDoc.docs.isNotEmpty) {
+        setState(() {});
+        userName = userDoc.docs[0]['fullname'];
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
   bool isEditing = false;
   DateTime? selectedDate;
   String? selectedGender;
@@ -98,21 +126,27 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
+              TextFormField(
+                initialValue:
+                    widget.userEmail.isNotEmpty ? widget.userEmail : "Guest",
                 enabled: false,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
               ),
+              // Text(widget.userEmail),
               SizedBox(height: 16),
-              TextField(
-                  controller: fullNameTextController,
-                  enabled: isEditing,
-                  decoration: InputDecoration(
-                    labelText: 'Full name',
-                    border: OutlineInputBorder(),
-                  )),
+              TextFormField(
+                initialValue: fullNameTextController.text =
+                    userName.isNotEmpty ? userName : "Guest",
+                enabled: isEditing,
+                decoration: InputDecoration(
+                  labelText: 'Full name',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+
               SizedBox(height: 16),
               TextField(
                 controller: PhoneNumberTextController,
@@ -160,7 +194,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Column(
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -199,7 +233,6 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
               Row(
                 children: [
                   Checkbox(
@@ -236,17 +269,8 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                           actions: [
                             TextButton(
                               onPressed: () async {
-                                CollectionReference users = FirebaseFirestore
-                                    .instance
-                                    .collection('users');
-                                users.add({
-                                  'Fullname': fullNameTextController.text,
-                                  'Phone Number':
-                                      PhoneNumberTextController.text,
-                                  'NationalID': nationalIdTextController.text,
-                                  'DateOfBirth': dateOfBirthTextController.text,
-                                  'Gender': selectedGender,
-                                });
+                                Navigator.of(context).pop(); // Close the dialog
+                                await _submitUserData();
                               },
                               child: Text(
                                 'Yes',
@@ -286,5 +310,69 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _submitUserData() async {
+    try {
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+
+      // Find the user document
+      var userDoc =
+          await users.where('email', isEqualTo: widget.userEmail).get();
+
+      if (userDoc.docs.isNotEmpty) {
+        var userId = userDoc.docs[0].id;
+
+        // Update the existing document with the new data
+        await users.doc(userId).update({
+          'Phone Number': PhoneNumberTextController.text,
+          'NationalID': nationalIdTextController.text,
+          'DateOfBirth':
+              selectedDate != null ? selectedDate!.toIso8601String() : null,
+          'Gender': selectedGender,
+        });
+
+        // Display a success message or navigate to another screen if needed
+        // print('User data updated successfully!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              ' User data updated successfully!',
+              style: TextStyle(
+                  fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+            ),
+          ),
+        );
+      } else {
+        // print('User not found');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'User not found',
+              style: TextStyle(
+                  fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      // print('Error updating user data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Error updating user data: $e',
+            style: TextStyle(
+                fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+          ),
+        ),
+      );
+    }
   }
 }

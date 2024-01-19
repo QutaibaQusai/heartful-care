@@ -61,7 +61,7 @@ class _Account extends State<Account> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const YourAccountInfoPage()),
+                        builder: (context) => const YourAccountInfoPage(userEmail: '',)),
                   );
                 },
               ),

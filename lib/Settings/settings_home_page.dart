@@ -6,7 +6,9 @@ import 'package:test/Settings/YourSavedAddress.dart';
 import 'package:test/intro_page.dart';
 
 class SettingFirstPage extends StatefulWidget {
-  const SettingFirstPage({Key? key}) : super(key: key);
+      final String userEmail;
+
+  const SettingFirstPage({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   State<SettingFirstPage> createState() => _SettingFirstPage();
@@ -99,7 +101,7 @@ class _SettingFirstPage extends State<SettingFirstPage> {
           // Navigate to the desired page (replace YourAccountInfoPage with the actual page class)
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => YourAccountInfoPage()),
+            MaterialPageRoute(builder: (context) => YourAccountInfoPage(userEmail: widget.userEmail,)),
           );
         }
         if (title == "Change Email") {

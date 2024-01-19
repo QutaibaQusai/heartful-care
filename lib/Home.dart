@@ -204,7 +204,7 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SettingFirstPage()
+              SettingFirstPage(userEmail:widget.userEmail,)
             ],
           ),
           bottomNavigationBar: TabBar(
