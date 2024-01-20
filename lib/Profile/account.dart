@@ -1,18 +1,59 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Settings/YourAccountInfoPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Account extends StatefulWidget {
   final String userEmail;
   final String userName;
-  const Account({super.key, required this.userEmail, required this.userName});
+
+  const Account({Key? key, required this.userEmail, required this.userName})
+      : super(key: key);
 
   @override
-  State<Account> createState() => _Account();
+  State<Account> createState() => _AccountState();
 }
 
-class _Account extends State<Account> {
+class _AccountState extends State<Account> {
+  String fullname = "";
+  String phoneNumber = ""; // Add this variable for phone number
+  String nationalID = ""; // Add this variable for national ID
+  DateTime? dateOfBirth; // Add this variable for date of birth
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  void fetchUserData() async {
+    try {
+      var userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: widget.userEmail)
+          .get();
+
+      if (userDoc.docs.isNotEmpty) {
+        var userData = userDoc.docs[0].data();
+
+        setState(() {
+          fullname = userData['fullname'] ?? "";
+          phoneNumber = userData['Phone Number'] ?? "";
+          nationalID = userData['NationalID'] ?? "";
+
+          // Parse the date string if available
+          if (userData['DateOfBirth'] != null) {
+            dateOfBirth = DateTime.parse(userData['DateOfBirth']);
+          }
+        });
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +69,7 @@ class _Account extends State<Account> {
             fontFamily: GoogleFonts.poppins().fontFamily,
           ),
         ),
-
-        centerTitle: true, // Center the title
+        centerTitle: true,
         backgroundColor: Color(0xFF1C8892),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -40,14 +80,11 @@ class _Account extends State<Account> {
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.of(context).pop();
-                // Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => Home(userEmail:"" )));
               },
               color: Color(0xFF1C8892),
             ),
           ),
         ),
-
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -61,7 +98,10 @@ class _Account extends State<Account> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const YourAccountInfoPage(userEmail: '',)),
+                      builder: (context) => const YourAccountInfoPage(
+                        userEmail: '',
+                      ),
+                    ),
                   );
                 },
               ),
@@ -89,7 +129,7 @@ class _Account extends State<Account> {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 1,
                         blurRadius: 4,
-                        offset: Offset(0, 1), // changes position of shadow
+                        offset: Offset(0, 1),
                       ),
                     ],
                   ),
@@ -107,13 +147,12 @@ class _Account extends State<Account> {
                           ),
                         ),
                         Text(
-                          widget.userName.isNotEmpty
-                              ? widget.userName
-                              : "Guest",
+                          fullname,
                           style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.poppins().fontFamily),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                          ),
                         ),
                         SizedBox(
                           height: 15,
@@ -126,41 +165,50 @@ class _Account extends State<Account> {
                                 children: [],
                               ),
                               Card(
-                                  margin: EdgeInsets.all(8),
-                                  child: ListTile(
-                                    leading: Icon(Icons.email),
-                                    iconColor: Color(0xFF1C8892),
-                                    title: Text('Email'),
-                                    subtitle: Text(
-                                      widget.userEmail.isNotEmpty
-                                          ? widget.userEmail
-                                          : "Guest",
-                                    ),
-                                  )),
+                                margin: EdgeInsets.all(8),
+                                child: ListTile(
+                                  leading: Icon(Icons.email),
+                                  iconColor: Color(0xFF1C8892),
+                                  title: Text('Email'),
+                                  subtitle: Text(
+                                    widget.userEmail.isNotEmpty
+                                        ? widget.userEmail
+                                        : "Guest",
+                                  ),
+                                ),
+                              ),
                               Card(
-                                  margin: EdgeInsets.all(8),
-                                  child: ListTile(
-                                    leading: Icon(Icons.call),
-                                    iconColor: Color(0xFF1C8892),
-                                    title: Text('Phone Number'),
-                                    subtitle: Text(''),
-                                  )),
+                                margin: EdgeInsets.all(8),
+                                child: ListTile(
+                                  leading: Icon(Icons.call),
+                                  iconColor: Color(0xFF1C8892),
+                                  title: Text('Phone Number'),
+                                  subtitle: Text(phoneNumber),
+                                ),
+                              ),
                               Card(
-                                  margin: EdgeInsets.all(8),
-                                  child: ListTile(
-                                    leading: Icon(FontAwesomeIcons.idCard),
-                                    iconColor: Color(0xFF1C8892),
-                                    title: Text('National ID'),
-                                    subtitle: Text(''),
-                                  )),
+                                margin: EdgeInsets.all(8),
+                                child: ListTile(
+                                  leading: Icon(FontAwesomeIcons.idCard),
+                                  iconColor: Color(0xFF1C8892),
+                                  title: Text('National ID'),
+                                  subtitle: Text(nationalID),
+                                ),
+                              ),
                               Card(
-                                  margin: EdgeInsets.all(8),
-                                  child: ListTile(
-                                    leading: Icon(FontAwesomeIcons.calendar),
-                                    iconColor: Color(0xFF1C8892),
-                                    title: Text('Data of birth'),
-                                    subtitle: Text(''),
-                                  )),
+                                margin: EdgeInsets.all(8),
+                                child: ListTile(
+                                  leading: Icon(FontAwesomeIcons.calendar),
+                                  iconColor: Color(0xFF1C8892),
+                                  title: Text('Date of Birth'),
+                                  subtitle: Text(
+                                    dateOfBirth != null
+                                        ? formatDate(dateOfBirth!,
+                                            [dd, '/', mm, '/', yyyy])
+                                        : '',
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -168,7 +216,7 @@ class _Account extends State<Account> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ],

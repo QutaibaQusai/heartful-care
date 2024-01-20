@@ -25,7 +25,6 @@ class _HomeState extends State<Home> {
     fetchUserName(); // Fetch the user's name when the widget is created
   }
 
-
   void fetchUserName() async {
     try {
       var userDoc = await FirebaseFirestore.instance
@@ -42,7 +41,6 @@ class _HomeState extends State<Home> {
       print('Error fetching user data: $e');
     }
   }
-
   // list of object
   List<Sections> mySectionList = [
     Sections(
@@ -75,8 +73,10 @@ class _HomeState extends State<Home> {
             //TODO swipe between bar
             physics: NeverScrollableScrollPhysics(),
             children: [
-              Account(userEmail: widget.userEmail,
-          userName:userName,),
+              Account(
+                userEmail: widget.userEmail,
+                userName: userName,
+              ),
               Column(
                 children: [
                   Container(
@@ -100,10 +100,12 @@ class _HomeState extends State<Home> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) => Account( userEmail: widget.userEmail,
-          userName:userName,)));
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => Account(
+                                                    userEmail: widget.userEmail,
+                                                    userName: userName,
+                                                  )));
                                     },
                                     child: const CircleAvatar(
                                       radius: 20,
@@ -204,7 +206,9 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SettingFirstPage(userEmail:widget.userEmail,)
+              SettingFirstPage(
+                userEmail: widget.userEmail,
+              )
             ],
           ),
           bottomNavigationBar: TabBar(

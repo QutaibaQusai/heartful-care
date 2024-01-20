@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 class YourAccountInfoPage extends StatefulWidget {
   final String userEmail;
@@ -16,14 +15,29 @@ class YourAccountInfoPage extends StatefulWidget {
 
 class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
   String userName = ""; // Store the user's name
-
+  final formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
-    fetchUserEmail(); // Fetch the user's name when the widget is created
+    fetchUserData(); // Fetch the user's name when the widget is created
   }
 
-  void fetchUserEmail() async {
+  // void fetchUserEmail() async {
+  //   try {
+  //     var userDoc = await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .where('email', isEqualTo: widget.userEmail)
+  //         .get();
+
+  //     if (userDoc.docs.isNotEmpty) {
+  //       setState(() {});
+  //       userName = userDoc.docs[0]['fullname'];
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching user data: $e');
+  //   }
+  // }
+  void fetchUserData() async {
     try {
       var userDoc = await FirebaseFirestore.instance
           .collection('users')
@@ -31,11 +45,28 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
           .get();
 
       if (userDoc.docs.isNotEmpty) {
-        setState(() {});
-        userName = userDoc.docs[0]['fullname'];
+        var userData = userDoc.docs[0].data();
+
+        setState(() {
+          fullNameTextController.text = userData['fullname'] ?? "";
+          phoneNumberTextController.text = userData['Phone Number'] ?? "";
+          nationalIdTextController.text = userData['NationalID'] ?? "";
+
+          // Parse the date string if available
+          if (userData['DateOfBirth'] != null) {
+            selectedDate = DateTime.parse(userData['DateOfBirth']);
+            dateOfBirthTextController.text = formatDate(
+              selectedDate!,
+              [dd, '/', mm, '/', yyyy],
+            );
+          }
+
+          selectedGender = userData['Gender'] ?? "";
+          receiveOffers = userData['ReceiveOffers'] ?? false;
+        });
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      print('Error fetching user data: $e');
     }
   }
 
@@ -44,7 +75,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
   String? selectedGender;
   bool receiveOffers = false;
   final fullNameTextController = TextEditingController();
-  final PhoneNumberTextController = TextEditingController();
+  final phoneNumberTextController = TextEditingController();
   final nationalIdTextController = TextEditingController();
   final dateOfBirthTextController = TextEditingController();
   final genderTextController = TextEditingController();
@@ -85,10 +116,6 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
     return picked;
   }
 
-  void _deleteAccount() {
-    // Add your delete account logic here
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -123,231 +150,273 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
           ),
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  initialValue:
-                      widget.userEmail.isNotEmpty ? widget.userEmail : "Guest",
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: isEditing
-                        ? TextStyle(color: Colors.black)
-                        : TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                    ),
-                  ),
-                ),
-                // Text(widget.userEmail),
-                SizedBox(height: 16),
-                TextFormField(
-                  initialValue: fullNameTextController.text =
-                      userName.isNotEmpty ? userName : "Guest",
-                  enabled: isEditing,
-                  decoration: InputDecoration(
-                    labelText: 'Full name',
-                    labelStyle: isEditing
-                        ? TextStyle(color: Colors.black)
-                        : TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 16),
-                IntlPhoneField(
-                  cursorColor: Color(0xFF1C8892),
-                  keyboardType: TextInputType.number,
-                  controller: PhoneNumberTextController,
-                  enabled: isEditing,
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number',
-                    labelStyle: isEditing
-                        ? TextStyle(color: Colors.black)
-                        : TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  enabled: isEditing,
-                  decoration: InputDecoration(
-                    labelText: 'Date of birth (optional)',
-                    labelStyle: isEditing
-                        ? TextStyle(color: Colors.black)
-                        : TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                    ),
-                    suffixIcon: GestureDetector(
-                      onTap: () => _selectDate(context),
-                      child: Icon(
-                        Icons.calendar_today,
-                        color: Color(0xFF1C8892),
-                        // Change the calendar icon color
+          child: Form(
+            key: formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    initialValue: widget.userEmail.isNotEmpty
+                        ? widget.userEmail
+                        : "Guest",
+                    enabled: false,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: isEditing
+                          ? TextStyle(color: Colors.black)
+                          : TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 2.0),
                       ),
                     ),
                   ),
-                  controller: TextEditingController(
-                    text: selectedDate != null
-                        ? formatDate(selectedDate!, [dd, '/', mm, '/', yyyy])
-                        : "",
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  cursorColor: Color(0xFF1C8892),
-                  keyboardType: TextInputType.number,
-                  controller: nationalIdTextController,
-                  enabled: isEditing,
-                  decoration: InputDecoration(
-                    labelText: 'National ID',
-                    labelStyle: isEditing
-                        ? TextStyle(color: Colors.black)
-                        : TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
+                  // Text(widget.userEmail),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: fullNameTextController,
+                    enabled: isEditing,
+                    decoration: InputDecoration(
+                      labelText: 'Full name',
+                      labelStyle: isEditing
+                          ? TextStyle(color: Colors.black)
+                          : TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 2.0),
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'Gender (optional)',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Radio(
-                          value: 'Male',
-                          groupValue: selectedGender,
-                          onChanged: isEditing
-                              ? (value) {
-                                  setState(() {
-                                    selectedGender = value as String?;
-                                  });
-                                }
-                              : null,
-                          activeColor: Color(0xFF1C8892),
-                        ),
-                        Text('Male'),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Radio(
-                          value: 'Female',
-                          groupValue: selectedGender,
-                          onChanged: isEditing
-                              ? (value) {
-                                  setState(() {
-                                    selectedGender = value as String?;
-                                  });
-                                }
-                              : null,
-                          activeColor: Color(0xFF1C8892),
-                        ),
-                        Text('Female'),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: receiveOffers,
-                      onChanged: isEditing
-                          ? (value) {
-                              setState(() {
-                                receiveOffers = value!;
-                              });
-                            }
-                          : null,
-                      activeColor: Color(0xFF1C8892),
-                    ),
-                    Text('Yes, I want to receive offers and discounts'),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Confirm deletion
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'Submit your data',
-                              style: TextStyle(
-                                  fontSize: 20, color: Color(0xFF1C8892)),
-                            ),
-                            content: Text(
-                                'Are you sure you want to submit your data?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () async {
-                                  Navigator.of(context)
-                                      .pop(); // Close the dialog
-                                  await _submitUserData();
-                                },
-                                child: Text(
-                                  'Yes',
-                                  style: TextStyle(color: Color(0xFF1C8892)),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  'No',
-                                  style: TextStyle(color: Color(0xFF1C8892)),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                    validator: (value) {
+                      if (value!.isEmpty ||
+                          !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                        return "Please enter your name correctly ";
+                      } else {
+                        return null;
+                      }
                     },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Adjust the border radius as needed
-                        side: BorderSide(
-                            color: Color(0xFF1C8892)), // Set the outline color
+                  ),
+
+                  SizedBox(height: 16),
+                  TextFormField(
+                    cursorColor: Color(0xFF1C8892),
+                    keyboardType: TextInputType.number,
+                    controller: phoneNumberTextController,
+                    enabled: isEditing,
+                    decoration: InputDecoration(
+                      labelText: 'Phone Number',
+                      labelStyle: isEditing
+                          ? TextStyle(color: Colors.black)
+                          : TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 2.0),
                       ),
                     ),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(fontSize: 18, color: Color(0xFF1C8892)),
+                    validator: (value) {
+                      if (value!.isEmpty ||
+                          !RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
+                              .hasMatch(value) ||
+                          value.length != 10) {
+                        return "Please enter your mobile phone number correctly ";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                      enabled: isEditing,
+                      decoration: InputDecoration(
+                        labelText: 'Date of birth (optional)',
+                        labelStyle: isEditing
+                            ? TextStyle(color: Colors.black)
+                            : TextStyle(color: Colors.grey),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 2.0),
+                        ),
+                        suffixIcon: GestureDetector(
+                          onTap: () => _selectDate(context),
+                          child: Icon(
+                            Icons.calendar_today,
+                            color: Color(0xFF1C8892),
+                            // Change the calendar icon color
+                          ),
+                        ),
+                      ),
+                      controller: TextEditingController(
+                        text: selectedDate != null
+                            ? formatDate(
+                                selectedDate!, [dd, '/', mm, '/', yyyy])
+                            : "",
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter your Date of birth";
+                        } else {
+                          return null;
+                        }
+                      }),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: nationalIdTextController,
+                    // initialValue: nationalIdTextController.text,
+                    cursorColor: Color(0xFF1C8892),
+                    keyboardType: TextInputType.number,
+                    enabled: isEditing,
+                    decoration: InputDecoration(
+                      labelText: 'National ID',
+                      labelStyle: isEditing
+                          ? TextStyle(color: Colors.black)
+                          : TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 2.0),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty ||
+                          !RegExp(r'^[0-9]+$').hasMatch(value) ||
+                          value.length != 10) {
+                        return "Please enter your national id number correctly ";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Gender (optional)',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Radio(
+                            value: 'Male',
+                            groupValue: selectedGender,
+                            onChanged: isEditing
+                                ? (value) {
+                                    setState(() {
+                                      selectedGender = value as String?;
+                                    });
+                                  }
+                                : null,
+                            activeColor: Color(0xFF1C8892),
+                          ),
+                          Text('Male'),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: 'Female',
+                            groupValue: selectedGender,
+                            onChanged: isEditing
+                                ? (value) {
+                                    setState(() {
+                                      selectedGender = value as String?;
+                                    });
+                                  }
+                                : null,
+                            activeColor: Color(0xFF1C8892),
+                          ),
+                          Text('Female'),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: receiveOffers,
+                        onChanged: isEditing
+                            ? (value) {
+                                setState(() {
+                                  receiveOffers = value!;
+                                });
+                              }
+                            : null,
+                        activeColor: Color(0xFF1C8892),
+                      ),
+                      Text('Yes, I want to receive offers and discounts'),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          // Confirm deletion
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                  'Submit your data',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Color(0xFF1C8892)),
+                                ),
+                                content: Text(
+                                    'Are you sure you want to submit your data?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                      await _submitUserData();
+                                    },
+                                    child: Text(
+                                      'Yes',
+                                      style:
+                                          TextStyle(color: Color(0xFF1C8892)),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'No',
+                                      style:
+                                          TextStyle(color: Color(0xFF1C8892)),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color:
+                                  Color(0xFF1C8892)), // Set the outline color
+                        ),
+                      ),
+                      child: Text(
+                        'Submit',
+                        style:
+                            TextStyle(fontSize: 18, color: Color(0xFF1C8892)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -369,7 +438,8 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
 
         // Update the existing document with the new data
         await users.doc(userId).update({
-          'Phone Number': PhoneNumberTextController.text,
+          'fullname': fullNameTextController.text,
+          'Phone Number': phoneNumberTextController.text,
           'NationalID': nationalIdTextController.text,
           'DateOfBirth':
               selectedDate != null ? selectedDate!.toIso8601String() : null,

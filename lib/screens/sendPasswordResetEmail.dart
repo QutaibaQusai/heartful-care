@@ -12,6 +12,7 @@ class SendPasswordResetEmail extends StatefulWidget {
 
 class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
   final TextEditingController emailController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,9 @@ class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
               SizedBox(
                 height: 15,
               ),
-              TextField(
+              TextFormField(
+                cursorColor: Color(0xFF1C8892),
+                key: formKey,
                 controller: emailController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(
@@ -62,7 +65,21 @@ class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
                   ),
                   // labelText: "Enter your email",
                   hintText: "Enter your email",
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFF1C8892)),
+                  ),
                 ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Please enter your email address";
+                  } else if (!RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(value)) {
+                    return "Please enter a valid email address";
+                  } else {
+                    return null;
+                  }
+                },
               ),
               SizedBox(
                 height: 15,
@@ -71,9 +88,23 @@ class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
                 children: [
                   Expanded(
                       child: MaterialButton(
-                    onPressed: () {
-                      MyFirebaseAuth().forgetPassword(
-                          email: emailController.text, context: context);
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        await MyFirebaseAuth().forgetPassword(
+                            email: emailController.text, context: context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Color(0xFF1C8892),
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(
+                              'check your email',
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontFamily: GoogleFonts.poppins().fontFamily),
+                            ),
+                          ),
+                        );
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(14.0),

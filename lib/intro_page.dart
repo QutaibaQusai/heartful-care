@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/whoAreYou.dart';
 import 'package:test/home.dart';
@@ -79,27 +80,29 @@ class _IntroPage extends State<IntroPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Stack(
-                          children: [
-                            Image.asset(
-                              contents[i].image,
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: IconButton(
-                                icon: Icon(
-                                  FontAwesomeIcons.circleArrowRight,
-                                  color: Colors.white,
-                                  size: 25,
-                                ),
-                                onPressed: onSkipButtonPressed,
+                          child: Stack(
+                        children: [
+                          Image.asset(
+                            contents[i].image,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                          ).animate().move(
+                                delay: 300.ms,
+                                duration: 0.5.seconds,
                               ),
-                            )
-                          ],
-                        ),
-                      ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: Icon(
+                                FontAwesomeIcons.circleArrowRight,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                              onPressed: onSkipButtonPressed,
+                            ),
+                          )
+                        ],
+                      )),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         child: Column(
