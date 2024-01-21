@@ -275,34 +275,94 @@ class _LogInScreenState extends State<LogInScreen> {
   Widget signUpOption() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: [
-          Text(
-            "Don't have account?",
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                fontFamily: GoogleFonts.poppins().fontFamily),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Don't have an account?",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
+                  );
+                },
+                child: Text(
+                  " Sign up".toUpperCase(),
+                  style: TextStyle(
+                    color: const Color(0xFF1C8892),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+              )
+            ],
           ),
-          GestureDetector(
-            onTap: () {
-              // Navigator.of(context).pushAndRemoveUntil(
-              //     MaterialPageRoute(builder: (context) => SignInScreen()),
-              //     (Route<dynamic> route) => false);
-
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()));
-            },
-            child: Text(
-              " sign up ".toUpperCase(),
-              style: TextStyle(
-                  color: const Color(0xFF1C8892),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                  fontFamily: GoogleFonts.poppins().fontFamily),
-            ),
-          )
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Do you want to register as a ",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 11,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  )),
+              GestureDetector(
+                onTap: () {
+                  // Navigate to the center registration page
+                  // Replace CenterRegistrationPage with the actual page class
+                  /* Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CenterRegistrationPage()),
+                );*/
+                },
+                child: Text(
+                  "center",
+                  style: TextStyle(
+                    color: const Color(0xFF1C8892),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+              ),
+              Text(" or ",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 11,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  )),
+              GestureDetector(
+                onTap: () {
+                  // Navigate to the supplier registration page
+                  // Replace SupplierRegistrationPage with the actual page class
+                  /*Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SupplierRegistrationPage()),
+                );*/
+                },
+                child: Text(
+                  "supplier",
+                  style: TextStyle(
+                    color: const Color(0xFF1C8892),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

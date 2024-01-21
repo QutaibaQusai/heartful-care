@@ -6,7 +6,7 @@ import 'package:test/Settings/YourSavedAddress.dart';
 import 'package:test/intro_page.dart';
 
 class SettingFirstPage extends StatefulWidget {
-      final String userEmail;
+  final String userEmail;
 
   const SettingFirstPage({Key? key, required this.userEmail}) : super(key: key);
 
@@ -68,6 +68,10 @@ class _SettingFirstPage extends State<SettingFirstPage> {
             buildLocationOption(context),
             Divider(height: 20, thickness: 0.5),
             SizedBox(height: 10),
+            buildSectionHeader(Icons.delete, "Delete account"),
+            buildDeleteOption(context),
+            Divider(height: 20, thickness: 0.5),
+            SizedBox(height: 10),
             buildSectionHeader(Icons.exit_to_app, "Logout"),
             buildLogoutOption(context),
             Divider(height: 20, thickness: 0.5),
@@ -101,7 +105,10 @@ class _SettingFirstPage extends State<SettingFirstPage> {
           // Navigate to the desired page (replace YourAccountInfoPage with the actual page class)
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => YourAccountInfoPage(userEmail: widget.userEmail,)),
+            MaterialPageRoute(
+                builder: (context) => YourAccountInfoPage(
+                      userEmail: widget.userEmail,
+                    )),
           );
         }
         if (title == "Change Email") {
@@ -341,6 +348,62 @@ class _SettingFirstPage extends State<SettingFirstPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildDeleteOption(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _showDeleteDialog(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Delete account',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            Icon(Icons.delete, color: Colors.black),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showDeleteDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete account '),
+          content: Text('Are you sure you want to delete the account?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Perform logout action
+                // Navigator.of(context).pop();
+
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => IntroPage()),
+                    (Route<dynamic> route) => false);
+              },
+              child: Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

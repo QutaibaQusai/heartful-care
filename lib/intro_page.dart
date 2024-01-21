@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/whoAreYou.dart';
 import 'package:test/home.dart';
 import 'package:test/model/content_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -198,11 +197,11 @@ class _IntroPage extends State<IntroPage> {
                         onTap: () {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (ctx) {
-                            return WhoAreYou();
+                            return LogInScreen();
                           }));
                         },
                         child: Text(
-                          "Join now",
+                          "Sign up",
                           style: TextStyle(
                               color: const Color(0xFF1C8892),
                               fontSize: 16,
