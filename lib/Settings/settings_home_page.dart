@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:test/Home.dart';
 import 'package:test/Settings/YourAccountInfoPage.dart';
 import 'package:test/Settings/YourChangeEmailPage.dart';
 import 'package:test/Settings/YourChangePassPage.dart';
 import 'package:test/Settings/YourSavedAddress.dart';
 import 'package:test/intro_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingFirstPage extends StatefulWidget {
   final String userEmail;
@@ -28,6 +32,8 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     'Om al somaq',
     'Daheyet Al Rashed',
   ];
+
+  String? get userEmail => null;
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +70,10 @@ class _SettingFirstPage extends State<SettingFirstPage> {
             buildLanguageOption(context),
             Divider(height: 20, thickness: 0.5),
             SizedBox(height: 10),
-            buildSectionHeader(Icons.location_on, "Location"),
-            buildLocationOption(context),
-            Divider(height: 20, thickness: 0.5),
-            SizedBox(height: 10),
+            // buildSectionHeader(Icons.location_on, "Location"),
+            // buildLocationOption(context),
+            // Divider(height: 20, thickness: 0.5),
+            // SizedBox(height: 10),
             buildSectionHeader(Icons.delete, "Delete account"),
             buildDeleteOption(context),
             Divider(height: 20, thickness: 0.5),
@@ -212,7 +218,32 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     );
   }
 
-  Future<void> _showLocationInputDialog(BuildContext context) async {
+  Widget buildLanguageOption(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _showLanguageDialog(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              selectedLanguage,
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            Icon(Icons.arrow_drop_down, color: Colors.black),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /*Future<void> _showLocationInputDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -245,62 +276,6 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     );
   }
 
-  Future<void> _showLogoutDialog(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Logout'),
-          content: Text('Are you sure you want to logout?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Perform logout action
-                // Navigator.of(context).pop();
-
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => IntroPage()),
-                    (Route<dynamic> route) => false);
-              },
-              child: Text('Yes'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('No'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget buildLanguageOption(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _showLanguageDialog(context);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              selectedLanguage,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-            ),
-            Icon(Icons.arrow_drop_down, color: Colors.black),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget buildLocationOption(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -324,32 +299,7 @@ class _SettingFirstPage extends State<SettingFirstPage> {
         ),
       ),
     );
-  }
-
-  Widget buildLogoutOption(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _showLogoutDialog(context);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Logout',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-            ),
-            Icon(Icons.logout, color: Colors.black),
-          ],
-        ),
-      ),
-    );
-  }
+  }*/
 
   Widget buildDeleteOption(BuildContext context) {
     return GestureDetector(
@@ -381,17 +331,19 @@ class _SettingFirstPage extends State<SettingFirstPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete account '),
+          title: Text('Delete account'),
           content: Text('Are you sure you want to delete the account?'),
           actions: [
             TextButton(
-              onPressed: () {
-                // Perform logout action
-                // Navigator.of(context).pop();
+              onPressed: () async {
+                // Perform delete account action
+                await _deleteAccount();
 
+                // Navigate to home page
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => IntroPage()),
-                    (Route<dynamic> route) => false);
+                  MaterialPageRoute(builder: (context) => IntroPage()),
+                  (Route<dynamic> route) => false,
+                );
               },
               child: Text('Yes'),
             ),
@@ -404,6 +356,101 @@ class _SettingFirstPage extends State<SettingFirstPage> {
           ],
         );
       },
+    );
+  }
+
+  Future<void> _deleteAccount() async {
+    // Delete Firestore document
+    // Replace 'users' with the actual collection name in your Firestore
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .delete();
+
+    // Delete Firebase Authentication account
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.delete();
+    }
+
+    // Clear any local data if necessary
+    // ...
+
+    // You might want to sign out from Firebase if you're using Firebase Authentication
+    // FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> _showLogoutDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Logout'),
+          content: Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                // Perform logout action
+                await _clearUserData();
+
+                // Navigate to home page
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (context) => Home(
+                            userEmail: '',
+                          )),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Function to clear user data
+  Future<void> _clearUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Clear relevant user data, for example:
+    prefs.remove('userEmail');
+    prefs.remove('fullname');
+    // Add any other data you want to clear
+
+    // You might also want to sign out from Firebase if you're using Firebase Authentication
+    // FirebaseAuth.instance.signOut();
+  }
+
+  Widget buildLogoutOption(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _showLogoutDialog(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            Icon(Icons.logout, color: Colors.black),
+          ],
+        ),
+      ),
     );
   }
 }

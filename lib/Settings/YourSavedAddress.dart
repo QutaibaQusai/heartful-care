@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/Settings/addaddresspage.dart';
 
 class YourSavedAddress extends StatefulWidget {
   const YourSavedAddress({Key? key}) : super(key: key);
@@ -18,12 +19,22 @@ class _YourSavedAddressState extends State<YourSavedAddress> {
         ),
         centerTitle: true, // Center the title horizontally
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Add',
-              style: TextStyle(
-                fontSize: 16,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddAddressPage(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Add',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
