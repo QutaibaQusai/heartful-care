@@ -96,6 +96,12 @@ class _SignInScreen extends State<SignInScreen> {
                             controller: fullNameTextController,
                             cursorColor: Colors.white,
                             decoration: InputDecoration(
+                                errorBorder: new OutlineInputBorder(
+                                  borderSide: new BorderSide(color: Colors.red),
+                                ),
+                                focusedErrorBorder: new OutlineInputBorder(
+                                    borderSide:
+                                        new BorderSide(color: Colors.red)),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(0),
                                   borderSide: BorderSide(
@@ -141,6 +147,13 @@ class _SignInScreen extends State<SignInScreen> {
                               controller: emailTextController,
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
+                                  errorBorder: new OutlineInputBorder(
+                                    borderSide:
+                                        new BorderSide(color: Colors.red),
+                                  ),
+                                  focusedErrorBorder: new OutlineInputBorder(
+                                      borderSide:
+                                          new BorderSide(color: Colors.red)),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(0),
                                     borderSide: BorderSide(
@@ -187,6 +200,13 @@ class _SignInScreen extends State<SignInScreen> {
                             controller: passwordTextController,
                             cursorColor: Colors.white,
                             decoration: InputDecoration(
+                              errorBorder: new OutlineInputBorder(
+                                borderSide:
+                                    new BorderSide(color: Color(0xffd32f2f)),
+                              ),
+                              focusedErrorBorder: new OutlineInputBorder(
+                                  borderSide:
+                                      new BorderSide(color: Color(0xffd32f2f))),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(0),
                                 borderSide: BorderSide(
@@ -331,7 +351,9 @@ class _SignInScreen extends State<SignInScreen> {
             backgroundColor: Color(0xFF1C8892),
             radius: 30,
             child: MaterialButton(
-              onPressed: () {},
+              onPressed: () {
+                showBottomSheet();
+              },
               child: Icon(
                 FontAwesomeIcons.unlock,
                 color: Colors.white,
@@ -373,6 +395,28 @@ class _SignInScreen extends State<SignInScreen> {
           )
         ],
       ),
+    );
+  }
+
+  showBottomSheet() {
+    showModalBottomSheet(
+      showDragHandle: true,
+      backgroundColor: Colors.white,
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(0.0)),
+      ),
+      builder: (context) {
+        return Container(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [Text("data")],
+            ),
+          ),
+        );
+      },
     );
   }
 }

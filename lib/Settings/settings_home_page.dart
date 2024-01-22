@@ -335,6 +335,7 @@ class _SettingFirstPage extends State<SettingFirstPage> {
           content: Text('Are you sure you want to delete the account?'),
           actions: [
             TextButton(
+              child: Text('Yes'),
               onPressed: () async {
                 // Perform delete account action
                 await _deleteAccount();
@@ -345,13 +346,12 @@ class _SettingFirstPage extends State<SettingFirstPage> {
                   (Route<dynamic> route) => false,
                 );
               },
-              child: Text('Yes'),
             ),
             TextButton(
+              child: Text('No'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('No'),
             ),
           ],
         );
