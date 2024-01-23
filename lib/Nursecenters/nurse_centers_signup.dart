@@ -1,24 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test/Nursecenters/nurse_centers_signup.dart';
-import 'package:test/screens/login_screen.dart';
+import 'package:test/Nursecenters/nurse_centers_login.dart';
 
-class centersLogin extends StatefulWidget {
-  const centersLogin({Key? key}) : super(key: key);
+class CentersSignUp extends StatefulWidget {
+  const CentersSignUp({super.key});
 
   @override
-  State<centersLogin> createState() => _centersLogin();
+  State<CentersSignUp> createState() => _CentersSignUpState();
 }
-// CentersSignUp
 
-class _centersLogin extends State<centersLogin> {
-  TextEditingController centerEmailController = TextEditingController();
-  TextEditingController centerPasswordController = TextEditingController();
+class _CentersSignUpState extends State<CentersSignUp> {
   bool showHidePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       // backgroundColor: const Color(0xFFE8ECF4),
       body: SafeArea(
         child: Padding(
@@ -38,7 +35,7 @@ class _centersLogin extends State<centersLogin> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LogInScreen(),
+                              builder: (context) => centersLogin(),
                             ),
                           );
                         },
@@ -53,7 +50,7 @@ class _centersLogin extends State<centersLogin> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Welcome back! Glad \nto see you again!",
+                              "Hello! Register to get  \nstarted",
                               style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
@@ -64,7 +61,22 @@ class _centersLogin extends State<centersLogin> {
                               height: 20,
                             ),
                             TextFormField(
-                              controller: centerEmailController,
+                              // controller: centerEmailController,
+                              decoration: InputDecoration(
+                                labelText: "Admin",
+                                hintText: "Enter your Name",
+                                contentPadding: EdgeInsets.all(18),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              // controller: ,
                               decoration: InputDecoration(
                                 labelText: "Email",
                                 hintText: "Enter your Email",
@@ -80,7 +92,7 @@ class _centersLogin extends State<centersLogin> {
                             ),
                             TextFormField(
                               obscureText: showHidePassword,
-                              controller: centerPasswordController,
+                              // controller: centerPasswordController,
                               decoration: InputDecoration(
                                 suffixIcon: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -107,7 +119,17 @@ class _centersLogin extends State<centersLogin> {
                             SizedBox(
                               height: 15,
                             ),
-                           
+                            TextFormField(
+                              decoration: InputDecoration(
+                                labelText: "Confirm password",
+                                hintText: "Confirm your password",
+                                contentPadding: EdgeInsets.all(18),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -150,11 +172,9 @@ class _centersLogin extends State<centersLogin> {
                                         EdgeInsets.symmetric(vertical: 20),
                                       ),
                                     ),
-                                    onPressed: () {
-                                      // Handle login logic
-                                    },
+                                    onPressed: () {},
                                     child: Text(
-                                      "Login",
+                                      "Register",
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.white,
@@ -175,7 +195,7 @@ class _centersLogin extends State<centersLogin> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don’t have an account? ",
+                      "Already have account",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 15,
@@ -186,10 +206,10 @@ class _centersLogin extends State<centersLogin> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CentersSignUp()));
+                                builder: (context) => centersLogin()));
                       },
                       child: Text(
-                        "Register now",
+                        "Log in",
                         style: TextStyle(
                           color: Color(0xFF1C8892),
                           fontSize: 15,
@@ -204,6 +224,6 @@ class _centersLogin extends State<centersLogin> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

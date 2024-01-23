@@ -45,7 +45,6 @@ class _LogInScreenState extends State<LogInScreen> {
                         style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                           
                             letterSpacing: 1),
                       ),
                       Text(
@@ -53,7 +52,6 @@ class _LogInScreenState extends State<LogInScreen> {
                         style: TextStyle(
                             fontSize: 17,
                             height: 2.4,
-                           
                             fontWeight: FontWeight.w600,
                             color: Colors.grey[600]),
                       )
@@ -83,7 +81,6 @@ class _LogInScreenState extends State<LogInScreen> {
                           style: TextStyle(
                               fontSize: 24,
                               color: Colors.white,
-                             
                               letterSpacing: 1,
                               fontWeight: FontWeight.bold),
                         ),
@@ -93,8 +90,8 @@ class _LogInScreenState extends State<LogInScreen> {
                         TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
-                                color: Colors.white,
-                               ),
+                              color: Colors.white,
+                            ),
                             controller: emailTextController,
                             cursorColor: Colors.white,
                             decoration: InputDecoration(
@@ -127,8 +124,8 @@ class _LogInScreenState extends State<LogInScreen> {
                               ),
                               labelText: "E-mail",
                               labelStyle: TextStyle(
-                                  color: Colors.white,
-                                 ),
+                                color: Colors.white,
+                              ),
                             ),
                             // vallation
                             validator: (value) {
@@ -173,8 +170,8 @@ class _LogInScreenState extends State<LogInScreen> {
                             ),
                             labelText: "Password",
                             labelStyle: TextStyle(
-                                color: Colors.white,
-                               ),
+                              color: Colors.white,
+                            ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(0),
                               borderSide: BorderSide(
@@ -348,7 +345,6 @@ class _LogInScreenState extends State<LogInScreen> {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 15,
-                 
                 ),
               ),
               GestureDetector(
@@ -364,7 +360,6 @@ class _LogInScreenState extends State<LogInScreen> {
                     color: const Color(0xFF1C8892),
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
-                   
                   ),
                 ),
               )
@@ -378,7 +373,6 @@ class _LogInScreenState extends State<LogInScreen> {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 11,
-                   
                   )),
               GestureDetector(
                 onTap: () {
@@ -395,7 +389,6 @@ class _LogInScreenState extends State<LogInScreen> {
                     color: const Color(0xFF1C8892),
                     fontWeight: FontWeight.bold,
                     fontSize: 11,
-                   
                   ),
                 ),
               ),
@@ -403,7 +396,6 @@ class _LogInScreenState extends State<LogInScreen> {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 11,
-                   
                   )),
               GestureDetector(
                 onTap: () {
@@ -420,7 +412,6 @@ class _LogInScreenState extends State<LogInScreen> {
                     color: const Color(0xFF1C8892),
                     fontWeight: FontWeight.bold,
                     fontSize: 11,
-                   
                   ),
                 ),
               ),
@@ -451,17 +442,13 @@ class _LogInScreenState extends State<LogInScreen> {
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                     
                       letterSpacing: 1,
                       color: Color(0xFF1C8892)),
                 ),
                 Text(
                   "Select which contact details should we use to reset your password:",
                   style: TextStyle(
-                      fontSize: 17,
-                      height: 1.6,
-                     
-                      color: Colors.grey[700]),
+                      fontSize: 17, height: 1.6, color: Colors.grey[700]),
                 ),
                 SizedBox(
                   height: 30,
@@ -506,7 +493,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                 "Reset via Mail Verification.",
                                 style: TextStyle(
                                   fontSize: 18,
-                                 
                                   color: Colors.white,
                                 ),
                               ),
