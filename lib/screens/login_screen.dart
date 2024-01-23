@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/Nursecenters/nurse_centers_login.dart';
 import 'package:test/home.dart';
 import 'package:test/screens/sendPasswordResetEmail.dart';
 import 'package:test/screens/signup_screen.dart';
@@ -98,7 +99,8 @@ class _LogInScreenState extends State<LogInScreen> {
                             cursorColor: Colors.white,
                             decoration: InputDecoration(
                               errorBorder: new OutlineInputBorder(
-                                borderSide: new BorderSide(color: Color(0xffd32f2f)),
+                                borderSide:
+                                    new BorderSide(color: Color(0xffd32f2f)),
                               ),
                               focusedErrorBorder: new OutlineInputBorder(
                                   borderSide:
@@ -382,10 +384,10 @@ class _LogInScreenState extends State<LogInScreen> {
                 onTap: () {
                   // Navigate to the center registration page
                   // Replace CenterRegistrationPage with the actual page class
-                  /* Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CenterRegistrationPage()),
-                );*/
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => centersLogin()),
+                  );
                 },
                 child: Text(
                   "center",
