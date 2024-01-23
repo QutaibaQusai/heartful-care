@@ -44,7 +44,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
+                           
                             letterSpacing: 1),
                       ),
                       Text(
@@ -52,7 +52,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         style: TextStyle(
                             fontSize: 17,
                             height: 2.4,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
+                           
                             fontWeight: FontWeight.w600,
                             color: Colors.grey[600]),
                       )
@@ -82,7 +82,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           style: TextStyle(
                               fontSize: 24,
                               color: Colors.white,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
+                             
                               letterSpacing: 1,
                               fontWeight: FontWeight.bold),
                         ),
@@ -93,7 +93,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontFamily: GoogleFonts.poppins().fontFamily),
+                               ),
                             controller: emailTextController,
                             cursorColor: Colors.white,
                             decoration: InputDecoration(
@@ -126,7 +126,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               labelText: "E-mail",
                               labelStyle: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: GoogleFonts.poppins().fontFamily),
+                                 ),
                             ),
                             // vallation
                             validator: (value) {
@@ -172,7 +172,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             labelText: "Password",
                             labelStyle: TextStyle(
                                 color: Colors.white,
-                                fontFamily: GoogleFonts.poppins().fontFamily),
+                               ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(0),
                               borderSide: BorderSide(
@@ -346,7 +346,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 15,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
+                 
                 ),
               ),
               GestureDetector(
@@ -362,7 +362,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     color: const Color(0xFF1C8892),
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
+                   
                   ),
                 ),
               )
@@ -376,7 +376,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 11,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
+                   
                   )),
               GestureDetector(
                 onTap: () {
@@ -393,7 +393,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     color: const Color(0xFF1C8892),
                     fontWeight: FontWeight.bold,
                     fontSize: 11,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
+                   
                   ),
                 ),
               ),
@@ -401,7 +401,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 11,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
+                   
                   )),
               GestureDetector(
                 onTap: () {
@@ -418,7 +418,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     color: const Color(0xFF1C8892),
                     fontWeight: FontWeight.bold,
                     fontSize: 11,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
+                   
                   ),
                 ),
               ),
@@ -449,7 +449,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
+                     
                       letterSpacing: 1,
                       color: Color(0xFF1C8892)),
                 ),
@@ -458,7 +458,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   style: TextStyle(
                       fontSize: 17,
                       height: 1.6,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
+                     
                       color: Colors.grey[700]),
                 ),
                 SizedBox(
@@ -504,7 +504,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                 "Reset via Mail Verification.",
                                 style: TextStyle(
                                   fontSize: 18,
-                                  fontFamily: GoogleFonts.poppins().fontFamily,
+                                 
                                   color: Colors.white,
                                 ),
                               ),

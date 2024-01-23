@@ -43,7 +43,7 @@ class _SignInScreen extends State<SignInScreen> {
                           style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
+                             
                               letterSpacing: 1),
                         ),
                         Text(
@@ -51,7 +51,7 @@ class _SignInScreen extends State<SignInScreen> {
                           style: TextStyle(
                               fontSize: 17,
                               height: 2.4,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
+                             
                               fontWeight: FontWeight.w600,
                               color: Colors.grey[600]),
                         )
@@ -81,7 +81,7 @@ class _SignInScreen extends State<SignInScreen> {
                             style: TextStyle(
                                 fontSize: 24,
                                 color: Colors.white,
-                                fontFamily: GoogleFonts.poppins().fontFamily,
+                               
                                 letterSpacing: 1,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -92,7 +92,7 @@ class _SignInScreen extends State<SignInScreen> {
                             keyboardType: TextInputType.name,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontFamily: GoogleFonts.poppins().fontFamily),
+                               ),
                             controller: fullNameTextController,
                             cursorColor: Colors.white,
                             decoration: InputDecoration(
@@ -143,7 +143,7 @@ class _SignInScreen extends State<SignInScreen> {
                               keyboardType: TextInputType.emailAddress,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: GoogleFonts.poppins().fontFamily),
+                                 ),
                               controller: emailTextController,
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
@@ -222,7 +222,7 @@ class _SignInScreen extends State<SignInScreen> {
                               labelText: "Password",
                               labelStyle: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: GoogleFonts.poppins().fontFamily),
+                                 ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors
@@ -375,7 +375,7 @@ class _SignInScreen extends State<SignInScreen> {
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 15,
-                fontFamily: GoogleFonts.poppins().fontFamily),
+               ),
           ),
           GestureDetector(
             onTap: () {
@@ -390,7 +390,7 @@ class _SignInScreen extends State<SignInScreen> {
                   color: const Color(0xFF1C8892),
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
-                  fontFamily: GoogleFonts.poppins().fontFamily),
+                 ),
             ),
           )
         ],

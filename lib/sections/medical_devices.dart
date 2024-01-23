@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Medical extends StatefulWidget {
   @override
@@ -141,7 +140,7 @@ class _MedicalState extends State<Medical> {
                     fontSize: 18,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
+                   
                   ),
                 ),
               ),
@@ -177,8 +176,7 @@ class _MedicalState extends State<Medical> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
-                        fontFamily: GoogleFonts.poppins().fontFamily,
-                      ),
+                                             ),
                     ),
                     Text(
                       'See All',
@@ -186,7 +184,7 @@ class _MedicalState extends State<Medical> {
                         fontSize: 16,
                         color: Color(
                             0xFF1C8892), // You can change the color as needed
-                        fontFamily: GoogleFonts.poppins().fontFamily,
+                       
                       ),
                     ),
                   ],
@@ -245,7 +243,7 @@ class _MedicalState extends State<Medical> {
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
+                         
                         ),
                       ),
                     ),
@@ -277,7 +275,7 @@ class _MedicalState extends State<Medical> {
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
+                         
                         ),
                       ),
                     ),
@@ -354,7 +352,7 @@ class _MedicalState extends State<Medical> {
                   Text(
                     "Pressure Device",
                     style: TextStyle(
-                      fontFamily: GoogleFonts.poppins().fontFamily,
+                     
                     ),
                   ),
                   Row(
@@ -367,7 +365,7 @@ class _MedicalState extends State<Medical> {
                       Text(
                         "4.8",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.poppins().fontFamily,
+                         
                         ),
                       ),
                     ],

@@ -1,6 +1,5 @@
 // AllDevicesPage.dart
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AllDevicesPage extends StatefulWidget {
   const AllDevicesPage({Key? key}) : super(key: key);
@@ -75,7 +74,7 @@ class _AllDevicesPage extends State<AllDevicesPage> {
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
-                fontFamily: GoogleFonts.poppins().fontFamily,
+               
               ),
               textAlign: TextAlign.center,
             ),

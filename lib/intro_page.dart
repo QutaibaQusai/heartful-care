@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:test/home.dart';
 import 'package:test/model/content_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -174,7 +173,6 @@ class _IntroPage extends State<IntroPage> {
                             : "Next",
                         style: TextStyle(
                           fontSize: 18,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                     ),
@@ -187,7 +185,6 @@ class _IntroPage extends State<IntroPage> {
                         "Already have an account?",
                         style: TextStyle(
                           fontSize: 16,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                       SizedBox(
@@ -205,7 +202,6 @@ class _IntroPage extends State<IntroPage> {
                           style: TextStyle(
                               color: const Color(0xFF1C8892),
                               fontSize: 16,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               decoration: TextDecoration.underline),
                         ),
                       )

@@ -1,7 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Settings/YourAccountInfoPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -66,7 +65,6 @@ class _AccountState extends State<Account> {
           style: TextStyle(
             fontSize: 22,
             color: Colors.white,
-            fontFamily: GoogleFonts.poppins().fontFamily,
           ),
         ),
         centerTitle: true,
@@ -151,7 +149,6 @@ class _AccountState extends State<Account> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
                           ),
                         ),
                         SizedBox(

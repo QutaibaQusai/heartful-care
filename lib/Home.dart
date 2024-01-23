@@ -55,13 +55,6 @@ class _HomeState extends State<Home> {
         sectionName: "Medical devices",
         sectionDis:
             "Explore our comprehensive range\n of medical devices available \nfor purchase or rent."),
-
-    //   Sections(
-    //       sectionImage: "images/24.jpg",
-    //       sectionName: "Medical devices",
-    //       sectionDis:
-    //           "Explore our comprehensive range of medical devices available for purchase\n or rent.")
-    //
   ];
   Widget build(BuildContext context) {
     return SafeArea(
@@ -71,7 +64,7 @@ class _HomeState extends State<Home> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: TabBarView(
-            //TODO swipe between bar
+            // TODO swipe between bar
             physics: NeverScrollableScrollPhysics(),
             children: [
               Account(

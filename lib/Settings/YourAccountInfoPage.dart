@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class YourAccountInfoPage extends StatefulWidget {
   final String userEmail;
@@ -22,21 +21,6 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
     fetchUserData(); // Fetch the user's name when the widget is created
   }
 
-  // void fetchUserEmail() async {
-  //   try {
-  //     var userDoc = await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .where('email', isEqualTo: widget.userEmail)
-  //         .get();
-
-  //     if (userDoc.docs.isNotEmpty) {
-  //       setState(() {});
-  //       userName = userDoc.docs[0]['fullname'];
-  //     }
-  //   } catch (e) {
-  //     print('Error fetching user data: $e');
-  //   }
-  // }
   void fetchUserData() async {
     try {
       var userDoc = await FirebaseFirestore.instance
@@ -66,7 +50,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
         });
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      print('Error fetching user data:$e');
     }
   }
 
@@ -206,6 +190,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                     keyboardType: TextInputType.number,
                     controller: phoneNumberTextController,
                     enabled: isEditing,
+                    autocorrect: false,
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
                       labelStyle: isEditing
@@ -358,60 +343,65 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          // Confirm deletion
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(
-                                  'Submit your data',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Color(0xFF1C8892)),
-                                ),
-                                content: Text(
-                                    'Are you sure you want to submit your data?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () async {
-                                      Navigator.of(context)
-                                          .pop(); // Close the dialog
-                                      await _submitUserData();
-                                    },
-                                    child: Text(
-                                      'Yes',
-                                      style:
-                                          TextStyle(color: Color(0xFF1C8892)),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      'No',
-                                      style:
-                                          TextStyle(color: Color(0xFF1C8892)),
-                                    ),
-                                  ),
-                                ],
-                              );
+                      onPressed: !isEditing
+                          ? null
+                          : () {
+                              if (formKey.currentState!.validate()) {
+                                // Confirm deletion
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        'Submit your data',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Color(0xFF1C8892)),
+                                      ),
+                                      content: Text(
+                                          'Are you sure you want to submit your data?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () async {
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                            await _submitUserData();
+                                          },
+                                          child: Text(
+                                            'Yes',
+                                            style: TextStyle(
+                                                color: Color(0xFF1C8892)),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text(
+                                            'No',
+                                            style: TextStyle(
+                                                color: Color(0xFF1C8892)),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
                             },
-                          );
-                        }
-                      },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
-                              color:
-                                  Color(0xFF1C8892)), // Set the outline color
+                              color: !isEditing
+                                  ? Colors.grey
+                                  : Colors.black), // Set the outline color
                         ),
                       ),
                       child: Text(
                         'Submit',
-                        style:
-                            TextStyle(fontSize: 18, color: Color(0xFF1C8892)),
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: !isEditing ? Colors.grey : Colors.black),
                       ),
                     ),
                   ),
@@ -453,7 +443,8 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
             content: Text(
               ' User data updated successfully!',
               style: TextStyle(
-                  fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+                fontSize: 17,
+              ),
             ),
           ),
         );
@@ -465,7 +456,8 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
             content: Text(
               'User not found',
               style: TextStyle(
-                  fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+                fontSize: 17,
+              ),
             ),
           ),
         );
@@ -478,7 +470,8 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
           content: Text(
             'Error updating user data: $e',
             style: TextStyle(
-                fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+              fontSize: 17,
+            ),
           ),
         ),
       );

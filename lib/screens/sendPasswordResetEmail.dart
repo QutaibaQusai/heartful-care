@@ -35,7 +35,7 @@ class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
                       "Forget Password",
                       style: TextStyle(
                           fontSize: 28,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
+                         
                           fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
@@ -45,7 +45,7 @@ class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
                       "Reset your password and follow the instructions sent to your email to regain access to your account.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontFamily: GoogleFonts.poppins().fontFamily,
+                         
                           fontSize: 16),
                     ),
                     SizedBox(
@@ -125,7 +125,7 @@ class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
-                                fontFamily: GoogleFonts.poppins().fontFamily,
+                               
                               ),
                             ),
                           ),

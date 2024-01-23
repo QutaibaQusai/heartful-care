@@ -1,7 +1,5 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MyFirebaseAuth {
   // firebase instance
@@ -24,7 +22,8 @@ class MyFirebaseAuth {
           content: Text(
             error.message!,
             style: TextStyle(
-                fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+              fontSize: 17,
+            ),
           ),
         ),
       );
@@ -51,7 +50,8 @@ class MyFirebaseAuth {
           content: Text(
             error.message!,
             style: TextStyle(
-                fontSize: 17, fontFamily: GoogleFonts.poppins().fontFamily),
+              fontSize: 17,
+            ),
           ),
         ),
       );
