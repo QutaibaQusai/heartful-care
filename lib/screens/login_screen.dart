@@ -88,57 +88,58 @@ class _LogInScreenState extends State<LogInScreen> {
                           height: 30,
                         ),
                         TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(
+                          keyboardType: TextInputType.emailAddress,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          controller: emailTextController,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            errorBorder: new OutlineInputBorder(
+                              borderSide:
+                                  new BorderSide(color: Color(0xffd32f2f)),
+                            ),
+                            focusedErrorBorder: new OutlineInputBorder(
+                                borderSide:
+                                    new BorderSide(color: Color(0xffd32f2f))),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(0),
+                              borderSide: BorderSide(
+                                color: Colors
+                                    .white, // Set the border color to white when focused
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(0),
+                              borderSide: BorderSide(
+                                color: Colors
+                                    .white, // Set the border color to white when not focused
+                                width: 2.0,
+                              ),
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.mail_outline,
                               color: Colors.white,
                             ),
-                            controller: emailTextController,
-                            cursorColor: Colors.white,
-                            decoration: InputDecoration(
-                              errorBorder: new OutlineInputBorder(
-                                borderSide:
-                                    new BorderSide(color: Color(0xffd32f2f)),
-                              ),
-                              focusedErrorBorder: new OutlineInputBorder(
-                                  borderSide:
-                                      new BorderSide(color: Color(0xffd32f2f))),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide: BorderSide(
-                                  color: Colors
-                                      .white, // Set the border color to white when focused
-                                  width: 2.0,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                borderSide: BorderSide(
-                                  color: Colors
-                                      .white, // Set the border color to white when not focused
-                                  width: 2.0,
-                                ),
-                              ),
-                              prefixIcon: const Icon(
-                                Icons.mail_outline,
-                                color: Colors.white,
-                              ),
-                              labelText: "E-mail",
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              ),
+                            labelText: "E-mail",
+                            labelStyle: TextStyle(
+                              color: Colors.white,
                             ),
-                            // vallation
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Please enter your email address";
-                              } else if (!RegExp(
-                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                  .hasMatch(value)) {
-                                return "Please enter a valid email address";
-                              } else {
-                                return null;
-                              }
-                            }),
+                          ),
+                          // vallation
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Please enter your email address";
+                            } else if (!RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value)) {
+                              return "Please enter a valid email address";
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -233,57 +234,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                 child: ElevatedButton(
                                   style: ButtonStyle(),
                                   onPressed: () async {
-                                    // if (emailTextController.text.isEmpty) {
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(
-                                    //     SnackBar(
-                                    //       backgroundColor: Color(0xFF1C8892),
-                                    //       behavior: SnackBarBehavior.floating,
-                                    //       content: Text(
-                                    //         "Please Enter your E-mail",
-                                    //         style: TextStyle(
-                                    //             fontSize: 17,
-                                    //             fontFamily:
-                                    //                 GoogleFonts.poppins()
-                                    //                     .fontFamily),
-                                    //       ),
-                                    //     ),
-                                    //   );
-                                    // } else if (passwordTextController
-                                    //     .text.isEmpty) {
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(
-                                    //     SnackBar(
-                                    //       backgroundColor: Color(0xFF1C8892),
-                                    //       behavior: SnackBarBehavior.floating,
-                                    //       content: Text(
-                                    //         "Please Enter your Password",
-                                    //         style: TextStyle(
-                                    //             fontSize: 17,
-                                    //             fontFamily:
-                                    //                 GoogleFonts.poppins()
-                                    //                     .fontFamily),
-                                    //       ),
-                                    //     ),
-                                    //   );
-                                    // } else {
-                                    //   // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);
-                                    //   final x = await MyFirebaseAuth().signIn(
-                                    //       context: context,
-                                    //       email: emailTextController.text,
-                                    //       password:
-                                    //           passwordTextController.text);
-                                    //   if (x != null) {
-                                    //     Navigator.pushReplacement(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //         builder: (context) => Home(
-                                    //             userEmail:
-                                    //                 emailTextController.text),
-                                    //       ),
-                                    //     );
-                                    //   }
-                                    // }
                                     if (formKey.currentState!.validate()) {
                                       //   // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);
                                       final x = await MyFirebaseAuth().signIn(
@@ -380,7 +330,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   // Replace CenterRegistrationPage with the actual page class
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => centersLogin()),
+                    MaterialPageRoute(builder: (context) => CentersLogin()),
                   );
                 },
                 child: Text(

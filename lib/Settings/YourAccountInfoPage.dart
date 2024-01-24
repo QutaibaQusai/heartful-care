@@ -186,6 +186,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
 
                   SizedBox(height: 16),
                   TextFormField(
+                    maxLength: 10,
                     cursorColor: Color(0xFF1C8892),
                     keyboardType: TextInputType.number,
                     controller: phoneNumberTextController,
@@ -250,6 +251,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                       }),
                   SizedBox(height: 16),
                   TextFormField(
+                    maxLength: 10,
                     controller: nationalIdTextController,
                     // initialValue: nationalIdTextController.text,
                     cursorColor: Color(0xFF1C8892),

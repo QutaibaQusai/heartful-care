@@ -2,204 +2,264 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test/Nursecenters/nurse_centers_signup.dart';
 import 'package:test/screens/login_screen.dart';
+import 'package:test/utils/firebase_auth.dart';
 
-class centersLogin extends StatefulWidget {
-  const centersLogin({Key? key}) : super(key: key);
+class CentersLogin extends StatefulWidget {
+  const CentersLogin({super.key});
 
   @override
-  State<centersLogin> createState() => _centersLogin();
+  State<CentersLogin> createState() => _CentersLoginState();
 }
-// CentersSignUp
 
-class _centersLogin extends State<centersLogin> {
+class _CentersLoginState extends State<CentersLogin> {
+  final formKey = GlobalKey<FormState>();
+
   TextEditingController centerEmailController = TextEditingController();
   TextEditingController centerPasswordController = TextEditingController();
   bool showHidePassword = true;
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: const Color(0xFFE8ECF4),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LogInScreen(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(
-                          CupertinoIcons.back,
-                          size: 35,
+    return SafeArea(
+      child: Scaffold(
+        // backgroundColor: const Color(0xFFE8ECF4),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LogInScreen(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.back,
+                            size: 35,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Welcome back! Glad \nto see you again!",
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF1C8892),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              controller: centerEmailController,
-                              decoration: InputDecoration(
-                                labelText: "Email",
-                                hintText: "Enter your Email",
-                                contentPadding: EdgeInsets.all(18),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(12),
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Welcome back! Glad \nto see you again!",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF1C8892),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            TextFormField(
-                              obscureText: showHidePassword,
-                              controller: centerPasswordController,
-                              decoration: InputDecoration(
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: IconButton(
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextFormField(
+                                cursorColor: Color(0xFF1C8892),
+                                controller: centerEmailController,
+                                decoration: InputDecoration(
+                                  labelStyle: TextStyle(
                                     color: Color(0xFF1C8892),
-                                    onPressed: () {
-                                      setState(() {});
-                                      showHidePassword = !showHidePassword;
-                                    },
-                                    icon: Icon(showHidePassword
-                                        ? Icons.remove_red_eye
-                                        : Icons.visibility_off),
+                                  ),
+                                  labelText: "Email",
+                                  hintText: "Enter your Email",
+                                  contentPadding: EdgeInsets.all(18),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.black, width: 2.0),
+                                    borderRadius: BorderRadius.circular(12.0),
                                   ),
                                 ),
-                                labelText: "Password",
-                                hintText: "Enter your password",
-                                contentPadding: EdgeInsets.all(18),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "Please enter your email address";
+                                  } else if (!RegExp(
+                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      .hasMatch(value)) {
+                                    return "Please enter a valid email address";
+                                  } else {
+                                    return null;
+                                  }
+                                },
                               ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                           
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    // Handle forgot password logic
-                                  },
-                                  child: Text(
-                                    "Forget Password?",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                cursorColor: Color(0xFF1C8892),
+                                obscureText: showHidePassword,
+                                controller: centerPasswordController,
+                                decoration: InputDecoration(
+                                  labelStyle: TextStyle(
+                                    color: Color(0xFF1C8892),
+                                  ),
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: IconButton(
+                                      color: Color(0xFF1C8892),
+                                      onPressed: () {
+                                        setState(() {});
+                                        showHidePassword = !showHidePassword;
+                                      },
+                                      icon: Icon(showHidePassword
+                                          ? Icons.remove_red_eye
+                                          : Icons.visibility_off),
                                     ),
                                   ),
+                                  labelText: "Password",
+                                  hintText: "Enter your password",
+                                  contentPadding: EdgeInsets.all(18),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.black, width: 2),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
                                 ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Color(0xFF1C8892)),
-                                      side: MaterialStateProperty.all(
-                                          BorderSide(color: Color(0xFF1C8892))),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      fixedSize:
-                                          MaterialStateProperty.all<Size>(
-                                              const Size.fromWidth(370)),
-                                      padding: MaterialStateProperty.all<
-                                          EdgeInsetsGeometry>(
-                                        EdgeInsets.symmetric(vertical: 20),
-                                      ),
-                                    ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return ("Password is required");
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
                                     onPressed: () {
-                                      // Handle login logic
+                                      // Handle forgot password logic
                                     },
                                     child: Text(
-                                      "Login",
+                                      "Forget Password?",
                                       style: TextStyle(
+                                        color: Colors.black,
                                         fontSize: 15,
-                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xFF1C8892)),
+                                        side: MaterialStateProperty.all(
+                                            BorderSide(
+                                                color: Color(0xFF1C8892))),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        fixedSize:
+                                            MaterialStateProperty.all<Size>(
+                                                const Size.fromWidth(370)),
+                                        padding: MaterialStateProperty.all<
+                                            EdgeInsetsGeometry>(
+                                          EdgeInsets.symmetric(vertical: 20),
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        if (formKey.currentState!.validate()) {
+                                          final x = await MyFirebaseAuth()
+                                              .signIn(
+                                                  context: context,
+                                                  email: centerEmailController
+                                                      .text,
+                                                  password:
+                                                      centerPasswordController
+                                                          .text);
+                                          if (x != null) {
+                                            print("object");
+                                            // Navigator.pushReplacement(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) => Home(
+                                            //         userEmail:
+                                            //             emailTextController.text),
+                                            //   ),
+                                            // );
+                                          }
+                                        }
+                                      },
+                                      child: Text(
+                                        "Login",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // New Row for "Don’t have an account?" and "Register now"
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don’t have an account? ",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CentersSignUp()));
+                        },
+                        child: Text(
+                          "Register now",
+                          style: TextStyle(
+                            color: Color(0xFF1C8892),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                // New Row for "Don’t have an account?" and "Register now"
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don’t have an account? ",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CentersSignUp()));
-                      },
-                      child: Text(
-                        "Register now",
-                        style: TextStyle(
-                          color: Color(0xFF1C8892),
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
