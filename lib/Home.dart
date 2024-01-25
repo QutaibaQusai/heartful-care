@@ -271,7 +271,7 @@ class _HomeState extends State<Home> {
                 Text(
                   sections.sectionDis,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 12.6,
                     color: Colors.grey[700],
                   ),
                 ),

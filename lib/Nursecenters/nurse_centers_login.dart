@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:test/Nursecenters/centers_home.dart';
 import 'package:test/Nursecenters/nurse_centers_signup.dart';
 import 'package:test/screens/login_screen.dart';
 import 'package:test/utils/firebase_auth.dart';
@@ -200,15 +202,33 @@ class _CentersLoginState extends State<CentersLogin> {
                                                       centerPasswordController
                                                           .text);
                                           if (x != null) {
-                                            print("object");
-                                            // Navigator.pushReplacement(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) => Home(
-                                            //         userEmail:
-                                            //             emailTextController.text),
-                                            //   ),
-                                            // );
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor:
+                                                        Color(0xFF1C8892),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    content: Text(
+                                                      "Logged In Successfully",
+                                                      style: TextStyle(
+                                                          fontSize: 17,
+                                                          fontFamily:
+                                                              GoogleFonts
+                                                                      .poppins()
+                                                                  .fontFamily),
+                                                    ),
+                                                  ),
+                                                )
+                                                .closed
+                                                .whenComplete(() =>
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CentersHome(),
+                                                      ),
+                                                    ));
                                           }
                                         }
                                       },
@@ -258,6 +278,24 @@ class _CentersLoginState extends State<CentersLogin> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 80),
+                  /*TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CentersHome(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Skip",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                      ),
+                    ),
+                  )*/
                 ],
               ),
             ),

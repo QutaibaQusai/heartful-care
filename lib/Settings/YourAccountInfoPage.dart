@@ -338,7 +338,10 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                             : null,
                         activeColor: Color(0xFF1C8892),
                       ),
-                      Text('Yes, I want to receive offers and discounts'),
+                      Text(
+                        'Yes, I want to receive offers and discounts',
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ],
                   ),
                   SizedBox(height: 16),

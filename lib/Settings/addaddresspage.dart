@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AddAddressPage extends StatefulWidget {
@@ -6,7 +8,6 @@ class AddAddressPage extends StatefulWidget {
 }
 
 class _AddAddressPageState extends State<AddAddressPage> {
-  // Controllers for the text fields
   TextEditingController areaController = TextEditingController();
   TextEditingController addressnicknameController = TextEditingController();
   TextEditingController streetController = TextEditingController();
@@ -14,6 +15,37 @@ class _AddAddressPageState extends State<AddAddressPage> {
   TextEditingController floorController = TextEditingController();
   TextEditingController apartmentController = TextEditingController();
   TextEditingController mobilenumController = TextEditingController();
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  void _saveAddressData() async {
+    // Get the current user
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      // Create a reference to the user's document in Firestore
+      DocumentReference userDocRef =
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+      // Create a map with the address data
+      Map<String, dynamic> addressData = {
+        'area': areaController.text,
+        'addressNickname': addressnicknameController.text,
+        'street': streetController.text,
+        'building': buildingController.text,
+        'floor': floorController.text,
+        'apartment': apartmentController.text,
+        'mobileNumber': mobilenumController.text,
+      };
+
+      // Set the data at the user's document ID
+      await userDocRef.set(addressData);
+
+      // Optionally, you can navigate to another screen or show a success message
+    } else {
+      // Handle the case when the user is not authenticated
+      print('User not authenticated');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +158,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
                 height: 50, // Set the height of the button
                 child: ElevatedButton(
                   onPressed: () {
-                    // Add your submit logic here
+                    _saveAddressData();
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

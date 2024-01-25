@@ -1,7 +1,8 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/Nursecenters/centers_home.dart';
 import 'package:test/Nursecenters/nurse_centers_login.dart';
 import 'package:test/utils/firebase_auth.dart';
 
@@ -15,7 +16,7 @@ class CentersSignUp extends StatefulWidget {
 class _CentersSignUpState extends State<CentersSignUp> {
   bool showHidePassword = true;
   final formKey = GlobalKey<FormState>();
-  TextEditingController adminNameController = TextEditingController();
+  final adminNameController = TextEditingController();
   TextEditingController adminEmailController = TextEditingController();
   TextEditingController adminPasswordController = TextEditingController();
 
@@ -70,6 +71,7 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                 height: 20,
                               ),
                               TextFormField(
+                                controller: adminNameController,
                                 cursorColor: Color(0xFF1C8892),
                                 decoration: InputDecoration(
                                   labelText: "Admin",
@@ -259,15 +261,13 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                           ),
                                         ),
                                         onPressed: () async {
-                                          // CollectionReference users =
-                                          //     FirebaseFirestore.instance
-                                          //         .collection('centers');
-                                          // users.add({
-                                          //   'fullname':
-                                          //       adminNameController.text,
-                                          //   'email': adminEmailController.text,
-                                          //   //'password': passwordTextController.text
-                                          // });
+                                          CollectionReference centers =
+                                              FirebaseFirestore.instance
+                                                  .collection('centers');
+                                          centers.add({
+                                            'Admain': adminNameController.text,
+                                            'email': adminEmailController.text,
+                                          });
                                           if (formKey.currentState!
                                               .validate()) {
                                             var x = await MyFirebaseAuth()
@@ -297,22 +297,14 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                                     ),
                                                   )
                                                   .closed
-                                                  .whenComplete(
-                                                () {
-                                                  // adminEmailController.text =
-                                                  //     "";
-                                                  // Navigator.pushReplacement(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) => Home(
-                                                  //         userEmail:
-                                                  //             emailTextController
-                                                  //                 .text),
-                                                  //   ),
-                                                  // )
-                                                  print("okay done");
-                                                },
-                                              );
+                                                  .whenComplete(() =>
+                                                      Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CentersHome(),
+                                                        ),
+                                                      ));
                                             }
                                           }
                                         },

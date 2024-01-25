@@ -43,7 +43,6 @@ class _SignInScreen extends State<SignInScreen> {
                           style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
-                             
                               letterSpacing: 1),
                         ),
                         Text(
@@ -51,7 +50,6 @@ class _SignInScreen extends State<SignInScreen> {
                           style: TextStyle(
                               fontSize: 17,
                               height: 2.4,
-                             
                               fontWeight: FontWeight.w600,
                               color: Colors.grey[600]),
                         )
@@ -81,7 +79,6 @@ class _SignInScreen extends State<SignInScreen> {
                             style: TextStyle(
                                 fontSize: 24,
                                 color: Colors.white,
-                               
                                 letterSpacing: 1,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -91,8 +88,8 @@ class _SignInScreen extends State<SignInScreen> {
                           TextFormField(
                             keyboardType: TextInputType.name,
                             style: TextStyle(
-                                color: Colors.white,
-                               ),
+                              color: Colors.white,
+                            ),
                             controller: fullNameTextController,
                             cursorColor: Colors.white,
                             decoration: InputDecoration(
@@ -142,8 +139,8 @@ class _SignInScreen extends State<SignInScreen> {
                           TextFormField(
                               keyboardType: TextInputType.emailAddress,
                               style: TextStyle(
-                                  color: Colors.white,
-                                 ),
+                                color: Colors.white,
+                              ),
                               controller: emailTextController,
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
@@ -221,8 +218,8 @@ class _SignInScreen extends State<SignInScreen> {
                               ),
                               labelText: "Password",
                               labelStyle: TextStyle(
-                                  color: Colors.white,
-                                 ),
+                                color: Colors.white,
+                              ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors
@@ -373,9 +370,9 @@ class _SignInScreen extends State<SignInScreen> {
           Text(
             "Already have an account?",
             style: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-               ),
+              color: Colors.black,
+              fontSize: 15,
+            ),
           ),
           GestureDetector(
             onTap: () {
@@ -387,10 +384,10 @@ class _SignInScreen extends State<SignInScreen> {
             child: Text(
               " Log in ",
               style: TextStyle(
-                  color: const Color(0xFF1C8892),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                 ),
+                color: const Color(0xFF1C8892),
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+              ),
             ),
           )
         ],
