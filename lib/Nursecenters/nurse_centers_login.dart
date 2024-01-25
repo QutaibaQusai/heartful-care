@@ -279,7 +279,7 @@ class _CentersLoginState extends State<CentersLogin> {
                     ],
                   ),
                   SizedBox(height: 80),
-                  /*TextButton(
+                  TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
@@ -295,7 +295,7 @@ class _CentersLoginState extends State<CentersLogin> {
                         fontSize: 15,
                       ),
                     ),
-                  )*/
+                  )
                 ],
               ),
             ),
