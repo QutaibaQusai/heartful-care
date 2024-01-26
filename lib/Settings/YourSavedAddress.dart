@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:test/Settings/addaddresspage.dart';
 
 class YourSavedAddress extends StatefulWidget {
-  const YourSavedAddress({Key? key}) : super(key: key);
+  final String userEmail;
+
+  const YourSavedAddress({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   State<YourSavedAddress> createState() => _YourSavedAddressState();
@@ -24,7 +26,8 @@ class _YourSavedAddressState extends State<YourSavedAddress> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddAddressPage(),
+                  builder: (context) =>
+                      AddAddressPage(userEmail: widget.userEmail),
                 ),
               );
             },

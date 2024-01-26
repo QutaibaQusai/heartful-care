@@ -126,7 +126,10 @@ class _SettingFirstPage extends State<SettingFirstPage> {
         if (title == "Saved Addresses") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => YourSavedAddress()),
+            MaterialPageRoute(
+                builder: (context) => YourSavedAddress(
+                      userEmail: widget.userEmail,
+                    )),
           );
         }
         if (title == "Change Password") {
