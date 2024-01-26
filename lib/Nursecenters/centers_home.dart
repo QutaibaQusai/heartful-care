@@ -198,7 +198,7 @@ class _CentersHome extends State<CentersHome> {
                     ),
                     Flexible(
                       child: Text(
-                        'By registering, the nurse center agrees the apps terms and conditions.',
+                        'By registering, the nurse center agrees the apps terms and conditions.',
                         style: TextStyle(fontSize: 14),
                       ),
                     ),
