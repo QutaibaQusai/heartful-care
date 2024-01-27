@@ -2,18 +2,65 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NurseCenters extends StatelessWidget {
-  const NurseCenters({super.key});
+  const NurseCenters({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(251, 242, 237, 237),
+        backgroundColor: Color.fromARGB(250, 253, 253, 253),
         appBar: AppBar(
-          title: Text("Find your center"),
+          title: Text(
+            "Find the best nurse center",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 19,
+            ),
+          ),
         ),
         body: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.search,
+                              color: Color(0xFF1C8892),
+                            ),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: "Search for nurse centers",
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.filter_list,
+                              color: Color(0xFF1C8892),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -41,8 +88,7 @@ class NurseCenters extends StatelessWidget {
                         width: 100.0,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color:
-                              Colors.blue, // Set your desired background color
+                          color: Colors.blue,
                         ),
                         child: ClipOval(
                           child: Image.asset(
@@ -51,46 +97,51 @@ class NurseCenters extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "AL SAKHA",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Row(
+                      Expanded(
+                        // Wrap the Row containing star and reviews with Expanded
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "AL SAKHA",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.solidStar,
+                                          size: 13,
+                                          color: Colors.yellowAccent,
+                                        ),
+                                        Text(" 4.5 Reviews "),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
                                     children: [
                                       Icon(
-                                        FontAwesomeIcons.star,
+                                        FontAwesomeIcons.clock,
                                         size: 13,
-                                        color: Colors.yellowAccent,
                                       ),
-                                      Text(" 4.5 Reviews "),
+                                      Text(" 6AM-10PM"),
                                     ],
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.clock,
-                                      size: 13,
-                                    ),
-                                    Text(" 6:00AM-3:00PM"),
-                                  ],
-                                )
-                              ],
-                            )
-                          ],
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],
