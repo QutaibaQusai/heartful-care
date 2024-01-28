@@ -12,7 +12,7 @@ class NurseCenters extends StatelessWidget {
         backgroundColor: Color.fromARGB(250, 253, 253, 253),
         appBar: AppBar(
           title: Text(
-            "Find the best nurse center",
+            " Nurse centers",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 19,
@@ -43,7 +43,7 @@ class NurseCenters extends StatelessWidget {
                           Expanded(
                             child: TextField(
                               decoration: InputDecoration(
-                                hintText: "Search for nurse centers",
+                                hintText: "Search for nurse center",
                                 border: InputBorder.none,
                               ),
                             ),
@@ -182,5 +182,3 @@ class NurseCenters extends StatelessWidget {
     );
   }
 }
-
-

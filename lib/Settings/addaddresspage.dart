@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AddAddressPage extends StatefulWidget {
@@ -51,8 +51,8 @@ class _AddAddressPageState extends State<AddAddressPage> {
   TextEditingController apartmentController = TextEditingController();
   TextEditingController mobilenumController = TextEditingController();
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  void _saveAddressData() async {
+  //FirebaseAuth _auth = FirebaseAuth.instance;
+  /*void _saveAddressData() async {
     // Get the current user
     User? user = _auth.currentUser;
 
@@ -80,7 +80,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
       // Handle the case when the user is not authenticated
       print('User not authenticated');
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
