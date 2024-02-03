@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/utils/firebase_auth.dart';
 
 class YourChangePassPage extends StatefulWidget {
   const YourChangePassPage({Key? key}) : super(key: key);
@@ -10,12 +11,13 @@ class YourChangePassPage extends StatefulWidget {
 class _YourChangePassPageState extends State<YourChangePassPage> {
   bool showCurrentPassword = false;
   bool showNewPassword = false;
-  TextEditingController currentPassword = new TextEditingController();
-  TextEditingController newPassword = new TextEditingController();
-  TextEditingController confirmNewPassword = new TextEditingController();
+  TextEditingController currentPassword = TextEditingController();
+  TextEditingController newPassword = TextEditingController();
+  TextEditingController confirmNewPassword = TextEditingController();
   bool isPasswordEightCharacters = false;
   bool hasPasswordOneNumber = false;
   final formKey = GlobalKey<FormState>();
+  bool checkCurrentPasswordValid = true;
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +118,7 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                       },
                     ),
                     SizedBox(height: 16),
-                    TextField(
+                    TextFormField(
                       controller: confirmNewPassword,
                       decoration: InputDecoration(
                         labelText: 'Confirm new password',
@@ -125,6 +127,11 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                           borderSide: BorderSide(color: Colors.grey),
                         ),
                       ),
+                      validator: (value) {
+                        return newPassword.text == value
+                            ? null
+                            : "please validate your intend password";
+                      },
                     ),
                     SizedBox(height: 30),
                     Text(
@@ -204,20 +211,26 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                     SizedBox(height: 30),
                     SizedBox(
                       width: double.infinity,
-                      height: 50, // Set the height of the button
+                      height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {}
-
-                     
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            await MyFirebaseAuth().changePassword(
+                                context: context,
+                                currentPassword: currentPassword.text,
+                                newPassword: newPassword.text
+                                // currentPassword.text,
+                                // newPassword.text,
+                                );
+                          }
+                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10.0), // Set the border radius
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                          primary: Color(0xFF1C8892), // Background color
-                          onPrimary: Colors.white, // Text color
+                          primary: Color(0xFF1C8892),
+                          onPrimary: Colors.white,
                         ),
                         child: Text('Submit'),
                       ),

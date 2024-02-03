@@ -87,4 +87,51 @@ class MyFirebaseAuth {
       return null;
     }
   }
+
+  Future<void> changePassword(
+      {required BuildContext context,
+      required String currentPassword,
+      required String newPassword}) async {
+    try {
+      User? currentUser = auth.currentUser;
+
+      final AuthCredential credential = EmailAuthProvider.credential(
+        email: currentUser?.email ?? '',
+        password: currentPassword,
+      );
+
+      await currentUser?.reauthenticateWithCredential(credential);
+
+      await currentUser?.updatePassword(newPassword);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Password updated successfully",
+            style: TextStyle(
+              fontSize: 17,
+            ),
+          ),
+        ),
+      );
+
+      print(
+          '__________________Password updated successfully____________________');
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Failed to update password",
+            style: TextStyle(
+              fontSize: 17,
+            ),
+          ),
+        ),
+      );
+      print('______________Failed to update password:_____________ $e');
+    }
+  }
 }

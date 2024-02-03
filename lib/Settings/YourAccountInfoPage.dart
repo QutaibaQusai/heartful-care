@@ -141,6 +141,62 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      // color: Colors.red,
+                      child: GestureDetector(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                        },
+                        child: Center(
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width / 3,
+                                height: MediaQuery.of(context).size.width / 3,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 4,
+                                      color: Color(0xFF1C8892),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: 2,
+                                          blurRadius: 10,
+                                          color: Colors.black.withOpacity(0.1))
+                                    ],
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image:
+                                            AssetImage("images/profile.webp"))),
+                              ),
+
+                              // Positioned(
+                              //   bottom: 0,
+                              //   right: 0,
+                              //   child: Container(
+                              //     // color: Colors.amber,
+                              //     height: 40,
+                              //     width: 40,
+                              //     decoration: BoxDecoration(
+                              //       shape: BoxShape.circle,
+                              //       border:
+                              //           Border.all(width: 4, color: Colors.red),
+                              //     ),
+                              //     child: Icon(
+                              //       Icons.edit,
+                              //       color: Colors.red,
+                              //     ),
+                              //   ),
+                              // )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   TextFormField(
                     initialValue: widget.userEmail.isNotEmpty
                         ? widget.userEmail
