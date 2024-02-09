@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AddAddressPage extends StatefulWidget {
   final String userEmail;
 
-  const AddAddressPage({super.key, required this.userEmail});
+  const AddAddressPage({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   State<AddAddressPage> createState() => _AddAddressPageState();
@@ -51,37 +50,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
   TextEditingController apartmentController = TextEditingController();
   TextEditingController mobilenumController = TextEditingController();
 
-  //FirebaseAuth _auth = FirebaseAuth.instance;
-  /*void _saveAddressData() async {
-    // Get the current user
-    User? user = _auth.currentUser;
-
-    if (user != null) {
-      // Create a reference to the user's document in Firestore
-      DocumentReference userDocRef =
-          FirebaseFirestore.instance.collection('users').doc(user.uid);
-
-      // Create a map with the address data
-      Map<String, dynamic> addressData = {
-        'area': areaController.text,
-        'addressNickname': addressnicknameController.text,
-        'street': streetController.text,
-        'building': buildingController.text,
-        'floor': floorController.text,
-        'apartment': apartmentController.text,
-        'mobileNumber': mobilenumController.text,
-      };
-
-      // Set the data at the user's document ID
-      await userDocRef.set(addressData);
-
-      // Optionally, you can navigate to another screen or show a success message
-    } else {
-      // Handle the case when the user is not authenticated
-      print('User not authenticated');
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,31 +59,12 @@ class _AddAddressPageState extends State<AddAddressPage> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () {
-                _showDeleteConfirmationDialog();
-              },
-              child: Text(
-                'Delete',
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // Your existing page content goes here
-
-              // Add the "area" text field with underline
               TextField(
                 controller: areaController,
                 decoration: InputDecoration(
@@ -187,25 +136,42 @@ class _AddAddressPageState extends State<AddAddressPage> {
                 ),
               ),
               SizedBox(height: 30),
-              SizedBox(
-                width: double.infinity,
-                height: 50, // Set the height of the button
-                child: ElevatedButton(
-                  onPressed: () {
-                    _submitUserData();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Set the border radius
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _submitUserData();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        primary: Color(0xFF1C8892),
+                        onPrimary: Colors.white,
+                      ),
+                      child: Text('Save address'),
                     ),
-                    primary: Color(0xFF1C8892), // Background color
-                    onPrimary: Colors.white, // Text color
                   ),
-                  child: Text('Save address'),
-                ),
+                  SizedBox(width: 16), // Add some spacing between buttons
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _showDeleteConfirmationDialog();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        primary: Color(0xFF1C8892),
+                        onPrimary: Colors.white,
+                      ),
+                      child: Text('Delete'),
+                    ),
+                  ),
+                ],
               ),
-              // Add more widgets as needed
             ],
           ),
         ),
@@ -218,14 +184,12 @@ class _AddAddressPageState extends State<AddAddressPage> {
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
 
-      // Find the user document
       var userDoc =
           await users.where('email', isEqualTo: widget.userEmail).get();
 
       if (userDoc.docs.isNotEmpty) {
         var userId = userDoc.docs[0].id;
 
-        // Update the existing document with the new data
         await users.doc(userId).update({
           'Area': areaController.text,
           'Address nickname': addressnicknameController.text,
@@ -241,7 +205,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
             backgroundColor: Color(0xFF1C8892),
             behavior: SnackBarBehavior.floating,
             content: Text(
-              ' User data updated successfully!',
+              ' User address updated successfully!',
               style: TextStyle(
                 fontSize: 17,
               ),
@@ -278,7 +242,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
     }
   }
 
-  // this method is to detete the address inforamtion from the firestore and clear the text boxes
   void _deleteUserData() async {
     try {
       CollectionReference users =
@@ -355,7 +318,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
     }
   }
 
-  // show alert dialog to ask the user if he really want to delete the data
   void _showDeleteConfirmationDialog() {
     showDialog(
       context: context,

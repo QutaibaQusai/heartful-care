@@ -5,7 +5,7 @@ import 'package:test/Home.dart';
 import 'package:test/Settings/YourAccountInfoPage.dart';
 import 'package:test/Settings/YourChangeEmailPage.dart';
 import 'package:test/Settings/YourChangePassPage.dart';
-import 'package:test/Settings/YourSavedAddress.dart';
+import 'package:test/Settings/addaddresspage.dart';
 import 'package:test/intro_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -127,7 +127,7 @@ class _SettingFirstPage extends State<SettingFirstPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => YourSavedAddress(
+                builder: (context) => AddAddressPage(
                       userEmail: widget.userEmail,
                     )),
           );
