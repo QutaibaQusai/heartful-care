@@ -261,50 +261,82 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                           ),
                                         ),
                                         onPressed: () async {
-                                          CollectionReference centers =
-                                              FirebaseFirestore.instance
-                                                  .collection('centers');
-                                          centers.add({
-                                            'Admain': adminNameController.text,
-                                            'email': adminEmailController.text,
-                                          });
                                           if (formKey.currentState!
                                               .validate()) {
-                                            var x = await MyFirebaseAuth()
-                                                .createAccount(
-                                                    email: adminEmailController
+                                            try {
+                                              // Create the user account in Firebase Authentication
+                                              var x = await MyFirebaseAuth()
+                                                  .createAccount(
+                                                email:
+                                                    adminEmailController.text,
+                                                password:
+                                                    adminPasswordController
                                                         .text,
-                                                    password:
-                                                        adminPasswordController
-                                                            .text,
-                                                    context: context);
-                                            if (x != null) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                    SnackBar(
-                                                      backgroundColor:
-                                                          Color(0xFF1C8892),
-                                                      behavior: SnackBarBehavior
-                                                          .floating,
-                                                      content: Text(
-                                                        "Logged In Successfully",
-                                                        style: TextStyle(
-                                                            fontSize: 17,
-                                                            fontFamily: GoogleFonts
-                                                                    .poppins()
-                                                                .fontFamily),
+                                                context: context,
+                                              );
+
+                                              // If account creation is successful
+                                              if (x != null) {
+                                                // Show a success message
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor:
+                                                        Color(0xFF1C8892),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    content: Text(
+                                                      "Logged In Successfully",
+                                                      style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontFamily: GoogleFonts
+                                                                .poppins()
+                                                            .fontFamily,
                                                       ),
                                                     ),
-                                                  )
-                                                  .closed
-                                                  .whenComplete(() =>
-                                                      Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              CentersHome(),
-                                                        ),
-                                                      ));
+                                                  ),
+                                                );
+
+                                                // Add user data to Firestore
+                                                CollectionReference centers =
+                                                    FirebaseFirestore.instance
+                                                        .collection('centers');
+                                                await centers.add({
+                                                  'Admin':
+                                                      adminNameController.text,
+                                                  'Email':
+                                                      adminEmailController.text,
+                                                });
+
+                                                // Navigate to the home screen
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CentersHome(),
+                                                  ),
+                                                );
+                                              }
+                                            } catch (e) {
+                                              // Handle errors, such as displaying an error message
+                                              print("Error: $e");
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  backgroundColor: Colors.red,
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  content: Text(
+                                                    "Failed to create account: $e",
+                                                    style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontFamily:
+                                                          GoogleFonts.poppins()
+                                                              .fontFamily,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
                                             }
                                           }
                                         },

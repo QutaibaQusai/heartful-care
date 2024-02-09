@@ -22,6 +22,7 @@ class _CentersHome extends State<CentersHome> {
   TextEditingController centerContractPosition = TextEditingController();
   TextEditingController centerDescription = TextEditingController();
   TextEditingController centerWebsite = TextEditingController();
+  TextEditingController urlLogoImage = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -94,6 +95,14 @@ class _CentersHome extends State<CentersHome> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Email Address',
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: urlLogoImage,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'URL logo Image',
                   ),
                 ),
                 SizedBox(
@@ -229,6 +238,7 @@ class _CentersHome extends State<CentersHome> {
                                   centerContractPosition.text,
                               'Contact Description': centerDescription.text,
                               'Contact website': centerWebsite.text,
+                              'URL Logo Image': urlLogoImage.text,
                             });
                             showDialog(
                               context: context,

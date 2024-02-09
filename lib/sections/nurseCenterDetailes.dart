@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CircleTabIndicator extends Decoration {
   final BoxPainter _painter;
@@ -31,6 +32,18 @@ class _CirclePainter extends BoxPainter {
 }
 
 class DetailedNurseCenter extends StatefulWidget {
+  final String centerName;
+  final String operatingHours;
+  final String centerDescription;
+  final String centerUrlImageLogo;
+  final String centerPhoneNumber;
+  DetailedNurseCenter(
+      {required this.centerName,
+      required this.operatingHours,
+      required this.centerDescription,
+      required this.centerUrlImageLogo,
+      required this.centerPhoneNumber});
+
   @override
   State<DetailedNurseCenter> createState() => _DetailedNurseCenterState();
 }
@@ -66,6 +79,7 @@ class _DetailedNurseCenterState extends State<DetailedNurseCenter>
             IconButton(
               onPressed: () {
                 // Navigator.of(context).pop();
+                _makePhoneCall(widget.centerPhoneNumber);
               },
               icon: Icon(
                 FontAwesomeIcons.phoneFlip,
@@ -95,8 +109,8 @@ class _DetailedNurseCenterState extends State<DetailedNurseCenter>
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: MediaQuery.of(context).size.width / 3.7,
-                      child: Image.asset(
-                        "images/WhatsApp_Image_2024-01-27_at_13.11.06_132c59dc-removebg-preview.png",
+                      child: Image.network(
+                        widget.centerUrlImageLogo,
                       ),
                     ),
                   ),
@@ -110,7 +124,7 @@ class _DetailedNurseCenterState extends State<DetailedNurseCenter>
                 child: Column(
                   children: [
                     Text(
-                      "AL SAKHA Center",
+                      widget.centerName,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -121,7 +135,7 @@ class _DetailedNurseCenterState extends State<DetailedNurseCenter>
                       height: 5,
                     ),
                     Text(
-                      "8PM - 10PM",
+                      widget.operatingHours,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -180,7 +194,8 @@ class _DetailedNurseCenterState extends State<DetailedNurseCenter>
                                 ),
                                 margin: EdgeInsets.symmetric(vertical: 7),
                                 child: Center(
-                                  child: Text('Description $index'),
+                                  child: Text(
+                                      widget.centerDescription + ' $index'),
                                 ),
                               );
                             },
@@ -234,5 +249,19 @@ class _DetailedNurseCenterState extends State<DetailedNurseCenter>
         ),
       ),
     );
+  }
+
+  void _makePhoneCall(String phoneNumber) async {
+    String telScheme = 'tel:$phoneNumber';
+    try {
+      if (await canLaunch(telScheme)) {
+        await launch(telScheme);
+      } else {
+        throw 'Could not launch $telScheme';
+      }
+    } catch (e) {
+      print('Error launching phone call: $e');
+      // Handle the error here, such as showing an error dialog
+    }
   }
 }
