@@ -134,9 +134,11 @@ class NurseCenters extends StatelessWidget {
                                       return DetailedNurseCenter(
                                         centerName: center.name,
                                         operatingHours: center.operatingHours,
-                                        //centerDescription: center.description,
-                                        //centerUrlImageLogo: center.urlLogoImage,
+                                        centerDescription: center.description,
+                                        centerUrlImageLogo: center.urlLogoImage,
                                         centerPhoneNumber: center.phoneNumber,
+                                        centerAddress1: center.addressOne,
+                                        centerEmail: center.emailAddress,
                                       );
                                     },
                                     transitionsBuilder: (context, animation,
@@ -180,15 +182,22 @@ class NurseCenters extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
-                                        CircleAvatar(
-                                          radius: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              14, // half of the height
-                                          backgroundImage:
-                                              NetworkImage(center.urlLogoImage),
-                                        ),
                                         Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
+                                          // color: Colors.red,
+                                          child: CircleAvatar(
+                                            radius: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                14, // half of the height
+                                            backgroundImage: NetworkImage(
+                                                center.urlLogoImage),
+                                          ),
+                                        ),
+                                        Expanded(
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
