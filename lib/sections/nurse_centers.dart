@@ -49,47 +49,47 @@ class NurseCenters extends StatelessWidget {
                   ),
                 ],
               ),
-              // child: Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Row(
-              //     children: [
-              //       Expanded(
-              //         child: Container(
-              //           decoration: BoxDecoration(
-              //             borderRadius: BorderRadius.circular(10),
-              //             color: Colors.white,
-              //           ),
-              //           child: Row(
-              //             children: [
-              //               Padding(
-              //                 padding: const EdgeInsets.all(8.0),
-              //                 child: Icon(
-              //                   Icons.search,
-              //                   color: Color(0xFF1C8892),
-              //                 ),
-              //               ),
-              //               Expanded(
-              //                 child: TextField(
-              //                   decoration: InputDecoration(
-              //                     hintText: "Search for nurse center",
-              //                     border: InputBorder.none,
-              //                   ),
-              //                 ),
-              //               ),
-              //               Padding(
-              //                 padding: const EdgeInsets.all(8.0),
-              //                 child: Icon(
-              //                   Icons.filter_list,
-              //                   color: Color(0xFF1C8892),
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              /*child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.search,
+                                color: Color(0xFF1C8892),
+                              ),
+                            ),
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: "Search for nurse center",
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.filter_list,
+                                color: Color(0xFF1C8892),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),*/
             ),
             Expanded(
               child: Container(
@@ -134,8 +134,8 @@ class NurseCenters extends StatelessWidget {
                                       return DetailedNurseCenter(
                                         centerName: center.name,
                                         operatingHours: center.operatingHours,
-                                        centerDescription: center.description,
-                                        centerUrlImageLogo: center.urlLogoImage,
+                                        //centerDescription: center.description,
+                                        //centerUrlImageLogo: center.urlLogoImage,
                                         centerPhoneNumber: center.phoneNumber,
                                       );
                                     },
@@ -209,7 +209,7 @@ class NurseCenters extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Text("(Review) "),
+                                                  Text("(Reviews)"),
                                                   Icon(
                                                     FontAwesomeIcons.solidStar,
                                                     size: 13,
