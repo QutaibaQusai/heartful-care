@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/Home.dart';
 import 'package:test/Settings/YourAccountInfoPage.dart';
 import 'package:test/Settings/YourChangeEmailPage.dart';
@@ -39,6 +40,15 @@ class _SettingFirstPage extends State<SettingFirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            FontAwesomeIcons.chevronLeft,
+            color: Colors.black,
+          ),
+        ),
         title: Text(
           'Settings',
           style: TextStyle(fontWeight: FontWeight.bold),
