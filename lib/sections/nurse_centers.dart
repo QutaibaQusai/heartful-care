@@ -138,7 +138,8 @@ class NurseCenters extends StatelessWidget {
                                         centerUrlImageLogo: center.urlLogoImage,
                                         centerPhoneNumber: center.phoneNumber,
                                         centerAddress1: center.addressOne,
-                                        centerEmail: center.emailAddress, centerWebsite: center.website,
+                                        centerEmail: center.emailAddress,
+                                        centerWebsite: center.website,
                                       );
                                     },
                                     transitionsBuilder: (context, animation,
@@ -174,7 +175,8 @@ class NurseCenters extends StatelessWidget {
                                   ],
                                 ),
                                 width: double.infinity,
-                                height: MediaQuery.of(context).size.height / 7,
+                                height:
+                                    MediaQuery.of(context).size.height / 6.5,
                                 child: Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Container(

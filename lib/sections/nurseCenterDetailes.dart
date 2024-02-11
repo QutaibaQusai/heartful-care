@@ -65,10 +65,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                               ),
                             ),
                             child: GestureDetector(
-                              onTap: () {
-                                _openGoogleMaps();
-                                print("object");
-                              },
+                              onTap: () {},
                               child: Image.network(
                                 widget.centerUrlImageLogo,
                                 fit: BoxFit.cover,
@@ -201,13 +198,13 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                   height: 40,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      // color: Colors.red,
-                      width: MediaQuery.of(context).size.width / 2.5,
-                      height: MediaQuery.of(context).size.width / 2.5,
+                      //color: Colors.red,
+                      width: MediaQuery.of(context).size.width / 2,
+                      //height: MediaQuery.of(context).size.width / 2.5,
                       child: Column(
                         children: [
                           Row(
@@ -223,7 +220,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                 child: ListTile(
                                     title: Text("Address",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
+                                          fontWeight: FontWeight.bold,
+                                        )),
                                     subtitle: Text(widget.centerAddress1)),
                               ),
                             ],
@@ -242,7 +240,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                   child: ListTile(
                                       title: Text("Operating Hours",
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold)),
+                                            fontWeight: FontWeight.bold,
+                                          )),
                                       subtitle: Text(widget.operatingHours))),
                             ],
                           ),
@@ -250,9 +249,9 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                       ),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width / 2.5,
-                      height: MediaQuery.of(context).size.width / 2.5,
-                      // color: Colors.green,
+                      width: MediaQuery.of(context).size.width / 2.80,
+                      // height: MediaQuery.of(context).size.width / 2.5,
+                      //color: Colors.green,
                       child: Image.network(
                           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR06MADR69xqUQgvURQxGz868kOIb_-AEWWXgnr3L5h8jf4voSzjAky2oftOhY2D69_cHA&usqp=CAU"),
                     ),
@@ -340,33 +339,31 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
     }
   }
 
-  void _openGoogleMaps() async {
-    final Uri _mapsLaunchUri = Uri(
-      scheme: 'https',
-      host: 'www.google.com',
-      path: '/maps/search/',
-      queryParameters: {
-        'api': '1',
-        'query': 'YOUR_LOCATION_QUERY_HERE', // replace with your location query
-      },
-    );
-
-    final String _mapsLaunchUriString = _mapsLaunchUri.toString();
-
-    try {
-      await launch(_mapsLaunchUriString);
-    } catch (e) {
-      print('Error launching Google Maps: $e');
-      // Handle the error here.
-    }
-  }
-
   void _launchWebsite() async {
-    final String url = widget.centerWebsite; // Replace with your website URL
-    if (await canLaunch(url)) {
-      await launch(url);
+    final String url = widget.centerWebsite;
+
+    // Check if the URL is not empty and not null
+    if (url != null && url.isNotEmpty) {
+      // Check if the URL is valid
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        // If the URL is not valid, launch Google
+        final String googleUrl = 'https://www.google.com';
+        if (await canLaunch(googleUrl)) {
+          await launch(googleUrl);
+        } else {
+          throw 'Could not launch $googleUrl';
+        }
+      }
     } else {
-      throw 'Could not launch $url';
+      // If the URL is empty or null, launch Google
+      final String googleUrl = 'https://www.google.com';
+      if (await canLaunch(googleUrl)) {
+        await launch(googleUrl);
+      } else {
+        throw 'Could not launch $googleUrl';
+      }
     }
   }
 }
