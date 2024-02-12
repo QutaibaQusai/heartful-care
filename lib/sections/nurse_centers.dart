@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/nurseCenterModel.dart';
 import 'package:test/sections/nurseCenterDetailes.dart';
@@ -13,6 +14,11 @@ class NurseCenters extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Color(0xFF1C8892),
         appBar: AppBar(
+          // centerTitle: true,
+          // title: Text(
+          //   "Available Centers",
+          //   style: TextStyle(color: Colors.white),
+          // ),
           backgroundColor: Color(0xFF1C8892),
           leading: IconButton(
             onPressed: () {
@@ -28,25 +34,29 @@ class NurseCenters extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height / 6.5,
+              height: MediaQuery.of(context).size.height / 4.5,
               decoration: BoxDecoration(
                 color: Color(0xFF1C8892),
               ),
-              child: Column(
+              child: Stack(
                 // mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(child: Container()),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "Centers available",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold),
-                    ),
+                  SvgPicture.asset(
+                    "images/centerSec.svg",
+                    width: 400,
                   ),
+                  // Expanded(child: Container()),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(16.0),
+                  //   child: Text(
+                  //     "Centers available",
+                  //     style: TextStyle(
+                  //         color: Colors.white,
+                  //         fontSize: 22,
+                  //         fontWeight: FontWeight.bold),
+                  //   ),
+                  // ),
                 ],
               ),
               /*child: Padding(

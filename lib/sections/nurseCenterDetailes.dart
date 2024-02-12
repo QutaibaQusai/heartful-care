@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/sections/formRequest.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailedNurseCenter extends StatefulWidget {
@@ -32,15 +33,21 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Color(0xFF1C8892),
           shadowColor: Colors.transparent,
+          centerTitle: true,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
-              color: Colors.black,
+              color: Colors.white,
             ),
+          ),
+          title: Text(
+            "Centers",
+            style: TextStyle(color: Colors.white),
           ),
         ),
         body: SingleChildScrollView(
@@ -288,7 +295,12 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                 Color(0xFF1C8892), // Button background color
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              // TODO
+              Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                return FormRequest();
+              }));
+            },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -343,7 +355,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
     final String url = widget.centerWebsite;
 
     // Check if the URL is not empty and not null
-    if (url != null && url.isNotEmpty) {
+    if (url != true && url.isNotEmpty) {
       // Check if the URL is valid
       if (await canLaunch(url)) {
         await launch(url);
