@@ -13,6 +13,7 @@ class _FormRequestState extends State<FormRequest> {
   bool? _hasAllergies;
   bool? _isWalk;
   bool? _historyOfSurgeries;
+  String? _needNurse; // New variable for nurse requirement
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class _FormRequestState extends State<FormRequest> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: Column(
               children: [
                 Container(
@@ -49,8 +50,8 @@ class _FormRequestState extends State<FormRequest> {
                     color: Colors.white,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 10),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 13, horizontal: 5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -86,8 +87,11 @@ class _FormRequestState extends State<FormRequest> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  focusColor:
-                                      Color(0xFF1C8892), // Change focus color
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF1C8892), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ), // Change focus color
                                   hintText: 'Last Name',
                                 ),
                               ),
@@ -102,7 +106,11 @@ class _FormRequestState extends State<FormRequest> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            focusColor: Color(0xFF1C8892), // Change focus color
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF1C8892), width: 2.0),
+                              borderRadius: BorderRadius.circular(10),
+                            ), // Change focus color
                             hintText: 'Phone Number',
                           ),
                         ),
@@ -114,7 +122,11 @@ class _FormRequestState extends State<FormRequest> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            focusColor: Color(0xFF1C8892), // Change focus color
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF1C8892), width: 2.0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             hintText: 'Email',
                           ),
                         ),
@@ -129,8 +141,11 @@ class _FormRequestState extends State<FormRequest> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  focusColor:
-                                      Color(0xFF1C8892), // Change focus color
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF1C8892), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ), // Change focus color
                                   hintText: 'Age',
                                 ),
                               ),
@@ -148,8 +163,11 @@ class _FormRequestState extends State<FormRequest> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  focusColor:
-                                      Color(0xFF1C8892), // Change focus color
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF1C8892), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ), // Change focus color
                                   hintText: 'Gender',
                                 ),
                                 items: <String>['Male', 'Female']
@@ -176,7 +194,11 @@ class _FormRequestState extends State<FormRequest> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            focusColor: Color(0xFF1C8892), // Change focus color
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF1C8892), width: 2.0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             hintText: 'Address',
                           ),
                         ),
@@ -194,8 +216,8 @@ class _FormRequestState extends State<FormRequest> {
                     color: Colors.white,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 10),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -327,29 +349,66 @@ class _FormRequestState extends State<FormRequest> {
                             ),
                           ],
                         ),
-                        Text("why do you need naris"),
                         SizedBox(
                           height: 10,
                         ),
-                        DropdownButtonFormField<String>(
-                          value: _selectedGender,
-                          onChanged: (newValue) {
-                            setState(() {
-                              _selectedGender = newValue;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            fillColor: Colors.grey[300],
-                            hintText: 'Gender',
-                          ),
-                          items: <String>['Male', 'Female']
-                              .map<DropdownMenuItem<String>>(
-                                (String value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Why do you need a nurse?",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            DropdownButtonFormField<String>(
+                              value: _needNurse,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _needNurse = newValue;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              )
-                              .toList(),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF1C8892),
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                hintText: 'Nurse for',
+                                fillColor: Colors.grey[
+                                    100], // Dropdown button background color
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 16),
+                              ),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black, // Dropdown item text color
+                              ),
+                              items: <String>[
+                                'Routine medical care',
+                                'Elderly care',
+                                'Medication assistance',
+                                'Wound care',
+                                'Mobility assistance',
+                                'Post-hospitalization care',
+                                'Other'
+                              ]
+                                  .map<DropdownMenuItem<String>>(
+                                    (String value) => DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ],
                         ),
                       ],
                     ),
