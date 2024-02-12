@@ -297,16 +297,16 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                                   ),
                                                 );
 
-                                                // Add user data to Firestore
-                                                CollectionReference centers =
-                                                    FirebaseFirestore.instance
-                                                        .collection('centers');
-                                                await centers.add({
-                                                  'Admin':
-                                                      adminNameController.text,
-                                                  'Email':
-                                                      adminEmailController.text,
-                                                });
+                                                // // Add user data to Firestore
+                                                // CollectionReference centers =
+                                                //     FirebaseFirestore.instance
+                                                //         .collection('centers');
+                                                // await centers.add({
+                                                //   'Admin':
+                                                //       adminNameController.text,
+                                                //   'Email':
+                                                //       adminEmailController.text,
+                                                // });
 
                                                 // Navigate to the home screen
                                                 Navigator.pushReplacement(

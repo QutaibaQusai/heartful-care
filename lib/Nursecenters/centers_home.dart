@@ -75,6 +75,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerNameController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -83,6 +84,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerContactNumber,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -91,6 +93,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerEmailAddress,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -99,6 +102,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: urlLogoImage,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -114,6 +118,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerAddressOne,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -122,6 +127,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerAddressTwo,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -137,6 +143,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerOpiningHours,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -152,6 +159,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerContactName,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -160,6 +168,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerContractPosition,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -175,6 +184,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerDescription,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -183,6 +193,7 @@ class _CentersHome extends State<CentersHome> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                  enabled: isEditing,
                   controller: centerWebsite,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -253,7 +264,9 @@ class _CentersHome extends State<CentersHome> {
                                       'Are you sure you want to submit your data?'),
                                   actions: [
                                     TextButton(
-                                      onPressed: () async {},
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                      },
                                       child: Text(
                                         'Yes',
                                         style:
