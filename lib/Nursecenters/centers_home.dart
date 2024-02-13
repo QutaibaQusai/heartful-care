@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:test/Nursecenters/center_patient_request.dart';
 
 class CentersHome extends StatefulWidget {
   const CentersHome({super.key});
@@ -30,33 +32,38 @@ class _CentersHome extends State<CentersHome> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Row(
-            children: [
-              Text(
-                'Home',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isEditing = !isEditing;
-                  });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Edit',
-                    style: TextStyle(
-                      color: Color(0xFF1C8892),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+          title: Text(
+            'Home',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isEditing = !isEditing;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Edit',
+                  style: TextStyle(
+                    color: Color(0xFF1C8892),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return PatientRequest();
+                  }));
+                },
+                icon: Icon(FontAwesomeIcons.bell, color: Color(0xFF1C8892)))
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(

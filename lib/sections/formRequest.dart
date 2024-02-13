@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -13,7 +14,14 @@ class _FormRequestState extends State<FormRequest> {
   bool? _hasAllergies;
   bool? _isWalk;
   bool? _historyOfSurgeries;
-  String? _needNurse; // New variable for nurse requirement
+  String? _needNurse;
+  TextEditingController patientFirstName = TextEditingController();
+  TextEditingController patientLastName = TextEditingController();
+  TextEditingController patientPhoneNumber = TextEditingController();
+  TextEditingController patientEmail = TextEditingController();
+  TextEditingController patientAge = TextEditingController();
+  TextEditingController patientGender = TextEditingController();
+  TextEditingController patientAddress = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +75,7 @@ class _FormRequestState extends State<FormRequest> {
                           children: [
                             Expanded(
                               child: TextFormField(
+                                controller: patientFirstName,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -83,6 +92,7 @@ class _FormRequestState extends State<FormRequest> {
                             SizedBox(width: 10),
                             Expanded(
                               child: TextFormField(
+                                controller: patientLastName,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -102,6 +112,7 @@ class _FormRequestState extends State<FormRequest> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: patientPhoneNumber,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -118,6 +129,7 @@ class _FormRequestState extends State<FormRequest> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: patientEmail,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -137,6 +149,7 @@ class _FormRequestState extends State<FormRequest> {
                           children: [
                             Expanded(
                               child: TextFormField(
+                                controller: patientAge,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -190,6 +203,7 @@ class _FormRequestState extends State<FormRequest> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: patientAddress,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -432,6 +446,7 @@ class _FormRequestState extends State<FormRequest> {
             ),
             onPressed: () {
               // TODO: Implement button onPressed logic
+              _saveFormDataToFirestore();
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -447,5 +462,54 @@ class _FormRequestState extends State<FormRequest> {
         ),
       ),
     );
+  }
+
+  void _saveFormDataToFirestore() async {
+    try {
+      // Get form data from text controllers
+      String firstName = patientFirstName.text;
+      String lastName = patientLastName.text;
+      String phoneNumber = patientPhoneNumber.text;
+      String email = patientEmail.text;
+      int age = int.tryParse(patientAge.text) ?? 0;
+      String gender = _selectedGender ?? "";
+      String address = patientAddress.text;
+
+      // Create a map representing the form data
+      Map<String, dynamic> formData = {
+        'firstName': firstName,
+        'lastName': lastName,
+        'phoneNumber': phoneNumber,
+        'email': email,
+        'age': age,
+        'gender': gender,
+        'address': address,
+        'hasAllergies': _hasAllergies ?? false,
+        'isWalk': _isWalk ?? false,
+        'historyOfSurgeries': _historyOfSurgeries ?? "",
+        'needNurse': _needNurse ?? "",
+        // Add more fields as needed
+      };
+
+      // Save form data to Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc('user_id')
+          .collection('form_request')
+          .add(formData);
+
+      // Show success message or navigate to next screen
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Form data saved successfully!'),
+        duration: Duration(seconds: 2),
+      ));
+    } catch (e) {
+      // Handle errors
+      print('Error saving form data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error saving form data. Please try again later.'),
+        duration: Duration(seconds: 2),
+      ));
+    }
   }
 }
