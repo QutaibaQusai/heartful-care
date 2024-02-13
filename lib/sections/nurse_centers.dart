@@ -199,12 +199,11 @@ class NurseCenters extends StatelessWidget {
                                                   .size
                                                   .width /
                                               3,
-                                          // color: Colors.red,
                                           child: CircleAvatar(
                                             radius: MediaQuery.of(context)
                                                     .size
                                                     .height /
-                                                14, // half of the height
+                                                14,
                                             backgroundImage: NetworkImage(
                                                 center.urlLogoImage),
                                           ),
