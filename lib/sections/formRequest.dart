@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -18,7 +19,7 @@ class _FormRequestState extends State<FormRequest> {
   TextEditingController patientFirstName = TextEditingController();
   TextEditingController patientLastName = TextEditingController();
   TextEditingController patientPhoneNumber = TextEditingController();
-  TextEditingController patientEmail = TextEditingController();
+  // TextEditingController patientEmail = TextEditingController();
   TextEditingController patientAge = TextEditingController();
   TextEditingController patientGender = TextEditingController();
   TextEditingController patientAddress = TextEditingController();
@@ -128,20 +129,23 @@ class _FormRequestState extends State<FormRequest> {
                         SizedBox(
                           height: 10,
                         ),
-                        TextFormField(
-                          controller: patientEmail,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Color(0xFF1C8892), width: 2.0),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            hintText: 'Email',
-                          ),
-                        ),
+                        // TextFormField(
+                        //   enabled: false,
+                        //   initialValue:
+                        //       FirebaseAuth.instance.currentUser?.email ?? '',
+                        //   // controller: patientEmail,
+                        //   decoration: InputDecoration(
+                        //     border: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: const BorderSide(
+                        //           color: Color(0xFF1C8892), width: 2.0),
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //     hintText: 'Email',
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 10,
                         ),
@@ -447,6 +451,7 @@ class _FormRequestState extends State<FormRequest> {
             onPressed: () {
               // TODO: Implement button onPressed logic
               _saveFormDataToFirestore();
+              // Navigator.of(context).pop();
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -470,46 +475,87 @@ class _FormRequestState extends State<FormRequest> {
       String firstName = patientFirstName.text;
       String lastName = patientLastName.text;
       String phoneNumber = patientPhoneNumber.text;
-      String email = patientEmail.text;
+      // String email = patientEmail.text;
       int age = int.tryParse(patientAge.text) ?? 0;
       String gender = _selectedGender ?? "";
       String address = patientAddress.text;
 
-      // Create a map representing the form data
-      Map<String, dynamic> formData = {
-        'firstName': firstName,
-        'lastName': lastName,
-        'phoneNumber': phoneNumber,
-        'email': email,
-        'age': age,
-        'gender': gender,
-        'address': address,
-        'hasAllergies': _hasAllergies ?? false,
-        'isWalk': _isWalk ?? false,
-        'historyOfSurgeries': _historyOfSurgeries ?? "",
-        'needNurse': _needNurse ?? "",
-        // Add more fields as needed
-      };
-
-      // Save form data to Firestore
-      await FirebaseFirestore.instance
+      // Find the user document
+      var userDoc = await FirebaseFirestore.instance
           .collection('users')
-          .doc('user_id')
-          .collection('form_request')
-          .add(formData);
+          .where('email',
+              isEqualTo: FirebaseAuth.instance.currentUser?.email ?? '')
+          .get();
 
-      // Show success message or navigate to next screen
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Form data saved successfully!'),
-        duration: Duration(seconds: 2),
-      ));
+      if (userDoc.docs.isNotEmpty) {
+        var userId = userDoc.docs[0].id;
+
+        // Create a map representing the form data
+        Map<String, dynamic> formData = {
+          'firstName': firstName,
+          'lastName': lastName,
+          'phoneNumber': phoneNumber,
+          // 'email': email,
+          'age': age,
+          'gender': gender,
+          'address': address,
+          'hasAllergies': _hasAllergies ?? false,
+          'isWalk': _isWalk ?? false,
+          'historyOfSurgeries': _historyOfSurgeries ?? "",
+          'needNurse': _needNurse ?? "",
+          // Add more fields as needed
+        };
+
+        // Save form data to Firestore using the retrieved user ID and a subcollection
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection(
+                'form_requests') // Change 'form_requests' to your desired subcollection name
+            .add(formData);
+
+        // Show success message or navigate to the next screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Form data saved successfully!',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+          ),
+        );
+      } else {
+        // Handle the case where the user document is not found
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'User not found',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+          ),
+        );
+      }
     } catch (e) {
       // Handle errors
-      print('Error saving form data: $e');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Error saving form data. Please try again later.'),
-        duration: Duration(seconds: 2),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Error saving form data. Please try again later.',
+            style: TextStyle(
+              fontSize: 17,
+            ),
+          ),
+        ),
+      );
     }
   }
 }
