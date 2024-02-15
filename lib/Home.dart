@@ -4,10 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:test/Profile/account.dart';
-import 'package:test/Settings/settings_home_page.dart';
-import 'package:test/model/sections.dart';
-import 'package:test/sections/medical_devices.dart';
-import 'package:test/sections/nurse_centers.dart';
+import 'package:test/User%20Settings/settings_home_page.dart';
+import 'package:test/model/Home_Sections_Model.dart';
+import 'package:test/sections/MedicalDevicesSection/medical_devices.dart';
+import 'package:test/sections/NurseCenterSection/nurse_centersTils.dart';
+
 
 class Home extends StatefulWidget {
   final String userEmail;

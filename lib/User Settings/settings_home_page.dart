@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/Home.dart';
-import 'package:test/Settings/YourAccountInfoPage.dart';
-import 'package:test/Settings/YourChangeEmailPage.dart';
-import 'package:test/Settings/YourChangePassPage.dart';
-import 'package:test/Settings/addaddresspage.dart';
+import 'package:test/User%20Settings/YourAccountInfoPage.dart';
+import 'package:test/User%20Settings/YourChangeEmailPage.dart';
+import 'package:test/User%20Settings/YourChangePassPage.dart';
+import 'package:test/User%20Settings/addaddresspage.dart';
 import 'package:test/intro_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

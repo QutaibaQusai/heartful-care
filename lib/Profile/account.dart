@@ -1,8 +1,9 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Settings/YourAccountInfoPage.dart';
+// import 'package:test/Settings/YourAccountInfoPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:test/User%20Settings/YourAccountInfoPage.dart';
 
 class Account extends StatefulWidget {
   final String userEmail;

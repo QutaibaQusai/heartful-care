@@ -4,9 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Nursecenters/nurse_centers_login.dart';
 import 'package:test/home.dart';
-import 'package:test/screens/sendPasswordResetEmail.dart';
-import 'package:test/screens/signup_screen.dart';
-import 'package:test/utils/firebase_auth.dart';
+import 'package:test/User%20login-Sginup/sendPasswordResetEmail.dart';
+import 'package:test/User%20login-Sginup/signup_screen.dart';
+import 'package:test/Authentication%20firebase/firebase_auth.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);

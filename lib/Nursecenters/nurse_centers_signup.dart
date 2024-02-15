@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Nursecenters/centers_home.dart';
 import 'package:test/Nursecenters/nurse_centers_login.dart';
-import 'package:test/utils/firebase_auth.dart';
+import 'package:test/Authentication%20firebase/firebase_auth.dart';
 
 class CentersSignUp extends StatefulWidget {
   const CentersSignUp({super.key});

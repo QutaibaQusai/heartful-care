@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:test/home.dart';
-import 'package:test/model/content_model.dart';
+import 'package:test/model/Intro_Model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/screens/login_screen.dart';
+import 'package:test/User%20login-Sginup/login_screen.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({Key? key}) : super(key: key);
