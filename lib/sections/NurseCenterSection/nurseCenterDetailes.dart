@@ -266,7 +266,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                         onTap: () {
                           // Open Google Maps
                           // ignore: deprecated_member_use
-                          launch(widget.centerLocation);
+                          launch(
+                              "https://www.google.com/maps?q=${widget.centerLocation}");
                         },
                         child: SvgPicture.asset(
                           "images/center_loc.svg",

@@ -408,10 +408,7 @@ class _SettingFirstPage extends State<SettingFirstPage> {
 
                 // Navigate to home page
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (context) => Home(
-                            userEmail: '',
-                          )),
+                  MaterialPageRoute(builder: (context) => IntroPage()),
                   (Route<dynamic> route) => false,
                 );
               },

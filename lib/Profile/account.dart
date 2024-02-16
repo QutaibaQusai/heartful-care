@@ -65,9 +65,7 @@ class _AccountState extends State<Account> {
         title: Text(
           'Profile',
           style: TextStyle(
-            fontSize: 22,
-            color: Colors.white,
-          ),
+              fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF1C8892),
@@ -115,7 +113,7 @@ class _AccountState extends State<Account> {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 4.0,
+                height: MediaQuery.of(context).size.height / 3.0,
                 color: Color(0xFF1C8892),
               ),
               Padding(
@@ -123,13 +121,14 @@ class _AccountState extends State<Account> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: Colors.white,
+                        //color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 1,
-                        blurRadius: 4,
-                        offset: Offset(0, 1),
+                        // blurRadius: 4,
+                        //offset: Offset(0, 1),
                       ),
                     ],
                   ),
@@ -141,15 +140,15 @@ class _AccountState extends State<Account> {
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: CircleAvatar(
-                            radius: 60,
+                            radius: 67,
                             backgroundColor: Colors.transparent,
                             backgroundImage: AssetImage("images/profile.webp"),
                           ),
                         ),
                         Text(
-                          fullname,
+                          fullname.toUpperCase(),
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -164,11 +163,15 @@ class _AccountState extends State<Account> {
                                 children: [],
                               ),
                               Card(
-                                margin: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(5),
                                 child: ListTile(
                                   leading: Icon(Icons.email),
                                   iconColor: Color(0xFF1C8892),
-                                  title: Text('Email'),
+                                  title: Text(
+                                    'Email',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                   subtitle: Text(
                                     widget.userEmail.isNotEmpty
                                         ? widget.userEmail
@@ -177,29 +180,35 @@ class _AccountState extends State<Account> {
                                 ),
                               ),
                               Card(
-                                margin: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(5),
                                 child: ListTile(
                                   leading: Icon(Icons.call),
                                   iconColor: Color(0xFF1C8892),
-                                  title: Text('Phone Number'),
+                                  title: Text('Phone Number',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                   subtitle: Text(phoneNumber),
                                 ),
                               ),
                               Card(
-                                margin: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(5),
                                 child: ListTile(
                                   leading: Icon(FontAwesomeIcons.idCard),
                                   iconColor: Color(0xFF1C8892),
-                                  title: Text('National ID'),
+                                  title: Text('National ID',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                   subtitle: Text(nationalID),
                                 ),
                               ),
                               Card(
-                                margin: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(5),
                                 child: ListTile(
                                   leading: Icon(FontAwesomeIcons.calendar),
                                   iconColor: Color(0xFF1C8892),
-                                  title: Text('Date of Birth'),
+                                  title: Text('Date of Birth',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                   subtitle: Text(
                                     dateOfBirth != null
                                         ? formatDate(dateOfBirth!,
