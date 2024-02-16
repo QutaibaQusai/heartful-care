@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/sections/NurseCenterSection/nurseCenterModel.dart';
+import 'package:test/model/nurseCenterModel.dart';
 import 'package:test/sections/NurseCenterSection/nurseCenterDetailes.dart';
 
 class NurseCenters extends StatelessWidget {
@@ -149,7 +149,8 @@ class NurseCenters extends StatelessWidget {
                                         centerPhoneNumber: center.phoneNumber,
                                         centerAddress1: center.addressOne,
                                         centerEmail: center.emailAddress,
-                                        centerWebsite: center.website,
+                                        centerWebsite: center.website, centerLocation: center.centerLocation,
+                                        
                                       );
                                     },
                                     transitionsBuilder: (context, animation,

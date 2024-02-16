@@ -5,7 +5,9 @@ import 'package:lottie/lottie.dart';
 import 'package:test/Nursecenters/center_patient_request.dart';
 
 class CentersHome extends StatefulWidget {
-  const CentersHome({super.key});
+  final String centerEmail;
+
+  const CentersHome({super.key, required this.centerEmail});
 
   @override
   State<CentersHome> createState() => _CentersHome();
@@ -17,7 +19,7 @@ class _CentersHome extends State<CentersHome> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController centerNameController = TextEditingController();
   TextEditingController centerContactNumber = TextEditingController();
-  TextEditingController centerEmailAddress = TextEditingController();
+  // TextEditingController centerEmailAddress = TextEditingController();
   TextEditingController centerAddressOne = TextEditingController();
   TextEditingController centerAddressTwo = TextEditingController();
   TextEditingController centerOpiningHours = TextEditingController();
@@ -26,6 +28,44 @@ class _CentersHome extends State<CentersHome> {
   TextEditingController centerDescription = TextEditingController();
   TextEditingController centerWebsite = TextEditingController();
   TextEditingController urlLogoImage = TextEditingController();
+  TextEditingController centerLocation = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData(); // Fetch the user's name when the widget is created
+  }
+
+  void fetchUserData() async {
+    try {
+      var centerDoc = await FirebaseFirestore.instance
+          .collection('centers')
+          .where('Email', isEqualTo: widget.centerEmail)
+          .get();
+
+      if (centerDoc.docs.isNotEmpty) {
+        var userData = centerDoc.docs[0].data();
+
+        setState(() {
+          centerNameController.text = userData['Center Name'] ?? "";
+          centerContactNumber.text = userData['Center phone number'] ?? "";
+          centerAddressOne.text = userData["Center Address 1"] ?? "";
+          centerAddressTwo.text = userData["Center Address 2"] ?? "";
+          centerOpiningHours.text = userData["Center operating Hours"] ?? "";
+          centerContactName.text = userData["Contact Center name"] ?? "";
+          centerContractPosition.text =
+              userData["Contact Center position"] ?? "";
+          centerDescription.text = userData["Center Description"] ?? "";
+          centerWebsite.text = userData["Center website"] ?? "";
+          urlLogoImage.text = userData["URL Logo Image"] ?? "";
+          centerLocation.text = userData["Center Location"] ?? "";
+        });
+      }
+    } catch (e) {
+      print('Error fetching user data:$e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -121,7 +161,9 @@ class _CentersHome extends State<CentersHome> {
                   SizedBox(height: 10),
                   TextFormField(
                     enabled: isEditing,
-                    controller: centerEmailAddress,
+                    initialValue: widget.centerEmail.isNotEmpty
+                        ? widget.centerEmail
+                        : "Guest",
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Email Address',
@@ -184,6 +226,15 @@ class _CentersHome extends State<CentersHome> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Address 2 (Optional)',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    enabled: isEditing,
+                    controller: centerLocation,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Center Location Url',
                     ),
                   ),
                   SizedBox(
@@ -326,26 +377,26 @@ class _CentersHome extends State<CentersHome> {
                           : () {
                               if (_formKey.currentState!.validate()) {
                                 // Confirm deletion
-                                CollectionReference centers = FirebaseFirestore
-                                    .instance
-                                    .collection('centers');
-                                centers.add({
-                                  'Center Name': centerNameController.text,
-                                  'Center phone number':
-                                      centerNameController.text,
-                                  'Center Email Address':
-                                      centerEmailAddress.text,
-                                  'Center Address 1': centerAddressOne.text,
-                                  'Center Address 2': centerAddressTwo.text,
-                                  'Center operating Hours':
-                                      centerOpiningHours.text,
-                                  'Contact Center name': centerContactName.text,
-                                  'Contact Center position':
-                                      centerContractPosition.text,
-                                  'Contact Description': centerDescription.text,
-                                  'Contact website': centerWebsite.text,
-                                  'URL Logo Image': urlLogoImage.text,
-                                });
+                                // CollectionReference centers = FirebaseFirestore
+                                //     .instance
+                                //     .collection('centers');
+                                // centers.add({
+                                //   'Center Name': centerNameController.text,
+                                //   'Center phone number':
+                                //       centerNameController.text,
+                                //   'Center Email Address':
+                                //       centerEmailAddress.text,
+                                //   'Center Address 1': centerAddressOne.text,
+                                //   'Center Address 2': centerAddressTwo.text,
+                                //   'Center operating Hours':
+                                //       centerOpiningHours.text,
+                                //   'Contact Center name': centerContactName.text,
+                                //   'Contact Center position':
+                                //       centerContractPosition.text,
+                                //   'Contact Description': centerDescription.text,
+                                //   'Contact website': centerWebsite.text,
+                                //   'URL Logo Image': urlLogoImage.text,
+                                // });
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -362,6 +413,7 @@ class _CentersHome extends State<CentersHome> {
                                         TextButton(
                                           onPressed: () async {
                                             Navigator.of(context).pop();
+                                            _submitUserData();
                                           },
                                           child: Text(
                                             'Yes',
@@ -419,5 +471,75 @@ class _CentersHome extends State<CentersHome> {
       caseSensitive: false,
     );
     return regex.hasMatch(value);
+  }
+
+  Future<void> _submitUserData() async {
+    try {
+      CollectionReference centers =
+          FirebaseFirestore.instance.collection('centers');
+
+      // Find the user document
+      var querySnapshot =
+          await centers.where("Email", isEqualTo: widget.centerEmail).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var documentSnapshot = querySnapshot.docs[0];
+        var userId = documentSnapshot.id;
+
+        // Add new fields to the existing document
+        await centers.doc(userId).set({
+          'Center Name': centerNameController.text,
+          'Center phone number': centerContactNumber.text,
+          'Center Address 1': centerAddressOne.text,
+          'Center Address 2': centerAddressTwo.text,
+          'Center operating Hours': centerOpiningHours.text,
+          'Contact Center name': centerContactName.text,
+          'Contact Center position': centerContractPosition.text,
+          'Center Description': centerDescription.text,
+          'Center website': centerWebsite.text,
+          'URL Logo Image': urlLogoImage.text,
+          'Center Location': centerLocation.text
+        }, SetOptions(merge: true));
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'User data updated successfully!',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'User not found',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Error updating user data: $e',
+            style: TextStyle(
+              fontSize: 17,
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

@@ -10,8 +10,9 @@ class NurseCenter {
   final String contactPosition;
   final String description;
   final String website;
+  final String centerLocation;
 
-  NurseCenter({
+  NurseCenter({required this.centerLocation, 
     required this.name,
     required this.phoneNumber,
     required this.emailAddress,
@@ -37,8 +38,9 @@ class NurseCenter {
       operatingHours: map['Center operating Hours'] ?? '',
       contactName: map['Contact Center name'] ?? '',
       contactPosition: map['Contact Center position'] ?? '',
-      description: map['Contact Description'] ?? '',
-      website: map['Contact website'] ?? '',
+      description: map['Center Description'] ?? '',
+      website: map['Center website'] ?? '',
+      centerLocation: map['Center location'] ?? '',
     );
   }
 }

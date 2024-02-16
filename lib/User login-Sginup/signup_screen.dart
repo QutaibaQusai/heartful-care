@@ -344,18 +344,6 @@ class _SignInScreen extends State<SignInScreen> {
             ),
           ),
         ),
-        floatingActionButton: CircleAvatar(
-            backgroundColor: Color(0xFF1C8892),
-            radius: 30,
-            child: MaterialButton(
-              onPressed: () {
-                showBottomSheet();
-              },
-              child: Icon(
-                FontAwesomeIcons.unlock,
-                color: Colors.white,
-              ),
-            )),
       ),
     );
   }
@@ -392,28 +380,6 @@ class _SignInScreen extends State<SignInScreen> {
           )
         ],
       ),
-    );
-  }
-
-  showBottomSheet() {
-    showModalBottomSheet(
-      showDragHandle: true,
-      backgroundColor: Colors.white,
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(0.0)),
-      ),
-      builder: (context) {
-        return Container(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Text("data")],
-            ),
-          ),
-        );
-      },
     );
   }
 }

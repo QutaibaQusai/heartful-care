@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/FillFormRequest.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,6 +13,7 @@ class DetailedNurseCenter extends StatefulWidget {
   final String centerAddress1;
   final String centerEmail;
   final String centerWebsite;
+  final String centerLocation;
   DetailedNurseCenter(
       {required this.centerName,
       required this.operatingHours,
@@ -20,7 +22,8 @@ class DetailedNurseCenter extends StatefulWidget {
       required this.centerDescription,
       required this.centerAddress1,
       required this.centerEmail,
-      required this.centerWebsite});
+      required this.centerWebsite,
+      required this.centerLocation});
 
   @override
   State<DetailedNurseCenter> createState() => _DetailedNurseCenter();
@@ -259,26 +262,21 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                       width: MediaQuery.of(context).size.width / 2.80,
                       // height: MediaQuery.of(context).size.width / 2.5,
                       //color: Colors.green,
-                      child: Image.network(
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR06MADR69xqUQgvURQxGz868kOIb_-AEWWXgnr3L5h8jf4voSzjAky2oftOhY2D69_cHA&usqp=CAU"),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Open Google Maps
+                          // ignore: deprecated_member_use
+                          launch(widget.centerLocation);
+                        },
+                        child: SvgPicture.asset(
+                          "images/center_loc.svg",
+                          fit: BoxFit.contain,
+                          width: 180,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                // SizedBox(
-                //   height: 40,
-                // ),
-                // Row(
-                //   children: [
-                //     Text(
-                //       "Website link: " + widget.centerWebsite.toUpperCase(),
-                //       style: TextStyle(
-                //           fontSize: 20,
-                //           fontWeight: FontWeight.bold,
-                //           color: Colors.black),
-                //     ),
-
-                //   ],
-                // ),
               ],
             ),
           ),

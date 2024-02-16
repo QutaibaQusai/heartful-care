@@ -15,7 +15,6 @@ class CentersLogin extends StatefulWidget {
 
 class _CentersLoginState extends State<CentersLogin> {
   final formKey = GlobalKey<FormState>();
-
   TextEditingController centerEmailController = TextEditingController();
   TextEditingController centerPasswordController = TextEditingController();
   bool showHidePassword = true;
@@ -226,7 +225,11 @@ class _CentersLoginState extends State<CentersLogin> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            CentersHome(),
+                                                            CentersHome(
+                                                          centerEmail:
+                                                              centerEmailController
+                                                                  .text,
+                                                        ),
                                                       ),
                                                     ));
                                           }
@@ -284,7 +287,9 @@ class _CentersLoginState extends State<CentersLogin> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CentersHome(),
+                          builder: (context) => CentersHome(
+                            centerEmail: centerEmailController.text,
+                          ),
                         ),
                       );
                     },

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -296,23 +297,27 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                                   ),
                                                 );
 
-                                                // // Add user data to Firestore
-                                                // CollectionReference centers =
-                                                //     FirebaseFirestore.instance
-                                                //         .collection('centers');
-                                                // await centers.add({
-                                                //   'Admin':
-                                                //       adminNameController.text,
-                                                //   'Email':
-                                                //       adminEmailController.text,
-                                                // });
+                                                // Add user data to Firestore
+                                                CollectionReference centers =
+                                                    FirebaseFirestore.instance
+                                                        .collection('centers');
+                                                await centers.add({
+                                                  'Admin':
+                                                      adminNameController.text,
+                                                  'Email':
+                                                      adminEmailController.text,
+                                                });
 
                                                 // Navigate to the home screen
                                                 Navigator.pushReplacement(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        CentersHome(),
+                                                        CentersHome(
+                                                      centerEmail:
+                                                          adminEmailController
+                                                              .text,
+                                                    ),
                                                   ),
                                                 );
                                               }
