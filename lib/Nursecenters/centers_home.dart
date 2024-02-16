@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:test/Nursecenters/center_patient_request.dart';
+import 'package:http/http.dart' as http;
 
 class CentersHome extends StatefulWidget {
   final String centerEmail;
@@ -192,7 +193,6 @@ class _CentersHome extends State<CentersHome> {
                       if (value == null || value.isEmpty) {
                         return 'URL logo Image is required';
                       }
-
                       return null; // Validation passed
                     },
                   ),
@@ -436,6 +436,7 @@ class _CentersHome extends State<CentersHome> {
                                   },
                                 );
                               }
+                              checkImageValidity();
                             },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -540,6 +541,29 @@ class _CentersHome extends State<CentersHome> {
           ),
         ),
       );
+    }
+  }
+
+  Future<bool> isImageLinkValid(String imageUrl) async {
+    try {
+      final response = await http.head(Uri.parse(imageUrl));
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void checkImageValidity() async {
+    String imageUrl = urlLogoImage.text;
+    bool isValid = await isImageLinkValid(imageUrl);
+
+    if (isValid) {
+      // The image link is valid, perform your desired action.
+      print("Image link is valid!");
+      print(isValid);
+    } else {
+      // The image link is not valid, handle the error or take appropriate action.
+      print("Image link is not valid!++++++++");
     }
   }
 }

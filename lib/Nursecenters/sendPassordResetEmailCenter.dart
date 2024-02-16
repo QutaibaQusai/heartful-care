@@ -3,17 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:test/Authentication%20firebase/firebase_auth.dart';
 
-class SendPasswordResetEmail extends StatefulWidget {
-  const SendPasswordResetEmail({super.key});
+class SendPasswordResetEmailCenter extends StatefulWidget {
+  const SendPasswordResetEmailCenter({super.key});
 
   @override
-  State<SendPasswordResetEmail> createState() => _SendPasswordResetEmailState();
+  State<SendPasswordResetEmailCenter> createState() =>
+      _SendPasswordResetEmailCenterState();
 }
 
-class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
+class _SendPasswordResetEmailCenterState
+    extends State<SendPasswordResetEmailCenter> {
   final TextEditingController emailController = TextEditingController();
   final formKey1 = GlobalKey<FormFieldState>();
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,8 +27,7 @@ class _SendPasswordResetEmailState extends State<SendPasswordResetEmail> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Lottie.asset('images/lottie/Animation - 1703503597422.json',
-                        width: 350),
+                    Lottie.asset('images/centerForgetPass.json', width: 300),
                     SizedBox(
                       height: 25,
                     ),

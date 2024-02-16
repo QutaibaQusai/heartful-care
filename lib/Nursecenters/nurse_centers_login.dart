@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Nursecenters/centers_home.dart';
 import 'package:test/Nursecenters/nurse_centers_signup.dart';
+import 'package:test/Nursecenters/sendPassordResetEmailCenter.dart';
 import 'package:test/User%20login-Sginup/login_screen.dart';
 import 'package:test/Authentication%20firebase/firebase_auth.dart';
 
@@ -153,6 +155,7 @@ class _CentersLoginState extends State<CentersLogin> {
                                   TextButton(
                                     onPressed: () {
                                       // Handle forgot password logic
+                                      showBottomSheet();
                                     },
                                     child: Text(
                                       "Forget Password?",
@@ -307,6 +310,94 @@ class _CentersLoginState extends State<CentersLogin> {
           ),
         ),
       ),
+    );
+  }
+    showBottomSheet() {
+    showModalBottomSheet(
+      showDragHandle: true,
+      backgroundColor: Colors.white,
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(0.0)),
+      ),
+      builder: (context) {
+        return Container(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Forget \nPassword",
+                  style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                      color: Color(0xFF1C8892)),
+                ),
+                Text(
+                  "Select which contact details should we use to reset your password:",
+                  style: TextStyle(
+                      fontSize: 17, height: 1.6, color: Colors.grey[700]),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                InkWell(
+                  onTap: () {
+                    //TODO
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SendPasswordResetEmailCenter()),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF1C8892),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 40, bottom: 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.envelope,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "E-mail:",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily:
+                                        GoogleFonts.poppins().fontFamily,
+                                    height: 1.8),
+                              ),
+                              Text(
+                                "Reset via Mail Verification.",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

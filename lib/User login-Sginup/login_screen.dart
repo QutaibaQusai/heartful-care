@@ -209,11 +209,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             TextButton(
                               onPressed: () {
                                 showBottomSheet();
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             ForgotPasswordScreen()));
+                               
                               },
                               child: Text(
                                 "Forget Password?",
@@ -235,7 +231,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                   style: ButtonStyle(),
                                   onPressed: () async {
                                     if (formKey.currentState!.validate()) {
-                                      //   // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);
+                                        // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);
                                       final x = await MyFirebaseAuth().signIn(
                                           context: context,
                                           email: emailTextController.text,

@@ -12,7 +12,8 @@ class NurseCenter {
   final String website;
   final String centerLocation;
 
-  NurseCenter({required this.centerLocation, 
+  NurseCenter({
+    required this.centerLocation,
     required this.name,
     required this.phoneNumber,
     required this.emailAddress,
@@ -31,8 +32,7 @@ class NurseCenter {
       name: map['Center Name'] ?? '',
       phoneNumber: map['Center phone number'] ?? '',
       emailAddress: map['Center Email Address'] ?? '',
-      urlLogoImage: map['URL Logo Image'] ??
-          'https://img.freepik.com/premium-vector/home-care-logo_590037-186.jpg',
+      urlLogoImage: map['URL Logo Image'] ?? '',
       addressOne: map['Center Address 1'] ?? '',
       addressTwo: map['Center Address 2'] ?? '',
       operatingHours: map['Center operating Hours'] ?? '',
