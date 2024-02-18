@@ -156,6 +156,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                   IconButton(
                                     onPressed: () {
                                       _sendEmail();
+                                      // print("ssss :" + widget.centerEmail);
                                     },
                                     icon: Icon(Icons.email,
                                         color: Color(0xFF1C8892)),

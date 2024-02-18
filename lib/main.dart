@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
@@ -10,6 +11,8 @@ void main() async {
   await Firebase.initializeApp();
   //this line for the language
   await Settings.init(cacheProvider: SharePreferenceCache());
+  await FirebaseAuth.instance.setLanguageCode('en');
+
   runApp(const MyApp());
 }
 

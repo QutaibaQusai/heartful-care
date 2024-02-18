@@ -149,8 +149,8 @@ class NurseCenters extends StatelessWidget {
                                         centerPhoneNumber: center.phoneNumber,
                                         centerAddress1: center.addressOne,
                                         centerEmail: center.emailAddress,
-                                        centerWebsite: center.website, centerLocation: center.centerLocation,
-                                        
+                                        centerWebsite: center.website,
+                                        centerLocation: center.centerLocation,
                                       );
                                     },
                                     transitionsBuilder: (context, animation,

@@ -41,8 +41,8 @@ dependencies:
   flutter_screenutil: ^5.9.0
   font_awesome_flutter: ^10.6.0
   flutter_settings_screens: ^0.3.3-null-safety+2
-  firebase_core: ^2.24.2
-  firebase_auth: ^4.15.3
+  firebase_core: ^2.25.4
+  firebase_auth: ^4.17.4
   lottie: ^2.7.0
   cloud_firestore: ^4.14.0
   date_format: ^2.0.2

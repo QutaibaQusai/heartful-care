@@ -134,4 +134,55 @@ class MyFirebaseAuth {
       print('______________Failed to update password:_____________ $e');
     }
   }
+
+  Future<void> changeEmail({
+    required BuildContext context,
+    required String newEmail,
+    required String password,
+  }) async {
+    try {
+      User? currentUser = auth.currentUser;
+
+      final AuthCredential credential = EmailAuthProvider.credential(
+        email: currentUser?.email ?? '',
+        password: password,
+      );
+
+      await currentUser?.reauthenticateWithCredential(credential);
+
+      // Send verification email to the new email address
+      await currentUser?.verifyBeforeUpdateEmail(newEmail);
+
+      // Update the email after verification
+      // await currentUser?.updateEmail(newEmail);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Email updated successfully to $newEmail",
+            style: TextStyle(
+              fontSize: 17,
+            ),
+          ),
+        ),
+      );
+      print('Email updated successfully to $newEmail');
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Failed to update email: ${e.message}",
+            style: TextStyle(
+              fontSize: 17,
+            ),
+          ),
+        ),
+      );
+      print('Failed to update email: ${e.message}');
+    }
+  }
 }

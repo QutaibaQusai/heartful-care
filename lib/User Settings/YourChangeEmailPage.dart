@@ -1,16 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:test/Authentication%20firebase/firebase_auth.dart';
 
 class YourChangeEmailPage extends StatefulWidget {
-  const YourChangeEmailPage({Key? key}) : super(key: key);
+  final String userEmail;
+
+  const YourChangeEmailPage({Key? key, required this.userEmail})
+      : super(key: key);
 
   @override
   State<YourChangeEmailPage> createState() => _YourChangeEmailPageState();
 }
 
 class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
-  Color underlineColor = Colors.grey; // Initial color for the underline
+  Color underlineColor = Colors.grey;
   bool showPassword = false;
+  TextEditingController newEmail = TextEditingController();
+  TextEditingController oldEmail = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  // Add this line to initialize MyFirebaseAuth
+  MyFirebaseAuth myFirebaseAuth = MyFirebaseAuth();
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +38,11 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text("user email " + widget.userEmail),
               TextField(
+                controller: oldEmail,
                 decoration: InputDecoration(
-                  labelText: 'New email',
+                  labelText: 'old email',
                   labelStyle: TextStyle(color: Colors.grey),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: underlineColor),
@@ -39,8 +51,9 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
               ),
               SizedBox(height: 16),
               TextField(
+                controller: newEmail,
                 decoration: InputDecoration(
-                  labelText: 'Confirm email',
+                  labelText: 'New email',
                   labelStyle: TextStyle(color: Colors.grey),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: underlineColor),
@@ -85,18 +98,33 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
               SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
-                height: 50, // Set the height of the button
+                height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Add your submit logic here
+                    print(newEmail.text);
+                    print(oldEmail.text);
+                    print(passwordController.text);
+
+                    if (newEmail.text.isNotEmpty &&
+                        oldEmail.text.isNotEmpty &&
+                        passwordController.text.isNotEmpty) {
+                      myFirebaseAuth.changeEmail(
+                        context: context,
+                        newEmail: newEmail.text.trim(),
+                        password: passwordController.text,
+                      );
+                
+                      _submitUserData();
+                    } else {
+                      // Handle empty fields error
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Set the border radius
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    primary: Color(0xFF1C8892), // Background color
-                    onPrimary: Colors.white, // Text color
+                    primary: Color(0xFF1C8892),
+                    onPrimary: Colors.white,
                   ),
                   child: Text('Submit'),
                 ),
@@ -106,5 +134,29 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _submitUserData() async {
+    try {
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+
+      // Find the user document
+      var userDoc =
+          await users.where('email', isEqualTo: widget.userEmail).get();
+
+      if (userDoc.docs.isNotEmpty) {
+        var userId = userDoc.docs[0].id;
+
+        // Update the existing document with the new data
+        await users.doc(userId).update({
+          'email': newEmail.text,
+        });
+
+        print("+++++++++++++++++++++++++++++++");
+      } else {
+        print("----------");
+      }
+    } catch (e) {}
   }
 }

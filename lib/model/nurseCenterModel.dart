@@ -31,7 +31,7 @@ class NurseCenter {
     return NurseCenter(
       name: map['Center Name'] ?? '',
       phoneNumber: map['Center phone number'] ?? '',
-      emailAddress: map['Center Email Address'] ?? '',
+      emailAddress: map['Email'] ?? '',
       urlLogoImage: map['URL Logo Image'] ?? '',
       addressOne: map['Center Address 1'] ?? '',
       addressTwo: map['Center Address 2'] ?? '',
