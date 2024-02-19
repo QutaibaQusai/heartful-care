@@ -14,6 +14,10 @@ class DetailedNurseCenter extends StatefulWidget {
   final String centerEmail;
   final String centerWebsite;
   final String centerLocation;
+  final double pricePerDay;
+  final double pricePerMonth;
+  final String userEmail;
+
   DetailedNurseCenter(
       {required this.centerName,
       required this.operatingHours,
@@ -23,7 +27,9 @@ class DetailedNurseCenter extends StatefulWidget {
       required this.centerAddress1,
       required this.centerEmail,
       required this.centerWebsite,
-      required this.centerLocation});
+      required this.centerLocation,
+      required this.pricePerDay,
+      required this.pricePerMonth, required this.userEmail});
 
   @override
   State<DetailedNurseCenter> createState() => _DetailedNurseCenter();
@@ -278,6 +284,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                     ),
                   ],
                 ),
+                Text("Price per day " + widget.pricePerDay.toString()),
+                Text("Price per month " + widget.pricePerMonth.toString())
               ],
             ),
           ),
@@ -300,7 +308,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                 context,
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) {
-                    return FormRequest();
+                    return FormRequest(userEmail: widget.userEmail,);
                   },
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {

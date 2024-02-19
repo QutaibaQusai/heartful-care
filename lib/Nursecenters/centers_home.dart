@@ -30,6 +30,8 @@ class _CentersHome extends State<CentersHome> {
   TextEditingController centerWebsite = TextEditingController();
   TextEditingController urlLogoImage = TextEditingController();
   TextEditingController centerLocation = TextEditingController();
+  TextEditingController pricePerDay = TextEditingController();
+  TextEditingController pricePerMonth = TextEditingController();
 
   @override
   void initState() {
@@ -50,8 +52,8 @@ class _CentersHome extends State<CentersHome> {
         setState(() {
           centerNameController.text = userData['Center Name'] ?? "";
           centerContactNumber.text = userData['Center phone number'] ?? "";
-          centerAddressOne.text = userData["Center Address 1"] ?? "";
-          centerAddressTwo.text = userData["Center Address 2"] ?? "";
+          centerAddressOne.text = userData["Center Address 1"] ?? "";
+          centerAddressTwo.text = userData["Center Address 2"] ?? "";
           centerOpiningHours.text = userData["Center operating Hours"] ?? "";
           centerContactName.text = userData["Contact Center name"] ?? "";
           centerContractPosition.text =
@@ -60,6 +62,8 @@ class _CentersHome extends State<CentersHome> {
           centerWebsite.text = userData["Center website"] ?? "";
           urlLogoImage.text = userData["URL Logo Image"] ?? "";
           centerLocation.text = userData["Center Location"] ?? "";
+          pricePerDay.text = userData["Price Per Day"] ?? "";
+          pricePerMonth.text = userData["Price Per Month"] ?? "";
         });
       }
     } catch (e) {
@@ -252,17 +256,17 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'Business Hours',
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter operating hours';
-                      }
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please enter operating hours';
+                    //   }
 
-                      if (!isValidOperatingHours12HourFormat(value)) {
-                        return 'Invalid operating hours format. Please enter in hh:mm AM/PM - hh:mm AM/PM format';
-                      }
+                    //   if (!isValidOperatingHours12HourFormat(value)) {
+                    //     return 'Invalid operating hours format. Please enter in hh:mm AM/PM - hh:mm AM/PM format';
+                    //   }
 
-                      return null; // Validation passed
-                    },
+                    //   return null; // Validation passed
+                    // },
                   ),
                   SizedBox(
                     height: 25,
@@ -294,6 +298,46 @@ class _CentersHome extends State<CentersHome> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Position',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Position is required';
+                      }
+
+                      return null; // Validation passed
+                    },
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Text(
+                    "Prices",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    // keyboardAppearance: ,
+                    enabled: isEditing,
+                    controller: pricePerDay,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Price Per day',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Name is required';
+                      }
+
+                      return null; // Validation passed
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    enabled: isEditing,
+                    controller: pricePerMonth,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Price Per month',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -499,7 +543,9 @@ class _CentersHome extends State<CentersHome> {
           'Center Description': centerDescription.text,
           'Center website': centerWebsite.text,
           'URL Logo Image': urlLogoImage.text,
-          'Center Location': centerLocation.text
+          'Center Location': centerLocation.text,
+          'Price Per Day': pricePerDay.text,
+          'Price Per Month': pricePerMonth.text,
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(

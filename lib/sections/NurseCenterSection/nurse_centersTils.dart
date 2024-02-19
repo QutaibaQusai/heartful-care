@@ -6,7 +6,8 @@ import 'package:test/model/nurseCenterModel.dart';
 import 'package:test/sections/NurseCenterSection/nurseCenterDetailes.dart';
 
 class NurseCenters extends StatelessWidget {
-  const NurseCenters({Key? key});
+  final String userEmail;
+  const NurseCenters({Key? key, required this.userEmail});
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +152,8 @@ class NurseCenters extends StatelessWidget {
                                         centerEmail: center.emailAddress,
                                         centerWebsite: center.website,
                                         centerLocation: center.centerLocation,
+                                        pricePerDay: center.pricePreDay,
+                                        pricePerMonth: center.pricePreMonth, userEmail:userEmail ,
                                       );
                                     },
                                     transitionsBuilder: (context, animation,

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FormRequest extends StatefulWidget {
-  const FormRequest({Key? key}) : super(key: key);
+  final String userEmail;
+  const FormRequest({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   State<FormRequest> createState() => _FormRequestState();
@@ -23,6 +23,24 @@ class _FormRequestState extends State<FormRequest> {
   TextEditingController patientAge = TextEditingController();
   TextEditingController patientGender = TextEditingController();
   TextEditingController patientAddress = TextEditingController();
+  final List<String> item = [];
+
+  void _showMultiSelect() async {
+    List<String> _selectedItem = [
+      'Routine medical care',
+      'Elderly care',
+      'Medication assistance',
+      'Wound care',
+      'Mobility assistance',
+      'Post-hospitalization care',
+      'Other'
+    ];
+    final List<String>? results = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Text("");
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,23 +147,23 @@ class _FormRequestState extends State<FormRequest> {
                         SizedBox(
                           height: 10,
                         ),
-                        // TextFormField(
-                        //   enabled: false,
-                        //   initialValue:
-                        //       FirebaseAuth.instance.currentUser?.email ?? '',
-                        //   // controller: patientEmail,
-                        //   decoration: InputDecoration(
-                        //     border: OutlineInputBorder(
-                        //       borderRadius: BorderRadius.circular(10),
-                        //     ),
-                        //     focusedBorder: OutlineInputBorder(
-                        //       borderSide: const BorderSide(
-                        //           color: Color(0xFF1C8892), width: 2.0),
-                        //       borderRadius: BorderRadius.circular(10),
-                        //     ),
-                        //     hintText: 'Email',
-                        //   ),
-                        // ),
+                        TextFormField(
+                          enabled: false,
+                          initialValue: widget.userEmail.isNotEmpty
+                              ? widget.userEmail
+                              : "Gust",
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF1C8892), width: 2.0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: 'Email',
+                          ),
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -370,64 +388,70 @@ class _FormRequestState extends State<FormRequest> {
                         SizedBox(
                           height: 10,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Why do you need a nurse?",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            DropdownButtonFormField<String>(
-                              value: _needNurse,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _needNurse = newValue;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFF1C8892),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                hintText: 'Nurse for',
-                                fillColor: Colors.grey[
-                                    100], // Dropdown button background color
-                                filled: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 16),
-                              ),
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black, // Dropdown item text color
-                              ),
-                              items: <String>[
-                                'Routine medical care',
-                                'Elderly care',
-                                'Medication assistance',
-                                'Wound care',
-                                'Mobility assistance',
-                                'Post-hospitalization care',
-                                'Other'
-                              ]
-                                  .map<DropdownMenuItem<String>>(
-                                    (String value) => DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ],
-                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              _showMultiSelect();
+                            },
+                            child: Text("Why do you need a nurse?",
+                                style: TextStyle(fontSize: 16)))
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     Text(
+                        //       "Why do you need a nurse?",
+                        //       style: TextStyle(fontSize: 16),
+                        //     ),
+                        //     SizedBox(
+                        //       height: 10,
+                        //     ),
+                        //     DropdownButtonFormField<String>(
+                        //       value: _needNurse,
+                        //       onChanged: (newValue) {
+                        //         setState(() {
+                        //           _needNurse = newValue;
+                        //         });
+                        //       },
+                        //       decoration: InputDecoration(
+                        //         border: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(10),
+                        //         ),
+                        //         focusedBorder: OutlineInputBorder(
+                        //           borderSide: const BorderSide(
+                        //             color: Color(0xFF1C8892),
+                        //             width: 2.0,
+                        //           ),
+                        //           borderRadius: BorderRadius.circular(10),
+                        //         ),
+                        //         hintText: 'Nurse for',
+                        //         fillColor: Colors.grey[
+                        //             100], // Dropdown button background color
+                        //         filled: true,
+                        //         contentPadding: EdgeInsets.symmetric(
+                        //             horizontal: 10, vertical: 16),
+                        //       ),
+                        //       style: TextStyle(
+                        //         fontSize: 16,
+                        //         color: Colors.black, // Dropdown item text color
+                        //       ),
+                        //       items: <String>[
+                        //         'Routine medical care',
+                        //         'Elderly care',
+                        //         'Medication assistance',
+                        //         'Wound care',
+                        //         'Mobility assistance',
+                        //         'Post-hospitalization care',
+                        //         'Other'
+                        //       ]
+                        //           .map<DropdownMenuItem<String>>(
+                        //             (String value) => DropdownMenuItem<String>(
+                        //               value: value,
+                        //               child: Text(value),
+                        //             ),
+                        //           )
+                        //           .toList(),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
@@ -471,50 +495,37 @@ class _FormRequestState extends State<FormRequest> {
 
   void _saveFormDataToFirestore() async {
     try {
-      // Get form data from text controllers
-      String firstName = patientFirstName.text;
-      String lastName = patientLastName.text;
-      String phoneNumber = patientPhoneNumber.text;
-      // String email = patientEmail.text;
-      int age = int.tryParse(patientAge.text) ?? 0;
-      String gender = _selectedGender ?? "";
-      String address = patientAddress.text;
-
-      // Find the user document
-      var userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .where('email',
-              isEqualTo: FirebaseAuth.instance.currentUser?.email ?? '')
-          .get();
-
-      if (userDoc.docs.isNotEmpty) {
-        var userId = userDoc.docs[0].id;
+      // Check if userEmail is not empty
+      if (widget.userEmail.isNotEmpty) {
+        // Get form data from text controllers
+        String firstName = patientFirstName.text;
+        String lastName = patientLastName.text;
+        String phoneNumber = patientPhoneNumber.text;
+        int age = int.tryParse(patientAge.text) ?? 0;
+        String gender = _selectedGender ?? "";
+        String address = patientAddress.text;
 
         // Create a map representing the form data
         Map<String, dynamic> formData = {
           'firstName': firstName,
           'lastName': lastName,
           'phoneNumber': phoneNumber,
-          // 'email': email,
           'age': age,
           'gender': gender,
           'address': address,
           'hasAllergies': _hasAllergies ?? false,
           'isWalk': _isWalk ?? false,
-          'historyOfSurgeries': _historyOfSurgeries ?? "",
+          'historyOfSurgeries': _historyOfSurgeries ?? false,
           'needNurse': _needNurse ?? "",
           // Add more fields as needed
         };
 
-        // Save form data to Firestore using the retrieved user ID and a subcollection
+        // Add data to the 'form_request' collection
         await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId)
-            .collection(
-                'form_requests') // Change 'form_requests' to your desired subcollection name
+            .collection('form_request')
             .add(formData);
 
-        // Show success message or navigate to the next screen
+        // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Color(0xFF1C8892),
@@ -528,13 +539,13 @@ class _FormRequestState extends State<FormRequest> {
           ),
         );
       } else {
-        // Handle the case where the user document is not found
+        // Handle the case where the user email is empty
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Color(0xFF1C8892),
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'User not found',
+              'Please Log in first',
               style: TextStyle(
                 fontSize: 17,
               ),

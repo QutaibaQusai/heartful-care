@@ -9,7 +9,6 @@ import 'package:test/model/Home_Sections_Model.dart';
 import 'package:test/sections/MedicalDevicesSection/medical_devices.dart';
 import 'package:test/sections/NurseCenterSection/nurse_centersTils.dart';
 
-
 class Home extends StatefulWidget {
   final String userEmail;
   const Home({Key? key, required this.userEmail});
@@ -281,7 +280,9 @@ class _HomeState extends State<Home> {
                   onTap: () {
                     if (sections.sectionName == "Nurse centers") {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => NurseCenters()));
+                          builder: (context) => NurseCenters(
+                                userEmail: widget.userEmail,
+                              )));
                     } else if (sections.sectionName == "Medical devices") {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => Medical()));
