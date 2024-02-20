@@ -17,6 +17,7 @@ class DetailedNurseCenter extends StatefulWidget {
   final double pricePerDay;
   final double pricePerMonth;
   final String userEmail;
+  final String centerId;
 
   DetailedNurseCenter(
       {required this.centerName,
@@ -29,7 +30,9 @@ class DetailedNurseCenter extends StatefulWidget {
       required this.centerWebsite,
       required this.centerLocation,
       required this.pricePerDay,
-      required this.pricePerMonth, required this.userEmail});
+      required this.pricePerMonth,
+      required this.userEmail,
+      required this.centerId});
 
   @override
   State<DetailedNurseCenter> createState() => _DetailedNurseCenter();
@@ -84,7 +87,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                               onTap: () {},
                               child: Image.network(
                                 widget.centerUrlImageLogo,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                                 height: 170,
                               ),
                             ),
@@ -273,7 +276,12 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                         onTap: () {
                           // Open Google Maps
                           // ignore: deprecated_member_use
-                          launch(widget.centerLocation);
+                          // launch(
+                          //     "https://maps.app.goo.gl/${widget.centerLocation}"
+                          //     // "https://maps.app.goo.gl/8jsAsANqBK12moaN8");
+                          //     // https://maps.app.goo.gl/qeV4zATskQaats889
+                          //     // "https://maps.app.goo.gl/qeV4zATskQaats889");
+                          //     );
                         },
                         child: SvgPicture.asset(
                           "images/center_loc.svg",
@@ -284,8 +292,39 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                     ),
                   ],
                 ),
-                Text("Price per day " + widget.pricePerDay.toString()),
-                Text("Price per month " + widget.pricePerMonth.toString())
+                SizedBox(
+                  height: 40,
+                ),
+                Text(
+                  "Price details:".toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Column(
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Price per day: " + widget.pricePerDay.toString(),
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Price per Month: " + widget.pricePerMonth.toString(),
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -303,12 +342,13 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
               ),
             ),
             onPressed: () {
-              // TODO
               Navigator.push(
                 context,
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) {
-                    return FormRequest(userEmail: widget.userEmail,);
+                    return FormRequest(
+                      userEmail: widget.userEmail, centerId: widget.centerId,
+                    );
                   },
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {

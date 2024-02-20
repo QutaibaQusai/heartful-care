@@ -15,11 +15,7 @@ class NurseCenters extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Color(0xFF1C8892),
         appBar: AppBar(
-          // centerTitle: true,
-          // title: Text(
-          //   "Available Centers",
-          //   style: TextStyle(color: Colors.white),
-          // ),
+         
           backgroundColor: Color(0xFF1C8892),
           leading: IconButton(
             onPressed: () {
@@ -40,67 +36,16 @@ class NurseCenters extends StatelessWidget {
                 color: Color(0xFF1C8892),
               ),
               child: Stack(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
+              
                 children: [
                   SvgPicture.asset(
                     "images/centerSec.svg",
                     width: 400,
                   ),
-                  // Expanded(child: Container()),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(16.0),
-                  //   child: Text(
-                  //     "Centers available",
-                  //     style: TextStyle(
-                  //         color: Colors.white,
-                  //         fontSize: 22,
-                  //         fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
+                 
                 ],
               ),
-              /*child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.search,
-                                color: Color(0xFF1C8892),
-                              ),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: "Search for nurse center",
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.filter_list,
-                                color: Color(0xFF1C8892),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),*/
+             
             ),
             Expanded(
               child: Container(
@@ -153,7 +98,9 @@ class NurseCenters extends StatelessWidget {
                                         centerWebsite: center.website,
                                         centerLocation: center.centerLocation,
                                         pricePerDay: center.pricePreDay,
-                                        pricePerMonth: center.pricePreMonth, userEmail:userEmail ,
+                                        pricePerMonth: center.pricePreMonth,
+                                        userEmail: userEmail,
+                                        centerId: snapshot.data!.docs[index].id,
                                       );
                                     },
                                     transitionsBuilder: (context, animation,
@@ -209,7 +156,8 @@ class NurseCenters extends StatelessWidget {
                                                     .height /
                                                 14,
                                             backgroundImage: NetworkImage(
-                                                center.urlLogoImage),
+                                              center.urlLogoImage,
+                                            ),
                                           ),
                                         ),
                                         Expanded(

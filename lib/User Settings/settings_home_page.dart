@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/User%20Settings/YourAccountInfoPage.dart';
 import 'package:test/User%20Settings/YourChangeEmailPage.dart';
 import 'package:test/User%20Settings/YourChangePassPage.dart';
@@ -39,15 +38,19 @@ class _SettingFirstPage extends State<SettingFirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icon(
-            FontAwesomeIcons.chevronLeft,
-            color: Colors.black,
-          ),
-        ),
+        shadowColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.of(context).pop();
+        //   },
+        //   icon: Icon(
+        //     FontAwesomeIcons.chevronLeft,
+        //     color: Colors.black,
+        //   ),
+        // ),
+
+        centerTitle: true,
         title: Text(
           'Settings',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -129,7 +132,10 @@ class _SettingFirstPage extends State<SettingFirstPage> {
         if (title == "Change Email") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => YourChangeEmailPage(userEmail: widget.userEmail,)),
+            MaterialPageRoute(
+                builder: (context) => YourChangeEmailPage(
+                      userEmail: widget.userEmail,
+                    )),
           );
         }
         if (title == "Saved Addresses") {

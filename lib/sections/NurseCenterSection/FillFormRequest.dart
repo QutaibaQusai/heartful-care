@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/sections/NurseCenterSection/multiSelect.dart';
 
 class FormRequest extends StatefulWidget {
   final String userEmail;
-  const FormRequest({Key? key, required this.userEmail}) : super(key: key);
+  final String centerId;
+  const FormRequest({Key? key, required this.userEmail, required this.centerId})
+      : super(key: key);
 
   @override
   State<FormRequest> createState() => _FormRequestState();
@@ -15,7 +18,7 @@ class _FormRequestState extends State<FormRequest> {
   bool? _hasAllergies;
   bool? _isWalk;
   bool? _historyOfSurgeries;
-  String? _needNurse;
+  // String? _needNurse;
   TextEditingController patientFirstName = TextEditingController();
   TextEditingController patientLastName = TextEditingController();
   TextEditingController patientPhoneNumber = TextEditingController();
@@ -23,10 +26,10 @@ class _FormRequestState extends State<FormRequest> {
   TextEditingController patientAge = TextEditingController();
   TextEditingController patientGender = TextEditingController();
   TextEditingController patientAddress = TextEditingController();
-  final List<String> item = [];
+  List<String> _selectedItem = [];
 
   void _showMultiSelect() async {
-    List<String> _selectedItem = [
+    List<String> item = [
       'Routine medical care',
       'Elderly care',
       'Medication assistance',
@@ -36,10 +39,20 @@ class _FormRequestState extends State<FormRequest> {
       'Other'
     ];
     final List<String>? results = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Text("");
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return MutiSelect(
+          items: item,
+          selectedItems: _selectedItem, // Pass selected items to MutiSelect
+        );
+      },
+    );
+
+    if (results != null) {
+      setState(() {
+        _selectedItem = results;
+      });
+    }
   }
 
   @override
@@ -70,6 +83,7 @@ class _FormRequestState extends State<FormRequest> {
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: Column(
               children: [
+                Text(widget.centerId),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -389,69 +403,27 @@ class _FormRequestState extends State<FormRequest> {
                           height: 10,
                         ),
                         ElevatedButton(
-                            onPressed: () {
-                              _showMultiSelect();
-                            },
-                            child: Text("Why do you need a nurse?",
-                                style: TextStyle(fontSize: 16)))
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: [
-                        //     Text(
-                        //       "Why do you need a nurse?",
-                        //       style: TextStyle(fontSize: 16),
-                        //     ),
-                        //     SizedBox(
-                        //       height: 10,
-                        //     ),
-                        //     DropdownButtonFormField<String>(
-                        //       value: _needNurse,
-                        //       onChanged: (newValue) {
-                        //         setState(() {
-                        //           _needNurse = newValue;
-                        //         });
-                        //       },
-                        //       decoration: InputDecoration(
-                        //         border: OutlineInputBorder(
-                        //           borderRadius: BorderRadius.circular(10),
-                        //         ),
-                        //         focusedBorder: OutlineInputBorder(
-                        //           borderSide: const BorderSide(
-                        //             color: Color(0xFF1C8892),
-                        //             width: 2.0,
-                        //           ),
-                        //           borderRadius: BorderRadius.circular(10),
-                        //         ),
-                        //         hintText: 'Nurse for',
-                        //         fillColor: Colors.grey[
-                        //             100], // Dropdown button background color
-                        //         filled: true,
-                        //         contentPadding: EdgeInsets.symmetric(
-                        //             horizontal: 10, vertical: 16),
-                        //       ),
-                        //       style: TextStyle(
-                        //         fontSize: 16,
-                        //         color: Colors.black, // Dropdown item text color
-                        //       ),
-                        //       items: <String>[
-                        //         'Routine medical care',
-                        //         'Elderly care',
-                        //         'Medication assistance',
-                        //         'Wound care',
-                        //         'Mobility assistance',
-                        //         'Post-hospitalization care',
-                        //         'Other'
-                        //       ]
-                        //           .map<DropdownMenuItem<String>>(
-                        //             (String value) => DropdownMenuItem<String>(
-                        //               value: value,
-                        //               child: Text(value),
-                        //             ),
-                        //           )
-                        //           .toList(),
-                        //     ),
-                        //   ],
-                        // ),
+                          onPressed: () {
+                            _showMultiSelect();
+                          },
+                          child: Text("Why do you need a nurse?",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white)),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFF1C8892), // Button background color
+                            ),
+                          ),
+                        ),
+                        Wrap(
+                          children: _selectedItem
+                              .map(
+                                (e) => Chip(
+                                  label: Text(e),
+                                ),
+                              )
+                              .toList(),
+                        )
                       ],
                     ),
                   ),
@@ -473,7 +445,6 @@ class _FormRequestState extends State<FormRequest> {
               ),
             ),
             onPressed: () {
-              // TODO: Implement button onPressed logic
               _saveFormDataToFirestore();
               // Navigator.of(context).pop();
             },
@@ -507,6 +478,7 @@ class _FormRequestState extends State<FormRequest> {
 
         // Create a map representing the form data
         Map<String, dynamic> formData = {
+          'center_id': widget.centerId,
           'firstName': firstName,
           'lastName': lastName,
           'phoneNumber': phoneNumber,
@@ -516,7 +488,8 @@ class _FormRequestState extends State<FormRequest> {
           'hasAllergies': _hasAllergies ?? false,
           'isWalk': _isWalk ?? false,
           'historyOfSurgeries': _historyOfSurgeries ?? false,
-          'needNurse': _needNurse ?? "",
+          'needNurse':
+              _selectedItem.isNotEmpty ? _selectedItem : ["not answer"],
           // Add more fields as needed
         };
 
