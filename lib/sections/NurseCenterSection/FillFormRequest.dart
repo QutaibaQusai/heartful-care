@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/multiSelect.dart';
 
+// for the payment option
+enum PaymentOption { perHour, perDay, perMonth, none }
+
 class FormRequest extends StatefulWidget {
   final String userEmail;
   final String centerId;
@@ -27,6 +30,45 @@ class _FormRequestState extends State<FormRequest> {
   TextEditingController patientGender = TextEditingController();
   TextEditingController patientAddress = TextEditingController();
   List<String> _selectedItem = [];
+  // payment option
+  PaymentOption _selectedPaymentOption = PaymentOption.none;
+  int? _numDays;
+  int? _numMonths;
+
+  // for the date and time
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
+
+  Future<void> _selectDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year + 1),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  Future<void> _selectTime() async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+      });
+    }
+    // Convert selected time to AM/PM format
+    String formattedTime = _selectedTime!.format(context);
+    setState(() {
+      _selectedTime = TimeOfDay.fromDateTime(DateTime.parse(formattedTime));
+    });
+  }
 
   void _showMultiSelect() async {
     List<String> item = [
@@ -428,6 +470,182 @@ class _FormRequestState extends State<FormRequest> {
                     ),
                   ),
                 ),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Service details:".toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Date",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(height: 5),
+                                TextFormField(
+                                  readOnly: true,
+                                  controller: TextEditingController(
+                                    text: _selectedDate != null
+                                        ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
+                                        : '',
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Select Date',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF1C8892), width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: _selectDate,
+                                      icon: Icon(Icons.calendar_today),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(height: 5),
+                                TextFormField(
+                                  readOnly: true,
+                                  controller: TextEditingController(
+                                    text: _selectedTime != null
+                                        ? '${_selectedTime!.format(context)}'
+                                        : '',
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Select Time',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF1C8892), width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: _selectTime,
+                                      icon: Icon(Icons.access_time),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Payment Option",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(height: 5),
+                            Column(
+                              children: [
+                                RadioListTile<PaymentOption>(
+                                  title: const Text('Per Hour'),
+                                  value: PaymentOption.perHour,
+                                  groupValue: _selectedPaymentOption,
+                                  onChanged: (PaymentOption? value) {
+                                    setState(() {
+                                      _selectedPaymentOption =
+                                          value ?? PaymentOption.none;
+                                    });
+                                  },
+                                ),
+                                RadioListTile<PaymentOption>(
+                                  title: const Text('Per Day'),
+                                  value: PaymentOption.perDay,
+                                  groupValue: _selectedPaymentOption,
+                                  onChanged: (PaymentOption? value) {
+                                    setState(() {
+                                      _selectedPaymentOption =
+                                          value ?? PaymentOption.none;
+                                    });
+                                  },
+                                ),
+                                RadioListTile<PaymentOption>(
+                                  title: const Text('Per Month'),
+                                  value: PaymentOption.perMonth,
+                                  groupValue: _selectedPaymentOption,
+                                  onChanged: (PaymentOption? value) {
+                                    setState(() {
+                                      _selectedPaymentOption =
+                                          value ?? PaymentOption.none;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        if (_selectedPaymentOption == PaymentOption.perDay)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Number of Days",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(height: 5),
+                              TextField(
+                                keyboardType: TextInputType.number,
+                                onChanged: (value) {
+                                  _numDays = int.tryParse(value);
+                                },
+                              ),
+                            ],
+                          ),
+                        if (_selectedPaymentOption == PaymentOption.perMonth)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Number of Months",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(height: 5),
+                              TextField(
+                                keyboardType: TextInputType.number,
+                                onChanged: (value) {
+                                  _numMonths = int.tryParse(value);
+                                },
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -490,7 +708,6 @@ class _FormRequestState extends State<FormRequest> {
           'historyOfSurgeries': _historyOfSurgeries ?? false,
           'needNurse':
               _selectedItem.isNotEmpty ? _selectedItem : ["not answer"],
-          // Add more fields as needed
         };
 
         // Add data to the 'form_request' collection
