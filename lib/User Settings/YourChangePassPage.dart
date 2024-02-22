@@ -229,10 +229,10 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          primary: Color(0xFF1C8892),
-                          onPrimary: Colors.white,
+                    backgroundColor: Color(0xFF1C8892),
+                          // onPrimary: Colors.white,
                         ),
-                        child: Text('Submit'),
+                        child: Text('Submit', style: TextStyle(color: Colors.white),),
                       ),
                     ),
                   ],

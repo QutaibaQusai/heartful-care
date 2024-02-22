@@ -113,7 +113,7 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
                         newEmail: newEmail.text.trim(),
                         password: passwordController.text,
                       );
-                
+
                       _submitUserData();
                     } else {
                       // Handle empty fields error
@@ -123,10 +123,12 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    primary: Color(0xFF1C8892),
-                    onPrimary: Colors.white,
+                    backgroundColor: Color(0xFF1C8892),
                   ),
-                  child: Text('Submit'),
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ],

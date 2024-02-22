@@ -148,10 +148,13 @@ class _AddAddressPageState extends State<AddAddressPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        primary: Color(0xFF1C8892),
-                        onPrimary: Colors.white,
+                        backgroundColor: Color(0xFF1C8892),
+                        // onPrimary: Colors.white,
                       ),
-                      child: Text('Save address'),
+                      child: Text(
+                        'Save address',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                   SizedBox(width: 16), // Add some spacing between buttons
@@ -164,10 +167,13 @@ class _AddAddressPageState extends State<AddAddressPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        primary: Color(0xFF1C8892),
-                        onPrimary: Colors.white,
+                        backgroundColor: Color(0xFF1C8892),
+                        // onPrimary: Colors.white,
                       ),
-                      child: Text('Delete'),
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],

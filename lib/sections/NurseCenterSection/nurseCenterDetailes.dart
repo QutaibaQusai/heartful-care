@@ -347,7 +347,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) {
                     return FormRequest(
-                      userEmail: widget.userEmail, centerId: widget.centerId,
+                      userEmail: widget.userEmail,
+                      centerId: widget.centerId,
                     );
                   },
                   transitionsBuilder:

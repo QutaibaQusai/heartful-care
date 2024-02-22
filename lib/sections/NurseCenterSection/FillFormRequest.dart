@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/multiSelect.dart';
 
@@ -9,6 +10,7 @@ enum PaymentOption { perHour, perDay, perMonth, none }
 class FormRequest extends StatefulWidget {
   final String userEmail;
   final String centerId;
+  
   const FormRequest({Key? key, required this.userEmail, required this.centerId})
       : super(key: key);
 
@@ -17,6 +19,7 @@ class FormRequest extends StatefulWidget {
 }
 
 class _FormRequestState extends State<FormRequest> {
+  String selectedPaymentOption = '';
   String? _selectedGender;
   bool? _hasAllergies;
   bool? _isWalk;
@@ -31,13 +34,18 @@ class _FormRequestState extends State<FormRequest> {
   TextEditingController patientAddress = TextEditingController();
   List<String> _selectedItem = [];
   // payment option
-  PaymentOption _selectedPaymentOption = PaymentOption.none;
-  int? _numDays;
-  int? _numMonths;
+  // PaymentOption _selectedPaymentOption = PaymentOption.none;
+  // int? _numDays;
+  // int? _numMonths;
 
   // for the date and time
   DateTime? _selectedDate;
+  int selectedPaymentPerHour = 1;
+  int selectedPaymentPerDay = 1;
   TimeOfDay? _selectedTime;
+
+  // String _selectedHours = '1';
+  // String _selectedDays = '1';
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -561,87 +569,87 @@ class _FormRequestState extends State<FormRequest> {
                           ],
                         ),
                         SizedBox(height: 10),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "Payment option: ".toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Payment Option",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 5),
-                            Column(
+                            Row(
                               children: [
-                                RadioListTile<PaymentOption>(
-                                  title: const Text('Per Hour'),
-                                  value: PaymentOption.perHour,
-                                  groupValue: _selectedPaymentOption,
-                                  onChanged: (PaymentOption? value) {
+                                Radio(
+                                  value: 'Per Hour',
+                                  groupValue: selectedPaymentOption,
+                                  onChanged: (value) {
                                     setState(() {
-                                      _selectedPaymentOption =
-                                          value ?? PaymentOption.none;
+                                      selectedPaymentOption = value as String;
                                     });
                                   },
+                                  activeColor: Color(0xFF1C8892),
                                 ),
-                                RadioListTile<PaymentOption>(
-                                  title: const Text('Per Day'),
-                                  value: PaymentOption.perDay,
-                                  groupValue: _selectedPaymentOption,
-                                  onChanged: (PaymentOption? value) {
-                                    setState(() {
-                                      _selectedPaymentOption =
-                                          value ?? PaymentOption.none;
-                                    });
-                                  },
+                                Text(
+                                  'Per Hour',
+                                  style: TextStyle(fontSize: 18),
                                 ),
-                                RadioListTile<PaymentOption>(
-                                  title: const Text('Per Month'),
-                                  value: PaymentOption.perMonth,
-                                  groupValue: _selectedPaymentOption,
-                                  onChanged: (PaymentOption? value) {
+                                SizedBox(width: 10),
+                                DropdownButton<int>(
+                                  value: selectedPaymentPerHour,
+                                  onChanged: (int? value) {
                                     setState(() {
-                                      _selectedPaymentOption =
-                                          value ?? PaymentOption.none;
+                                      selectedPaymentPerHour = value!;
                                     });
                                   },
+                                  items: List.generate(12, (index) {
+                                    return DropdownMenuItem<int>(
+                                      value: index + 1,
+                                      child: Text((index + 1).toString()),
+                                    );
+                                  }),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Radio(
+                                  value: 'Per Day',
+                                  groupValue: selectedPaymentOption,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedPaymentOption = value as String;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text(
+                                  'Per Day',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(width: 10),
+                                DropdownButton<int>(
+                                  value: selectedPaymentPerDay,
+                                  onChanged: (int? value) {
+                                    setState(() {
+                                      selectedPaymentPerDay = value!;
+                                    });
+                                  },
+                                  items: List.generate(30, (index) {
+                                    return DropdownMenuItem<int>(
+                                      value: index + 1,
+                                      child: Text((index + 1).toString()),
+                                    );
+                                  }),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                        if (_selectedPaymentOption == PaymentOption.perDay)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Number of Days",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 5),
-                              TextField(
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) {
-                                  _numDays = int.tryParse(value);
-                                },
-                              ),
-                            ],
-                          ),
-                        if (_selectedPaymentOption == PaymentOption.perMonth)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Number of Months",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 5),
-                              TextField(
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) {
-                                  _numMonths = int.tryParse(value);
-                                },
-                              ),
-                            ],
-                          ),
                       ],
                     ),
                   ),
@@ -708,6 +716,15 @@ class _FormRequestState extends State<FormRequest> {
           'historyOfSurgeries': _historyOfSurgeries ?? false,
           'needNurse':
               _selectedItem.isNotEmpty ? _selectedItem : ["not answer"],
+          'date': _selectedDate != null
+              ? Timestamp.fromDate(
+                  _selectedDate!) // Convert DateTime to Firestore Timestamp
+              : null,
+          'time': _selectedTime != null
+              ? _selectedTime!.format(context) // Save time as string
+              : null,
+          'selectedPaymentPerDay': selectedPaymentPerDay,
+          'selectedPaymentPerHour': selectedPaymentPerHour,
         };
 
         // Add data to the 'form_request' collection
