@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/FillFormRequest.dart';
+import 'package:test/sections/NurseCenterSection/rating.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailedNurseCenter extends StatefulWidget {
@@ -122,7 +124,16 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                 size: 13,
                                 color: Color.fromARGB(255, 241, 241, 47),
                               ),
-                              Text(" 4.4 (2666 Ratings)"),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const CenterRating()),
+                                    );
+                                  },
+                                  child: Text(" 4.4 (2666 Ratings)")),
                             ],
                           ),
                           SizedBox(height: 5),
