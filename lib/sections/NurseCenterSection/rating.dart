@@ -1,6 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -44,6 +44,7 @@ class _CenterRatingState extends State<CenterRating> {
           child: Column(
             children: [
               Container(
+                clipBehavior: Clip.hardEdge,
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height / 4,
                 decoration: BoxDecoration(
@@ -330,7 +331,7 @@ class _CenterRatingState extends State<CenterRating> {
               ),
             ),
             onPressed: () {
-              writeReview();
+              writeReview(0.0, "");
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -348,7 +349,9 @@ class _CenterRatingState extends State<CenterRating> {
     );
   }
 
-  writeReview() {
+  writeReview(double rating, String reviewText) {
+    // Show bottom sheet to write review
+    // Assuming you have initialized Firestore somewhere in your app
     showModalBottomSheet(
       isScrollControlled: true,
       showDragHandle: true,
@@ -386,18 +389,20 @@ class _CenterRatingState extends State<CenterRating> {
                     RatingBar(
                       minRating: 1,
                       maxRating: 5,
-                      initialRating: 3,
+                      initialRating: rating,
                       allowHalfRating: true,
                       ratingWidget: RatingWidget(
                           full: Icon(
                             Icons.star,
                             color: Colors.amber,
                           ),
-                          half: Icon(Icons.star),
+                          half: Icon(Icons.star_half),
                           empty: Icon(
-                            Icons.star,
+                            Icons.star_border,
                           )),
-                      onRatingUpdate: (double value) {},
+                      onRatingUpdate: (double value) {
+                        rating = value; // Update rating when user changes it
+                      },
                     ),
                   ],
                 ),
@@ -407,6 +412,10 @@ class _CenterRatingState extends State<CenterRating> {
                 SizedBox(
                   height: 100, // Adjust height as needed
                   child: TextField(
+                    controller: TextEditingController(text: reviewText),
+                    onChanged: (value) {
+                      reviewText = value; // Update review text as user types
+                    },
                     maxLines: null, // Allows multiple lines
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
@@ -432,7 +441,20 @@ class _CenterRatingState extends State<CenterRating> {
                       ),
                     ),
                     onPressed: () {
-                      writeReview();
+                      // Save review to Firestore
+                      FirebaseFirestore.instance
+                          .collection('Reviews_centers')
+                          .add({
+                        'rating': rating,
+                        'reviewText': reviewText,
+                        'timestamp': Timestamp.now(),
+                      }).then((value) {
+                        // Optionally, you can show a success message or navigate back
+                        Navigator.of(context).pop();
+                      }).catchError((error) {
+                        // Handle error
+                        print("Failed to add review: $error");
+                      });
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

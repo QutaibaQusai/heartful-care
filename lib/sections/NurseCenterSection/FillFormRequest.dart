@@ -10,7 +10,7 @@ enum PaymentOption { perHour, perDay, perMonth, none }
 class FormRequest extends StatefulWidget {
   final String userEmail;
   final String centerId;
-  
+
   const FormRequest({Key? key, required this.userEmail, required this.centerId})
       : super(key: key);
 
