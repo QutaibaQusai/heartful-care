@@ -97,6 +97,7 @@ class _PatientRequestState extends State<PatientRequest> {
                                         ),
                                       ),
                                     ),
+                                    Text(patient.centerId)
                                   ],
                                 ),
                               ),

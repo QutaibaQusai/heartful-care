@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/FillFormRequest.dart';
@@ -21,20 +22,21 @@ class DetailedNurseCenter extends StatefulWidget {
   final String userEmail;
   final String centerId;
 
-  DetailedNurseCenter(
-      {required this.centerName,
-      required this.operatingHours,
-      required this.centerPhoneNumber,
-      required this.centerUrlImageLogo,
-      required this.centerDescription,
-      required this.centerAddress1,
-      required this.centerEmail,
-      required this.centerWebsite,
-      required this.centerLocation,
-      required this.pricePerDay,
-      required this.pricePerMonth,
-      required this.userEmail,
-      required this.centerId});
+  DetailedNurseCenter({
+    required this.centerName,
+    required this.operatingHours,
+    required this.centerPhoneNumber,
+    required this.centerUrlImageLogo,
+    required this.centerDescription,
+    required this.centerAddress1,
+    required this.centerEmail,
+    required this.centerWebsite,
+    required this.centerLocation,
+    required this.pricePerDay,
+    required this.pricePerMonth,
+    required this.userEmail,
+    required this.centerId,
+  });
 
   @override
   State<DetailedNurseCenter> createState() => _DetailedNurseCenter();
@@ -71,7 +73,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       flex: 1,
@@ -119,21 +121,43 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(
-                                FontAwesomeIcons.solidStar,
-                                size: 13,
-                                color: Color.fromARGB(255, 241, 241, 47),
-                              ),
+                              // Icon(
+                              //   FontAwesomeIcons.solidStar,
+                              //   size: 13,
+                              //   color: Color.fromARGB(255, 241, 241, 47),
+                              // ),
                               GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const CenterRating()),
-                                    );
-                                  },
-                                  child: Text(" 4.4 (2666 Ratings)")),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CenterRating(
+                                              userEmail: widget.userEmail,
+                                              centerId: widget.centerId,
+                                            )),
+                                  );
+                                },
+                                child: Transform.scale(
+                                  alignment: Alignment.centerLeft,
+                                  scale: 0.9,
+                                  child: RatingBar.builder(
+                                    // initialRating: overallRating,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    ignoreGestures: true,
+                                    itemCount: 5,
+                                    itemSize: 20,
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      // Not needed here, just for demonstration
+                                    },
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(height: 5),
