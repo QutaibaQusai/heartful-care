@@ -21,6 +21,7 @@ class DetailedNurseCenter extends StatefulWidget {
   final double pricePerMonth;
   final String userEmail;
   final String centerId;
+  final Function(double) onOverallRatingChanged; // Callback function
 
   DetailedNurseCenter({
     required this.centerName,
@@ -36,6 +37,7 @@ class DetailedNurseCenter extends StatefulWidget {
     required this.pricePerMonth,
     required this.userEmail,
     required this.centerId,
+    required this.onOverallRatingChanged,
   });
 
   @override
@@ -43,6 +45,8 @@ class DetailedNurseCenter extends StatefulWidget {
 }
 
 class _DetailedNurseCenter extends State<DetailedNurseCenter> {
+  double overallRating = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -134,28 +138,41 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                         builder: (context) => CenterRating(
                                               userEmail: widget.userEmail,
                                               centerId: widget.centerId,
+                                              onOverallRatingChanged:
+                                                  (newOverallRating) {
+                                                // Update the overallRating in the parent class
+                                                setState(() {
+                                                  overallRating =
+                                                      newOverallRating;
+                                                });
+                                              },
                                             )),
                                   );
                                 },
-                                child: Transform.scale(
-                                  alignment: Alignment.centerLeft,
-                                  scale: 0.9,
-                                  child: RatingBar.builder(
-                                    // initialRating: overallRating,
-                                    minRating: 1,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: true,
-                                    ignoreGestures: true,
-                                    itemCount: 5,
-                                    itemSize: 20,
-                                    itemBuilder: (context, _) => Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
+                                child: Row(
+                                  children: [
+                                    Transform.scale(
+                                      alignment: Alignment.centerLeft,
+                                      scale: 0.9,
+                                      child: RatingBar.builder(
+                                        initialRating: overallRating,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        ignoreGestures: true,
+                                        itemCount: 5,
+                                        itemSize: 20,
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          // Not needed here, just for demonstration
+                                        },
+                                      ),
                                     ),
-                                    onRatingUpdate: (rating) {
-                                      // Not needed here, just for demonstration
-                                    },
-                                  ),
+                                    Text(overallRating.toString())
+                                  ],
                                 ),
                               ),
                             ],

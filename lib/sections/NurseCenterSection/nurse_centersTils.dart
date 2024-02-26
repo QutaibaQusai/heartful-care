@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/model/nurseCenterModel.dart';
 import 'package:test/sections/NurseCenterSection/nurseCenterDetailes.dart';
 
-class NurseCenters extends StatelessWidget {
+class NurseCenters extends StatefulWidget {
   final String userEmail;
   const NurseCenters({Key? key, required this.userEmail});
+
+  @override
+  State<NurseCenters> createState() => _NurseCentersState();
+}
+
+class _NurseCentersState extends State<NurseCenters> {
+  double overallRating = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +23,6 @@ class NurseCenters extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Color(0xFF1C8892),
         appBar: AppBar(
-         
           backgroundColor: Color(0xFF1C8892),
           leading: IconButton(
             onPressed: () {
@@ -36,16 +43,13 @@ class NurseCenters extends StatelessWidget {
                 color: Color(0xFF1C8892),
               ),
               child: Stack(
-              
                 children: [
                   SvgPicture.asset(
                     "images/centerSec.svg",
                     width: 400,
                   ),
-                 
                 ],
               ),
-             
             ),
             Expanded(
               child: Container(
@@ -81,7 +85,6 @@ class NurseCenters extends StatelessWidget {
                             padding: const EdgeInsets.all(16.0),
                             child: InkWell(
                               onTap: () {
-                                // Handle tile click here, e.g., navigate to the detailed page
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
@@ -99,8 +102,14 @@ class NurseCenters extends StatelessWidget {
                                         centerLocation: center.centerLocation,
                                         pricePerDay: center.pricePreDay,
                                         pricePerMonth: center.pricePreMonth,
-                                        userEmail: userEmail,
+                                        userEmail: widget.userEmail,
                                         centerId: snapshot.data!.docs[index].id,
+                                        onOverallRatingChanged:
+                                            (double newRating) {
+                                          setState(() {
+                                            newRating = overallRating;
+                                          });
+                                        },
                                       );
                                     },
                                     transitionsBuilder: (context, animation,
@@ -181,12 +190,31 @@ class NurseCenters extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Text("(Reviews)"),
-                                                  Icon(
-                                                    FontAwesomeIcons.solidStar,
-                                                    size: 13,
-                                                    color: Color.fromARGB(
-                                                        255, 241, 241, 47),
+                                                  Text(
+                                                      overallRating.toString()),
+                                                  Transform.scale(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    scale: 0.9,
+                                                    child: RatingBar.builder(
+                                                      initialRating:
+                                                          overallRating,
+                                                      minRating: 1,
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      allowHalfRating: true,
+                                                      ignoreGestures: true,
+                                                      itemCount: 5,
+                                                      itemSize: 20,
+                                                      itemBuilder:
+                                                          (context, _) => Icon(
+                                                        Icons.star,
+                                                        color: Colors.amber,
+                                                      ),
+                                                      onRatingUpdate: (rating) {
+                                                        // Not needed here, just for demonstration
+                                                      },
+                                                    ),
                                                   ),
                                                 ],
                                               ),

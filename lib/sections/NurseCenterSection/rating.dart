@@ -10,9 +10,13 @@ import 'package:test/model/reveiwsCenterModel.dart';
 class CenterRating extends StatefulWidget {
   final String userEmail;
   final String centerId;
+  final Function(double) onOverallRatingChanged; // Callback function
 
   const CenterRating(
-      {Key? key, required this.userEmail, required this.centerId})
+      {Key? key,
+      required this.userEmail,
+      required this.centerId,
+      required this.onOverallRatingChanged})
       : super(key: key);
 
   @override
@@ -508,11 +512,12 @@ class _CenterRatingState extends State<CenterRating> {
         reviewsSnapshot.docs.forEach((doc) {
           totalRating += doc['rating']; // Accumulate ratings
         });
-
-        // Calculate the average rating
         setState(() {
           overallRating = totalRating / numReviews;
+          widget.onOverallRatingChanged(overallRating);
         });
+
+        // Call the callback function with the updated overallRating
       }
     } catch (e) {
       print('Error calculating overall rating: $e');
