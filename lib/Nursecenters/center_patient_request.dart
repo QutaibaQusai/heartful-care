@@ -27,13 +27,16 @@ class _PatientRequestState extends State<PatientRequest> {
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection("form_request")
+                      .where("center_id", isEqualTo: "saMB5oNMINMyfNKifbn")
                       .snapshots(),
+                      
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
                         child: CircularProgressIndicator(),
                       );
                     }
+                    
                     List<Patient_request> patientRequest = snapshot.data!.docs
                         .map((doc) => Patient_request.fromMap(
                               doc.data() as Map<String, dynamic>,
@@ -41,6 +44,7 @@ class _PatientRequestState extends State<PatientRequest> {
                         .toList();
 
                     return ListView.builder(
+                      
                       itemCount: patientRequest.length,
                       itemBuilder: (context, index) {
                         var patient = patientRequest[index];
@@ -63,6 +67,7 @@ class _PatientRequestState extends State<PatientRequest> {
                                         patient.surgeriesHistory,
                                     patientIsWalk: patient.isWalk,
                                     patientNeedNurse: patient.needNurse,
+                                    centerId: patient.centerId,
                                   ),
                                 ),
                               );

@@ -12,6 +12,7 @@ class PatientDetails extends StatefulWidget {
   final bool patientSurgeriesHistory;
   final bool patientIsWalk;
   final List patientNeedNurse;
+  final String centerId; // Add this field to receive the center ID
 
   const PatientDetails(
       {super.key,
@@ -24,7 +25,8 @@ class PatientDetails extends StatefulWidget {
       required this.patientAllergies,
       required this.patientSurgeriesHistory,
       required this.patientIsWalk,
-      required this.patientNeedNurse});
+      required this.patientNeedNurse,
+      required this.centerId});
 
   @override
   State<PatientDetails> createState() => _PatientDetailsState();
