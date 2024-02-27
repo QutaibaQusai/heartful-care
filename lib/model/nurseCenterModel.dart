@@ -6,6 +6,8 @@ class NurseCenter {
   final String addressOne;
   final String addressTwo;
   final String operatingHours;
+  final String operatingDays;
+
   final String contactName;
   final String contactPosition;
   final String description;
@@ -25,6 +27,7 @@ class NurseCenter {
     required this.addressOne,
     required this.addressTwo,
     required this.operatingHours,
+    required this.operatingDays,
     required this.contactName,
     required this.contactPosition,
     required this.description,
@@ -40,6 +43,7 @@ class NurseCenter {
       addressOne: map['Center Address 1'] ?? '',
       addressTwo: map['Center Address 2'] ?? '',
       operatingHours: map['Center operating Hours'] ?? '',
+      operatingDays: map['Center operating Days'] ?? '',
       contactName: map['Contact Center name'] ?? '',
       contactPosition: map['Contact Center position'] ?? '',
       description: map['Center Description'] ?? '',

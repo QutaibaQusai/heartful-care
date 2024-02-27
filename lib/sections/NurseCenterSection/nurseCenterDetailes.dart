@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 class DetailedNurseCenter extends StatefulWidget {
   final String centerName;
   final String operatingHours;
+  final String operatingDays;
   final String centerPhoneNumber;
   final String centerUrlImageLogo;
   final String centerDescription;
@@ -38,6 +39,7 @@ class DetailedNurseCenter extends StatefulWidget {
     required this.userEmail,
     required this.centerId,
     required this.onOverallRatingChanged,
+    required this.operatingDays,
   });
 
   @override

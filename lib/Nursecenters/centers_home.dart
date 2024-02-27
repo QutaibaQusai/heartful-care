@@ -24,6 +24,8 @@ class _CentersHome extends State<CentersHome> {
   TextEditingController centerAddressOne = TextEditingController();
   TextEditingController centerAddressTwo = TextEditingController();
   TextEditingController centerOpiningHours = TextEditingController();
+  TextEditingController centerOpiningDays = TextEditingController();
+
   TextEditingController centerContactName = TextEditingController();
   TextEditingController centerContractPosition = TextEditingController();
   TextEditingController centerDescription = TextEditingController();
@@ -55,6 +57,8 @@ class _CentersHome extends State<CentersHome> {
           centerAddressOne.text = userData["Center Address 1"] ?? "";
           centerAddressTwo.text = userData["Center Address 2"] ?? "";
           centerOpiningHours.text = userData["Center operating Hours"] ?? "";
+          centerOpiningDays.text = userData["Center operating Days"] ?? "";
+
           centerContactName.text = userData["Contact Center name"] ?? "";
           centerContractPosition.text =
               userData["Contact Center position"] ?? "";
@@ -248,6 +252,14 @@ class _CentersHome extends State<CentersHome> {
                     "Operating Hours",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                      enabled: isEditing,
+                      controller: centerOpiningDays,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Business Days',
+                      )),
                   SizedBox(height: 10),
                   TextFormField(
                     enabled: isEditing,
@@ -538,6 +550,7 @@ class _CentersHome extends State<CentersHome> {
           'Center Address 1': centerAddressOne.text,
           'Center Address 2': centerAddressTwo.text,
           'Center operating Hours': centerOpiningHours.text,
+          'Center operating Days': centerOpiningDays.text,
           'Contact Center name': centerContactName.text,
           'Contact Center position': centerContractPosition.text,
           'Center Description': centerDescription.text,

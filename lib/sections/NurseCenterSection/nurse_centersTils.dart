@@ -93,6 +93,7 @@ class _NurseCentersState extends State<NurseCenters> {
                                       return DetailedNurseCenter(
                                         centerName: center.name,
                                         operatingHours: center.operatingHours,
+                                        operatingDays: center.operatingDays,
                                         centerDescription: center.description,
                                         centerUrlImageLogo: center.urlLogoImage,
                                         centerPhoneNumber: center.phoneNumber,
@@ -190,7 +191,18 @@ class _NurseCentersState extends State<NurseCenters> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Text(
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        FontAwesomeIcons
+                                                            .calendarDays,
+                                                        size: 13,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Text(" " +
+                                                      center.operatingDays),
+                                                  /*Text(
                                                       overallRating.toString()),
                                                   Transform.scale(
                                                     alignment:
@@ -215,7 +227,7 @@ class _NurseCentersState extends State<NurseCenters> {
                                                         // Not needed here, just for demonstration
                                                       },
                                                     ),
-                                                  ),
+                                                  ),*/
                                                 ],
                                               ),
                                               SizedBox(height: 8),
