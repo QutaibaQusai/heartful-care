@@ -6,7 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:test/Profile/account.dart';
 import 'package:test/User%20Settings/settings_home_page.dart';
 import 'package:test/model/Home_Sections_Model.dart';
-import 'package:test/sections/MedicalDevicesSection/medical_devices.dart';
+import 'package:test/sections/MedicalDevicesSection/medicalSuppliers.dart';
 import 'package:test/sections/NurseCenterSection/nurse_centersTils.dart';
 
 class Home extends StatefulWidget {
