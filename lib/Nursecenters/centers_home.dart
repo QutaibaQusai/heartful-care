@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
@@ -33,7 +34,18 @@ class _CentersHome extends State<CentersHome> {
   @override
   void initState() {
     super.initState();
-    fetchUserData(); // Fetch the user's name when the widget is created
+    fetchUserData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (FirebaseAuth.instance.currentUser != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            content:
+                Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
+          ),
+        );
+      }
+    });
   }
 
   void fetchUserData() async {
