@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class YourChangeEmailPage extends StatefulWidget {
-  const YourChangeEmailPage({Key? key}) : super(key: key);
+  const YourChangeEmailPage({Key? key, required String userEmail}) : super(key: key);
 
   @override
   State<YourChangeEmailPage> createState() => _YourChangeEmailPageState();
