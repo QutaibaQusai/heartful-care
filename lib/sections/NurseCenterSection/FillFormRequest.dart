@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -46,6 +47,22 @@ class _FormRequestState extends State<FormRequest> {
 
   // String _selectedHours = '1';
   // String _selectedDays = '1';
+  @override
+  void initState() {
+    super.initState();
+    // Wait for the widget tree to be built before showing the snackbar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (FirebaseAuth.instance.currentUser != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            content:
+                Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
+          ),
+        );
+      }
+    });
+  }
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -691,87 +708,53 @@ class _FormRequestState extends State<FormRequest> {
   }
 
   void _saveFormDataToFirestore() async {
-    try {
-      // Check if userEmail is not empty
-      if (widget.userEmail.isNotEmpty) {
-        // Get form data from text controllers
-        String firstName = patientFirstName.text;
-        String lastName = patientLastName.text;
-        String phoneNumber = patientPhoneNumber.text;
-        int age = int.tryParse(patientAge.text) ?? 0;
-        String gender = _selectedGender ?? "";
-        String address = patientAddress.text;
-
-        // Create a map representing the form data
-        Map<String, dynamic> formData = {
-          'center_id': widget.centerId,
-          'firstName': firstName,
-          'lastName': lastName,
-          'phoneNumber': phoneNumber,
-          'age': age,
-          'gender': gender,
-          'address': address,
-          'hasAllergies': _hasAllergies ?? false,
-          'isWalk': _isWalk ?? false,
-          'historyOfSurgeries': _historyOfSurgeries ?? false,
-          'needNurse':
-              _selectedItem.isNotEmpty ? _selectedItem : ["not answer"],
-          'date': _selectedDate != null
-              ? Timestamp.fromDate(
-                  _selectedDate!) // Convert DateTime to Firestore Timestamp
-              : null,
-          'time': _selectedTime != null
-              ? _selectedTime!.format(context) // Save time as string
-              : null,
-          'selectedPaymentPerDay': selectedPaymentPerDay,
-          'selectedPaymentPerHour': selectedPaymentPerHour,
-        };
-
-        // Add data to the 'form_request' collection
-        await FirebaseFirestore.instance
-            .collection('form_request')
-            .add(formData);
-
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'Form data saved successfully!',
-              style: TextStyle(
-                fontSize: 17,
-              ),
-            ),
-          ),
-        );
-      } else {
-        // Handle the case where the user email is empty
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'Please Log in first',
-              style: TextStyle(
-                fontSize: 17,
-              ),
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      // Handle errors
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null || userId.isEmpty) {
+      print('User ID is missing');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color(0xFF1C8892),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            'Error saving form data. Please try again later.',
-            style: TextStyle(
-              fontSize: 17,
-            ),
-          ),
+          content: Text('You need to be logged in to submit a form.'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      Map<String, dynamic> formData = {
+        'user_id': userId,
+        'center_id': widget.centerId,
+        'firstName': patientFirstName.text,
+        'lastName': patientLastName.text,
+        'phoneNumber': patientPhoneNumber.text,
+        'age': int.tryParse(patientAge.text) ?? 0,
+        'gender': _selectedGender ?? "",
+        'address': patientAddress.text,
+        'hasAllergies': _hasAllergies ?? false,
+        'isWalk': _isWalk ?? false,
+        'historyOfSurgeries': _historyOfSurgeries ?? false,
+        'needNurse': _selectedItem,
+        'date':
+            _selectedDate != null ? Timestamp.fromDate(_selectedDate!) : null,
+        'time': _selectedTime != null ? _selectedTime!.format(context) : null,
+        'selectedPaymentPerDay': selectedPaymentPerDay,
+        'selectedPaymentPerHour': selectedPaymentPerHour,
+      };
+
+      await FirebaseFirestore.instance.collection('form_request').add(formData);
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          content: Text('Form data saved successfully!'),
+        ),
+      );
+    } catch (e) {
+      print('Error saving form data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          content: Text('Error saving form data. Please try again later.'),
         ),
       );
     }
