@@ -107,7 +107,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               borderRadius: BorderRadius.circular(0),
                               borderSide: BorderSide(
                                 color: Colors
-                                    .white, // Set the border color to white when focused
+                                    .white, 
                                 width: 2.0,
                               ),
                             ),
@@ -115,7 +115,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               borderRadius: BorderRadius.circular(0),
                               borderSide: BorderSide(
                                 color: Colors
-                                    .white, // Set the border color to white when not focused
+                                    .white, 
                                 width: 2.0,
                               ),
                             ),

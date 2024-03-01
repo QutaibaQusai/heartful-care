@@ -30,9 +30,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
           ),
           actions: [
             IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () {},
               icon: Icon(
                 FontAwesomeIcons.search,
                 color: Colors.white,
@@ -44,7 +42,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
           children: [
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height / 3.5,
+              height: MediaQuery.of(context).size.height / 3.3,
               child: Stack(
                 children: [
                   Image.network(
@@ -58,7 +56,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                     child: Container(
                       clipBehavior: Clip.antiAlias,
                       width: MediaQuery.of(context).size.width / 1.2,
-                      height: MediaQuery.of(context).size.height / 4.7,
+                      height: MediaQuery.of(context).size.height / 4.3,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(13),
@@ -80,7 +78,8 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: 100,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5,
                                     height: 100,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(13),
@@ -97,49 +96,59 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Al Khalidi supplers",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
-                                              size: 16,
-                                            ),
-                                            Text(
-                                              "4.8 (5254 Ratings)",
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            )
-                                          ],
-                                        )
-                                      ],
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      // color: Colors.amber,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Al Khalidi supplers",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                                size: 16,
+                                              ),
+                                              Text(
+                                                "4.8 (5254 Ratings)",
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  Align(
-                                    alignment: AlignmentDirectional.topEnd,
-                                    child: Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          color: Colors.transparent,
-                                          border: Border.all(width: 0)),
-                                      child: Icon(
-                                        FontAwesomeIcons.info,
-                                        size: 12,
-                                        color: Colors.grey,
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 16,
+                                    child: Align(
+                                      alignment: AlignmentDirectional.topEnd,
+                                      child: Container(
+                                        padding: EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            color: Colors.transparent,
+                                            border: Border.all(width: 0)),
+                                        child: Icon(
+                                          FontAwesomeIcons.info,
+                                          size: 12,
+                                          color: Colors.grey,
+                                        ),
                                       ),
                                     ),
                                   )
@@ -148,7 +157,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                             ),
                             Container(
                               width: double.infinity,
-                              height: MediaQuery.of(context).size.height / 12,
+                              height: MediaQuery.of(context).size.height / 10,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
@@ -329,14 +338,14 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Divider()
                   ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Divider(),
-            )
           ],
         ),
       ),
