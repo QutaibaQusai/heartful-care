@@ -5,17 +5,10 @@ import 'package:test/Nursecenters/patientRequestDetails.dart';
 import 'package:test/model/patientRequestModel.dart';
 
 Future<String> getCurrentCenterId() async {
-  final center = FirebaseAuth.instance.currentUser;
+  User? center = FirebaseAuth.instance.currentUser;
 
   if (center != null) {
-    final docSnapshot = await FirebaseFirestore.instance
-        .collection('centers')
-        .doc(center.centerId)
-        .get();
-
-    final centerId = docSnapshot.data()?['center_id'];
-
-    return centerId ?? '';
+    return center.uid;
   }
 
   return '';
@@ -129,7 +122,6 @@ class _PatientRequestState extends State<PatientRequest> {
                                         ),
                                       ),
                                     ),
-                                    Text(patient.centerId),
                                   ],
                                 ),
                               ),
