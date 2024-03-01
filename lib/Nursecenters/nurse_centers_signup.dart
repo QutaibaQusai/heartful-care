@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -264,9 +265,9 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                           if (formKey.currentState!
                                               .validate()) {
                                             try {
-                                              // Create the user account in Firebase Authentication
-                                              var x = await MyFirebaseAuth()
-                                                  .createAccount(
+                                              User? newUser =
+                                                  await MyFirebaseAuth()
+                                                      .createAccount(
                                                 email:
                                                     adminEmailController.text,
                                                 password:
@@ -275,9 +276,31 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                                 context: context,
                                               );
 
-                                              // If account creation is successful
-                                              if (x != null) {
-                                                // Show a success message
+                                              if (newUser != null) {
+                                                CollectionReference centers =
+                                                    FirebaseFirestore.instance
+                                                        .collection('centers');
+                                                await centers
+                                                    .doc(newUser.uid)
+                                                    .set({
+                                                  'Admin':
+                                                      adminNameController.text,
+                                                  'Email':
+                                                      adminEmailController.text,
+                                                });
+
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CentersHome(
+                                                      centerEmail:
+                                                          adminEmailController
+                                                              .text,
+                                                    ),
+                                                  ),
+                                                );
+
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   SnackBar(
@@ -296,33 +319,8 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                                     ),
                                                   ),
                                                 );
-
-                                                // Add user data to Firestore
-                                                CollectionReference centers =
-                                                    FirebaseFirestore.instance
-                                                        .collection('centers');
-                                                await centers.add({
-                                                  'Admin':
-                                                      adminNameController.text,
-                                                  'Email':
-                                                      adminEmailController.text,
-                                                });
-
-                                                // Navigate to the home screen
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CentersHome(
-                                                      centerEmail:
-                                                          adminEmailController
-                                                              .text,
-                                                    ),
-                                                  ),
-                                                );
                                               }
                                             } catch (e) {
-                                              // Handle errors, such as displaying an error message
                                               print("Error: $e");
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
