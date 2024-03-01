@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/Home.dart';
 import 'package:test/Authentication%20firebase/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:test/Home.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -57,7 +57,7 @@ class _SignInScreen extends State<SignInScreen> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 1.55,
+                    //height: MediaQuery.of(context).size.height / 1.6,
                     decoration: BoxDecoration(
                       color: Color(0xFF1C8892),
                       borderRadius: BorderRadius.only(
@@ -240,19 +240,19 @@ class _SignInScreen extends State<SignInScreen> {
                                 ),
                               ),
                             ),
-                            validator: (value) {
-                              RegExp regex = RegExp(
-                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                              var passNonNullValue = value ?? "";
-                              if (passNonNullValue.isEmpty) {
-                                return ("Password is required");
-                              } else if (passNonNullValue.length < 9) {
-                                return ("Password Must be more than 8 characters");
-                              } else if (!regex.hasMatch(passNonNullValue)) {
-                                return ("Password should contain upper,lower,digit and Special character ");
-                              }
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   RegExp regex = RegExp(
+                            //       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                            //   var passNonNullValue = value ?? "";
+                            //   if (passNonNullValue.isEmpty) {
+                            //     return ("Password is required");
+                            //   } else if (passNonNullValue.length < 9) {
+                            //     return ("Password Must be more than 8 characters");
+                            //   } else if (!regex.hasMatch(passNonNullValue)) {
+                            //     return ("Password should contain upper,lower,digit and Special character ");
+                            //   }
+                            //   return null;
+                            // },
                           ),
                           const SizedBox(
                             height: 20,

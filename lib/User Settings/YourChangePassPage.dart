@@ -226,13 +226,13 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color(0xFF1C8892),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                    backgroundColor: Color(0xFF1C8892),
-                          // onPrimary: Colors.white,
                         ),
-                        child: Text('Submit', style: TextStyle(color: Colors.white),),
+                        child: Text('Submit'),
                       ),
                     ),
                   ],

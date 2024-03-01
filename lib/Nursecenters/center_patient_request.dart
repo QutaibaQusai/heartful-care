@@ -1,50 +1,80 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test/Nursecenters/patientRequestDetails.dart';
 import 'package:test/model/patientRequestModel.dart';
 
+Future<String> getCurrentCenterId() async {
+  final center = FirebaseAuth.instance.currentUser;
+
+  if (center != null) {
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('centers')
+        .doc(center.centerId)
+        .get();
+
+    final centerId = docSnapshot.data()?['center_id'];
+
+    return centerId ?? '';
+  }
+
+  return '';
+}
+
 class PatientRequest extends StatefulWidget {
-  const PatientRequest({Key? key});
+  const PatientRequest({Key? key}) : super(key: key);
 
   @override
   State<PatientRequest> createState() => _PatientRequestState();
 }
 
 class _PatientRequestState extends State<PatientRequest> {
+  late Future<String> centerIdFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    centerIdFuture = getCurrentCenterId();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Patient request"),
+          title: const Text("Patient Requests"),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          child: Column(
-            children: [
-              StreamBuilder<QuerySnapshot>(
+        body: FutureBuilder<String>(
+          future: centerIdFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError || snapshot.data!.isEmpty) {
+              return const Center(
+                  child: Text("Error fetching center ID or not found"));
+            } else {
+              return StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection("form_request")
-                    .where("center_id", isEqualTo: "BElpCKMdq3BHt2VqQkhO")
+                    .where("center_id", isEqualTo: snapshot.data)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   }
-                  List<Patient_request> patientRequest = snapshot.data!.docs
-                      .map((doc) => Patient_request.fromMap(
-                            doc.data() as Map<String, dynamic>,
-                          ))
-                      .toList();
+
+                  List<Patient_request> patientRequests =
+                      snapshot.data!.docs.map((doc) {
+                    return Patient_request.fromMap(
+                        doc.data() as Map<String, dynamic>);
+                  }).toList();
 
                   return Expanded(
                     child: ListView.builder(
-                      itemCount: patientRequest.length,
+                      itemCount: patientRequests.length,
                       itemBuilder: (context, index) {
-                        var patient = patientRequest[index];
+                        final patient = patientRequests[index];
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
@@ -78,7 +108,7 @@ class _PatientRequestState extends State<PatientRequest> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 2,
                                     blurRadius: 1,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
@@ -92,14 +122,14 @@ class _PatientRequestState extends State<PatientRequest> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        patient.firstName + patient.lastName,
-                                        style: TextStyle(
+                                        "${patient.firstName} ${patient.lastName}",
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                    Text(patient.centerId)
+                                    Text(patient.centerId),
                                   ],
                                 ),
                               ),
@@ -110,9 +140,9 @@ class _PatientRequestState extends State<PatientRequest> {
                     ),
                   );
                 },
-              ),
-            ],
-          ),
+              );
+            }
+          },
         ),
       ),
     );

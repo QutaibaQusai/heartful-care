@@ -1,4 +1,5 @@
 class NurseCenter {
+  final String centerId;
   final String name;
   final String phoneNumber;
   final String emailAddress;
@@ -17,6 +18,7 @@ class NurseCenter {
   final double pricePreMonth;
 
   NurseCenter({
+    required this.centerId,
     required this.pricePreMonth,
     required this.pricePreDay,
     required this.centerLocation,
@@ -51,6 +53,7 @@ class NurseCenter {
       centerLocation: map['Center location'] ?? '',
       pricePreMonth: double.tryParse(map['Price Per Month'] ?? '0') ?? 0.0,
       pricePreDay: double.tryParse(map['Price Per Day'] ?? '0') ?? 0.0,
+      centerId: '',
     );
   }
 }
