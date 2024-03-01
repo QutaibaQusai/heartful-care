@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Authentication%20firebase/firebase_auth.dart';
@@ -270,51 +271,40 @@ class _SignInScreen extends State<SignInScreen> {
                                     style: ButtonStyle(),
                                     onPressed: () async {
                                       if (formKey.currentState!.validate()) {
-                                        CollectionReference users =
-                                            FirebaseFirestore.instance
-                                                .collection('users');
-                                        users.add({
-                                          'fullname':
-                                              fullNameTextController.text,
-                                          'email': emailTextController.text,
-                                          //'password': passwordTextController.text
-                                        });
-
-                                        var x = await MyFirebaseAuth()
+                                        User? newUser = await MyFirebaseAuth()
                                             .createAccount(
-                                                email: emailTextController.text,
-                                                password:
-                                                    passwordTextController.text,
-                                                context: context);
-                                        if (x != null) {
+                                          email: emailTextController.text,
+                                          password: passwordTextController.text,
+                                          context: context,
+                                        );
+
+                                        if (newUser != null) {
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc(newUser.uid)
+                                              .set({
+                                            'fullname':
+                                                fullNameTextController.text,
+                                            'email': emailTextController.text,
+                                          });
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => Home(
+                                                  userEmail:
+                                                      emailTextController.text),
+                                            ),
+                                          );
+                                        } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                                SnackBar(
-                                                  backgroundColor:
-                                                      Color(0xFF1C8892),
-                                                  behavior:
-                                                      SnackBarBehavior.floating,
-                                                  content: Text(
-                                                    "Logged In Successfully",
-                                                    style: TextStyle(
-                                                        fontSize: 17,
-                                                        fontFamily: GoogleFonts
-                                                                .poppins()
-                                                            .fontFamily),
-                                                  ),
-                                                ),
-                                              )
-                                              .closed
-                                              .whenComplete(() =>
-                                                  Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) => Home(
-                                                          userEmail:
-                                                              emailTextController
-                                                                  .text),
-                                                    ),
-                                                  ));
+                                            SnackBar(
+                                              backgroundColor:
+                                                  Color(0xFF1C8892),
+                                              content:
+                                                  Text("User creation failed"),
+                                            ),
+                                          );
                                         }
                                       }
                                     },
