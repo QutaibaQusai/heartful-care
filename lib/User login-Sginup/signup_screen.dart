@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/Home.dart';
 import 'package:test/Authentication%20firebase/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:test/Home.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -57,7 +58,7 @@ class _SignInScreen extends State<SignInScreen> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 1.55,
+                    //height: MediaQuery.of(context).size.height / 1.6,
                     decoration: BoxDecoration(
                       color: Color(0xFF1C8892),
                       borderRadius: BorderRadius.only(
@@ -240,19 +241,19 @@ class _SignInScreen extends State<SignInScreen> {
                                 ),
                               ),
                             ),
-                            validator: (value) {
-                              RegExp regex = RegExp(
-                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                              var passNonNullValue = value ?? "";
-                              if (passNonNullValue.isEmpty) {
-                                return ("Password is required");
-                              } else if (passNonNullValue.length < 9) {
-                                return ("Password Must be more than 8 characters");
-                              } else if (!regex.hasMatch(passNonNullValue)) {
-                                return ("Password should contain upper,lower,digit and Special character ");
-                              }
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   RegExp regex = RegExp(
+                            //       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                            //   var passNonNullValue = value ?? "";
+                            //   if (passNonNullValue.isEmpty) {
+                            //     return ("Password is required");
+                            //   } else if (passNonNullValue.length < 9) {
+                            //     return ("Password Must be more than 8 characters");
+                            //   } else if (!regex.hasMatch(passNonNullValue)) {
+                            //     return ("Password should contain upper,lower,digit and Special character ");
+                            //   }
+                            //   return null;
+                            // },
                           ),
                           const SizedBox(
                             height: 20,
@@ -270,51 +271,40 @@ class _SignInScreen extends State<SignInScreen> {
                                     style: ButtonStyle(),
                                     onPressed: () async {
                                       if (formKey.currentState!.validate()) {
-                                        CollectionReference users =
-                                            FirebaseFirestore.instance
-                                                .collection('users');
-                                        users.add({
-                                          'fullname':
-                                              fullNameTextController.text,
-                                          'email': emailTextController.text,
-                                          //'password': passwordTextController.text
-                                        });
-
-                                        var x = await MyFirebaseAuth()
+                                        User? newUser = await MyFirebaseAuth()
                                             .createAccount(
-                                                email: emailTextController.text,
-                                                password:
-                                                    passwordTextController.text,
-                                                context: context);
-                                        if (x != null) {
+                                          email: emailTextController.text,
+                                          password: passwordTextController.text,
+                                          context: context,
+                                        );
+
+                                        if (newUser != null) {
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc(newUser.uid)
+                                              .set({
+                                            'fullname':
+                                                fullNameTextController.text,
+                                            'email': emailTextController.text,
+                                          });
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => Home(
+                                                  userEmail:
+                                                      emailTextController.text),
+                                            ),
+                                          );
+                                        } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                                SnackBar(
-                                                  backgroundColor:
-                                                      Color(0xFF1C8892),
-                                                  behavior:
-                                                      SnackBarBehavior.floating,
-                                                  content: Text(
-                                                    "Logged In Successfully",
-                                                    style: TextStyle(
-                                                        fontSize: 17,
-                                                        fontFamily: GoogleFonts
-                                                                .poppins()
-                                                            .fontFamily),
-                                                  ),
-                                                ),
-                                              )
-                                              .closed
-                                              .whenComplete(() =>
-                                                  Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) => Home(
-                                                          userEmail:
-                                                              emailTextController
-                                                                  .text),
-                                                    ),
-                                                  ));
+                                            SnackBar(
+                                              backgroundColor:
+                                                  Color(0xFF1C8892),
+                                              content:
+                                                  Text("User creation failed"),
+                                            ),
+                                          );
                                         }
                                       }
                                     },

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:test/Nursecenters/center_patient_request.dart';
-import 'package:http/http.dart' as http;
 
 class CentersHome extends StatefulWidget {
   final String centerEmail;
@@ -24,21 +24,28 @@ class _CentersHome extends State<CentersHome> {
   TextEditingController centerAddressOne = TextEditingController();
   TextEditingController centerAddressTwo = TextEditingController();
   TextEditingController centerOpiningHours = TextEditingController();
-  TextEditingController centerOpiningDays = TextEditingController();
-
   TextEditingController centerContactName = TextEditingController();
   TextEditingController centerContractPosition = TextEditingController();
   TextEditingController centerDescription = TextEditingController();
   TextEditingController centerWebsite = TextEditingController();
   TextEditingController urlLogoImage = TextEditingController();
   TextEditingController centerLocation = TextEditingController();
-  TextEditingController pricePerDay = TextEditingController();
-  TextEditingController pricePerMonth = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fetchUserData(); // Fetch the user's name when the widget is created
+    fetchUserData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (FirebaseAuth.instance.currentUser != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            content:
+                Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
+          ),
+        );
+      }
+    });
   }
 
   void fetchUserData() async {
@@ -54,11 +61,9 @@ class _CentersHome extends State<CentersHome> {
         setState(() {
           centerNameController.text = userData['Center Name'] ?? "";
           centerContactNumber.text = userData['Center phone number'] ?? "";
-          centerAddressOne.text = userData["Center Address 1"] ?? "";
-          centerAddressTwo.text = userData["Center Address 2"] ?? "";
+          centerAddressOne.text = userData["Center Address 1"] ?? "";
+          centerAddressTwo.text = userData["Center Address 2"] ?? "";
           centerOpiningHours.text = userData["Center operating Hours"] ?? "";
-          centerOpiningDays.text = userData["Center operating Days"] ?? "";
-
           centerContactName.text = userData["Contact Center name"] ?? "";
           centerContractPosition.text =
               userData["Contact Center position"] ?? "";
@@ -66,8 +71,6 @@ class _CentersHome extends State<CentersHome> {
           centerWebsite.text = userData["Center website"] ?? "";
           urlLogoImage.text = userData["URL Logo Image"] ?? "";
           centerLocation.text = userData["Center Location"] ?? "";
-          pricePerDay.text = userData["Price Per Day"] ?? "";
-          pricePerMonth.text = userData["Price Per Month"] ?? "";
         });
       }
     } catch (e) {
@@ -140,33 +143,34 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'Enter center name',
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty ||
-                          !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                        return "Please enter your name correctly ";
-                      } else {
-                        return null;
-                      }
-                    },
+                    // validator: (value) {
+                    //   if (value!.isEmpty ||
+                    //       !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                    //     return "Please enter your name correctly ";
+                    //   } else {
+                    //     return null;
+                    //   }
+                    // },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                      enabled: isEditing,
-                      controller: centerContactNumber,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Phone Number',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty ||
-                            !RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
-                                .hasMatch(value) ||
-                            value.length != 10) {
-                          return "Please enter your mobile phone number correctly ";
-                        } else {
-                          return null;
-                        }
-                      }),
+                    enabled: isEditing,
+                    controller: centerContactNumber,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Phone Number',
+                    ),
+                    // validator: (value) {
+                    //   if (value!.isEmpty ||
+                    //       !RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
+                    //           .hasMatch(value) ||
+                    //       value.length != 10) {
+                    //     return "Please enter your mobile phone number correctly ";
+                    //   } else {
+                    //     return null;
+                    //   }
+                    // },
+                  ),
                   SizedBox(height: 10),
                   TextFormField(
                     enabled: isEditing,
@@ -177,17 +181,17 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'Email Address',
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Please enter your email address";
-                      } else if (!RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value)) {
-                        return "Please enter a valid email address";
-                      } else {
-                        return null;
-                      }
-                    },
+                    // validator: (value) {
+                    //   if (value!.isEmpty) {
+                    //     return "Please enter your email address";
+                    //   } else if (!RegExp(
+                    //           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    //       .hasMatch(value)) {
+                    //     return "Please enter a valid email address";
+                    //   } else {
+                    //     return null;
+                    //   }
+                    // },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -197,12 +201,13 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'URL logo Image',
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'URL logo Image is required';
-                      }
-                      return null; // Validation passed
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'URL logo Image is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
                   ),
                   SizedBox(
                     height: 25,
@@ -219,13 +224,13 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'Address 1',
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Address is required';
-                      }
-
-                      return null; // Validation passed
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Address is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -254,14 +259,6 @@ class _CentersHome extends State<CentersHome> {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                      enabled: isEditing,
-                      controller: centerOpiningDays,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Business Days',
-                      )),
-                  SizedBox(height: 10),
-                  TextFormField(
                     enabled: isEditing,
                     controller: centerOpiningHours,
                     decoration: InputDecoration(
@@ -272,11 +269,11 @@ class _CentersHome extends State<CentersHome> {
                     //   if (value == null || value.isEmpty) {
                     //     return 'Please enter operating hours';
                     //   }
-
+                    //
                     //   if (!isValidOperatingHours12HourFormat(value)) {
                     //     return 'Invalid operating hours format. Please enter in hh:mm AM/PM - hh:mm AM/PM format';
                     //   }
-
+                    //
                     //   return null; // Validation passed
                     // },
                   ),
@@ -295,13 +292,13 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'Name',
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Name is required';
-                      }
-
-                      return null; // Validation passed
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Name is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -311,53 +308,13 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'Position',
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Position is required';
-                      }
-
-                      return null; // Validation passed
-                    },
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Text(
-                    "Prices",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    // keyboardAppearance: ,
-                    enabled: isEditing,
-                    controller: pricePerDay,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Price Per day',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Name is required';
-                      }
-
-                      return null; // Validation passed
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    enabled: isEditing,
-                    controller: pricePerMonth,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Price Per month',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Position is required';
-                      }
-
-                      return null; // Validation passed
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Position is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
                   ),
                   SizedBox(
                     height: 25,
@@ -374,13 +331,13 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'Description',
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Description is required';
-                      }
-
-                      return null; // Validation passed
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Description is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -390,13 +347,13 @@ class _CentersHome extends State<CentersHome> {
                       border: OutlineInputBorder(),
                       hintText: 'Website',
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Website is required';
-                      }
-
-                      return null; // Validation passed
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Website is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
                   ),
                   SizedBox(
                     height: 25,
@@ -492,7 +449,6 @@ class _CentersHome extends State<CentersHome> {
                                   },
                                 );
                               }
-                              checkImageValidity();
                             },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -550,15 +506,12 @@ class _CentersHome extends State<CentersHome> {
           'Center Address 1': centerAddressOne.text,
           'Center Address 2': centerAddressTwo.text,
           'Center operating Hours': centerOpiningHours.text,
-          'Center operating Days': centerOpiningDays.text,
           'Contact Center name': centerContactName.text,
           'Contact Center position': centerContractPosition.text,
           'Center Description': centerDescription.text,
           'Center website': centerWebsite.text,
           'URL Logo Image': urlLogoImage.text,
-          'Center Location': centerLocation.text,
-          'Price Per Day': pricePerDay.text,
-          'Price Per Month': pricePerMonth.text,
+          'Center Location': centerLocation.text
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -600,29 +553,6 @@ class _CentersHome extends State<CentersHome> {
           ),
         ),
       );
-    }
-  }
-
-  Future<bool> isImageLinkValid(String imageUrl) async {
-    try {
-      final response = await http.head(Uri.parse(imageUrl));
-      return response.statusCode == 200;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  void checkImageValidity() async {
-    String imageUrl = urlLogoImage.text;
-    bool isValid = await isImageLinkValid(imageUrl);
-
-    if (isValid) {
-      // The image link is valid, perform your desired action.
-      print("Image link is valid!");
-      print(isValid);
-    } else {
-      // The image link is not valid, handle the error or take appropriate action.
-      print("Image link is not valid!++++++++");
     }
   }
 }

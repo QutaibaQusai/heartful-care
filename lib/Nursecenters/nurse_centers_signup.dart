@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/Authentication%20firebase/firebase_auth.dart';
 import 'package:test/Nursecenters/centers_home.dart';
 import 'package:test/Nursecenters/nurse_centers_login.dart';
-import 'package:test/Authentication%20firebase/firebase_auth.dart';
 
 class CentersSignUp extends StatefulWidget {
   const CentersSignUp({super.key});
@@ -170,20 +171,20 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                 ),
-                                validator: (value) {
-                                  RegExp regex = RegExp(
-                                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                                  var passNonNullValue = value ?? "";
-                                  if (passNonNullValue.isEmpty) {
-                                    return ("Password is required");
-                                  } else if (passNonNullValue.length < 9) {
-                                    return ("Password Must be more than 8 characters");
-                                  } else if (!regex
-                                      .hasMatch(passNonNullValue)) {
-                                    return ("Password should contain upper,lower,digit and Special character ");
-                                  }
-                                  return null;
-                                },
+                                // validator: (value) {
+                                //   RegExp regex = RegExp(
+                                //       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                //   var passNonNullValue = value ?? "";
+                                //   if (passNonNullValue.isEmpty) {
+                                //     return ("Password is required");
+                                //   } else if (passNonNullValue.length < 9) {
+                                //     return ("Password Must be more than 8 characters");
+                                //   } else if (!regex
+                                //       .hasMatch(passNonNullValue)) {
+                                //     return ("Password should contain upper,lower,digit and Special character ");
+                                //   }
+                                //   return null;
+                                // },
                               ),
                               SizedBox(
                                 height: 15,
@@ -264,9 +265,9 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                           if (formKey.currentState!
                                               .validate()) {
                                             try {
-                                              // Create the user account in Firebase Authentication
-                                              var x = await MyFirebaseAuth()
-                                                  .createAccount(
+                                              User? newUser =
+                                                  await MyFirebaseAuth()
+                                                      .createAccount(
                                                 email:
                                                     adminEmailController.text,
                                                 password:
@@ -275,9 +276,31 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                                 context: context,
                                               );
 
-                                              // If account creation is successful
-                                              if (x != null) {
-                                                // Show a success message
+                                              if (newUser != null) {
+                                                CollectionReference centers =
+                                                    FirebaseFirestore.instance
+                                                        .collection('centers');
+                                                await centers
+                                                    .doc(newUser.uid)
+                                                    .set({
+                                                  'Admin':
+                                                      adminNameController.text,
+                                                  'Email':
+                                                      adminEmailController.text,
+                                                });
+
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CentersHome(
+                                                      centerEmail:
+                                                          adminEmailController
+                                                              .text,
+                                                    ),
+                                                  ),
+                                                );
+
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   SnackBar(
@@ -296,33 +319,8 @@ class _CentersSignUpState extends State<CentersSignUp> {
                                                     ),
                                                   ),
                                                 );
-
-                                                // Add user data to Firestore
-                                                CollectionReference centers =
-                                                    FirebaseFirestore.instance
-                                                        .collection('centers');
-                                                await centers.add({
-                                                  'Admin':
-                                                      adminNameController.text,
-                                                  'Email':
-                                                      adminEmailController.text,
-                                                });
-
-                                                // Navigate to the home screen
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CentersHome(
-                                                      centerEmail:
-                                                          adminEmailController
-                                                              .text,
-                                                    ),
-                                                  ),
-                                                );
                                               }
                                             } catch (e) {
-                                              // Handle errors, such as displaying an error message
                                               print("Error: $e");
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(

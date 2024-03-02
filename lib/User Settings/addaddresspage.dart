@@ -145,16 +145,13 @@ class _AddAddressPageState extends State<AddAddressPage> {
                         _submitUserData();
                       },
                       style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color(0xFF1C8892),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        backgroundColor: Color(0xFF1C8892),
-                        // onPrimary: Colors.white,
                       ),
-                      child: Text(
-                        'Save address',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: Text('Save address'),
                     ),
                   ),
                   SizedBox(width: 16), // Add some spacing between buttons
@@ -164,16 +161,13 @@ class _AddAddressPageState extends State<AddAddressPage> {
                         _showDeleteConfirmationDialog();
                       },
                       style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         backgroundColor: Color(0xFF1C8892),
-                        // onPrimary: Colors.white,
                       ),
-                      child: Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: Text('Delete'),
                     ),
                   ),
                 ],
