@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
 import 'package:test/Nursecenters/nurse_centers_login.dart';
 import 'package:test/home.dart';
 import 'package:test/User%20login-Sginup/sendPasswordResetEmail.dart';
@@ -106,7 +107,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               borderRadius: BorderRadius.circular(0),
                               borderSide: BorderSide(
                                 color: Colors
-                                    .white, // Set the border color to white when focused
+                                    .white, 
                                 width: 2.0,
                               ),
                             ),
@@ -114,7 +115,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               borderRadius: BorderRadius.circular(0),
                               borderSide: BorderSide(
                                 color: Colors
-                                    .white, // Set the border color to white when not focused
+                                    .white, 
                                 width: 2.0,
                               ),
                             ),
@@ -209,7 +210,6 @@ class _LogInScreenState extends State<LogInScreen> {
                             TextButton(
                               onPressed: () {
                                 showBottomSheet();
-                               
                               },
                               child: Text(
                                 "Forget Password?",
@@ -231,7 +231,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                   style: ButtonStyle(),
                                   onPressed: () async {
                                     if (formKey.currentState!.validate()) {
-                                        // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);
+                                      // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);
                                       final x = await MyFirebaseAuth().signIn(
                                           context: context,
                                           email: emailTextController.text,
@@ -338,19 +338,17 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                 ),
               ),
-              Text(" or ",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 11,
-                  )),
+              Text(
+                " or ",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 11,
+                ),
+              ),
               GestureDetector(
                 onTap: () {
-                  // Navigate to the supplier registration page
-                  // Replace SupplierRegistrationPage with the actual page class
-                  /*Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SupplierRegistrationPage()),
-                );*/
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SupplierRegistration()));
                 },
                 child: Text(
                   "supplier",
