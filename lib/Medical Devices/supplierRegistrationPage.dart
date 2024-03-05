@@ -160,13 +160,15 @@ class _SupplierRegistrationState extends State<SupplierRegistration> {
                                   () => Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Suppliers_Home(),
+                                      builder: (context) => Suppliers_Home(
+                                        supplierEmail: supplierEmail.text,
+                                      ),
                                     ),
                                   ),
                                 );
                           }
-                          supplierEmail.clear();
-                          supplierPassword.clear();
+                          // supplierEmail.clear();
+                          // supplierPassword.clear();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),

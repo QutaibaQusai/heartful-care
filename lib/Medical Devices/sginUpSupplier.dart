@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -188,48 +190,63 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
                             ),
                           ),
                           onPressed: () async {
-                            //  CollectionReference users =
-                            //                 FirebaseFirestore.instance
-                            //                     .collection('users');
-                            //             users.add({
-                            //               'fullname':
-                            //                   fullNameTextController.text,
-                            //               'email': emailTextController.text,
-                            //               //'password': passwordTextController.text
-                            //             });
-                            var x = await MyFirebaseAuth().createAccount(
-                              email: supplierEmail.text,
-                              password: supplierPassword.text,
-                              context: context,
-                            );
-                            if (x != null) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: Color(0xFF1C8892),
-                                      behavior: SnackBarBehavior.floating,
-                                      content: Text(
-                                        "Logged In Successfully",
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontFamily:
-                                              GoogleFonts.poppins().fontFamily,
-                                        ),
-                                      ),
-                                      duration: Duration(
-                                          seconds:
-                                              1), // Set your custom duration here
+                            try {
+                              User? newUser =
+                                  await MyFirebaseAuth().createAccount(
+                                email: supplierEmail.text,
+                                password: supplierPassword.text,
+                                context: context,
+                              );
+
+                              if (newUser != null) {
+                                CollectionReference centers = FirebaseFirestore
+                                    .instance
+                                    .collection('Suppliers');
+                                await centers.doc(newUser.uid).set({
+                                  'Admin': supplierName.text,
+                                  'Email': supplierEmail.text,
+                                });
+
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Suppliers_Home(
+                                      supplierEmail: supplierEmail.text,
                                     ),
-                                  )
-                                  .closed
-                                  .whenComplete(
-                                    () => Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Suppliers_Home(),
+                                  ),
+                                );
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Color(0xFF1C8892),
+                                    behavior: SnackBarBehavior.floating,
+                                    content: Text(
+                                      "Logged In Successfully",
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily:
+                                            GoogleFonts.poppins().fontFamily,
                                       ),
                                     ),
-                                  );
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              print("Error: $e");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.red,
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text(
+                                    "Failed to create account: $e",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily:
+                                          GoogleFonts.poppins().fontFamily,
+                                    ),
+                                  ),
+                                ),
+                              );
                             }
                           },
                           child: Padding(
