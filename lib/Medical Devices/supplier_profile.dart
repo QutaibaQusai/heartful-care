@@ -1,15 +1,13 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Supplier_profile extends StatefulWidget {
   final String supplierEmail;
 
-  const Supplier_profile({super.key, required this.supplierEmail});
+  const Supplier_profile({Key? key, required this.supplierEmail})
+      : super(key: key);
 
   @override
   State<Supplier_profile> createState() => _Supplier_profileState();
@@ -22,6 +20,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
   TextEditingController supplierWebsite = TextEditingController();
   TextEditingController supplierLocation = TextEditingController();
   TextEditingController supplierDescription = TextEditingController();
+  bool isEditable = false;
 
   @override
   void initState() {
@@ -99,14 +98,18 @@ class _Supplier_profileState extends State<Supplier_profile> {
                                       ),
                                     ),
                                     Text(
-                                      "Suppler profile",
+                                      "Supplier profile",
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18),
                                     ),
                                     IconButton(
-                                      onPressed: null,
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditable = !isEditable;
+                                        });
+                                      },
                                       icon: Icon(
                                         FontAwesomeIcons.ellipsisVertical,
                                         color: Colors.black,
@@ -153,16 +156,32 @@ class _Supplier_profileState extends State<Supplier_profile> {
                   children: [
                     TextFormField(
                       controller: supplierName,
+                      enabled: isEditable,
+                      autofocus: false,
                       decoration: InputDecoration(
+                        disabledBorder: isEditable ? null : InputBorder.none,
+                        focusedBorder: isEditable
+                            ? UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )
+                            : InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.user,
                             color: Color(0xFF1C8892)),
-                        hintText: 'supplier name',
+                        hintText: 'Supplier name',
                       ),
                     ),
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierPhoneNumber,
+                      enabled: isEditable,
+                      autofocus: false,
                       decoration: InputDecoration(
+                        disabledBorder: isEditable ? null : InputBorder.none,
+                        focusedBorder: isEditable
+                            ? UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )
+                            : InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.mobile,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier phone number',
@@ -171,7 +190,15 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierEmail,
+                      enabled: isEditable,
+                      autofocus: false,
                       decoration: InputDecoration(
+                        disabledBorder: isEditable ? null : InputBorder.none,
+                        focusedBorder: isEditable
+                            ? UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )
+                            : InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.envelope,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier email',
@@ -180,7 +207,15 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierWebsite,
+                      enabled: isEditable,
+                      autofocus: false,
                       decoration: InputDecoration(
+                        disabledBorder: isEditable ? null : InputBorder.none,
+                        focusedBorder: isEditable
+                            ? UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )
+                            : InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.globe,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier website',
@@ -189,7 +224,15 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierLocation,
+                      enabled: isEditable,
+                      autofocus: false,
                       decoration: InputDecoration(
+                        disabledBorder: isEditable ? null : InputBorder.none,
+                        focusedBorder: isEditable
+                            ? UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )
+                            : InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.locationArrow,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier Location',
@@ -198,7 +241,15 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierDescription,
+                      enabled: isEditable,
+                      autofocus: false,
                       decoration: InputDecoration(
+                        disabledBorder: isEditable ? null : InputBorder.none,
+                        focusedBorder: isEditable
+                            ? UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue),
+                              )
+                            : InputBorder.none,
                         prefixIcon: Icon(
                           FontAwesomeIcons.info,
                           color: Color(0xFF1C8892),
@@ -207,7 +258,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
                       ),
                     ),
                     SizedBox(height: 15),
-                    Text("ss" + widget.supplierEmail)
+                    //Text("ss" + widget.supplierEmail)
                   ],
                 ),
               )
@@ -223,9 +274,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
               ),
-              onPressed: () {
-                _submitUserData();
-              },
+              onPressed: isEditable ? () => _submitUserData() : null,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(

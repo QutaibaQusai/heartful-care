@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,6 +17,7 @@ class SupplierRegistration extends StatefulWidget {
 class _SupplierRegistrationState extends State<SupplierRegistration> {
   TextEditingController supplierEmail = TextEditingController();
   TextEditingController supplierPassword = TextEditingController();
+  bool showHidePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +82,7 @@ class _SupplierRegistrationState extends State<SupplierRegistration> {
                 child: TextField(
                   controller: supplierPassword,
                   cursorColor: Color(0xFF1C8892),
+                  obscureText: showHidePassword,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(0),
@@ -89,6 +90,17 @@ class _SupplierRegistrationState extends State<SupplierRegistration> {
                         color: Colors.white,
                         width: 2.0,
                       ),
+                    ),
+                    suffixIcon: IconButton(
+                      color: Color(0xFF1C8892),
+                      onPressed: () {
+                        setState(() {
+                          showHidePassword = !showHidePassword;
+                        });
+                      },
+                      icon: Icon(showHidePassword
+                          ? Icons.remove_red_eye
+                          : Icons.visibility_off),
                     ),
                     hintText: "Password",
                     filled: true,

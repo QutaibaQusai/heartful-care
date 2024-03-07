@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
 import 'package:test/Medical%20Devices/supplier_profile.dart';
 
 class Suppliers_sittings extends StatelessWidget {
@@ -246,7 +247,39 @@ class Suppliers_sittings extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  //TODO
+                  // Show confirmation dialog
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Delete Account"),
+                        content: Text(
+                            "Are you sure you want to delete your account?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              // Call method to delete account
+                              _deleteAccount();
+                              // Close dialog and navigate to login screen
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SupplierRegistration()),
+                                (Route<dynamic> route) => false,
+                              );
+                            },
+                            child: Text("Delete"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
               ),
             ],
@@ -273,5 +306,18 @@ class Suppliers_sittings extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _deleteAccount() async {
+    await FirebaseFirestore.instance
+        .collection('Suppliers')
+        .doc(supplierEmail)
+        .delete();
+
+    // Delete Firebase Authentication account
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.delete();
+    }
   }
 }

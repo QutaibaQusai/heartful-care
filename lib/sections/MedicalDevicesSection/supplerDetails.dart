@@ -1,10 +1,24 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupplerDetails extends StatefulWidget {
-  const SupplerDetails({super.key});
+  final String name;
+  final String phoneNumber;
+  final String emailAddress;
+  //final String LogoImage;
+  //final String coverImage;
+  final String website;
+  final String location;
+  final String description;
+  const SupplerDetails(
+      {super.key,
+      required this.name,
+      required this.phoneNumber,
+      required this.emailAddress,
+      required this.website,
+      required this.location,
+      required this.description});
 
   @override
   State<SupplerDetails> createState() => _SupplerDetailsState();
@@ -109,7 +123,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Al Khalidi supplers",
+                                            widget.name,
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold),
@@ -166,7 +180,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                     children: [
                                       IconButton(
                                         onPressed: () {
-                                          // _makePhoneCall(widget.centerPhoneNumber);
+                                          _makePhoneCall(widget.phoneNumber);
                                         },
                                         icon: Icon(Icons.call,
                                             color: Color(0xFF1C8892)),
@@ -195,7 +209,9 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                       child: Column(
                                         children: [
                                           IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _launchWebsite();
+                                            },
                                             icon: Icon(Icons.link,
                                                 color: Color(0xFF1C8892)),
                                           ),
@@ -212,8 +228,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                     children: [
                                       IconButton(
                                         onPressed: () {
-                                          // _sendEmail();
-                                          // print("ssss :" + widget.centerEmail);
+                                          _sendEmail();
                                         },
                                         icon: Icon(Icons.email,
                                             color: Color(0xFF1C8892)),
@@ -350,5 +365,67 @@ class _SupplerDetailsState extends State<SupplerDetails> {
         ),
       ),
     );
+  }
+
+  void _makePhoneCall(String phoneNumber) async {
+    String telScheme = 'tel:$phoneNumber';
+    try {
+      if (await canLaunch(telScheme)) {
+        await launch(telScheme);
+      } else {
+        throw 'Could not launch $telScheme';
+      }
+    } catch (e) {
+      print('Error launching phone call: $e');
+      // Handle the error here, such as showing an error dialog
+    }
+  }
+
+  void _sendEmail() async {
+    final Uri _emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: widget.emailAddress, // replace with your email address
+      queryParameters: {
+        'subject': 'Subject Here',
+        'body': 'Body Here',
+      },
+    );
+
+    final String _emailLaunchUriString = _emailLaunchUri.toString();
+
+    try {
+      await launch(_emailLaunchUriString);
+    } catch (e) {
+      print('Error launching email: $e');
+      // Handle the error here.
+    }
+  }
+
+  void _launchWebsite() async {
+    final String url = widget.website;
+
+    // Check if the URL is not empty and not null
+    if (url != true && url.isNotEmpty) {
+      // Check if the URL is valid
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        // If the URL is not valid, launch Google
+        final String googleUrl = 'https://www.google.com';
+        if (await canLaunch(googleUrl)) {
+          await launch(googleUrl);
+        } else {
+          throw 'Could not launch $googleUrl';
+        }
+      }
+    } else {
+      // If the URL is empty or null, launch Google
+      final String googleUrl = 'https://www.google.com';
+      if (await canLaunch(googleUrl)) {
+        await launch(googleUrl);
+      } else {
+        throw 'Could not launch $googleUrl';
+      }
+    }
   }
 }
