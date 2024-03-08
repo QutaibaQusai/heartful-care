@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/sections/MedicalDevicesSection/supplierinfo.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SupplerDetails extends StatefulWidget {
@@ -146,26 +148,46 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 16,
-                                    child: Align(
-                                      alignment: AlignmentDirectional.topEnd,
-                                      child: Container(
-                                        padding: EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
+                                  GestureDetector(
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          16,
+                                      child: Align(
+                                        alignment: AlignmentDirectional.topEnd,
+                                        child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100),
                                             color: Colors.transparent,
-                                            border: Border.all(width: 0)),
-                                        child: Icon(
-                                          FontAwesomeIcons.info,
-                                          size: 12,
-                                          color: Colors.grey,
+                                            border: Border.all(width: 0),
+                                          ),
+                                          child: Icon(
+                                            FontAwesomeIcons.info,
+                                            size: 12,
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  )
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => SupplierInfo(
+                                            supplierName: widget.name,
+                                            supplierPhoneNumber:
+                                                widget.phoneNumber,
+                                            supplierEmailAddress:
+                                                widget.emailAddress,
+                                            supplierWebsite: widget.website,
+                                            supplierLocation: widget.location,
+                                            supplierDescription:
+                                                widget.description,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ],
                               ),
                             ),
@@ -256,7 +278,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
             Container(
               width: double.infinity,
               height: 35,
-              // color: Colors.red,
+              color: Colors.red,
             ),
             SizedBox(
               height: 15,

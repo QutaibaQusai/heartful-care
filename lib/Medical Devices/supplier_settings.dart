@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/Medical%20Devices/add_device.dart';
 import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
 import 'package:test/Medical%20Devices/supplier_profile.dart';
 
@@ -122,7 +123,10 @@ class Suppliers_sittings extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  //TODO
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Add_device(
+                            supplierEmail: supplierEmail,
+                          )));
                 },
               ),
               GestureDetector(
@@ -284,25 +288,6 @@ class Suppliers_sittings extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF1C8892),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-              ),
-              onPressed: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  "Save",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              )),
         ),
       ),
     );

@@ -1,7 +1,12 @@
+import 'dart:typed_data';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:test/resources/add_img.dart';
+import 'package:test/utils.dart';
 
 class Supplier_profile extends StatefulWidget {
   final String supplierEmail;
@@ -50,6 +55,19 @@ class _Supplier_profileState extends State<Supplier_profile> {
     } catch (e) {
       print('Error fetching user data:$e');
     }
+  }
+
+  Uint8List? _image;
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
+  void saveSupplierProfile() async {
+    StoreImg().saveProfileSupplierImg(file: _image!);
   }
 
   @override
@@ -128,23 +146,54 @@ class _Supplier_profileState extends State<Supplier_profile> {
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
                         alignment: AlignmentDirectional.bottomCenter,
-                        child: Container(
-                            width: 180,
-                            height: 180,
-                            decoration: BoxDecoration(
-                                color: Color(0xFF1C8892),
-                                shape: BoxShape.circle),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipOval(
-                                child: SizedBox.fromSize(
-                                  size: Size.fromRadius(48), // Image radius
-                                  child: Image.network(
-                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUNNBIv06ExHc1ukAR8kBj3xuKlWNOoBMZiAueAxVzj4Dw33zzZPDy1b7EqRUIJSgYrsQ&usqp=CAU',
-                                      fit: BoxFit.cover),
+                        child: Stack(
+                          children: [
+                            _image != null
+                                ? Container(
+                                    width: 180,
+                                    height: 180,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFF1C8892),
+                                        shape: BoxShape.circle),
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CircleAvatar(
+                                          radius: 64,
+                                          backgroundImage: MemoryImage(_image!),
+                                        )),
+                                  )
+                                : Container(
+                                    width: 180,
+                                    height: 180,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFF1C8892),
+                                        shape: BoxShape.circle),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ClipOval(
+                                        child: SizedBox.fromSize(
+                                          size: Size.fromRadius(
+                                              48), // Image radius
+                                          child: Image.network(
+                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                            Positioned(
+                              bottom: 1,
+                              left: 120,
+                              child: IconButton(
+                                onPressed: selectImage,
+                                icon: Icon(
+                                  Icons.add_a_photo,
+                                  size: 30,
                                 ),
                               ),
-                            )),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -268,21 +317,27 @@ class _Supplier_profileState extends State<Supplier_profile> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF1C8892),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF1C8892),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
               ),
-              onPressed: isEditable ? () => _submitUserData() : null,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  "Save",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              )),
+            ),
+            onPressed: isEditable
+                ? () {
+                    _submitUserData();
+                    saveSupplierProfile();
+                  }
+                : null,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                "Save",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -309,6 +364,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
           'supplier_location': supplierLocation.text,
           'supplier_website': supplierWebsite.text,
           'supplier_description': supplierDescription.text,
+          // 'urlProfileLink': saveSupplierProfile.,
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(
