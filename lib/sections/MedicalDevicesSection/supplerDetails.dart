@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierinfo.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,6 +12,7 @@ class SupplerDetails extends StatefulWidget {
   final String website;
   final String location;
   final String description;
+  final String paymentOption;
   const SupplerDetails(
       {super.key,
       required this.name,
@@ -20,7 +20,8 @@ class SupplerDetails extends StatefulWidget {
       required this.emailAddress,
       required this.website,
       required this.location,
-      required this.description});
+      required this.description,
+      required this.paymentOption});
 
   @override
   State<SupplerDetails> createState() => _SupplerDetailsState();
@@ -183,6 +184,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                             supplierLocation: widget.location,
                                             supplierDescription:
                                                 widget.description,
+                                            paymentOption: widget.paymentOption,
                                           ),
                                         ),
                                       );

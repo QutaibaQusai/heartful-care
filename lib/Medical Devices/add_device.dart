@@ -17,6 +17,7 @@ class _Add_deviceState extends State<Add_device> {
   TextEditingController devicePriceForRent = TextEditingController();
   TextEditingController deviceDescription = TextEditingController();
   TextEditingController deviceQuantity = TextEditingController();
+  TextEditingController deviceInstructions = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,9 @@ class _Add_deviceState extends State<Add_device> {
                     devicePriceForRent, "Device Price for rent per month"),
                 buildTextFormField(deviceDescription, "Description"),
                 buildTextFormField(deviceQuantity, "Device quantity"),
-                Text(widget.supplierEmail)
+                buildTextFormField(
+                    deviceInstructions, "Instructions about device"),
+                //Text(widget.supplierEmail)
               ],
             ),
           ),
@@ -133,6 +136,7 @@ class _Add_deviceState extends State<Add_device> {
           'devicePriceForRent': devicePriceForRent.text,
           'deviceDescription': deviceDescription.text,
           'deviceQuantity': deviceQuantity.text,
+          'deviceInstructions': deviceInstructions.text,
         });
 
         ScaffoldMessenger.of(context).showSnackBar(

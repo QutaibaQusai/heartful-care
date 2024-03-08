@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class YourChangeEmailPage extends StatefulWidget {
-  const YourChangeEmailPage({Key? key, required String userEmail}) : super(key: key);
+  const YourChangeEmailPage({Key? key, required String userEmail})
+      : super(key: key);
 
   @override
   State<YourChangeEmailPage> createState() => _YourChangeEmailPageState();
@@ -9,7 +10,8 @@ class YourChangeEmailPage extends StatefulWidget {
 
 class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
   Color underlineColor = Colors.grey; // Initial color for the underline
-  bool showPassword = false;
+  bool showHidePassword = false;
+
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -52,7 +54,7 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
                 children: [
                   Expanded(
                     child: TextField(
-                      obscureText: !showPassword,
+                      obscureText: !showHidePassword,
                       controller: passwordController,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -60,22 +62,16 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: underlineColor),
                         ),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
+                        suffixIcon: IconButton(
+                          color: Color(0xFF1C8892),
+                          onPressed: () {
                             setState(() {
-                              showPassword = !showPassword;
+                              showHidePassword = !showHidePassword;
                             });
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              showPassword ? 'Hide' : 'Show',
-                              style: TextStyle(
-                                color: Color(0xFF1C8892),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                          icon: Icon(showHidePassword
+                              ? Icons.remove_red_eye
+                              : Icons.visibility_off),
                         ),
                       ),
                     ),

@@ -63,6 +63,7 @@ class _MedicalState extends State<Medical> {
                               website: supplier.website,
                               location: supplier.location,
                               description: supplier.description,
+                              paymentOption: supplier.paymentOption,
                             )));
                   },
                   child: Padding(

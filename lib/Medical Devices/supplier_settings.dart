@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/Medical%20Devices/add_device.dart';
+import 'package:test/Medical%20Devices/my_devices.dart';
 import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
 import 'package:test/Medical%20Devices/supplier_profile.dart';
 
@@ -59,7 +60,7 @@ class Suppliers_sittings extends StatelessWidget {
                           "Al Khalidi supplers",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text("data", style: TextStyle(color: Colors.grey[700])),
+                        //Text("data", style: TextStyle(color: Colors.grey[700])),
                       ],
                     ),
                     Expanded(child: Container()),
@@ -82,7 +83,7 @@ class Suppliers_sittings extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      "Devises",
+                      "Devices",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
@@ -111,7 +112,7 @@ class Suppliers_sittings extends StatelessWidget {
                         width: 16,
                       ),
                       Text(
-                        "Add Devise",
+                        "Add Device",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Expanded(child: Container()),
@@ -151,7 +152,7 @@ class Suppliers_sittings extends StatelessWidget {
                         width: 16,
                       ),
                       Text(
-                        "My Devise",
+                        "My Devices",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Expanded(child: Container()),
@@ -163,7 +164,10 @@ class Suppliers_sittings extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  //TODO
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => My_devices(
+                            supplierEmail: supplierEmail,
+                          )));
                 },
               ),
               Padding(

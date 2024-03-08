@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SupplierInfo extends StatefulWidget {
@@ -9,6 +8,8 @@ class SupplierInfo extends StatefulWidget {
   final String supplierWebsite;
   final String supplierLocation;
   final String supplierDescription;
+  final String paymentOption;
+
   const SupplierInfo(
       {super.key,
       required this.supplierName,
@@ -16,7 +17,8 @@ class SupplierInfo extends StatefulWidget {
       required this.supplierEmailAddress,
       required this.supplierWebsite,
       required this.supplierLocation,
-      required this.supplierDescription});
+      required this.supplierDescription,
+      required this.paymentOption});
 
   @override
   State<SupplierInfo> createState() => _SupplierInfoState();
@@ -83,10 +85,40 @@ class _SupplierInfoState extends State<SupplierInfo> {
                 SizedBox(
                   height: 40,
                 ),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: buildLocationRow(FontAwesomeIcons.mobile,
-                      "Supplier Phone Number", widget.supplierPhoneNumber),
+                      "Supplier Phone Number ", widget.supplierPhoneNumber),
+                ),*/
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.mobile,
+                        color: Color(0xFF1C8892),
+                        size: 28,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Supplier Phone number",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(widget.supplierPhoneNumber),
+                        ],
+                      ),
+                      Expanded(child: Container()),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 35),
@@ -95,10 +127,40 @@ class _SupplierInfoState extends State<SupplierInfo> {
                     height: 25,
                   ),
                 ),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: buildLocationRow(FontAwesomeIcons.envelope,
                       "Supplier Email Address", widget.supplierEmailAddress),
+                ),*/
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.envelope,
+                        color: Color(0xFF1C8892),
+                        size: 28,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Supplier Email Address",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(widget.supplierEmailAddress),
+                        ],
+                      ),
+                      Expanded(child: Container()),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 35),
@@ -107,10 +169,40 @@ class _SupplierInfoState extends State<SupplierInfo> {
                     height: 25,
                   ),
                 ),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: buildLocationRow(
                       FontAwesomeIcons.globe, "Supplier Website", websiteUrl),
+                ),*/
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.globe,
+                        color: Color(0xFF1C8892),
+                        size: 28,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Supplier Website",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(websiteUrl),
+                        ],
+                      ),
+                      Expanded(child: Container()),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 35),
@@ -119,10 +211,40 @@ class _SupplierInfoState extends State<SupplierInfo> {
                     height: 25,
                   ),
                 ),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: buildLocationRow(FontAwesomeIcons.locationArrow,
                       "Supplier Location", widget.supplierLocation),
+                ),*/
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.locationArrow,
+                        color: Color(0xFF1C8892),
+                        size: 28,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Supplier location",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(widget.supplierLocation),
+                        ],
+                      ),
+                      Expanded(child: Container()),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 35),
@@ -131,10 +253,40 @@ class _SupplierInfoState extends State<SupplierInfo> {
                     height: 25,
                   ),
                 ),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: buildLocationRow(FontAwesomeIcons.solidCreditCard,
-                      "Payment Option", "cash"),
+                      "Payment Option", widget.paymentOption),
+                ),*/
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.solidCreditCard,
+                        color: Color(0xFF1C8892),
+                        size: 28,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Payment option",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(widget.paymentOption),
+                        ],
+                      ),
+                      Expanded(child: Container()),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 35),

@@ -10,7 +10,7 @@ class YourChangePassPage extends StatefulWidget {
 
 class _YourChangePassPageState extends State<YourChangePassPage> {
   bool showCurrentPassword = false;
-  bool showNewPassword = false;
+  bool showHidePassword = false;
   TextEditingController currentPassword = TextEditingController();
   TextEditingController newPassword = TextEditingController();
   TextEditingController confirmNewPassword = TextEditingController();
@@ -48,22 +48,16 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
+                        suffixIcon: IconButton(
+                          color: Color(0xFF1C8892),
+                          onPressed: () {
                             setState(() {
                               showCurrentPassword = !showCurrentPassword;
                             });
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              showCurrentPassword ? 'Hide' : 'Show',
-                              style: TextStyle(
-                                color: Color(0xFF1C8892),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                          icon: Icon(showCurrentPassword
+                              ? Icons.remove_red_eye
+                              : Icons.visibility_off),
                         ),
                       ),
                       validator: (value) {
@@ -78,29 +72,23 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                     TextFormField(
                       onChanged: (password) => onPasswordChange(password),
                       controller: newPassword,
-                      obscureText: !showNewPassword,
+                      obscureText: !showHidePassword,
                       decoration: InputDecoration(
                         labelText: 'New password',
                         labelStyle: TextStyle(color: Colors.grey),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
+                        suffixIcon: IconButton(
+                          color: Color(0xFF1C8892),
+                          onPressed: () {
                             setState(() {
-                              showNewPassword = !showNewPassword;
+                              showHidePassword = !showHidePassword;
                             });
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              showNewPassword ? 'Hide' : 'Show',
-                              style: TextStyle(
-                                color: Color(0xFF1C8892),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                          icon: Icon(showHidePassword
+                              ? Icons.remove_red_eye
+                              : Icons.visibility_off),
                         ),
                       ),
                       validator: (value) {
