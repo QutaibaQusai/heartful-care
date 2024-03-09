@@ -15,4 +15,14 @@ class Devices {
     required this.deviceQuantity,
     required this.deviceInstruction,
   });
+  factory Devices.fromMap(Map<String, dynamic> map) {
+    return Devices(
+      deviceName: map['Device_Name'] ?? '',
+      devicePrice: map['devicePriceForPuy'] ?? '',
+      deviceRent: map['devicePriceForRent'] ?? '',
+      deviceDescription: map['deviceDescription'] ?? '',
+      deviceQuantity: map['deviceQuantity'] ?? '',
+      deviceInstruction: map['deviceInstruction'] ?? '',
+    );
+  }
 }

@@ -15,11 +15,15 @@ class StoreImg {
     return downloadUrl;
   }
 
-  Future<String> saveProfileSupplierImg({required Uint8List file, required String supplierEmail}) async {
+  Future<String> saveProfileSupplierImg(
+      {required Uint8List file, required String supplierEmail}) async {
     String resp = "Error Occurred";
     try {
       String imageUrl = await uploadImageToStorage('profileSupplierImg', file);
-      QuerySnapshot querySnapshot = await fireStore.collection("Suppliers").where('email', isEqualTo: supplierEmail).get();
+      QuerySnapshot querySnapshot = await fireStore
+          .collection("Suppliers")
+          .where('Email', isEqualTo: supplierEmail)
+          .get();
       if (querySnapshot.docs.isNotEmpty) {
         String supplierId = querySnapshot.docs.first.id;
         await fireStore.collection("Suppliers").doc(supplierId).update({
