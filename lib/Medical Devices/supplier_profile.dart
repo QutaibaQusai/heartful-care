@@ -25,6 +25,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
   TextEditingController supplierLocation = TextEditingController();
   TextEditingController supplierDescription = TextEditingController();
   TextEditingController supplierPaymentOption = TextEditingController();
+  String? _imageUrl;
 
   bool isEditable = false;
 
@@ -53,6 +54,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
           supplierDescription.text = userData['supplier_description'] ?? "";
           supplierPaymentOption.text =
               userData['supplier_paymnet_option'] ?? "";
+          _imageUrl = userData['imageLink'];
         });
       }
     } catch (e) {
@@ -70,7 +72,8 @@ class _Supplier_profileState extends State<Supplier_profile> {
   }
 
   void saveSupplierProfile() async {
-    StoreImg().saveProfileSupplierImg(file: _image!);
+    StoreImg().saveProfileSupplierImg(
+        file: _image!, supplierEmail: widget.supplierEmail);
   }
 
   @override
@@ -151,49 +154,54 @@ class _Supplier_profileState extends State<Supplier_profile> {
                         alignment: AlignmentDirectional.bottomCenter,
                         child: Stack(
                           children: [
-                            _image != null
-                                ? Container(
-                                    width: 180,
-                                    height: 180,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xFF1C8892),
-                                        shape: BoxShape.circle),
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CircleAvatar(
-                                          radius: 64,
-                                          backgroundImage: MemoryImage(_image!),
-                                        )),
-                                  )
-                                : Container(
-                                    width: 180,
-                                    height: 180,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xFF1C8892),
-                                        shape: BoxShape.circle),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ClipOval(
-                                        child: SizedBox.fromSize(
-                                          size: Size.fromRadius(
-                                              48), // Image radius
-                                          child: Image.network(
-                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
-                                              fit: BoxFit.cover),
+                            Container(
+                              width: 180,
+                              height: 180,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1C8892),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: _image != null
+                                    ? CircleAvatar(
+                                        radius: 64,
+                                        backgroundImage: MemoryImage(_image!),
+                                      )
+                                    : _imageUrl != null
+                                        ? CircleAvatar(
+                                            radius: 64,
+                                            backgroundImage:
+                                                NetworkImage(_imageUrl!),
+                                          )
+                                        : ClipOval(
+                                            child: SizedBox.fromSize(
+                                              size: Size.fromRadius(48),
+                                              child: Image.network(
+                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 10,
+                              left: 120,
+                              child: isEditable
+                                  ? CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor: Color(0xFF1C8892),
+                                      child: IconButton(
+                                        onPressed: selectImage,
+                                        icon: Icon(
+                                          Icons.add_a_photo,
+                                          color: Colors.white,
+                                          size: 20,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                            Positioned(
-                              bottom: 1,
-                              left: 120,
-                              child: IconButton(
-                                onPressed: selectImage,
-                                icon: Icon(
-                                  Icons.add_a_photo,
-                                  size: 30,
-                                ),
-                              ),
+                                    )
+                                  : Container(),
                             )
                           ],
                         ),

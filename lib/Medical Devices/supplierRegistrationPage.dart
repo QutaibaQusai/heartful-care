@@ -172,7 +172,7 @@ class _SupplierRegistrationState extends State<SupplierRegistration> {
                                   () => Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Suppliers_Home(
+                                      builder: (context) => SuppliersHome(
                                         supplierEmail: supplierEmail.text,
                                       ),
                                     ),

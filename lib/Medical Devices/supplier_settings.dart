@@ -17,26 +17,32 @@ class Suppliers_sittings extends StatefulWidget {
 
 class _Suppliers_sittingsState extends State<Suppliers_sittings> {
   String supplierName = "";
+  String? _imageUrl;
+
   @override
   void initState() {
     super.initState();
-    fetchSupplierName(); // Fetch the user's name when the widget is created
+    // fetchSupplierName(); // Fetch the user's name when the widget is created
+    fetchSupplierData();
   }
 
-  void fetchSupplierName() async {
+  void fetchSupplierData() async {
     try {
-      var userDoc = await FirebaseFirestore.instance
+      var supplierDoc = await FirebaseFirestore.instance
           .collection('Suppliers')
           .where('Email', isEqualTo: widget.supplierEmail)
           .get();
 
-      if (userDoc.docs.isNotEmpty) {
+      if (supplierDoc.docs.isNotEmpty) {
+        var userData = supplierDoc.docs[0].data();
+
         setState(() {
-          supplierName = userDoc.docs[0]['supplier_Name'];
+          supplierName = userData['supplier_Name'] ?? "";
+          _imageUrl = userData['imageLink'];
         });
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      print('Error fetching user data:$e');
     }
   }
 
@@ -71,14 +77,23 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
               GestureDetector(
                 child: Row(
                   children: [
-                    ClipOval(
-                      child: Image.network(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUNNBIv06ExHc1ukAR8kBj3xuKlWNOoBMZiAueAxVzj4Dw33zzZPDy1b7EqRUIJSgYrsQ&usqp=CAU",
-                        width: 56,
-                        height: 56,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    _imageUrl != null
+                        ? ClipOval(
+                            child: Image.network(
+                              _imageUrl!,
+                              width: 56,
+                              height: 56,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : ClipOval(
+                            child: Image.network(
+                              "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png",
+                              width: 56,
+                              height: 56,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                     SizedBox(
                       width: 16,
                     ),

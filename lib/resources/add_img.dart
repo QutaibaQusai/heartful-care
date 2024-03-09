@@ -1,11 +1,7 @@
-// import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
 
 final FirebaseStorage _storage = FirebaseStorage.instance;
 final FirebaseFirestore fireStore = FirebaseFirestore.instance;
@@ -19,14 +15,20 @@ class StoreImg {
     return downloadUrl;
   }
 
-  Future<String> saveProfileSupplierImg({required Uint8List file}) async {
+  Future<String> saveProfileSupplierImg({required Uint8List file, required String supplierEmail}) async {
     String resp = "Error Occurred";
     try {
       String imageUrl = await uploadImageToStorage('profileSupplierImg', file);
-      await fireStore.collection("Suppliers").add({
-        "imageLink": imageUrl,
-      });
-      resp = "success";
+      QuerySnapshot querySnapshot = await fireStore.collection("Suppliers").where('email', isEqualTo: supplierEmail).get();
+      if (querySnapshot.docs.isNotEmpty) {
+        String supplierId = querySnapshot.docs.first.id;
+        await fireStore.collection("Suppliers").doc(supplierId).update({
+          "imageLink": imageUrl,
+        });
+        resp = "success";
+      } else {
+        resp = "Supplier with email $supplierEmail not found";
+      }
     } catch (err) {
       resp = err.toString();
     }

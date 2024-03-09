@@ -210,7 +210,7 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Suppliers_Home(
+                                    builder: (context) => SuppliersHome(
                                       supplierEmail: supplierEmail.text,
                                     ),
                                   ),
