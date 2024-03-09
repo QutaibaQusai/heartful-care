@@ -7,9 +7,38 @@ import 'package:test/Medical%20Devices/my_devices.dart';
 import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
 import 'package:test/Medical%20Devices/supplier_profile.dart';
 
-class Suppliers_sittings extends StatelessWidget {
+class Suppliers_sittings extends StatefulWidget {
   final String supplierEmail;
   const Suppliers_sittings({super.key, required this.supplierEmail});
+
+  @override
+  State<Suppliers_sittings> createState() => _Suppliers_sittingsState();
+}
+
+class _Suppliers_sittingsState extends State<Suppliers_sittings> {
+  String supplierName = "";
+  @override
+  void initState() {
+    super.initState();
+    fetchSupplierName(); // Fetch the user's name when the widget is created
+  }
+
+  void fetchSupplierName() async {
+    try {
+      var userDoc = await FirebaseFirestore.instance
+          .collection('Suppliers')
+          .where('Email', isEqualTo: widget.supplierEmail)
+          .get();
+
+      if (userDoc.docs.isNotEmpty) {
+        setState(() {
+          supplierName = userDoc.docs[0]['supplier_Name'];
+        });
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +86,9 @@ class Suppliers_sittings extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Al Khalidi supplers",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          supplierName.toUpperCase(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
                         ),
                         //Text("data", style: TextStyle(color: Colors.grey[700])),
                       ],
@@ -74,7 +104,7 @@ class Suppliers_sittings extends StatelessWidget {
                   //TODO
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Supplier_profile(
-                            supplierEmail: supplierEmail,
+                            supplierEmail: widget.supplierEmail,
                           )));
                 },
               ),
@@ -126,7 +156,7 @@ class Suppliers_sittings extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Add_device(
-                            supplierEmail: supplierEmail,
+                            supplierEmail: widget.supplierEmail,
                           )));
                 },
               ),
@@ -166,7 +196,7 @@ class Suppliers_sittings extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => My_devices(
-                            supplierEmail: supplierEmail,
+                            supplierEmail: widget.supplierEmail,
                           )));
                 },
               ),
@@ -300,7 +330,7 @@ class Suppliers_sittings extends StatelessWidget {
   Future<void> _deleteAccount() async {
     await FirebaseFirestore.instance
         .collection('Suppliers')
-        .doc(supplierEmail)
+        .doc(widget.supplierEmail)
         .delete();
 
     // Delete Firebase Authentication account

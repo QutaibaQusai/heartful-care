@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class Add_device extends StatefulWidget {
   final String supplierEmail;
 
-  const Add_device({super.key, required this.supplierEmail});
+  const Add_device({Key? key, required this.supplierEmail}) : super(key: key);
 
   @override
   State<Add_device> createState() => _Add_deviceState();
@@ -46,6 +46,44 @@ class _Add_deviceState extends State<Add_device> {
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             child: Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // Implement logic for selecting image 1
+                      },
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Color.fromARGB(255, 201, 198, 198),
+                        child: Icon(Icons.camera_alt),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Implement logic for selecting image 2
+                      },
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Color.fromARGB(255, 201, 198, 198),
+                        child: Icon(Icons.camera_alt),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Implement logic for selecting image 3
+                      },
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Color.fromARGB(255, 201, 198, 198),
+                        child: Icon(Icons.camera_alt),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                    height:
+                        20), // Add spacing between the image pickers and the "Device Information" section
                 Text(
                   "Device Information",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
