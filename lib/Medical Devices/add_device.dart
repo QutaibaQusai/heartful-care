@@ -167,15 +167,32 @@ class _Add_deviceState extends State<Add_device> {
         CollectionReference devices =
             suppliers.doc(supplierId).collection('Devices');
 
-        // Add new fields to the existing document in devices sub-collection
-        await devices.add({
-          'Device_Name': deviceName.text,
-          'devicePriceForPuy': devicePriceForPuy.text,
-          'devicePriceForRent': devicePriceForRent.text,
-          'deviceDescription': deviceDescription.text,
-          'deviceQuantity': deviceQuantity.text,
-          'deviceInstructions': deviceInstructions.text,
-        });
+        // Check if device already exists
+        var existingDevice = await devices
+            .where('Device_Name', isEqualTo: deviceName.text)
+            .get();
+
+        if (existingDevice.docs.isNotEmpty) {
+          // Update existing device
+          var existingDeviceId = existingDevice.docs[0].id;
+          await devices.doc(existingDeviceId).update({
+            'devicePriceForPuy': devicePriceForPuy.text,
+            'devicePriceForRent': devicePriceForRent.text,
+            'deviceDescription': deviceDescription.text,
+            'deviceQuantity': deviceQuantity.text,
+            'deviceInstructions': deviceInstructions.text,
+          });
+        } else {
+          // Add new device
+          await devices.add({
+            'Device_Name': deviceName.text,
+            'devicePriceForPuy': devicePriceForPuy.text,
+            'devicePriceForRent': devicePriceForRent.text,
+            'deviceDescription': deviceDescription.text,
+            'deviceQuantity': deviceQuantity.text,
+            'deviceInstructions': deviceInstructions.text,
+          });
+        }
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

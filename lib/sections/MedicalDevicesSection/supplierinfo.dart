@@ -169,11 +169,14 @@ class _SupplierInfoState extends State<SupplierInfo> {
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            widget.supplierDescription,
+                          SizedBox(height: 5),
+                          Container(
+                            width: MediaQuery.of(context).size.width -
+                                80, // Adjust width as needed
+                            child: Text(
+                              widget.supplierDescription,
+                              textAlign: TextAlign.justify,
+                            ),
                           ),
                         ],
                       ),

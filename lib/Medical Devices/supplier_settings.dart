@@ -210,7 +210,7 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
                 ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => My_devices(
+                      builder: (context) => MyDevices(
                             supplierEmail: widget.supplierEmail,
                           )));
                 },
