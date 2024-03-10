@@ -7,8 +7,7 @@ class SupplerDetails extends StatefulWidget {
   final String name;
   final String phoneNumber;
   final String emailAddress;
-  //final String LogoImage;
-  //final String coverImage;
+  final String logoImage;
   final String website;
   final String location;
   final String description;
@@ -21,7 +20,8 @@ class SupplerDetails extends StatefulWidget {
       required this.website,
       required this.location,
       required this.description,
-      required this.paymentOption});
+      required this.paymentOption,
+      required this.logoImage});
 
   @override
   State<SupplerDetails> createState() => _SupplerDetailsState();
@@ -108,7 +108,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(13),
                                       child: Image.network(
-                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUNNBIv06ExHc1ukAR8kBj3xuKlWNOoBMZiAueAxVzj4Dw33zzZPDy1b7EqRUIJSgYrsQ&usqp=CAU",
+                                        widget.logoImage,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -185,6 +185,7 @@ class _SupplerDetailsState extends State<SupplerDetails> {
                                             supplierDescription:
                                                 widget.description,
                                             paymentOption: widget.paymentOption,
+                                            logoImage: widget.logoImage,
                                           ),
                                         ),
                                       );

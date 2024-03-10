@@ -1,11 +1,8 @@
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:test/resources/add_img.dart';
-import 'package:test/utils.dart';
+import 'package:test/Medical%20Devices/editSupplierProfile.dart';
 
 class Supplier_profile extends StatefulWidget {
   final String supplierEmail;
@@ -62,20 +59,6 @@ class _Supplier_profileState extends State<Supplier_profile> {
     }
   }
 
-  Uint8List? _image;
-
-  void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = img;
-    });
-  }
-
-  void saveSupplierProfile() async {
-    StoreImg().saveProfileSupplierImg(
-        file: _image!, supplierEmail: widget.supplierEmail);
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -130,14 +113,20 @@ class _Supplier_profileState extends State<Supplier_profile> {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        setState(() {
-                                          isEditable = !isEditable;
-                                        });
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditSupplierProfile(
+                                              supplierEmail:
+                                                  widget.supplierEmail,
+                                            ),
+                                          ),
+                                        );
                                       },
                                       icon: Icon(
-                                        FontAwesomeIcons.ellipsisVertical,
+                                        FontAwesomeIcons.pen,
                                         color: Colors.black,
-                                        size: 24,
+                                        size: 20,
                                       ),
                                     ),
                                   ],
@@ -163,46 +152,23 @@ class _Supplier_profileState extends State<Supplier_profile> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: _image != null
+                                child: _imageUrl != null
                                     ? CircleAvatar(
                                         radius: 64,
-                                        backgroundImage: MemoryImage(_image!),
+                                        backgroundImage:
+                                            NetworkImage(_imageUrl!),
                                       )
-                                    : _imageUrl != null
-                                        ? CircleAvatar(
-                                            radius: 64,
-                                            backgroundImage:
-                                                NetworkImage(_imageUrl!),
-                                          )
-                                        : ClipOval(
-                                            child: SizedBox.fromSize(
-                                              size: Size.fromRadius(48),
-                                              child: Image.network(
-                                                'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
+                                    : ClipOval(
+                                        child: SizedBox.fromSize(
+                                          size: Size.fromRadius(48),
+                                          child: Image.network(
+                                            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
+                                            fit: BoxFit.cover,
                                           ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 10,
-                              left: 120,
-                              child: isEditable
-                                  ? CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Color(0xFF1C8892),
-                                      child: IconButton(
-                                        onPressed: selectImage,
-                                        icon: Icon(
-                                          Icons.add_a_photo,
-                                          color: Colors.white,
-                                          size: 20,
                                         ),
                                       ),
-                                    )
-                                  : Container(),
-                            )
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -216,15 +182,10 @@ class _Supplier_profileState extends State<Supplier_profile> {
                   children: [
                     TextFormField(
                       controller: supplierName,
-                      enabled: isEditable,
-                      autofocus: false,
+                      readOnly: true,
+                      enabled: false,
                       decoration: InputDecoration(
-                        disabledBorder: isEditable ? null : InputBorder.none,
-                        focusedBorder: isEditable
-                            ? UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              )
-                            : InputBorder.none,
+                        disabledBorder: InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.user,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier name',
@@ -233,15 +194,10 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierPhoneNumber,
-                      enabled: isEditable,
-                      autofocus: false,
+                      readOnly: true,
+                      enabled: false,
                       decoration: InputDecoration(
-                        disabledBorder: isEditable ? null : InputBorder.none,
-                        focusedBorder: isEditable
-                            ? UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              )
-                            : InputBorder.none,
+                        disabledBorder: InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.mobile,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier phone number',
@@ -250,15 +206,10 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierEmail,
-                      enabled: isEditable,
-                      autofocus: false,
+                      readOnly: true,
+                      enabled: false,
                       decoration: InputDecoration(
-                        disabledBorder: isEditable ? null : InputBorder.none,
-                        focusedBorder: isEditable
-                            ? UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              )
-                            : InputBorder.none,
+                        disabledBorder: InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.envelope,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier email',
@@ -267,15 +218,10 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierWebsite,
-                      enabled: isEditable,
-                      autofocus: false,
+                      readOnly: true,
+                      enabled: false,
                       decoration: InputDecoration(
-                        disabledBorder: isEditable ? null : InputBorder.none,
-                        focusedBorder: isEditable
-                            ? UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              )
-                            : InputBorder.none,
+                        disabledBorder: InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.globe,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier website',
@@ -284,15 +230,10 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierLocation,
-                      enabled: isEditable,
-                      autofocus: false,
+                      readOnly: true,
+                      enabled: false,
                       decoration: InputDecoration(
-                        disabledBorder: isEditable ? null : InputBorder.none,
-                        focusedBorder: isEditable
-                            ? UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              )
-                            : InputBorder.none,
+                        disabledBorder: InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.locationArrow,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier Location',
@@ -301,140 +242,34 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierDescription,
-                      enabled: isEditable,
-                      autofocus: false,
+                      readOnly: true,
+                      enabled: false,
                       decoration: InputDecoration(
-                        disabledBorder: isEditable ? null : InputBorder.none,
-                        focusedBorder: isEditable
-                            ? UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              )
-                            : InputBorder.none,
-                        prefixIcon: Icon(
-                          FontAwesomeIcons.info,
-                          color: Color(0xFF1C8892),
-                        ),
+                        disabledBorder: InputBorder.none,
+                        prefixIcon: Icon(FontAwesomeIcons.info,
+                            color: Color(0xFF1C8892)),
                         hintText: 'Supplier description',
                       ),
                     ),
                     SizedBox(height: 15),
                     TextFormField(
                       controller: supplierPaymentOption,
-                      enabled: isEditable,
-                      autofocus: false,
+                      readOnly: true,
+                      enabled: false,
                       decoration: InputDecoration(
-                        disabledBorder: isEditable ? null : InputBorder.none,
-                        focusedBorder: isEditable
-                            ? UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              )
-                            : InputBorder.none,
+                        disabledBorder: InputBorder.none,
                         prefixIcon: Icon(FontAwesomeIcons.solidCreditCard,
                             color: Color(0xFF1C8892)),
                         hintText: 'Supplier payment options',
                       ),
                     ),
-                    SizedBox(height: 15),
-                    //Text("ss" + widget.supplierEmail)
                   ],
                 ),
               )
             ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF1C8892),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-            ),
-            onPressed: isEditable
-                ? () {
-                    _submitUserData();
-                    saveSupplierProfile();
-                  }
-                : null,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                "Save",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-        ),
       ),
     );
-  }
-
-  Future<void> _submitUserData() async {
-    try {
-      CollectionReference centers =
-          FirebaseFirestore.instance.collection('Suppliers');
-
-      // Find the user document
-      var querySnapshot =
-          await centers.where("Email", isEqualTo: widget.supplierEmail).get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        var documentSnapshot = querySnapshot.docs[0];
-        var userId = documentSnapshot.id;
-
-        // Add new fields to the existing document
-        await centers.doc(userId).set({
-          'supplier_Name': supplierName.text,
-          'supplier_email': supplierEmail.text,
-          'supplier_phoneNumber': supplierPhoneNumber.text,
-          'supplier_location': supplierLocation.text,
-          'supplier_website': supplierWebsite.text,
-          'supplier_description': supplierDescription.text,
-          'supplier_paymnet_option': supplierPaymentOption.text,
-          // 'urlProfileLink': saveSupplierProfile.,
-        }, SetOptions(merge: true));
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'User data updated successfully!',
-              style: TextStyle(
-                fontSize: 17,
-              ),
-            ),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'User not found',
-              style: TextStyle(
-                fontSize: 17,
-              ),
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            'Error updating user data: $e',
-            style: TextStyle(
-              fontSize: 17,
-            ),
-          ),
-        ),
-      );
-    }
   }
 }

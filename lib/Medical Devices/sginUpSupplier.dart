@@ -228,6 +228,9 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
                                             GoogleFonts.poppins().fontFamily,
                                       ),
                                     ),
+                                    duration: Duration(
+                                        seconds:
+                                            2), // Set your desired duration in seconds
                                   ),
                                 );
                               }

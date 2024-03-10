@@ -64,6 +64,7 @@ class _MedicalState extends State<Medical> {
                               location: supplier.location,
                               description: supplier.description,
                               paymentOption: supplier.paymentOption,
+                              logoImage: supplier.logoImage,
                             )));
                   },
                   child: Padding(
@@ -155,7 +156,9 @@ class _MedicalState extends State<Medical> {
                                   ),
                                 ),
                                 child: Image.network(
-                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUNNBIv06ExHc1ukAR8kBj3xuKlWNOoBMZiAueAxVzj4Dw33zzZPDy1b7EqRUIJSgYrsQ&usqp=CAU"),
+                                  supplier.logoImage,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           )

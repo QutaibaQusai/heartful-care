@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SupplierInfo extends StatefulWidget {
@@ -9,6 +11,7 @@ class SupplierInfo extends StatefulWidget {
   final String supplierLocation;
   final String supplierDescription;
   final String paymentOption;
+  final String logoImage;
 
   const SupplierInfo(
       {super.key,
@@ -18,7 +21,8 @@ class SupplierInfo extends StatefulWidget {
       required this.supplierWebsite,
       required this.supplierLocation,
       required this.supplierDescription,
-      required this.paymentOption});
+      required this.paymentOption,
+      required this.logoImage});
 
   @override
   State<SupplierInfo> createState() => _SupplierInfoState();
@@ -67,7 +71,7 @@ class _SupplierInfoState extends State<SupplierInfo> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(13),
                         child: Image.network(
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUNNBIv06ExHc1ukAR8kBj3xuKlWNOoBMZiAueAxVzj4Dw33zzZPDy1b7EqRUIJSgYrsQ&usqp=CAU",
+                          widget.logoImage,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -168,10 +172,11 @@ class _SupplierInfoState extends State<SupplierInfo> {
                           SizedBox(
                             height: 5,
                           ),
-                          Text(widget.supplierDescription),
+                          Text(
+                            widget.supplierDescription,
+                          ),
                         ],
                       ),
-                      Expanded(child: Container()),
                     ],
                   ),
                 ),

@@ -17,12 +17,10 @@ class _SuppliersHomeState extends State<SuppliersHome> {
 
   @override
   void initState() {
-    // Fetch supplier data when the widget is initialized
-    fetchSupplierData();
     super.initState();
+    fetchSupplierData();
   }
 
-  // Function to fetch supplier data from Firestore
   void fetchSupplierData() async {
     try {
       var supplierDoc = await FirebaseFirestore.instance
@@ -33,14 +31,12 @@ class _SuppliersHomeState extends State<SuppliersHome> {
       if (supplierDoc.docs.isNotEmpty) {
         var userData = supplierDoc.docs[0].data();
 
-        // Update the state with the fetched image URL
         setState(() {
           _imageUrl = userData['imageLink'];
         });
       }
     } catch (e) {
-      // Print an error message if there's an issue fetching data
-      print('Error fetching user data: $e');
+      print('Error fetching user data:$e');
     }
   }
 
@@ -53,7 +49,6 @@ class _SuppliersHomeState extends State<SuppliersHome> {
           centerTitle: true,
           automaticallyImplyLeading: false,
           actions: [
-            // Navigate to supplier settings page
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -64,7 +59,6 @@ class _SuppliersHomeState extends State<SuppliersHome> {
                   ),
                 );
               },
-              // Display the supplier's profile image or a default image
               icon: Container(
                 margin: const EdgeInsets.only(right: 10.0),
                 child: _imageUrl != null
@@ -82,9 +76,6 @@ class _SuppliersHomeState extends State<SuppliersHome> {
               ),
             ),
           ],
-        ),
-        body: Center(
-          child: Text(widget.supplierEmail),
         ),
       ),
     );
