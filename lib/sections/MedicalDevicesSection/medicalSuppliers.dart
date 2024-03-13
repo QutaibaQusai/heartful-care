@@ -56,7 +56,7 @@ class _MedicalState extends State<Medical> {
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SupplerDetails(
+                        builder: (context) => SupplierDetails(
                               name: supplier.name,
                               phoneNumber: supplier.phoneNumber,
                               emailAddress: supplier.emailAddress,

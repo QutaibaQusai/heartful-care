@@ -100,8 +100,8 @@ class _NurseCentersState extends State<NurseCenters> {
                                         centerEmail: center.emailAddress,
                                         centerWebsite: center.website,
                                         centerLocation: center.centerLocation,
-                                        pricePerDay: center.pricePreDay,
-                                        pricePerMonth: center.pricePreMonth,
+                                        pricePreDay: center.pricePreDay,
+                                        pricePreMonth: center.pricePreMonth,
                                         userEmail: widget.userEmail,
                                         centerId: snapshot.data!.docs[index].id,
                                         onOverallRatingChanged:

@@ -36,11 +36,7 @@ class _MyDevicesState extends State<MyDevices> {
           centerTitle: true,
         ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Suppliers')
-              .doc(widget.supplierEmail)
-              .collection('Devices')
-              .snapshots(),
+          stream: FirebaseFirestore.instance.collection('Devices').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(

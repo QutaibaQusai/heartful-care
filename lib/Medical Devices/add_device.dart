@@ -152,81 +152,54 @@ class _Add_deviceState extends State<Add_device> {
 
   Future<void> _submitUserData() async {
     try {
-      CollectionReference suppliers =
-          FirebaseFirestore.instance.collection('Suppliers');
+      CollectionReference devices =
+          FirebaseFirestore.instance.collection('Devices');
 
-      // Find the user document
-      var querySnapshot =
-          await suppliers.where("Email", isEqualTo: widget.supplierEmail).get();
+      // Check if device already exists
+      var existingDevice =
+          await devices.where('Device_Name', isEqualTo: deviceName.text).get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        var documentSnapshot = querySnapshot.docs[0];
-        var supplierId = documentSnapshot.id;
-
-        // Reference to the devices sub-collection
-        CollectionReference devices =
-            suppliers.doc(supplierId).collection('Devices');
-
-        // Check if device already exists
-        var existingDevice = await devices
-            .where('Device_Name', isEqualTo: deviceName.text)
-            .get();
-
-        if (existingDevice.docs.isNotEmpty) {
-          // Update existing device
-          var existingDeviceId = existingDevice.docs[0].id;
-          await devices.doc(existingDeviceId).update({
-            'devicePriceForPuy': devicePriceForPuy.text,
-            'devicePriceForRent': devicePriceForRent.text,
-            'deviceDescription': deviceDescription.text,
-            'deviceQuantity': deviceQuantity.text,
-            'deviceInstructions': deviceInstructions.text,
-          });
-        } else {
-          // Add new device
-          await devices.add({
-            'Device_Name': deviceName.text,
-            'devicePriceForPuy': devicePriceForPuy.text,
-            'devicePriceForRent': devicePriceForRent.text,
-            'deviceDescription': deviceDescription.text,
-            'deviceQuantity': deviceQuantity.text,
-            'deviceInstructions': deviceInstructions.text,
-          });
-        }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'User data updated successfully!',
-              style: TextStyle(
-                fontSize: 17,
-              ),
-            ),
-          ),
-        );
+      if (existingDevice.docs.isNotEmpty) {
+        // Update existing device
+        var existingDeviceId = existingDevice.docs[0].id;
+        await devices.doc(existingDeviceId).update({
+          'devicePriceForPuy': devicePriceForPuy.text,
+          'devicePriceForRent': devicePriceForRent.text,
+          'deviceDescription': deviceDescription.text,
+          'deviceQuantity': deviceQuantity.text,
+          'deviceInstructions': deviceInstructions.text,
+        });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'User not found',
-              style: TextStyle(
-                fontSize: 17,
-              ),
+        // Add new device
+        await devices.add({
+          'Device_Name': deviceName.text,
+          'devicePriceForPuy': devicePriceForPuy.text,
+          'devicePriceForRent': devicePriceForRent.text,
+          'deviceDescription': deviceDescription.text,
+          'deviceQuantity': deviceQuantity.text,
+          'deviceInstructions': deviceInstructions.text,
+        });
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Device data updated successfully!',
+            style: TextStyle(
+              fontSize: 17,
             ),
           ),
-        );
-      }
+        ),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color(0xFF1C8892),
           behavior: SnackBarBehavior.floating,
           content: Text(
-            'Error updating user data: $e',
+            'Error updating device data: $e',
             style: TextStyle(
               fontSize: 17,
             ),

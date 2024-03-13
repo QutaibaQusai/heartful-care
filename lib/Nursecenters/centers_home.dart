@@ -24,12 +24,15 @@ class _CentersHome extends State<CentersHome> {
   TextEditingController centerAddressOne = TextEditingController();
   TextEditingController centerAddressTwo = TextEditingController();
   TextEditingController centerOpiningHours = TextEditingController();
+  TextEditingController centerOpiningDays = TextEditingController();
   TextEditingController centerContactName = TextEditingController();
   TextEditingController centerContractPosition = TextEditingController();
   TextEditingController centerDescription = TextEditingController();
   TextEditingController centerWebsite = TextEditingController();
   TextEditingController urlLogoImage = TextEditingController();
   TextEditingController centerLocation = TextEditingController();
+  TextEditingController centerPricePerDay = TextEditingController();
+  TextEditingController centerPricePerMonth = TextEditingController();
 
   @override
   void initState() {
@@ -61,9 +64,11 @@ class _CentersHome extends State<CentersHome> {
         setState(() {
           centerNameController.text = userData['Center Name'] ?? "";
           centerContactNumber.text = userData['Center phone number'] ?? "";
-          centerAddressOne.text = userData["Center Address 1"] ?? "";
-          centerAddressTwo.text = userData["Center Address 2"] ?? "";
+          centerAddressOne.text = userData["Center Address 1"] ?? "";
+          centerAddressTwo.text = userData["Center Address 2"] ?? "";
           centerOpiningHours.text = userData["Center operating Hours"] ?? "";
+          centerOpiningDays.text = userData["Center operating Days"] ?? "";
+
           centerContactName.text = userData["Contact Center name"] ?? "";
           centerContractPosition.text =
               userData["Contact Center position"] ?? "";
@@ -71,6 +76,8 @@ class _CentersHome extends State<CentersHome> {
           centerWebsite.text = userData["Center website"] ?? "";
           urlLogoImage.text = userData["URL Logo Image"] ?? "";
           centerLocation.text = userData["Center Location"] ?? "";
+          centerPricePerDay.text = userData["Price Per Day"] ?? "";
+          centerPricePerMonth.text = userData["Price Per Month"] ?? "";
         });
       }
     } catch (e) {
@@ -277,6 +284,26 @@ class _CentersHome extends State<CentersHome> {
                     //   return null; // Validation passed
                     // },
                   ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    enabled: isEditing,
+                    controller: centerOpiningDays,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Business Days',
+                    ),
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please enter operating hours';
+                    //   }
+                    //
+                    //   if (!isValidOperatingHours12HourFormat(value)) {
+                    //     return 'Invalid operating hours format. Please enter in hh:mm AM/PM - hh:mm AM/PM format';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
+                  ),
                   SizedBox(
                     height: 25,
                   ),
@@ -346,6 +373,45 @@ class _CentersHome extends State<CentersHome> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Website',
+                    ),
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Website is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Text(
+                    "Prices Details",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    enabled: isEditing,
+                    controller: centerPricePerDay,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Price Per Day',
+                    ),
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Description is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    enabled: isEditing,
+                    controller: centerPricePerMonth,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Price Per Month',
                     ),
                     // validator: (value) {
                     //   if (value == null || value.isEmpty) {
@@ -511,7 +577,10 @@ class _CentersHome extends State<CentersHome> {
           'Center Description': centerDescription.text,
           'Center website': centerWebsite.text,
           'URL Logo Image': urlLogoImage.text,
-          'Center Location': centerLocation.text
+          'Center Location': centerLocation.text,
+          'Center operating Days': centerOpiningDays.text,
+          'Price Per Day': centerPricePerDay.text,
+          'Price Per Month': centerPricePerMonth.text
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(

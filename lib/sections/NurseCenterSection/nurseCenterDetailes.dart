@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,8 +17,8 @@ class DetailedNurseCenter extends StatefulWidget {
   final String centerEmail;
   final String centerWebsite;
   final String centerLocation;
-  final double pricePerDay;
-  final double pricePerMonth;
+  final String pricePreDay;
+  final String pricePreMonth;
   final String userEmail;
   final String centerId;
   final Function(double) onOverallRatingChanged; // Callback function
@@ -34,12 +33,12 @@ class DetailedNurseCenter extends StatefulWidget {
     required this.centerEmail,
     required this.centerWebsite,
     required this.centerLocation,
-    required this.pricePerDay,
-    required this.pricePerMonth,
     required this.userEmail,
     required this.centerId,
     required this.onOverallRatingChanged,
     required this.operatingDays,
+    required this.pricePreDay,
+    required this.pricePreMonth,
   });
 
   @override
@@ -366,14 +365,14 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Price per day: " + widget.pricePerDay.toString(),
+                        "Price per day: " + widget.pricePreDay.toString(),
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Price per Month: " + widget.pricePerMonth.toString(),
+                        "Price per Month: " + widget.pricePreMonth.toString(),
                         style: TextStyle(fontSize: 15),
                       ),
                     ),

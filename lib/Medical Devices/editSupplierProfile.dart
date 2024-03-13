@@ -277,7 +277,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                       disabledBorder: isEditable ? null : InputBorder.none,
                       focusedBorder: isEditable
                           ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: Color(0xFF1C8892)),
                             )
                           : InputBorder.none,
                       prefixIcon:
@@ -294,7 +294,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                       disabledBorder: isEditable ? null : InputBorder.none,
                       focusedBorder: isEditable
                           ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: Color(0xFF1C8892)),
                             )
                           : InputBorder.none,
                       prefixIcon: Icon(FontAwesomeIcons.mobile,
@@ -311,7 +311,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                       disabledBorder: isEditable ? null : InputBorder.none,
                       focusedBorder: isEditable
                           ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: Color(0xFF1C8892)),
                             )
                           : InputBorder.none,
                       prefixIcon: Icon(FontAwesomeIcons.envelope,
@@ -328,7 +328,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                       disabledBorder: isEditable ? null : InputBorder.none,
                       focusedBorder: isEditable
                           ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: Color(0xFF1C8892)),
                             )
                           : InputBorder.none,
                       prefixIcon: Icon(FontAwesomeIcons.globe,
@@ -345,7 +345,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                       disabledBorder: isEditable ? null : InputBorder.none,
                       focusedBorder: isEditable
                           ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: Color(0xFF1C8892)),
                             )
                           : InputBorder.none,
                       prefixIcon: Icon(FontAwesomeIcons.locationArrow,
@@ -355,6 +355,8 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                   ),
                   SizedBox(height: 15),
                   TextFormField(
+                    maxLines: 2,
+                    minLines: 1,
                     controller: supplierDescription,
                     enabled: isEditable,
                     autofocus: false,
@@ -362,7 +364,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                       disabledBorder: isEditable ? null : InputBorder.none,
                       focusedBorder: isEditable
                           ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: Color(0xFF1C8892)),
                             )
                           : InputBorder.none,
                       prefixIcon: Icon(
@@ -381,7 +383,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                       disabledBorder: isEditable ? null : InputBorder.none,
                       focusedBorder: isEditable
                           ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: Color(0xFF1C8892)),
                             )
                           : InputBorder.none,
                       prefixIcon: Icon(FontAwesomeIcons.solidCreditCard,

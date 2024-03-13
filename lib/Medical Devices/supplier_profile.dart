@@ -244,10 +244,14 @@ class _Supplier_profileState extends State<Supplier_profile> {
                       controller: supplierDescription,
                       readOnly: true,
                       enabled: false,
+                      maxLines:
+                          null, // Setting maxLines to null to allow multiline input
                       decoration: InputDecoration(
                         disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(FontAwesomeIcons.info,
-                            color: Color(0xFF1C8892)),
+                        prefixIcon: Icon(
+                          FontAwesomeIcons.info,
+                          color: Color(0xFF1C8892),
+                        ),
                         hintText: 'Supplier description',
                       ),
                     ),
