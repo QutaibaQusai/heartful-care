@@ -88,6 +88,31 @@ class _ItemCart extends State<ItemCart> {
             ),
           ],
         ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                      side: BorderSide(color: Colors.transparent))),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                Color(0xFF1C8892), // Button background color
+              ),
+            ),
+            onPressed: () {},
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Checkout".toUpperCase(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
