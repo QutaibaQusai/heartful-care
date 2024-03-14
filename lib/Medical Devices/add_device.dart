@@ -155,44 +155,71 @@ class _Add_deviceState extends State<Add_device> {
       CollectionReference devices =
           FirebaseFirestore.instance.collection('Devices');
 
-      // Check if device already exists
-      var existingDevice =
-          await devices.where('Device_Name', isEqualTo: deviceName.text).get();
+      // Retrieve the supplier ID based on the supplierEmail
+      //save the supplier id with the data of the device
+      QuerySnapshot supplierSnapshot = await FirebaseFirestore.instance
+          .collection('Suppliers')
+          .where('Email', isEqualTo: widget.supplierEmail)
+          .get();
 
-      if (existingDevice.docs.isNotEmpty) {
-        // Update existing device
-        var existingDeviceId = existingDevice.docs[0].id;
-        await devices.doc(existingDeviceId).update({
-          'devicePriceForPuy': devicePriceForPuy.text,
-          'devicePriceForRent': devicePriceForRent.text,
-          'deviceDescription': deviceDescription.text,
-          'deviceQuantity': deviceQuantity.text,
-          'deviceInstructions': deviceInstructions.text,
-        });
-      } else {
-        // Add new device
-        await devices.add({
-          'Device_Name': deviceName.text,
-          'devicePriceForPuy': devicePriceForPuy.text,
-          'devicePriceForRent': devicePriceForRent.text,
-          'deviceDescription': deviceDescription.text,
-          'deviceQuantity': deviceQuantity.text,
-          'deviceInstructions': deviceInstructions.text,
-        });
-      }
+      if (supplierSnapshot.docs.isNotEmpty) {
+        String supplierId = supplierSnapshot.docs.first.id;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            'Device data updated successfully!',
-            style: TextStyle(
-              fontSize: 17,
+        // Check if device already exists
+        var existingDevice = await devices
+            .where('Device_Name', isEqualTo: deviceName.text)
+            .get();
+
+        if (existingDevice.docs.isNotEmpty) {
+          // Update existing device
+          var existingDeviceId = existingDevice.docs[0].id;
+          await devices.doc(existingDeviceId).update({
+            'devicePriceForPuy': devicePriceForPuy.text,
+            'devicePriceForRent': devicePriceForRent.text,
+            'deviceDescription': deviceDescription.text,
+            'deviceQuantity': deviceQuantity.text,
+            'deviceInstructions': deviceInstructions.text,
+            'supplierId': supplierId, // Include the supplier ID here
+          });
+        } else {
+          // Add new device
+          await devices.add({
+            'Device_Name': deviceName.text,
+            'devicePriceForPuy': devicePriceForPuy.text,
+            'devicePriceForRent': devicePriceForRent.text,
+            'deviceDescription': deviceDescription.text,
+            'deviceQuantity': deviceQuantity.text,
+            'deviceInstructions': deviceInstructions.text,
+            'supplierId': supplierId, // Include the supplier ID here
+          });
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Device data updated successfully!',
+              style: TextStyle(
+                fontSize: 17,
+              ),
             ),
           ),
-        ),
-      );
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Supplier not found!',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+          ),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
