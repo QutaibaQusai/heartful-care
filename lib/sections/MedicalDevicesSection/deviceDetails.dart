@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/sections/MedicalDevicesSection/itemCart.dart';
 
 class DeviceDetails extends StatefulWidget {
   const DeviceDetails({Key? key}) : super(key: key);
@@ -32,7 +32,12 @@ class _DeviceDetailsState extends State<DeviceDetails> {
         actions: [
           IconButton(
             onPressed: () {
-              // Add functionality here
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ItemCart(),
+                ),
+              );
             },
             icon: Icon(
               FontAwesomeIcons.cartShopping,
@@ -41,134 +46,137 @@ class _DeviceDetailsState extends State<DeviceDetails> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height / 3,
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(10), // Circular border radius
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height / 3,
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(10), // Circular border radius
+                ),
+                child: PageView.builder(
+                  onPageChanged: (int page) {
+                    setState(() {
+                      currentPage = page;
+                    });
+                  },
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    return Image.network(
+                      images[index],
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
               ),
-              child: PageView.builder(
-                onPageChanged: (int page) {
-                  setState(() {
-                    currentPage = page;
-                  });
-                },
-                itemCount: images.length,
-                itemBuilder: (context, index) {
-                  return Image.network(
-                    images[index],
-                    fit: BoxFit.cover,
-                  );
-                },
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  images.length,
+                  (index) => buildDot(index),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                images.length,
-                (index) => buildDot(index),
-              ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Wheelchair",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                  isExpanded
-                      ? Text(
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id sodales eros, et fermentum risus Fusce id sodales eros, et fermentum risusFusce id sodales eros, et fermentum risus.",
-                          style: TextStyle(fontSize: 16),
-                        )
-                      : Text(
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id sodales eros, et fermentum risus Fusce id sodales eros, et fermentum risusFusce id sodales eros, et fermentum risus. ",
-                          style: TextStyle(fontSize: 16),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Wheelchair",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    isExpanded
+                        ? Text(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id sodales eros, et fermentum risus Fusce id sodales eros, et fermentum risusFusce id sodales eros, et fermentum risus.",
+                            style: TextStyle(fontSize: 16),
+                          )
+                        : Text(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id sodales eros, et fermentum risus Fusce id sodales eros, et fermentum risusFusce id sodales eros, et fermentum risus. ",
+                            style: TextStyle(fontSize: 16),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                    SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
+                      },
+                      child: Text(
+                        isExpanded ? "Read less" : "Read more",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
-                  SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isExpanded = !isExpanded;
-                      });
-                    },
-                    child: Text(
-                      isExpanded ? "Read less" : "Read more",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Price Details:",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Radio<String>(
-                                value: 'Buy',
-                                groupValue: priceOption,
-                                onChanged: (value) {
-                                  setState(() {
-                                    priceOption = value!;
-                                  });
-                                },
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text('Buy for \$100'),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Radio<String>(
-                                value: 'Rent',
-                                groupValue: priceOption,
-                                onChanged: (value) {
-                                  setState(() {
-                                    priceOption = value!;
-                                  });
-                                },
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                activeColor: Color(
-                                    0xFF1C8892), // Color for the selected Radio button
-                              ),
-                              Text('Rent per week for \$30'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Price Details:",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'Buy',
+                                  groupValue: priceOption,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      priceOption = value!;
+                                    });
+                                  },
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text('Buy for 100JD'),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'Rent',
+                                  groupValue: priceOption,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      priceOption = value!;
+                                    });
+                                  },
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  activeColor: Color(
+                                      0xFF1C8892), // Color for the selected Radio button
+                                ),
+                                Text('Rent per week for 30JD'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Padding(
@@ -211,12 +219,21 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              child: Text(
-                "Add to Cart",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.shopping_cart,
+                      color: Colors.white), // Shopping cart icon
+                  SizedBox(
+                      width: 8), // Add some space between the icon and text
+                  Text(
+                    "Add to Cart",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

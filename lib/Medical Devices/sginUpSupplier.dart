@@ -70,7 +70,7 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
                           width: 2.0,
                         ),
                       ),
-                      hintText: "Supplier Name",
+                      hintText: "Admin Name",
                       filled: true,
                       fillColor: Color(0xFFF2F5F5),
                       enabledBorder: OutlineInputBorder(

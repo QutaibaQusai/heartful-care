@@ -36,188 +36,196 @@ class _CentersLoginState extends State<CentersLogin> {
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Welcome back!",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: TextField(
-                  controller: centerEmailController,
-                  cursorColor: Color(0xFF1C8892),
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(0),
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 2.0,
-                      ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Welcome back!",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
                     ),
-                    hintText: "Email",
-                    filled: true,
-                    fillColor: Color(0xFFF2F5F5),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(width: 1, color: Color(0xFFF2F5F5)),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                  ),
+                  ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: TextField(
-                  controller: centerPasswordController,
-                  cursorColor: Color(0xFF1C8892),
-                  obscureText: showHidePassword,
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(0),
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 2.0,
-                      ),
-                    ),
-                    suffixIcon: IconButton(
-                      color: Color(0xFF1C8892),
-                      onPressed: () {
-                        setState(() {
-                          showHidePassword = !showHidePassword;
-                        });
-                      },
-                      icon: Icon(showHidePassword
-                          ? Icons.remove_red_eye
-                          : Icons.visibility_off),
-                    ),
-                    hintText: "Password",
-                    filled: true,
-                    fillColor: Color(0xFFF2F5F5),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(width: 1, color: Color(0xFFF2F5F5)),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                  ),
+                Image.asset(
+                  'images/logo2.png',
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  showBottomSheet(); // Pass the context parameter
-                },
-                child: Padding(
+                SizedBox(
+                  height: 12,
+                ),
+                Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Forgot password?",
-                        style: TextStyle(
-                          fontSize: 14,
+                  child: TextField(
+                    controller: centerEmailController,
+                    cursorColor: Color(0xFF1C8892),
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 2.0,
                         ),
+                      ),
+                      hintText: "Email",
+                      filled: true,
+                      fillColor: Color(0xFFF2F5F5),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 1, color: Color(0xFFF2F5F5)),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: TextField(
+                    controller: centerPasswordController,
+                    cursorColor: Color(0xFF1C8892),
+                    obscureText: showHidePassword,
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 2.0,
+                        ),
+                      ),
+                      suffixIcon: IconButton(
+                        color: Color(0xFF1C8892),
+                        onPressed: () {
+                          setState(() {
+                            showHidePassword = !showHidePassword;
+                          });
+                        },
+                        icon: Icon(showHidePassword
+                            ? Icons.remove_red_eye
+                            : Icons.visibility_off),
+                      ),
+                      hintText: "Password",
+                      filled: true,
+                      fillColor: Color(0xFFF2F5F5),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 1, color: Color(0xFFF2F5F5)),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showBottomSheet(); // Pass the context parameter
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Forgot password?",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF1C8892),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          onPressed: () async {
+                            final x = await MyFirebaseAuth().signIn(
+                                context: context,
+                                email: centerEmailController.text,
+                                password: centerPasswordController.text);
+                            if (x != null) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Color(0xFF1C8892),
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text(
+                                        "Logged In Successfully",
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontFamily:
+                                              GoogleFonts.poppins().fontFamily,
+                                        ),
+                                      ),
+                                      duration: Duration(
+                                          seconds:
+                                              1), // Set your custom duration here
+                                    ),
+                                  )
+                                  .closed
+                                  .whenComplete(
+                                    () => Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CentersHome(
+                                          centerEmail:
+                                              centerEmailController.text,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Text(
+                              "Log in",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Text.rich(
+                  TextSpan(
+                    text: "New Center? ",
+                    style: TextStyle(fontSize: 16),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "Sign Up",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            // Replace SignUpSupplier with your destination widget
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CentersSignUp(),
+                              ),
+                            );
+                          },
                       ),
                     ],
                   ),
                 ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF1C8892),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        onPressed: () async {
-                          final x = await MyFirebaseAuth().signIn(
-                              context: context,
-                              email: centerEmailController.text,
-                              password: centerPasswordController.text);
-                          if (x != null) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: Color(0xFF1C8892),
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text(
-                                      "Logged In Successfully",
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontFamily:
-                                            GoogleFonts.poppins().fontFamily,
-                                      ),
-                                    ),
-                                    duration: Duration(
-                                        seconds:
-                                            1), // Set your custom duration here
-                                  ),
-                                )
-                                .closed
-                                .whenComplete(
-                                  () => Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CentersHome(
-                                        centerEmail: centerEmailController.text,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            "Log in",
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Text.rich(
-                TextSpan(
-                  text: "New Center? ",
-                  style: TextStyle(fontSize: 16),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "Sign Up",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Replace SignUpSupplier with your destination widget
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CentersSignUp(),
-                            ),
-                          );
-                        },
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
