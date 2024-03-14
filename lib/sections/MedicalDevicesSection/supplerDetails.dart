@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/model/devicesModel.dart';
+import 'package:test/sections/MedicalDevicesSection/deviceDetails.dart';
 import 'package:test/sections/MedicalDevicesSection/ratingSupp.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierinfo.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -354,7 +355,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 16),
-                          child: Container(
+                          child: GestureDetector(
                             child: Column(
                               children: [
                                 Container(
@@ -455,6 +456,10 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                 Divider()
                               ],
                             ),
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeviceDetails()));
+
+                            },
                           ),
                         );
                       },
