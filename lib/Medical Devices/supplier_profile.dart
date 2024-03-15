@@ -17,7 +17,7 @@ class Supplier_profile extends StatefulWidget {
 class _Supplier_profileState extends State<Supplier_profile> {
   TextEditingController supplierName = TextEditingController();
   TextEditingController supplierPhoneNumber = TextEditingController();
-  TextEditingController supplierEmail = TextEditingController();
+  // TextEditingController supplierEmail = TextEditingController();
   TextEditingController supplierWebsite = TextEditingController();
   TextEditingController supplierLocation = TextEditingController();
   TextEditingController supplierDescription = TextEditingController();
@@ -45,7 +45,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
         setState(() {
           supplierName.text = userData['supplier_Name'] ?? "";
           supplierPhoneNumber.text = userData['supplier_phoneNumber'] ?? "";
-          supplierEmail.text = userData['supplier_email'] ?? "";
+          // supplierEmail.text = userData['supplier_email'] ?? "";
           supplierWebsite.text = userData['supplier_website'] ?? "";
           supplierLocation.text = userData['supplier_location'] ?? "";
           supplierDescription.text = userData['supplier_description'] ?? "";
@@ -205,13 +205,16 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     ),
                     SizedBox(height: 15),
                     TextFormField(
-                      controller: supplierEmail,
+                      initialValue: widget.supplierEmail,
+                      // controller: supplierEmail,
                       readOnly: true,
                       enabled: false,
                       decoration: InputDecoration(
                         disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(FontAwesomeIcons.envelope,
-                            color: Color(0xFF1C8892)),
+                        prefixIcon: Icon(
+                          FontAwesomeIcons.envelope,
+                          color: Color(0xFF1C8892),
+                        ),
                         hintText: 'Supplier email',
                       ),
                     ),
@@ -222,8 +225,10 @@ class _Supplier_profileState extends State<Supplier_profile> {
                       enabled: false,
                       decoration: InputDecoration(
                         disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(FontAwesomeIcons.globe,
-                            color: Color(0xFF1C8892)),
+                        prefixIcon: Icon(
+                          FontAwesomeIcons.globe,
+                          color: Color(0xFF1C8892),
+                        ),
                         hintText: 'Supplier website',
                       ),
                     ),

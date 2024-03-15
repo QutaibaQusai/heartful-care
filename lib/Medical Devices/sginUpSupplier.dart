@@ -18,7 +18,6 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
   TextEditingController supplierName = TextEditingController();
   TextEditingController supplierEmail = TextEditingController();
   TextEditingController supplierPassword = TextEditingController();
-
   bool showHidePassword = true;
 
   @override

@@ -20,7 +20,7 @@ class EditSupplierProfile extends StatefulWidget {
 class _EditSupplierProfileState extends State<EditSupplierProfile> {
   TextEditingController supplierName = TextEditingController();
   TextEditingController supplierPhoneNumber = TextEditingController();
-  TextEditingController supplierEmail = TextEditingController();
+  // TextEditingController supplierEmail = TextEditingController();
   TextEditingController supplierWebsite = TextEditingController();
   TextEditingController supplierLocation = TextEditingController();
   TextEditingController supplierDescription = TextEditingController();
@@ -63,7 +63,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
         setState(() {
           supplierName.text = userData['supplier_Name'] ?? "";
           supplierPhoneNumber.text = userData['supplier_phoneNumber'] ?? "";
-          supplierEmail.text = userData['supplier_email'] ?? "";
+          // supplierEmail.text = userData['supplier_email'] ?? "";
           supplierWebsite.text = userData['supplier_website'] ?? "";
           supplierLocation.text = userData['supplier_location'] ?? "";
           supplierDescription.text = userData['supplier_description'] ?? "";
@@ -304,9 +304,10 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                   ),
                   SizedBox(height: 15),
                   TextFormField(
-                    controller: supplierEmail,
-                    enabled: isEditable,
+                    initialValue: widget.supplierEmail,
+                    enabled: false,
                     autofocus: false,
+                    readOnly: true,
                     decoration: InputDecoration(
                       disabledBorder: isEditable ? null : InputBorder.none,
                       focusedBorder: isEditable
@@ -437,7 +438,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
 
         await centers.doc(userId).set({
           'supplier_Name': supplierName.text,
-          'supplier_email': supplierEmail.text,
+          // 'supplier_email': supplierEmail.text,
           'supplier_phoneNumber': supplierPhoneNumber.text,
           'supplier_location': supplierLocation.text,
           'supplier_website': supplierWebsite.text,

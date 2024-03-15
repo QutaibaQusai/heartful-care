@@ -457,8 +457,8 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                               ],
                             ),
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeviceDetails()));
-
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => DeviceDetails()));
                             },
                           ),
                         );

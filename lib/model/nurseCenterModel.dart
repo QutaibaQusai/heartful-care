@@ -52,8 +52,7 @@ class NurseCenter {
       pricePreDay: map['Price Per Day'] ?? '',
       pricePreMonth: map['Price Per Month'] ?? '',
 
-      //pricePreMonth: double.tryParse(map['Price Per Month'] ?? '0') ?? 0.0,
-      //pricePreDay: double.tryParse(map['Price Per Day'] ?? '0') ?? 0.0,
+      
     );
   }
 }
