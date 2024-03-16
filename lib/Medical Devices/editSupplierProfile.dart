@@ -456,6 +456,8 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
             ),
           ),
         );
+        Navigator.pop(
+            context, true); // Pop with a result of 'true' to indicate success
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

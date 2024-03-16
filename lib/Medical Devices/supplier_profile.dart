@@ -111,17 +111,8 @@ class _Supplier_profileState extends State<Supplier_profile> {
                                           fontSize: 18),
                                     ),
                                     IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditSupplierProfile(
-                                              supplierEmail:
-                                                  widget.supplierEmail,
-                                            ),
-                                          ),
-                                        );
-                                      },
+                                      onPressed:
+                                          navigateAndUpdateProfile, // Update this line
                                       icon: Icon(
                                         FontAwesomeIcons.pen,
                                         color: Colors.black,
@@ -279,5 +270,18 @@ class _Supplier_profileState extends State<Supplier_profile> {
         ),
       ),
     );
+  }
+  //TODO
+  Future<void> navigateAndUpdateProfile() async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) =>
+            EditSupplierProfile(supplierEmail: widget.supplierEmail),
+      ),
+    );
+
+    if (result == true) {
+      fetchUserData();
+    }
   }
 }

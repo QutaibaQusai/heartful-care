@@ -116,11 +116,7 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
                   ],
                 ),
                 onTap: () {
-                  //TODO
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Supplier_profile(
-                            supplierEmail: widget.supplierEmail,
-                          )));
+                  navigateAndUpdateProfile();
                 },
               ),
               Padding(
@@ -340,6 +336,19 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
         ),
       ),
     );
+  }
+
+  Future<void> navigateAndUpdateProfile() async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Supplier_profile(
+          supplierEmail: widget.supplierEmail,
+        ),
+      ),
+    );
+    if (result == true) {
+      fetchSupplierData();
+    }
   }
 
   Future<void> _deleteAccount() async {

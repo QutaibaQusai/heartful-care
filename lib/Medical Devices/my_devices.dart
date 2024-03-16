@@ -134,7 +134,11 @@ class _MyDevicesState extends State<MyDevices> {
                                               ),
                                             ),
                                             SizedBox(height: 5),
-                                            Text(device.deviceDescription),
+                                            Text(
+                                              device.deviceDescription,
+                                              overflow: TextOverflow.clip,
+                                              maxLines: 4,
+                                            ),
                                             Expanded(child: Container()),
                                             Row(
                                               children: [
@@ -152,15 +156,17 @@ class _MyDevicesState extends State<MyDevices> {
                                                         const EdgeInsets.only(
                                                             right: 10.0),
                                                     child: Text(
-                                                        device.devicePrice),
+                                                      device.devicePrice,
+                                                    ),
                                                   ),
                                                 ),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
                                                           left: 10.0),
-                                                  child:
-                                                      Text(device.deviceRent),
+                                                  child: Text("Rent pre week " +
+                                                      device.deviceRent +
+                                                      "JD"),
                                                 ),
                                               ],
                                             ),
