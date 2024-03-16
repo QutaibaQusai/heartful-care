@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:test/model/devicesModel.dart';
 import 'package:test/sections/MedicalDevicesSection/deviceDetails.dart';
 import 'package:test/sections/MedicalDevicesSection/ratingSupp.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierinfo.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SupplierDetails extends StatefulWidget {
   final String name;
@@ -332,139 +332,177 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                 height: 15,
               ),
               StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('Devices')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    List<Devices> devices = snapshot.data!.docs
-                        .map((doc) =>
-                            Devices.fromMap(doc.data() as Map<String, dynamic>))
-                        .toList();
+                stream: FirebaseFirestore.instance
+                    .collection('Suppliers')
+                    .snapshots(),
+                builder: (context, supplierSnapshot) {
+                  if (supplierSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+                  if (supplierSnapshot.hasError) {
+                    return Text('Error: ${supplierSnapshot.error}');
+                  }
+                  if (!supplierSnapshot.hasData ||
+                      supplierSnapshot.data!.docs.isEmpty) {
+                    return Text('No data available');
+                  }
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: devices.length,
-                      itemBuilder: (context, index) {
-                        var device = devices[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 16),
-                          child: GestureDetector(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  height:
-                                      MediaQuery.of(context).size.height / 6,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: double.infinity,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                3,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(13),
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(13),
-                                          child: Image.network(
-                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTvEkQUIq0n3AMgcKON0e2SkFvd1P4PIWoJz3GNN1Qul41UFBY1j7fweQJut4OM38Cu1o&usqp=CAU",
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Expanded(
-                                        child: Container(
+                  List<String> supplierIds =
+                      supplierSnapshot.data!.docs.map((doc) => doc.id).toList();
+
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Devices')
+                        .where("supplierId", whereIn: supplierIds)
+                        .snapshots(),
+                    builder: (context, deviceSnapshot) {
+                      if (!deviceSnapshot.hasData) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      List<Devices> devices = deviceSnapshot.data!.docs
+                          .map((doc) => Devices.fromMap(
+                              doc.data() as Map<String, dynamic>))
+                          .toList();
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: devices.length,
+                        itemBuilder: (context, index) {
+                          var device = devices[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 16),
+                            child: GestureDetector(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height:
+                                        MediaQuery.of(context).size.height / 6,
+                                    child: Row(
+                                      children: [
+                                        Container(
                                           height: double.infinity,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                device.deviceName.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontSize: 19,
-                                                  fontWeight: FontWeight.bold,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(13),
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(13),
+                                            child: Image.network(
+                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTvEkQUIq0n3AMgcKON0e2SkFvd1P4PIWoJz3GNN1Qul41UFBY1j7fweQJut4OM38Cu1o&usqp=CAU",
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            height: double.infinity,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  device.deviceName
+                                                      .toUpperCase(),
+                                                  style: TextStyle(
+                                                    fontSize: 19,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(device.deviceDescription),
-                                              Expanded(child: Container()),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        border: Border(
-                                                          right: BorderSide(
-                                                            color: Colors.grey,
-                                                            width: 1.0,
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  device.deviceDescription,
+                                                  overflow: TextOverflow.clip,
+                                                  maxLines: 4,
+                                                ),
+                                                Expanded(child: Container()),
+                                                Container(
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border(
+                                                            right: BorderSide(
+                                                              color:
+                                                                  Colors.grey,
+                                                              width: 1.0,
+                                                            ),
                                                           ),
                                                         ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 10.0),
+                                                          child: Text(device
+                                                              .devicePrice),
+                                                        ),
                                                       ),
-                                                      child: Padding(
+                                                      Padding(
                                                         padding:
                                                             const EdgeInsets
                                                                 .only(
-                                                                right: 10.0),
+                                                                left: 10.0),
                                                         child: Text(
-                                                            device.devicePrice),
+                                                            "Rent per day 30"),
                                                       ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10.0),
-                                                      child: Text(
-                                                          "Rent per day 30"),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                    ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Divider()
-                              ],
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Divider()
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => DeviceDetails(
+                                          deviceName: device.deviceName,
+                                          deviceDescription:
+                                              device.deviceDescription,
+                                          priceForBuying: device.devicePrice,
+                                          priceForRent: device.deviceRent,
+                                        )));
+                              },
                             ),
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => DeviceDetails()));
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  }),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),

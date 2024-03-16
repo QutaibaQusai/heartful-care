@@ -3,7 +3,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/MedicalDevicesSection/itemCart.dart';
 
 class DeviceDetails extends StatefulWidget {
-  const DeviceDetails({Key? key}) : super(key: key);
+  final String deviceName;
+  final String deviceDescription;
+  final String priceForBuying;
+  final String priceForRent;
+  const DeviceDetails(
+      {Key? key,
+      required this.deviceName,
+      required this.deviceDescription,
+      required this.priceForBuying,
+      required this.priceForRent})
+      : super(key: key);
 
   @override
   State<DeviceDetails> createState() => _DeviceDetailsState();
@@ -90,18 +100,18 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Wheelchair",
+                      widget.deviceName,
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
                     isExpanded
                         ? Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id sodales eros, et fermentum risus Fusce id sodales eros, et fermentum risusFusce id sodales eros, et fermentum risus.",
+                            widget.deviceDescription,
                             style: TextStyle(fontSize: 16),
                           )
                         : Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id sodales eros, et fermentum risus Fusce id sodales eros, et fermentum risusFusce id sodales eros, et fermentum risus. ",
+                            widget.deviceDescription,
                             style: TextStyle(fontSize: 16),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -147,7 +157,7 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                                       MaterialTapTargetSize.shrinkWrap,
                                   activeColor: Color(0xFF1C8892),
                                 ),
-                                Text('Buy for 100JD'),
+                                Text('Buy for ${widget.priceForBuying}JD'),
                               ],
                             ),
                             Row(
@@ -165,7 +175,8 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                                   activeColor: Color(
                                       0xFF1C8892), // Color for the selected Radio button
                                 ),
-                                Text('Rent per week for 30JD'),
+                                Text(
+                                    'Rent per week for ${widget.priceForRent}JD'),
                               ],
                             ),
                           ],

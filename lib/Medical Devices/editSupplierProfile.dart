@@ -20,7 +20,6 @@ class EditSupplierProfile extends StatefulWidget {
 class _EditSupplierProfileState extends State<EditSupplierProfile> {
   TextEditingController supplierName = TextEditingController();
   TextEditingController supplierPhoneNumber = TextEditingController();
-  // TextEditingController supplierEmail = TextEditingController();
   TextEditingController supplierWebsite = TextEditingController();
   TextEditingController supplierLocation = TextEditingController();
   TextEditingController supplierDescription = TextEditingController();
@@ -409,7 +408,6 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
           ),
           onPressed: () {
             _submitUserData();
-            saveSupplierProfile();
           },
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -438,12 +436,12 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
 
         await centers.doc(userId).set({
           'supplier_Name': supplierName.text,
-          // 'supplier_email': supplierEmail.text,
           'supplier_phoneNumber': supplierPhoneNumber.text,
           'supplier_location': supplierLocation.text,
           'supplier_website': supplierWebsite.text,
           'supplier_description': supplierDescription.text,
           'supplier_paymnet_option': supplierPaymentOption.text,
+          'imageLink': _imageUrl,
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(

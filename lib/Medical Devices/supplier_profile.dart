@@ -45,7 +45,6 @@ class _Supplier_profileState extends State<Supplier_profile> {
         setState(() {
           supplierName.text = userData['supplier_Name'] ?? "";
           supplierPhoneNumber.text = userData['supplier_phoneNumber'] ?? "";
-          // supplierEmail.text = userData['supplier_email'] ?? "";
           supplierWebsite.text = userData['supplier_website'] ?? "";
           supplierLocation.text = userData['supplier_location'] ?? "";
           supplierDescription.text = userData['supplier_description'] ?? "";

@@ -1,5 +1,4 @@
 class Devices {
-  //final String deviceImages;
   final String deviceName;
   final String devicePrice;
   final String deviceRent;
