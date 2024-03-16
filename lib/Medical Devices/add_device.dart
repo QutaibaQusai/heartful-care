@@ -92,12 +92,12 @@ class _Add_deviceState extends State<Add_device> {
                 buildTextFormField(deviceName, "Device Name"),
                 buildTextFormField(devicePriceForPuy, "Device Price"),
                 buildTextFormField(
-                    devicePriceForRent, "Device Price for rent per month"),
+                    devicePriceForRent, "Device Price for rent per week"),
                 buildTextFormField(deviceDescription, "Description"),
                 buildTextFormField(deviceQuantity, "Device quantity"),
                 buildTextFormField(
                     deviceInstructions, "Instructions about device"),
-                //Text(widget.supplierEmail)
+                Text(widget.supplierEmail)
               ],
             ),
           ),

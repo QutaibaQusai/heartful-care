@@ -435,7 +435,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                                 Text(
                                                   device.deviceDescription,
                                                   overflow: TextOverflow.clip,
-                                                  maxLines: 4,
+                                                  maxLines: 3,
                                                 ),
                                                 Expanded(child: Container()),
                                                 Container(
@@ -467,7 +467,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                                                 .only(
                                                                 left: 10.0),
                                                         child: Text(
-                                                            "Rent per day 30"),
+                                                            "Rent per week 30JD"),
                                                       ),
                                                     ],
                                                   ),

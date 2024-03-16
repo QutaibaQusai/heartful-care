@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test/resources/add_img.dart';
@@ -441,6 +440,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
           'supplier_website': supplierWebsite.text,
           'supplier_description': supplierDescription.text,
           'supplier_paymnet_option': supplierPaymentOption.text,
+          'supplier_email': widget.supplierEmail,
           'imageLink': _imageUrl,
         }, SetOptions(merge: true));
 

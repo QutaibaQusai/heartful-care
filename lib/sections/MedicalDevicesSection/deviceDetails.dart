@@ -22,6 +22,7 @@ class DeviceDetails extends StatefulWidget {
 class _DeviceDetailsState extends State<DeviceDetails> {
   bool isExpanded = false;
   int quantity = 1;
+  int weeks = 1; // Variable to hold selected number of weeks
   int currentPage = 0; // Current page index for PageView
 
   final List<String> images = [
@@ -177,6 +178,24 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                                 ),
                                 Text(
                                     'Rent per week for ${widget.priceForRent}JD'),
+                                Spacer(flex: 5),
+                                priceOption == 'Rent'
+                                    ? DropdownButton<int>(
+                                        value: weeks,
+                                        onChanged: (int? value) {
+                                          setState(() {
+                                            weeks = value!;
+                                          });
+                                        },
+                                        items: List.generate(
+                                          12,
+                                          (index) => DropdownMenuItem<int>(
+                                            value: index + 1,
+                                            child: Text('${index + 1} weeks'),
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(), // Placeholder for when rent option is not selected
                               ],
                             ),
                           ],
