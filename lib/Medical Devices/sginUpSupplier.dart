@@ -198,22 +198,13 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
                               );
 
                               if (newUser != null) {
-                                CollectionReference suppliers =
-                                    FirebaseFirestore.instance
-                                        .collection('Suppliers');
-
-                                // First, create the document without the SupplierId
-                                DocumentReference documentReference =
-                                    await suppliers.add({
+                                CollectionReference centers = FirebaseFirestore
+                                    .instance
+                                    .collection('Suppliers');
+                                await centers.doc(newUser.uid).set({
                                   'Admin': supplierName.text,
                                   'Email': supplierEmail.text,
                                   // You can add other fields here as necessary
-                                });
-
-                                // Then, update the same document to include its ID as the SupplierId
-                                await documentReference.update({
-                                  'SupplierId': documentReference
-                                      .id, // This adds the SupplierId field
                                 });
 
                                 Navigator.pushReplacement(
