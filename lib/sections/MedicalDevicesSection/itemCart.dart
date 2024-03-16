@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/sections/MedicalDevicesSection/checkout.dart';
 
 class ItemCart extends StatefulWidget {
   const ItemCart({Key? key}) : super(key: key);
@@ -234,7 +235,14 @@ class _ItemCart extends State<ItemCart> {
                 Color(0xFF1C8892), // Button background color
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Checkout(),
+                ),
+              );
+            },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
