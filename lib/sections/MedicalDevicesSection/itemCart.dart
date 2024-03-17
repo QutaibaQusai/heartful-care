@@ -2,17 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:test/sections/MedicalDevicesSection/checkout.dart';
 
 class ItemCart extends StatefulWidget {
-  const ItemCart({Key? key}) : super(key: key);
+  final String itemName;
+  final String itemPrice;
+  final String itemOption;
+  final int quantity;
+  final int weeks;
+
+  const ItemCart({
+    Key? key,
+    required this.itemName,
+    required this.itemPrice,
+    required this.itemOption,
+    required this.quantity,
+    required this.weeks,
+    required Null Function() onItemAddedToCart,
+  }) : super(key: key);
 
   @override
   State<ItemCart> createState() => _ItemCart();
 }
 
 class _ItemCart extends State<ItemCart> {
-  int quantity = 1;
+  List<Map<String, dynamic>> cartItems = [];
+  double deliveryFees = 2; // Define delivery fees
+
+  @override
+  void initState() {
+    super.initState();
+    cartItems.add({
+      'name': widget.itemName,
+      'price': widget.itemPrice,
+      'option': widget.itemOption,
+      'quantity': widget.quantity,
+      'weeks': widget.weeks,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    double totalPrice = calculateTotalPrice();
+    double paymentAmount =
+        totalPrice + deliveryFees; // Add delivery fees to payment amount
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -53,16 +84,19 @@ class _ItemCart extends State<ItemCart> {
             SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: 2,
+                itemCount: cartItems.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    height: 150, // Set the height as needed
+                    height: 150,
                     child: Card(
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
-                            7), // Adjust border radius as needed
-                        side: BorderSide(color: Colors.grey), // Border color
+                          7,
+                        ), // Adjust border radius as needed
+                        side: BorderSide(
+                          color: Colors.grey,
+                        ), // Border color
                       ),
                       color: Colors.white, // Background color of the card
                       child: Padding(
@@ -77,7 +111,8 @@ class _ItemCart extends State<ItemCart> {
                                   height: 110,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
-                                        10), // Adjust border radius as needed
+                                      10,
+                                    ), // Adjust border radius as needed
                                     image: DecorationImage(
                                       image: NetworkImage(
                                         "https://lynemouthpharmacy.co.uk/wp-content/uploads/2022/03/blood_pressure-02.jpg",
@@ -91,14 +126,14 @@ class _ItemCart extends State<ItemCart> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Pressure device',
+                                      cartItems[index]['name'],
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
-                                      'Buying',
+                                      cartItems[index]['option'],
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontStyle: FontStyle.italic,
@@ -114,7 +149,8 @@ class _ItemCart extends State<ItemCart> {
                                           icon: Icon(Icons.remove),
                                         ),
                                         Text(
-                                          quantity.toString(),
+                                          cartItems[index]['quantity']
+                                              .toString(),
                                           style: TextStyle(fontSize: 15),
                                         ),
                                         IconButton(
@@ -125,7 +161,7 @@ class _ItemCart extends State<ItemCart> {
                                         ),
                                         IconButton(
                                           onPressed: () {
-                                            // Handle delete functionality here
+                                            removeItem(index);
                                           },
                                           icon: Icon(Icons.delete),
                                           //color: Color(0xFF1C8892),
@@ -169,36 +205,30 @@ class _ItemCart extends State<ItemCart> {
                         ),
                       ),
                       Text(
-                        '100JD',
+                        '$totalPrice JD',
                         style: TextStyle(
                           fontSize: 16,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Delivery Fees',
+                        'Delivery fees',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '2Jds',
+                        '$deliveryFees JD', // Display delivery fees
                         style: TextStyle(
                           fontSize: 16,
                         ),
                       ),
                     ],
-                  ),
-                  SizedBox(
-                    height: 5,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -211,13 +241,17 @@ class _ItemCart extends State<ItemCart> {
                         ),
                       ),
                       Text(
-                        '102 JD',
+                        '$paymentAmount JD', // Display payment amount including delivery fees
                         style: TextStyle(
                           fontSize: 16,
                         ),
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  // You can add more order details here if needed
                 ],
               ),
             ),
@@ -239,7 +273,9 @@ class _ItemCart extends State<ItemCart> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Checkout(),
+                  builder: (context) => Checkout(
+                      paymentAmount:
+                          paymentAmount), // Pass payment amount to Checkout screen
                 ),
               );
             },
@@ -261,16 +297,34 @@ class _ItemCart extends State<ItemCart> {
 
   void incrementQuantity() {
     setState(() {
-      quantity++;
+      cartItems.forEach((item) {
+        item['quantity']++;
+      });
     });
   }
 
   void decrementQuantity() {
-    if (quantity > 1) {
-      setState(() {
-        quantity--;
+    setState(() {
+      cartItems.forEach((item) {
+        if (item['quantity'] > 1) {
+          item['quantity']--;
+        }
       });
+    });
+  }
+
+  void removeItem(int index) {
+    setState(() {
+      cartItems.removeAt(index);
+    });
+  }
+
+  double calculateTotalPrice() {
+    double total = 0;
+    for (var item in cartItems) {
+      total += double.parse(item['price']) * item['quantity'] * item['weeks'];
     }
+    return total;
   }
 }
 

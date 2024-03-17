@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 
 class Checkout extends StatefulWidget {
-  const Checkout({Key? key}) : super(key: key);
+  final double paymentAmount; // Payment amount parameter
+
+  const Checkout({Key? key, required this.paymentAmount}) : super(key: key);
 
   @override
   State<Checkout> createState() => _CheckoutState();
@@ -162,7 +164,7 @@ class _CheckoutState extends State<Checkout> {
                       ),
                     ),
                     Text(
-                      '102 JD',
+                      '${widget.paymentAmount} JD', // Use the payment amount passed from ItemCart
                       style: TextStyle(
                         fontSize: 16,
                       ),
