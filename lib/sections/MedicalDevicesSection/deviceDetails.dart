@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/MedicalDevicesSection/itemCart.dart';
+import 'package:badges/badges.dart' as badges;
 
 class DeviceDetails extends StatefulWidget {
   final String deviceName;
@@ -34,6 +35,8 @@ class _DeviceDetailsState extends State<DeviceDetails> {
 
   String priceOption = 'Buy'; // Default price option
 
+  int cartItemCount = 0; // Count of items in the cart
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,18 +44,41 @@ class _DeviceDetailsState extends State<DeviceDetails> {
         title: Text("Device Details"),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ItemCart(),
-                ),
-              );
-            },
-            icon: Icon(
-              FontAwesomeIcons.cartShopping,
-              color: Colors.black,
+          badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -8, end: 3),
+            showBadge: cartItemCount >
+                0, // Show badge only when there are items in the cart
+            badgeContent: Text(cartItemCount
+                .toString()), // Show the count of items in the cart
+            badgeColor: Color(0xFF1C8892),
+
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ItemCart(
+                      itemName: widget.deviceName,
+//itemDescription: widget.deviceDescription,
+                      itemPrice: priceOption == 'Buy'
+                          ? widget.priceForBuying
+                          : widget.priceForRent,
+                      itemOption: priceOption,
+                      quantity: quantity,
+                      weeks: weeks,
+                      onItemAddedToCart: () {
+                        setState(() {
+                          cartItemCount++; // Increment the count of items in the cart
+                        });
+                      },
+                    ),
+                  ),
+                );
+              },
+              icon: Icon(
+                FontAwesomeIcons.cartShopping,
+                color: Colors.black,
+              ),
             ),
           ),
         ],
@@ -242,6 +268,9 @@ class _DeviceDetailsState extends State<DeviceDetails> {
             ElevatedButton(
               onPressed: () {
                 // Add to cart functionality
+                setState(() {
+                  cartItemCount++;
+                });
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF1C8892),
