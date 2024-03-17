@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/Medical%20Devices/add_device.dart';
 import 'package:test/Medical%20Devices/my_devices.dart';
+import 'package:test/Medical%20Devices/supplierChangePassword.dart';
 import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
 import 'package:test/Medical%20Devices/supplier_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Suppliers_sittings extends StatefulWidget {
   final String supplierEmail;
@@ -307,12 +309,6 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("Cancel"),
-                          ),
-                          TextButton(
-                            onPressed: () {
                               // Call method to delete account
                               _deleteAccount();
                               // Close dialog and navigate to login screen
@@ -325,10 +321,134 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
                             },
                             child: Text("Delete"),
                           ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Cancel"),
+                          ),
                         ],
                       );
                     },
                   );
+                },
+              ),
+              GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F2F5),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          FontAwesomeIcons.envelope,
+                          color: Color(0xFF1C8892),
+                          size: 20,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Text(
+                        "Change Email",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Expanded(child: Container()),
+                      Icon(
+                        FontAwesomeIcons.chevronRight,
+                        color: Color(0xFF1C8892),
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {},
+              ),
+              GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F2F5),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          FontAwesomeIcons.lock,
+                          color: Color(0xFF1C8892),
+                          size: 20,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Text(
+                        "Change Password",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Expanded(child: Container()),
+                      Icon(
+                        FontAwesomeIcons.chevronRight,
+                        color: Color(0xFF1C8892),
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SupplierChangePassword()));
+
+                  //  MyFirebaseAuth().changePassword(context: context, currentPassword: currentPassword, newPassword: newPassword)
+                },
+              ),
+              GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F2F5),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          FontAwesomeIcons.signOut,
+                          color: Color(0xFF1C8892),
+                          size: 20,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Text(
+                        "Log Out",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Expanded(child: Container()),
+                      Icon(
+                        FontAwesomeIcons.chevronRight,
+                        color: Color(0xFF1C8892),
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  _showLogoutDialog(context);
                 },
               ),
             ],
@@ -362,5 +482,52 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
     if (user != null) {
       await user.delete();
     }
+  }
+
+  Future<void> _showLogoutDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Logout'),
+          content: Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                // Perform logout action
+                await _clearUserData();
+
+                // Navigate to home page
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (context) => SupplierRegistration()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Function to clear user data
+  Future<void> _clearUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Clear relevant user data, for example:
+    prefs.remove('userEmail');
+    prefs.remove('fullname');
+    // Add any other data you want to clear
+
+    // You might also want to sign out from Firebase if you're using Firebase Authentication
+    // FirebaseAuth.instance.signOut();
   }
 }
