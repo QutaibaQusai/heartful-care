@@ -16,6 +16,7 @@ class SupplierDetails extends StatefulWidget {
   final String location;
   final String description;
   final String paymentOption;
+  final String userEmail;
   const SupplierDetails({
     Key? key,
     required this.name,
@@ -26,6 +27,7 @@ class SupplierDetails extends StatefulWidget {
     required this.description,
     required this.paymentOption,
     required this.logoImage,
+    required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -482,7 +484,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  Divider()
+                                  Divider(),
                                 ],
                               ),
                               onTap: () {
@@ -493,6 +495,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                               device.deviceDescription,
                                           priceForBuying: device.devicePrice,
                                           priceForRent: device.deviceRent,
+                                          userEmail: widget.userEmail,
                                         )));
                               },
                             ),

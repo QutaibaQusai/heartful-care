@@ -33,7 +33,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
           streetController.text = userData['Street'] ?? "";
           buildingController.text = userData['Building'] ?? "";
           floorController.text = userData['Floor'] ?? "";
-          apartmentController.text = userData['Apartment'] ?? "";
+          apartmentController.text = userData['apartment'] ?? "";
           mobilenumController.text = userData['Mobile number'] ?? "";
         });
       }
@@ -76,7 +76,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
                 ),
               ),
               TextField(
-                controller: streetController,
+                controller: addressnicknameController,
                 decoration: InputDecoration(
                   labelText: 'Address Nickname',
                   labelStyle: TextStyle(color: Colors.grey),
@@ -86,7 +86,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
                 ),
               ),
               TextField(
-                controller: buildingController,
+                controller: streetController,
                 decoration: InputDecoration(
                   labelText: 'Street',
                   labelStyle: TextStyle(color: Colors.grey),
@@ -96,7 +96,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
                 ),
               ),
               TextField(
-                controller: addressnicknameController,
+                controller: buildingController,
                 decoration: InputDecoration(
                   labelText: 'Building',
                   labelStyle: TextStyle(color: Colors.grey),

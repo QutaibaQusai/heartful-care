@@ -8,12 +8,15 @@ class DeviceDetails extends StatefulWidget {
   final String deviceDescription;
   final String priceForBuying;
   final String priceForRent;
+  final String userEmail;
+
   const DeviceDetails(
       {Key? key,
       required this.deviceName,
       required this.deviceDescription,
       required this.priceForBuying,
-      required this.priceForRent})
+      required this.priceForRent,
+      required this.userEmail})
       : super(key: key);
 
   @override
@@ -33,9 +36,8 @@ class _DeviceDetailsState extends State<DeviceDetails> {
     "https://example.com/image3.jpg",
   ];
 
-  String priceOption = 'Buy'; // Default price option
-
-  int cartItemCount = 0; // Count of items in the cart
+  String? priceOption;
+  int cartItemCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,43 +46,41 @@ class _DeviceDetailsState extends State<DeviceDetails> {
         title: Text("Device Details"),
         centerTitle: true,
         actions: [
-          badges.Badge(
-            position: badges.BadgePosition.topEnd(top: -8, end: 3),
-            showBadge: cartItemCount >
-                0, // Show badge only when there are items in the cart
-            badgeContent: Text(cartItemCount
-                .toString()), // Show the count of items in the cart
-            badgeColor: Color(0xFF1C8892),
-
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ItemCart(
-                      itemName: widget.deviceName,
-//itemDescription: widget.deviceDescription,
-                      itemPrice: priceOption == 'Buy'
-                          ? widget.priceForBuying
-                          : widget.priceForRent,
-                      itemOption: priceOption,
-                      quantity: quantity,
-                      weeks: weeks,
-                      onItemAddedToCart: () {
-                        setState(() {
-                          cartItemCount++; // Increment the count of items in the cart
-                        });
-                      },
+          if (priceOption != null) 
+            badges.Badge(
+              position: badges.BadgePosition.topEnd(top: -8, end: 3),
+              showBadge: cartItemCount > 0,
+              badgeContent: Text(cartItemCount.toString()),
+              badgeColor: Color(0xFF1C8892),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ItemCart(
+                        itemName: widget.deviceName,
+                        itemPrice: priceOption == 'Buy'
+                            ? widget.priceForBuying
+                            : widget.priceForRent,
+                        itemOption: priceOption!,
+                        quantity: quantity,
+                        weeks: weeks,
+                        onItemAddedToCart: () {
+                          setState(() {
+                            cartItemCount++; 
+                          });
+                        },
+                        userEmail: widget.userEmail,
+                      ),
                     ),
-                  ),
-                );
-              },
-              icon: Icon(
-                FontAwesomeIcons.cartShopping,
-                color: Colors.black,
+                  );
+                },
+                icon: Icon(
+                  FontAwesomeIcons.cartShopping,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -231,6 +231,7 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                   ],
                 ),
               ),
+              
             ],
           ),
         ),

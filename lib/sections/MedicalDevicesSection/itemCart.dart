@@ -7,6 +7,7 @@ class ItemCart extends StatefulWidget {
   final String itemOption;
   final int quantity;
   final int weeks;
+  final String userEmail;
 
   const ItemCart({
     Key? key,
@@ -16,6 +17,7 @@ class ItemCart extends StatefulWidget {
     required this.quantity,
     required this.weeks,
     required Null Function() onItemAddedToCart,
+    required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class ItemCart extends StatefulWidget {
 
 class _ItemCart extends State<ItemCart> {
   List<Map<String, dynamic>> cartItems = [];
-  double deliveryFees = 2; // Define delivery fees
+  double deliveryFees = 2;
 
   @override
   void initState() {
@@ -41,8 +43,7 @@ class _ItemCart extends State<ItemCart> {
   @override
   Widget build(BuildContext context) {
     double totalPrice = calculateTotalPrice();
-    double paymentAmount =
-        totalPrice + deliveryFees; // Add delivery fees to payment amount
+    double paymentAmount = totalPrice + deliveryFees;
 
     return SafeArea(
       child: Scaffold(
@@ -54,7 +55,7 @@ class _ItemCart extends State<ItemCart> {
             ClipPath(
               clipper: MyClipper(),
               child: Container(
-                height: 200, // Increased height to accommodate content
+                height: 200,
                 color: Color(0xFF1C8892),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -82,6 +83,7 @@ class _ItemCart extends State<ItemCart> {
               ),
             ),
             SizedBox(height: 20),
+
             Expanded(
               child: ListView.builder(
                 itemCount: cartItems.length,
@@ -274,8 +276,9 @@ class _ItemCart extends State<ItemCart> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Checkout(
-                      paymentAmount:
-                          paymentAmount), // Pass payment amount to Checkout screen
+                    paymentAmount: paymentAmount,
+                    userEmail: widget.userEmail,
+                  ), // Pass payment amount to Checkout screen
                 ),
               );
             },

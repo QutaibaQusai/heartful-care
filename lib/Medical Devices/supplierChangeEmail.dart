@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:test/Authentication%20firebase/firebase_auth.dart';
 
-class YourChangeEmailPage extends StatefulWidget {
-  const YourChangeEmailPage({Key? key, required String userEmail})
-      : super(key: key);
+class SupplierChangeEmail extends StatefulWidget {
+  const SupplierChangeEmail({super.key});
 
   @override
-  State<YourChangeEmailPage> createState() => _YourChangeEmailPageState();
+  State<SupplierChangeEmail> createState() => _supplierChangeEmailState();
 }
 
-class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
-  Color underlineColor = Colors.grey;
+class _supplierChangeEmailState extends State<SupplierChangeEmail> {
   bool showHidePassword = false;
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordSupplierController = TextEditingController();
+  TextEditingController newSupplierEmail = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +30,12 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
+                controller: newSupplierEmail,
                 decoration: InputDecoration(
                   labelText: 'New email',
                   labelStyle: TextStyle(color: Colors.grey),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: underlineColor),
+                    borderSide: BorderSide(color: Colors.grey),
                   ),
                 ),
               ),
@@ -44,7 +45,7 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
                   labelText: 'Confirm email',
                   labelStyle: TextStyle(color: Colors.grey),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: underlineColor),
+                    borderSide: BorderSide(color: Colors.grey),
                   ),
                 ),
               ),
@@ -54,12 +55,12 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
                   Expanded(
                     child: TextField(
                       obscureText: !showHidePassword,
-                      controller: passwordController,
+                      controller: passwordSupplierController,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         labelStyle: TextStyle(color: Colors.grey),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: underlineColor),
+                          borderSide: BorderSide(color: Colors.grey),
                         ),
                         suffixIcon: IconButton(
                           color: Color(0xFF1C8892),
@@ -82,8 +83,11 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Add your submit logic here
+                  onPressed: () async {
+                    await MyFirebaseAuth().changeEmail(
+                        context: context,
+                        newEmail: newSupplierEmail.text,
+                        password: passwordSupplierController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

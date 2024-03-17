@@ -1,17 +1,60 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 
 class Checkout extends StatefulWidget {
   final double paymentAmount; // Payment amount parameter
+  final String userEmail;
 
-  const Checkout({Key? key, required this.paymentAmount}) : super(key: key);
+  const Checkout(
+      {Key? key, required this.paymentAmount, required this.userEmail})
+      : super(key: key);
 
   @override
   State<Checkout> createState() => _CheckoutState();
 }
 
 class _CheckoutState extends State<Checkout> {
-  String paymentMethod = 'Visa Card'; // Default payment method
+  String paymentMethod = 'Visa Card';
+  TextEditingController cardNumberController = TextEditingController();
+  TextEditingController expiryDateController = TextEditingController();
+  TextEditingController cvvController = TextEditingController();
+  String userArea = "";
+  String addressNickName = "";
+
+  @override
+  void dispose() {
+    // Clean up the controllers when the widget is disposed
+    cardNumberController.dispose();
+    expiryDateController.dispose();
+    cvvController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserName();
+  }
+
+  void fetchUserName() async {
+    try {
+      var userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: widget.userEmail)
+          .get();
+
+      if (userDoc.docs.isNotEmpty) {
+        setState(() {
+          userArea = userDoc.docs[0]['Area'];
+          addressNickName = userDoc.docs[0]['Address nickname'];
+        });
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +101,6 @@ class _CheckoutState extends State<Checkout> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Payment method:',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     Row(
                       children: [
                         Radio(
@@ -87,26 +123,87 @@ class _CheckoutState extends State<Checkout> {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  CreditCardWidget(
-                    cardNumber: '1234 5678 9012 3456',
-                    expiryDate: '12/24',
-                    cardHolderName: 'John Doe',
-                    cvvCode: '123',
-                    showBackView: true,
-                    onCreditCardWidgetChange: (brand) {},
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                ],
+              CreditCardWidget(
+                cardBgColor: Color(0xFF1C8892),
+                cardNumber: cardNumberController.text,
+                expiryDate: expiryDateController.text,
+                cardHolderName: 'John Doe',
+                cvvCode: cvvController.text,
+                showBackView: true,
+                onCreditCardWidgetChange: (brand) {},
               ),
+              if (paymentMethod == 'Visa Card') ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      TextField(
+                        cursorColor: Color(0xFF1C8892),
+                        keyboardType: TextInputType.number,
+                        controller: cardNumberController,
+                        decoration: InputDecoration(
+                          labelText: 'Card Number',
+                          labelStyle: TextStyle(color: Colors.black),
+                          hintText: 'Enter your card number',
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.black, width: 2.0),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              cursorColor: Color(0xFF1C8892),
+                              controller: expiryDateController,
+                              decoration: InputDecoration(
+                                labelText: 'Expiry Date',
+                                hintText: 'MM/YY',
+                                labelStyle: TextStyle(color: Colors.black),
+                                border: OutlineInputBorder(),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.black,
+                                    width: 2.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              cursorColor: Color(0xFF1C8892),
+                              controller: cvvController,
+                              decoration: InputDecoration(
+                                labelText: 'CVV',
+                                labelStyle: TextStyle(color: Colors.black),
+                                hintText: 'Enter CVV',
+                                border: OutlineInputBorder(),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.black, width: 2.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               Row(
                 children: [
                   Radio(
-                    value: 'Cash on deliver',
+                    value: 'Cash on delivery',
                     groupValue: paymentMethod,
                     onChanged: (value) {
                       setState(() {
@@ -121,7 +218,7 @@ class _CheckoutState extends State<Checkout> {
                 ],
               ),
               Container(
-                height: 100, // Set the height as needed
+                height: 120, // Set the height as needed
                 child: Card(
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   shape: RoundedRectangleBorder(
@@ -136,16 +233,23 @@ class _CheckoutState extends State<Checkout> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(
-                            'Delivery address', // Delivery address
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              // Add your style properties as needed
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Delivery address', // Delivery address
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  // Add your style properties as needed
+                                ),
+                              ),
+                              Text(userArea),
+                              Text(addressNickName)
+                            ],
                           ),
                         ),
-                        Icon(Icons.edit), // Pen icon
                       ],
                     ),
                   ),

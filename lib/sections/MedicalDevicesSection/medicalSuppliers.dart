@@ -6,7 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Medical extends StatefulWidget {
-  const Medical({Key? key}) : super(key: key);
+  final String userEmail;
+  const Medical({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   State<Medical> createState() => _MedicalState();
@@ -65,6 +66,7 @@ class _MedicalState extends State<Medical> {
                               description: supplier.description,
                               paymentOption: supplier.paymentOption,
                               logoImage: supplier.logoImage,
+                              userEmail: widget.userEmail,
                             )));
                   },
                   child: Padding(
@@ -161,7 +163,7 @@ class _MedicalState extends State<Medical> {
                                 ),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

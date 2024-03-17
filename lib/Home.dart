@@ -285,7 +285,7 @@ class _HomeState extends State<Home> {
                               )));
                     } else if (sections.sectionName == "Medical devices") {
                       Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Medical()));
+                          MaterialPageRoute(builder: (context) => Medical(userEmail: widget.userEmail,)));
                     }
                   },
                   child: Row(
