@@ -7,16 +7,17 @@ class MedicalSupplier {
   final String location;
   final String description;
   final String paymentOption;
-  MedicalSupplier({
-    required this.name,
-    required this.phoneNumber,
-    required this.emailAddress,
-    required this.website,
-    required this.description,
-    required this.location,
-    required this.paymentOption,
-    required this.logoImage,
-  });
+  final String supplierCover;
+  MedicalSupplier(
+      {required this.name,
+      required this.phoneNumber,
+      required this.emailAddress,
+      required this.website,
+      required this.description,
+      required this.location,
+      required this.paymentOption,
+      required this.logoImage,
+      required this.supplierCover});
 
   factory MedicalSupplier.fromMap(Map<String, dynamic> map) {
     return MedicalSupplier(
@@ -27,7 +28,9 @@ class MedicalSupplier {
         location: map['supplier_location'] ?? 'Not Found',
         description: map['supplier_description'] ?? 'Not Found',
         paymentOption: map['supplier_paymnet_option'] ?? '',
-        logoImage: map['imageLink'] ??
+        logoImage: map['supplier_profile'] ??
+            'https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg',
+        supplierCover: map['supplier_cover'] ??
             'https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg');
   }
 }

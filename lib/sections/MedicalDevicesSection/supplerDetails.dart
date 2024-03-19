@@ -17,6 +17,7 @@ class SupplierDetails extends StatefulWidget {
   final String description;
   final String paymentOption;
   final String userEmail;
+  final String supplierCover;
   const SupplierDetails({
     Key? key,
     required this.name,
@@ -28,6 +29,7 @@ class SupplierDetails extends StatefulWidget {
     required this.paymentOption,
     required this.logoImage,
     required this.userEmail,
+    required this.supplierCover,
   }) : super(key: key);
 
   @override
@@ -94,7 +96,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                 child: Stack(
                   children: [
                     Image.network(
-                      "https://lh5.googleusercontent.com/p/AF1QipNWumsi8MRPrfFIsgsN_tXq2O057t54SbkKa8ew=w480-h300-k-n-rw",
+                      widget.supplierCover,
                       fit: BoxFit.cover,
                       height: MediaQuery.of(context).size.height / 5,
                       width: double.infinity,

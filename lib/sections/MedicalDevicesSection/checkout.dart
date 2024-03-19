@@ -46,10 +46,12 @@ class _CheckoutState extends State<Checkout> {
           .get();
 
       if (userDoc.docs.isNotEmpty) {
-        setState(() {
-          userArea = userDoc.docs[0]['Area'];
-          addressNickName = userDoc.docs[0]['Address nickname'];
-        });
+        setState(
+          () {
+            userArea = userDoc.docs[0]['Area'];
+            addressNickName = userDoc.docs[0]['Address nickname'];
+          },
+        );
       }
     } catch (e) {
       print('Error fetching user data: $e');

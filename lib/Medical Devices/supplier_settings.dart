@@ -41,7 +41,7 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
 
         setState(() {
           supplierName = userData['supplier_Name'] ?? "";
-          _imageUrl = userData['imageLink'];
+          _imageUrl = userData['supplier_profile'];
         });
       }
     } catch (e) {

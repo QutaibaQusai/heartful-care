@@ -32,7 +32,7 @@ class _SuppliersHomeState extends State<SuppliersHome> {
         var userData = supplierDoc.docs[0].data();
 
         setState(() {
-          _imageUrl = userData['imageLink'];
+          _imageUrl = userData['supplier_profile'];
         });
       }
     } catch (e) {

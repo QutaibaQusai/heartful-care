@@ -66,7 +66,7 @@ class _MedicalState extends State<Medical> {
                               description: supplier.description,
                               paymentOption: supplier.paymentOption,
                               logoImage: supplier.logoImage,
-                              userEmail: widget.userEmail,
+                              userEmail: widget.userEmail, supplierCover: supplier.supplierCover,
                             )));
                   },
                   child: Padding(
@@ -92,7 +92,7 @@ class _MedicalState extends State<Medical> {
                                 width: double.infinity,
                                 height: MediaQuery.of(context).size.height / 6,
                                 child: Image.network(
-                                  "https://lh5.googleusercontent.com/p/AF1QipNWumsi8MRPrfFIsgsN_tXq2O057t54SbkKa8ew=w480-h300-k-n-rw",
+                                  supplier.supplierCover,
                                   fit: BoxFit.cover,
                                 ),
                               ),

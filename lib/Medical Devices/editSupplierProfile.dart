@@ -23,23 +23,46 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
   TextEditingController supplierLocation = TextEditingController();
   TextEditingController supplierDescription = TextEditingController();
   TextEditingController supplierPaymentOption = TextEditingController();
-  Uint8List? _image;
-  String? _imageUrl;
+  Uint8List? _profileImage;
+  Uint8List? coverImage;
+  String? _imageProfileUrl;
+  String? imageCoverUrl;
+
   bool editSupplierCover = false;
   bool editSupplierLogo = false;
   bool editSupplierInfo = false;
   bool isEditable = false;
 
-  void selectImage() async {
+  void selectProfileImageSupplier() async {
     Uint8List img = await pickImage(ImageSource.gallery);
     setState(() {
-      _image = img;
+      _profileImage = img;
     });
   }
 
-  void saveSupplierProfile() async {
+  void selectCoverImageSupplier() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      coverImage = img;
+    });
+  }
+
+  void saveProfileImageSupplier() async {
     StoreImg().saveProfileSupplierImg(
-        file: _image!, supplierEmail: widget.supplierEmail);
+        file: _profileImage!,
+        supplierEmail: widget.supplierEmail,
+        storagePath: 'profileSupplierImg',
+        firestoreCollectionName: 'Suppliers',
+        supplierFireStoreFiledName: 'supplier_profile');
+  }
+
+  void saveCoverImageSupplier() async {
+    StoreImg().saveProfileSupplierImg(
+        file: coverImage!,
+        supplierEmail: widget.supplierEmail,
+        storagePath: 'coverSupplierImg',
+        firestoreCollectionName: 'Suppliers',
+        supplierFireStoreFiledName: 'supplier_cover');
   }
 
   @override
@@ -67,7 +90,8 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
           supplierDescription.text = userData['supplier_description'] ?? "";
           supplierPaymentOption.text =
               userData['supplier_paymnet_option'] ?? "";
-          _imageUrl = userData['imageLink'];
+          _imageProfileUrl = userData['supplier_profile'];
+          imageCoverUrl = userData['supplier_cover'];
         });
       }
     } catch (e) {
@@ -130,16 +154,17 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: _image != null
+                            child: _profileImage != null
                                 ? CircleAvatar(
                                     radius: 64,
-                                    backgroundImage: MemoryImage(_image!),
+                                    backgroundImage:
+                                        MemoryImage(_profileImage!),
                                   )
-                                : _imageUrl != null
+                                : _imageProfileUrl != null
                                     ? CircleAvatar(
                                         radius: 64,
                                         backgroundImage:
-                                            NetworkImage(_imageUrl!),
+                                            NetworkImage(_imageProfileUrl!),
                                       )
                                     : ClipOval(
                                         child: SizedBox.fromSize(
@@ -160,7 +185,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                                   radius: 20,
                                   backgroundColor: Color(0xFF1C8892),
                                   child: IconButton(
-                                    onPressed: selectImage,
+                                    onPressed: selectProfileImageSupplier,
                                     icon: Icon(
                                       Icons.add_a_photo,
                                       color: Colors.white,
@@ -208,10 +233,20 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                         Container(
                           width: double.infinity,
                           height: MediaQuery.of(context).size.height / 5,
-                          child: Image.network(
-                            "https://www.healthcarefacilitiestoday.com/media/graphics/2018/18034-operating-room.jpg",
-                            fit: BoxFit.cover,
-                          ),
+                          child: coverImage != null
+                              ? Image.memory(
+                                  coverImage!,
+                                  fit: BoxFit.cover,
+                                )
+                              : imageCoverUrl != null
+                                  ? Image.network(
+                                      imageCoverUrl!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      "https://media.istockphoto.com/id/1447388979/vector/modern-blue-medical-technology-background-vector-polygon-pattern.jpg?s=612x612&w=0&k=20&c=GsfF2ldGnhFvhcMoRrsSgbhQAy8Bdy9h4QPMSeZFsoo=",
+                                      fit: BoxFit.cover,
+                                    ),
                         ),
                         Positioned(
                           bottom: 0,
@@ -221,7 +256,9 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                                   radius: 20,
                                   backgroundColor: Color(0xFF1C8892),
                                   child: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      selectCoverImageSupplier();
+                                    },
                                     icon: Icon(
                                       Icons.add_a_photo,
                                       color: Colors.white,
@@ -407,6 +444,8 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
           ),
           onPressed: () {
             _submitUserData();
+            saveProfileImageSupplier();
+            saveCoverImageSupplier();
           },
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -441,7 +480,6 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
           'supplier_description': supplierDescription.text,
           'supplier_paymnet_option': supplierPaymentOption.text,
           'supplier_email': widget.supplierEmail,
-          'imageLink': _imageUrl,
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(

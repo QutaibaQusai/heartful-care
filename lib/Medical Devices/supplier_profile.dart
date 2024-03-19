@@ -22,7 +22,8 @@ class _Supplier_profileState extends State<Supplier_profile> {
   TextEditingController supplierLocation = TextEditingController();
   TextEditingController supplierDescription = TextEditingController();
   TextEditingController supplierPaymentOption = TextEditingController();
-  String? _imageUrl;
+  String? _supplierProfile;
+  String? _supplierCover;
 
   bool isEditable = false;
 
@@ -50,7 +51,8 @@ class _Supplier_profileState extends State<Supplier_profile> {
           supplierDescription.text = userData['supplier_description'] ?? "";
           supplierPaymentOption.text =
               userData['supplier_paymnet_option'] ?? "";
-          _imageUrl = userData['imageLink'];
+          _supplierProfile = userData['supplier_profile'];
+          _supplierCover = userData['supplier_cover'];
         });
       }
     } catch (e) {
@@ -73,13 +75,17 @@ class _Supplier_profileState extends State<Supplier_profile> {
                     Align(
                       alignment: AlignmentDirectional.center,
                       child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: Image.network(
-                          "https://www.healthcarefacilitiestoday.com/media/graphics/2018/18034-operating-room.jpg",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: _supplierCover != null
+                              ? Image.network(
+                                  _supplierCover!,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  "https://www.healthcarefacilitiestoday.com/media/graphics/2018/18034-operating-room.jpg",
+                                  fit: BoxFit.cover,
+                                )),
                     ),
                     Align(
                       alignment: AlignmentDirectional.topCenter,
@@ -142,11 +148,11 @@ class _Supplier_profileState extends State<Supplier_profile> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: _imageUrl != null
+                                child: _supplierProfile != null
                                     ? CircleAvatar(
                                         radius: 64,
                                         backgroundImage:
-                                            NetworkImage(_imageUrl!),
+                                            NetworkImage(_supplierProfile!),
                                       )
                                     : ClipOval(
                                         child: SizedBox.fromSize(
@@ -271,6 +277,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
       ),
     );
   }
+
   //TODO
   Future<void> navigateAndUpdateProfile() async {
     final result = await Navigator.of(context).push(
