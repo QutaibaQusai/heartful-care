@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:test/model/devicesModel.dart';
 import 'package:test/sections/MedicalDevicesSection/deviceDetails.dart';
@@ -95,11 +96,14 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                 height: MediaQuery.of(context).size.height / 3.3,
                 child: Stack(
                   children: [
-                    Image.network(
-                      widget.supplierCover,
-                      fit: BoxFit.cover,
-                      height: MediaQuery.of(context).size.height / 5,
-                      width: double.infinity,
+                    InstaImageViewer(
+                      disposeLevel: DisposeLevel.high,
+                      child: Image.network(
+                        widget.supplierCover,
+                        fit: BoxFit.cover,
+                        height: MediaQuery.of(context).size.height / 5,
+                        width: double.infinity,
+                      ),
                     ),
                     Align(
                       alignment: AlignmentDirectional.bottomCenter,
@@ -139,9 +143,12 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                       ),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(13),
-                                        child: Image.network(
-                                          widget.logoImage,
-                                          fit: BoxFit.cover,
+                                        child: InstaImageViewer(
+                                          backgroundColor: Color(0xFF1C8892),
+                                          child: Image.network(
+                                            widget.logoImage,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     ),

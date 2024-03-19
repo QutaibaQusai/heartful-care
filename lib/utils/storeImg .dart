@@ -28,10 +28,6 @@ class StoreImg {
           '$storagePath/${Uri.encodeComponent(supplierEmail)}';
 
       String imageUrl = await uploadImageToStorage(fileChildPath, file);
-      // QuerySnapshot querySnapshot = await fireStore
-      //     .collection("Suppliers")
-      //     .where('Email', isEqualTo: supplierEmail)
-      //     .get();
       QuerySnapshot querySnapshot = await fireStore
           .collection(firestoreCollectionName)
           .where('Email', isEqualTo: supplierEmail)
