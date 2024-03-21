@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:test/utils/pickImage.dart';
 
 class Add_device extends StatefulWidget {
   final String supplierEmail;
@@ -18,6 +22,32 @@ class _Add_deviceState extends State<Add_device> {
   TextEditingController deviceDescription = TextEditingController();
   TextEditingController deviceQuantity = TextEditingController();
   TextEditingController deviceInstructions = TextEditingController();
+  Uint8List? _device1;
+  Uint8List? _device2;
+  Uint8List? _device3;
+
+  void selectDeviceImage1() async {
+    Uint8List img1 = await pickImage(ImageSource.gallery);
+    setState(() {
+      _device1 = img1;
+    });
+  }
+
+  // Method to select the second image
+  void selectDeviceImage2() async {
+    Uint8List img2 = await pickImage(ImageSource.gallery);
+    setState(() {
+      _device2 = img2;
+    });
+  }
+
+  // Method to select the third image
+  void selectDeviceImage3() async {
+    Uint8List img3 = await pickImage(ImageSource.gallery);
+    setState(() {
+      _device3 = img3;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,39 +81,58 @@ class _Add_deviceState extends State<Add_device> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // Implement logic for selecting image 1
+                        selectDeviceImage1();
                       },
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Color.fromARGB(255, 201, 198, 198),
-                        child: Icon(Icons.camera_alt),
-                      ),
+                      child: _device1 != null
+                          ? CircleAvatar(
+                              radius: 50,
+                              backgroundImage: MemoryImage(_device1!),
+                            )
+                          : CircleAvatar(
+                              radius: 50,
+                              backgroundColor:
+                                  Color.fromARGB(255, 201, 198, 198),
+                              child:
+                                  Icon(Icons.camera_alt, color: Colors.black),
+                            ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        // Implement logic for selecting image 2
+                        selectDeviceImage2();
                       },
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Color.fromARGB(255, 201, 198, 198),
-                        child: Icon(Icons.camera_alt),
-                      ),
+                      child: _device2 != null
+                          ? CircleAvatar(
+                              radius: 50,
+                              backgroundImage: MemoryImage(_device2!),
+                            )
+                          : CircleAvatar(
+                              radius: 50,
+                              backgroundColor:
+                                  Color.fromARGB(255, 201, 198, 198),
+                              child:
+                                  Icon(Icons.camera_alt, color: Colors.black),
+                            ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        // Implement logic for selecting image 3
+                        selectDeviceImage3();
                       },
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Color.fromARGB(255, 201, 198, 198),
-                        child: Icon(Icons.camera_alt),
-                      ),
+                      child: _device3 != null
+                          ? CircleAvatar(
+                              radius: 50,
+                              backgroundImage: MemoryImage(_device3!),
+                            )
+                          : CircleAvatar(
+                              radius: 50,
+                              backgroundColor:
+                                  Color.fromARGB(255, 201, 198, 198),
+                              child:
+                                  Icon(Icons.camera_alt, color: Colors.black),
+                            ),
                     ),
                   ],
                 ),
-                SizedBox(
-                    height:
-                        20), // Add spacing between the image pickers and the "Device Information" section
+                SizedBox(height: 20),
                 Text(
                   "Device Information",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -97,7 +146,6 @@ class _Add_deviceState extends State<Add_device> {
                 buildTextFormField(deviceQuantity, "Device quantity"),
                 buildTextFormField(
                     deviceInstructions, "Instructions about device"),
-                Text(widget.supplierEmail)
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -85,22 +86,25 @@ class _SuppliersHomeState extends State<SuppliersHome> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Your Orders \nDevice",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  SvgPicture.asset(
-                    "images/supplierHomePage.svg",
-                    width: MediaQuery.of(context).size.width / 3,
-                  )
-                ],
+              child: Container(
+                height: MediaQuery.of(context).size.height / 6,
+                child: Stack(
+                  children: [
+                    Text(
+                      "Your Orders \nDevice",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      child: SvgPicture.asset(
+                        "images/supplierHomePage.svg",
+                        width: MediaQuery.of(context).size.width / 2.5,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 40,
             ),
             Expanded(
               child: Container(
@@ -114,7 +118,7 @@ class _SuppliersHomeState extends State<SuppliersHome> {
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           width: double.infinity,
-                          height: MediaQuery.of(context).size.height / 6,
+                          height: MediaQuery.of(context).size.height / 5,
                           decoration: BoxDecoration(
                             color: Color(0xFF1C8892),
                             borderRadius: BorderRadius.circular(20),
@@ -125,7 +129,7 @@ class _SuppliersHomeState extends State<SuppliersHome> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "New order request received. We've got it from here!",
+                                  "New order request received. We've got it from here!",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
@@ -170,8 +174,18 @@ class _SuppliersHomeState extends State<SuppliersHome> {
                                 SizedBox(
                                   width: 20,
                                 ),
-                                Text("Qutaiba Qusai Makahleh",
-                                    style: TextStyle(fontSize: 15)),
+                                Flexible(
+                                  child: Container(
+                                    child: Text(
+                                      'Qutaiba Qusai Makahleh',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),

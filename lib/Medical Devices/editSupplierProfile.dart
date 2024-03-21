@@ -1,7 +1,8 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test/utils/storeImg%20.dart';
@@ -27,21 +28,18 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
   Uint8List? coverImage;
   String? _imageProfileUrl;
   String? imageCoverUrl;
-
-  bool editSupplierCover = false;
-  bool editSupplierLogo = false;
-  bool editSupplierInfo = false;
   bool isEditable = false;
 
-  void selectProfileImageSupplier() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
+  void selectProfileImageSupplier(
+      {required ImageSource galleryOrCamera}) async {
+    Uint8List img = await pickImage(galleryOrCamera);
     setState(() {
       _profileImage = img;
     });
   }
 
-  void selectCoverImageSupplier() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
+  void selectCoverImageSupplier({required ImageSource galleryOrCamera}) async {
+    Uint8List img = await pickImage(galleryOrCamera);
     setState(() {
       coverImage = img;
     });
@@ -131,9 +129,10 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                         ),
                         IconButton(
                           onPressed: () {
-                            setState(() {
-                              editSupplierLogo = !editSupplierLogo;
-                            });
+                            showImageSelectionBottomSheet(isProfileImage: true);
+                            // setState(() {
+                            //   editSupplierLogo = !editSupplierLogo;
+                            // });
                           },
                           icon: Text(
                             "Edit",
@@ -177,24 +176,6 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                                       ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 10,
-                          left: 120,
-                          child: editSupplierLogo
-                              ? CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: Color(0xFF1C8892),
-                                  child: IconButton(
-                                    onPressed: selectProfileImageSupplier,
-                                    icon: Icon(
-                                      Icons.add_a_photo,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                        )
                       ],
                     ),
                   ],
@@ -216,9 +197,11 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                         ),
                         IconButton(
                           onPressed: () {
-                            setState(() {
-                              editSupplierCover = !editSupplierCover;
-                            });
+                            showImageSelectionBottomSheet(
+                                isProfileImage: false);
+                            // setState(() {
+                            //   editSupplierCover = !editSupplierCover;
+                            // });
                           },
                           icon: Text(
                             "Edit",
@@ -247,26 +230,6 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
                                       "https://media.istockphoto.com/id/1447388979/vector/modern-blue-medical-technology-background-vector-polygon-pattern.jpg?s=612x612&w=0&k=20&c=GsfF2ldGnhFvhcMoRrsSgbhQAy8Bdy9h4QPMSeZFsoo=",
                                       fit: BoxFit.cover,
                                     ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: editSupplierCover
-                              ? CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: Color(0xFF1C8892),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      selectCoverImageSupplier();
-                                    },
-                                    icon: Icon(
-                                      Icons.add_a_photo,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                  ),
-                                )
-                              : Container(),
                         ),
                       ],
                     ),
@@ -304,128 +267,49 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
               ),
               Column(
                 children: [
-                  TextFormField(
+                  buildCustomTextFormField(
                     controller: supplierName,
                     enabled: isEditable,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      disabledBorder: isEditable ? null : InputBorder.none,
-                      focusedBorder: isEditable
-                          ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF1C8892)),
-                            )
-                          : InputBorder.none,
-                      prefixIcon:
-                          Icon(FontAwesomeIcons.user, color: Color(0xFF1C8892)),
-                      hintText: 'Supplier name',
-                    ),
+                    icon: FontAwesomeIcons.user,
+                    hintText: 'Supplier name',
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
+                  buildCustomTextFormField(
                     controller: supplierPhoneNumber,
                     enabled: isEditable,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      disabledBorder: isEditable ? null : InputBorder.none,
-                      focusedBorder: isEditable
-                          ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF1C8892)),
-                            )
-                          : InputBorder.none,
-                      prefixIcon: Icon(FontAwesomeIcons.mobile,
-                          color: Color(0xFF1C8892)),
-                      hintText: 'Supplier phone number',
-                    ),
+                    icon: FontAwesomeIcons.mobile,
+                    hintText: 'Supplier phone number',
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
+                  buildCustomTextFormField(
                     initialValue: widget.supplierEmail,
                     enabled: false,
-                    autofocus: false,
                     readOnly: true,
-                    decoration: InputDecoration(
-                      disabledBorder: isEditable ? null : InputBorder.none,
-                      focusedBorder: isEditable
-                          ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF1C8892)),
-                            )
-                          : InputBorder.none,
-                      prefixIcon: Icon(FontAwesomeIcons.envelope,
-                          color: Color(0xFF1C8892)),
-                      hintText: 'Supplier email',
-                    ),
+                    icon: FontAwesomeIcons.envelope,
+                    hintText: 'Supplier email',
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
+                  buildCustomTextFormField(
                     controller: supplierWebsite,
                     enabled: isEditable,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      disabledBorder: isEditable ? null : InputBorder.none,
-                      focusedBorder: isEditable
-                          ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF1C8892)),
-                            )
-                          : InputBorder.none,
-                      prefixIcon: Icon(FontAwesomeIcons.globe,
-                          color: Color(0xFF1C8892)),
-                      hintText: 'Supplier website',
-                    ),
+                    icon: FontAwesomeIcons.globe,
+                    hintText: 'Supplier website',
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
+                  buildCustomTextFormField(
                     controller: supplierLocation,
                     enabled: isEditable,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      disabledBorder: isEditable ? null : InputBorder.none,
-                      focusedBorder: isEditable
-                          ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF1C8892)),
-                            )
-                          : InputBorder.none,
-                      prefixIcon: Icon(FontAwesomeIcons.locationArrow,
-                          color: Color(0xFF1C8892)),
-                      hintText: 'Supplier Location',
-                    ),
+                    icon: FontAwesomeIcons.locationArrow,
+                    hintText: 'Supplier Location',
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    maxLines: 2,
-                    minLines: 1,
+                  buildCustomTextFormField(
                     controller: supplierDescription,
                     enabled: isEditable,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      disabledBorder: isEditable ? null : InputBorder.none,
-                      focusedBorder: isEditable
-                          ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF1C8892)),
-                            )
-                          : InputBorder.none,
-                      prefixIcon: Icon(
-                        FontAwesomeIcons.info,
-                        color: Color(0xFF1C8892),
-                      ),
-                      hintText: 'Supplier description',
-                    ),
+                    icon: FontAwesomeIcons.info,
+                    hintText: 'Supplier description',
+                    maxLines: 2,
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
+                  buildCustomTextFormField(
                     controller: supplierPaymentOption,
                     enabled: isEditable,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      disabledBorder: isEditable ? null : InputBorder.none,
-                      focusedBorder: isEditable
-                          ? UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF1C8892)),
-                            )
-                          : InputBorder.none,
-                      prefixIcon: Icon(FontAwesomeIcons.solidCreditCard,
-                          color: Color(0xFF1C8892)),
-                      hintText: 'Supplier payment options',
-                    ),
+                    icon: FontAwesomeIcons.solidCreditCard,
+                    hintText: 'Supplier payment options',
                   ),
                 ],
               ),
@@ -524,5 +408,108 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
         ),
       );
     }
+  }
+
+  void showImageSelectionBottomSheet({required bool isProfileImage}) {
+    showModalBottomSheet<void>(
+      showDragHandle: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 130,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Colors.grey[300],
+                          child: Icon(FontAwesomeIcons.image,
+                              color: Colors.black)),
+                      SizedBox(width: 10),
+                      Text("Choose from library",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.pop(context); // Close the bottom sheet
+                    if (isProfileImage) {
+                      selectProfileImageSupplier(
+                          galleryOrCamera: ImageSource.gallery);
+                    } else {
+                      selectCoverImageSupplier(
+                          galleryOrCamera: ImageSource.gallery);
+                    }
+                  },
+                ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Colors.grey[300],
+                          child: Icon(FontAwesomeIcons.camera,
+                              color: Colors.black)),
+                      SizedBox(width: 10),
+                      Text("Take photo",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.pop(context); // Close the bottom sheet
+                    if (isProfileImage) {
+                      selectProfileImageSupplier(
+                          galleryOrCamera: ImageSource.camera);
+                    } else {
+                      selectCoverImageSupplier(
+                          galleryOrCamera: ImageSource.camera);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildCustomTextFormField({
+    TextEditingController? controller,
+    String? initialValue,
+    bool enabled = true,
+    IconData? icon,
+    String hintText = '',
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+    bool readOnly = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: TextFormField(
+        controller: controller,
+        initialValue: initialValue,
+        enabled: enabled && !readOnly,
+        autofocus: false,
+        readOnly: readOnly,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        decoration: InputDecoration(
+          disabledBorder: enabled ? null : InputBorder.none,
+          focusedBorder: enabled
+              ? UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF1C8892)),
+                )
+              : InputBorder.none,
+          prefixIcon:
+              icon != null ? Icon(icon, color: Color(0xFF1C8892)) : null,
+          hintText: hintText,
+        ),
+      ),
+    );
   }
 }
