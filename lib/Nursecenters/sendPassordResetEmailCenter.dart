@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:test/Authentication%20firebase/firebase_auth.dart';
+import 'package:test/utils/Authentication%20firebase/firebase_auth.dart';
 
 class SendPasswordResetEmailCenter extends StatefulWidget {
   const SendPasswordResetEmailCenter({super.key});

@@ -160,7 +160,9 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
                           "Add Device",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Expanded(child: Container()),
+                        Expanded(
+                          child: Container(),
+                        ),
                         Icon(
                           FontAwesomeIcons.chevronRight,
                           color: Color(0xFF1C8892),

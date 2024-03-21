@@ -9,6 +9,9 @@ class DeviceDetails extends StatefulWidget {
   final String priceForBuying;
   final String priceForRent;
   final String userEmail;
+  final String deviceImage1;
+  final String deviceImage2;
+  final String deviceImage3;
 
   const DeviceDetails(
       {Key? key,
@@ -16,7 +19,10 @@ class DeviceDetails extends StatefulWidget {
       required this.deviceDescription,
       required this.priceForBuying,
       required this.priceForRent,
-      required this.userEmail})
+      required this.userEmail,
+      required this.deviceImage1,
+      required this.deviceImage2,
+      required this.deviceImage3})
       : super(key: key);
 
   @override
@@ -28,25 +34,22 @@ class _DeviceDetailsState extends State<DeviceDetails> {
   int quantity = 1;
   int weeks = 1; // Variable to hold selected number of weeks
   int currentPage = 0; // Current page index for PageView
-
-  final List<String> images = [
-    "https://lynemouthpharmacy.co.uk/wp-content/uploads/2022/03/blood_pressure-02.jpg",
-    // Add your other image URLs here
-    "https://example.com/image2.jpg",
-    "https://example.com/image3.jpg",
-  ];
-
   String? priceOption;
   int cartItemCount = 0;
 
   @override
   Widget build(BuildContext context) {
+    final List<String> images = [
+      widget.deviceImage1,
+      widget.deviceImage2,
+      widget.deviceImage3,
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Text("Device Details"),
         centerTitle: true,
         actions: [
-          if (priceOption != null) 
+          if (priceOption != null)
             badges.Badge(
               position: badges.BadgePosition.topEnd(top: -8, end: 3),
               showBadge: cartItemCount > 0,
@@ -67,7 +70,7 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                         weeks: weeks,
                         onItemAddedToCart: () {
                           setState(() {
-                            cartItemCount++; 
+                            cartItemCount++;
                           });
                         },
                         userEmail: widget.userEmail,
@@ -231,7 +234,6 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                   ],
                 ),
               ),
-              
             ],
           ),
         ),

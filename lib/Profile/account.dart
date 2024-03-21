@@ -68,20 +68,20 @@ class _AccountState extends State<Account> {
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF1C8892),
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.white,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              color: Color(0xFF1C8892),
-            ),
-          ),
-        ),
+        // leading: Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: CircleAvatar(
+        //     radius: 20,
+        //     backgroundColor: Colors.white,
+        //     child: IconButton(
+        //       icon: Icon(Icons.arrow_back),
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //       },
+        //       color: Color(0xFF1C8892),
+        //     ),
+        //   ),
+        // ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

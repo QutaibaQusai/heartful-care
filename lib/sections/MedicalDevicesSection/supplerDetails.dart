@@ -19,6 +19,7 @@ class SupplierDetails extends StatefulWidget {
   final String paymentOption;
   final String userEmail;
   final String supplierCover;
+  final String supplierId;
   const SupplierDetails({
     Key? key,
     required this.name,
@@ -31,6 +32,7 @@ class SupplierDetails extends StatefulWidget {
     required this.logoImage,
     required this.userEmail,
     required this.supplierCover,
+    required this.supplierId,
   }) : super(key: key);
 
   @override
@@ -97,7 +99,6 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                 child: Stack(
                   children: [
                     InstaImageViewer(
-                      disposeLevel: DisposeLevel.high,
                       child: Image.network(
                         widget.supplierCover,
                         fit: BoxFit.cover,
@@ -141,10 +142,11 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                           width: 1.0,
                                         ),
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(13),
-                                        child: InstaImageViewer(
-                                          backgroundColor: Color(0xFF1C8892),
+                                      child: InstaImageViewer(
+                                        backgroundColor: Color(0xFF1C8892),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(13),
                                           child: Image.network(
                                             widget.logoImage,
                                             fit: BoxFit.cover,
@@ -359,13 +361,10 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                     return Text('No data available');
                   }
 
-                  List<String> supplierIds =
-                      supplierSnapshot.data!.docs.map((doc) => doc.id).toList();
-
                   return StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('Devices')
-                        .where("supplierId", whereIn: supplierIds)
+                        .where("supplierId", isEqualTo: widget.supplierId)
                         .snapshots(),
                     builder: (context, deviceSnapshot) {
                       if (!deviceSnapshot.hasData) {
@@ -413,7 +412,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                             borderRadius:
                                                 BorderRadius.circular(13),
                                             child: Image.network(
-                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTvEkQUIq0n3AMgcKON0e2SkFvd1P4PIWoJz3GNN1Qul41UFBY1j7fweQJut4OM38Cu1o&usqp=CAU",
+                                              device.deviceImage1,
                                               width: double.infinity,
                                               height: double.infinity,
                                               fit: BoxFit.cover,
@@ -505,6 +504,9 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                           priceForBuying: device.devicePrice,
                                           priceForRent: device.deviceRent,
                                           userEmail: widget.userEmail,
+                                          deviceImage1: device.deviceImage1,
+                                          deviceImage2: device.deviceImage2,
+                                          deviceImage3: device.deviceImage3,
                                         )));
                               },
                             ),

@@ -34,7 +34,10 @@ class StoreImg {
           .get();
       if (querySnapshot.docs.isNotEmpty) {
         String supplierId = querySnapshot.docs.first.id;
-        await fireStore.collection("Suppliers").doc(supplierId).update({
+        await fireStore
+            .collection(firestoreCollectionName)
+            .doc(supplierId)
+            .update({
           supplierFireStoreFiledName: imageUrl,
         });
         resp = "success";

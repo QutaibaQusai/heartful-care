@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:test/Authentication%20firebase/firebase_auth.dart'; // Import Lottie package
+import 'package:test/utils/Authentication%20firebase/firebase_auth.dart'; // Import Lottie package
 
 class ResetPasswordSupplier extends StatefulWidget {
   const ResetPasswordSupplier({Key? key});

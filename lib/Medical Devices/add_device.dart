@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test/utils/pickImage.dart';
+import 'package:test/utils/storeImg%20.dart';
 
 class Add_device extends StatefulWidget {
   final String supplierEmail;
@@ -47,6 +48,33 @@ class _Add_deviceState extends State<Add_device> {
     setState(() {
       _device3 = img3;
     });
+  }
+
+  void firstImageDevice() async {
+    StoreImg().saveProfileSupplierImg(
+        file: _device2!,
+        supplierEmail: widget.supplierEmail,
+        storagePath: 'DeviceImage1',
+        firestoreCollectionName: 'Devices',
+        supplierFireStoreFiledName: 'DeviceImages_2');
+  }
+
+  void secondImageDevice() async {
+    StoreImg().saveProfileSupplierImg(
+        file: _device3!,
+        supplierEmail: widget.supplierEmail,
+        storagePath: 'DeviceImage2',
+        firestoreCollectionName: 'Devices',
+        supplierFireStoreFiledName: 'DeviceImages_3');
+  }
+
+  void thirdImageDevice() async {
+    StoreImg().saveProfileSupplierImg(
+        file: _device1!,
+        supplierEmail: widget.supplierEmail,
+        storagePath: 'DeviceImage3',
+        firestoreCollectionName: 'Devices',
+        supplierFireStoreFiledName: 'DeviceImages_1');
   }
 
   @override
@@ -161,6 +189,9 @@ class _Add_deviceState extends State<Add_device> {
             ),
             onPressed: () {
               _submitUserData();
+              firstImageDevice();
+              secondImageDevice();
+              thirdImageDevice();
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -239,6 +270,7 @@ class _Add_deviceState extends State<Add_device> {
             'deviceQuantity': deviceQuantity.text,
             'deviceInstructions': deviceInstructions.text,
             'supplierId': supplierId, // Include the supplier ID here
+            'Email': widget.supplierEmail
           });
         }
 

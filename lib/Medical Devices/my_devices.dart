@@ -109,7 +109,7 @@ class _MyDevicesState extends State<MyDevices> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(13),
                                         child: Image.network(
-                                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTvEkQUIq0n3AMgcKON0e2SkFvd1P4PIWoJz3GNN1Qul41UFBY1j7fweQJut4OM38Cu1o&usqp=CAU",
+                                          device.deviceImage1,
                                           width: double.infinity,
                                           height: double.infinity,
                                           fit: BoxFit.cover,

@@ -346,17 +346,17 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
 
   Future<void> _submitUserData() async {
     try {
-      CollectionReference centers =
+      CollectionReference suppliers =
           FirebaseFirestore.instance.collection('Suppliers');
 
       var querySnapshot =
-          await centers.where("Email", isEqualTo: widget.supplierEmail).get();
+          await suppliers.where("Email", isEqualTo: widget.supplierEmail).get();
 
       if (querySnapshot.docs.isNotEmpty) {
         var documentSnapshot = querySnapshot.docs[0];
-        var userId = documentSnapshot.id;
+        var supplierId = documentSnapshot.id; // Retrieve the document ID
 
-        await centers.doc(userId).set({
+        await suppliers.doc(supplierId).set({
           'supplier_Name': supplierName.text,
           'supplier_phoneNumber': supplierPhoneNumber.text,
           'supplier_location': supplierLocation.text,
@@ -364,6 +364,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
           'supplier_description': supplierDescription.text,
           'supplier_paymnet_option': supplierPaymentOption.text,
           'supplier_email': widget.supplierEmail,
+          'supplier_id': supplierId, // Save the document ID in the document
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -372,9 +373,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
             behavior: SnackBarBehavior.floating,
             content: Text(
               'User data updated successfully!',
-              style: TextStyle(
-                fontSize: 17,
-              ),
+              style: TextStyle(fontSize: 17),
             ),
           ),
         );
@@ -387,9 +386,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
             behavior: SnackBarBehavior.floating,
             content: Text(
               'User not found',
-              style: TextStyle(
-                fontSize: 17,
-              ),
+              style: TextStyle(fontSize: 17),
             ),
           ),
         );
@@ -401,9 +398,7 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
           behavior: SnackBarBehavior.floating,
           content: Text(
             'Error updating user data: $e',
-            style: TextStyle(
-              fontSize: 17,
-            ),
+            style: TextStyle(fontSize: 17),
           ),
         ),
       );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/Authentication%20firebase/firebase_auth.dart';
+import 'package:test/utils/Authentication%20firebase/firebase_auth.dart';
 
 class SupplierChangePassword extends StatefulWidget {
   const SupplierChangePassword({super.key});

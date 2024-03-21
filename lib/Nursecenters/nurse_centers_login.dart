@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Nursecenters/centers_home.dart';
 import 'package:test/Nursecenters/nurse_centers_signup.dart';
 import 'package:test/Nursecenters/sendPassordResetEmailCenter.dart';
-import 'package:test/Authentication%20firebase/firebase_auth.dart';
+import 'package:test/utils/Authentication%20firebase/firebase_auth.dart';
 
 class CentersLogin extends StatefulWidget {
   const CentersLogin({super.key});
