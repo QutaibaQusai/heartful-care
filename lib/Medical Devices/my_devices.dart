@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/Medical%20Devices/my_device_details.dart';
@@ -135,66 +133,76 @@ class _MyDevicesState extends State<MyDevices> {
                             ),
                           ],
                         ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 16),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: MediaQuery.of(context).size.height / 6,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: double.infinity,
-                                      width:
-                                          MediaQuery.of(context).size.width / 3,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(13),
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(13),
-                                        child: Image.network(
-                                          device.deviceImage1,
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
+                        child: Card(
+                          margin:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              7,
+                            ), // Adjust border radius as needed
+                            side: BorderSide(
+                              color: Colors.grey,
+                            ), // Border color
+                          ),
+                          color: Colors.white, // Background color of the card
+
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+
+                            child: Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height / 7,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: double.infinity,
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(13),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 1.0,
                                       ),
                                     ),
-                                    SizedBox(width: 15),
-                                    Expanded(
-                                      child: Container(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(13),
+                                      child: Image.network(
+                                        device.deviceImage1,
+                                        width: double.infinity,
                                         height: double.infinity,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              device.deviceName,
-                                              style: TextStyle(
-                                                fontSize: 19,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(height: 5),
-                                            Expanded(child: Container()),
-                                          ],
-                                        ),
+                                        fit: BoxFit.cover,
                                       ),
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 15),
+                                  Expanded(
+                                    child: Container(
+                                      height: double.infinity,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            device.deviceName,
+                                            style: TextStyle(
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Expanded(child: Container()),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                              SizedBox(height: 10),
-                              Divider(),
-                            ],
+                            ),
+
+                            // Divider(),
                           ),
                         ),
                       );
@@ -216,29 +224,28 @@ class _MyDevicesState extends State<MyDevices> {
           .collection("Devices")
           .doc(deviceId)
           .delete();
-     
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'Device deleted successfully',
-              style: TextStyle(fontSize: 17),
-            ),
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Device deleted successfully',
+            style: TextStyle(fontSize: 17),
           ),
-        );
+        ),
+      );
     } catch (error) {
-    
-       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-           "Failed to delete device: $error",
-              style: TextStyle(fontSize: 17),
-            ),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Failed to delete device: $error",
+            style: TextStyle(fontSize: 17),
           ),
-        );
+        ),
+      );
     }
   }
 }

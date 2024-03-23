@@ -20,6 +20,7 @@ class SupplierDetails extends StatefulWidget {
   final String userEmail;
   final String supplierCover;
   final String supplierId;
+  final Function(double) onOverallRatingChanged;
   const SupplierDetails({
     Key? key,
     required this.name,
@@ -33,6 +34,7 @@ class SupplierDetails extends StatefulWidget {
     required this.userEmail,
     required this.supplierCover,
     required this.supplierId,
+    required this.onOverallRatingChanged,
   }) : super(key: key);
 
   @override
@@ -40,6 +42,8 @@ class SupplierDetails extends StatefulWidget {
 }
 
 class _SupplierDetailsState extends State<SupplierDetails> {
+  double overallRating = 0.0;
+
   ScrollController _scrollController = ScrollController();
 
   static const String optionTopDevices = "Top Device";
@@ -183,10 +187,24 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                                     Navigator.of(context).push(
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                RatingSupplier()));
+                                                                RatingSupplier(
+                                                                  userEmail: widget
+                                                                      .userEmail,
+                                                                  supplierId: widget
+                                                                      .supplierId,
+                                                                  onOverallRatingChanged:
+                                                                      (newOverallRating) {
+                                                                    // Update the overallRating in the parent class
+                                                                    setState(
+                                                                        () {
+                                                                      overallRating =
+                                                                          newOverallRating;
+                                                                    });
+                                                                  },
+                                                                )));
                                                   },
                                                   child: Text(
-                                                    "4.8 (5254 Ratings)",
+                                                    "(Reviews)",
                                                     style: TextStyle(
                                                         color: Colors.grey),
                                                   ),

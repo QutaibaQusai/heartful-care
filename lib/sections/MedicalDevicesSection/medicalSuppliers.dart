@@ -14,6 +14,8 @@ class Medical extends StatefulWidget {
 }
 
 class _MedicalState extends State<Medical> {
+  double overallRating = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -68,7 +70,15 @@ class _MedicalState extends State<Medical> {
                               logoImage: supplier.logoImage,
                               userEmail: widget.userEmail,
                               supplierCover: supplier.supplierCover,
-                              supplierId: supplier.supplierId,
+                              supplierId: snapshot.data!.docs[index].id,
+
+                              //supplierId: supplier.supplierId,
+                              onOverallRatingChanged: (newOverallRating) {
+                                // Update the overallRating in the parent class
+                                setState(() {
+                                  overallRating = newOverallRating;
+                                });
+                              },
                             )));
                   },
                   child: Padding(
