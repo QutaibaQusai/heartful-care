@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/Medical%20Devices/my_device_details.dart';
 import 'package:test/model/devicesModel.dart';
 
 class MyDevices extends StatefulWidget {
@@ -83,8 +87,54 @@ class _MyDevicesState extends State<MyDevices> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       final device = snapshot.data![index];
-                      return GestureDetector(
-                        onTap: () {},
+                      return Slidable(
+                        startActionPane: ActionPane(
+                          motion: const BehindMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                deleteDevice(
+                                    context,
+                                    device
+                                        .deviceId); // Pass the deviceId to the method
+                              },
+                              backgroundColor: Color(0xFF1C8892),
+                              icon: Icons.delete,
+                            ),
+                          ],
+                        ),
+                        endActionPane: ActionPane(
+                          motion: const BehindMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return MyDeviceDetails(
+                                        deviceName: device.deviceName,
+                                        devicePrice: device.devicePrice,
+                                        deviceRent: device.deviceRent,
+                                        deviceDescription:
+                                            device.deviceDescription,
+                                        deviceQuantity: device.deviceQuantity,
+                                        deviceInstruction:
+                                            device.deviceInstruction,
+                                        deviceImage1: device.deviceImage1,
+                                        deviceImage2: device.deviceImage2,
+                                        deviceImage3: device.deviceImage3,
+                                        supplierEmail: widget.supplierEmail,
+                                        deviceId: device.deviceId,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              backgroundColor: Color(0xFF1C8892),
+                              icon: Icons.edit,
+                            ),
+                          ],
+                        ),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 16),
@@ -134,42 +184,7 @@ class _MyDevicesState extends State<MyDevices> {
                                               ),
                                             ),
                                             SizedBox(height: 5),
-                                            Text(
-                                              device.deviceDescription,
-                                              overflow: TextOverflow.clip,
-                                              maxLines: 4,
-                                            ),
                                             Expanded(child: Container()),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border(
-                                                      right: BorderSide(
-                                                        color: Colors.grey,
-                                                        width: 1.0,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 10.0),
-                                                    child: Text(
-                                                      device.devicePrice,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10.0),
-                                                  child: Text("Rent pre week " +
-                                                      device.deviceRent +
-                                                      "JD"),
-                                                ),
-                                              ],
-                                            ),
                                           ],
                                         ),
                                       ),
@@ -192,5 +207,38 @@ class _MyDevicesState extends State<MyDevices> {
         ),
       ),
     );
+  }
+
+  // Method to delete a device from Firestore
+  Future<void> deleteDevice(BuildContext context, String deviceId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("Devices")
+          .doc(deviceId)
+          .delete();
+     
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Device deleted successfully',
+              style: TextStyle(fontSize: 17),
+            ),
+          ),
+        );
+    } catch (error) {
+    
+       ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+           "Failed to delete device: $error",
+              style: TextStyle(fontSize: 17),
+            ),
+          ),
+        );
+    }
   }
 }

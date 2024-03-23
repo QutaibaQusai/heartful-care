@@ -49,4 +49,40 @@ class StoreImg {
     }
     return resp;
   }
+
+  
+  Future<String> saveSupplierDevicesImages({
+    required Uint8List file,
+    required String supplierEmail,
+    required String storagePath,
+    required String firestoreCollectionName,
+    required String supplierFireStoreFiledName,
+  }) async {
+    String resp = "Error Occurred";
+    try {
+      String fileChildPath =
+          '$storagePath/${Uri.encodeComponent(supplierEmail)}';
+
+      String imageUrl = await uploadImageToStorage(fileChildPath, file);
+      QuerySnapshot querySnapshot = await fireStore
+          .collection(firestoreCollectionName)
+          .where('Email', isEqualTo: supplierEmail)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        String supplierId = querySnapshot.docs.first.id;
+        await fireStore
+            .collection(firestoreCollectionName)
+            .doc(supplierId)
+            .update({
+          supplierFireStoreFiledName: imageUrl,
+        });
+        resp = "success";
+      } else {
+        resp = "Supplier with email $supplierEmail not found";
+      }
+    } catch (err) {
+      resp = err.toString();
+    }
+    return resp;
+  }
 }

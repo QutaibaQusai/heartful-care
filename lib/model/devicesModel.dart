@@ -9,6 +9,7 @@ class Devices {
   final String deviceImage1;
   final String deviceImage2;
   final String deviceImage3;
+  final String deviceId;
 
   Devices({
     required this.deviceName,
@@ -21,6 +22,7 @@ class Devices {
     required this.deviceImage1,
     required this.deviceImage2,
     required this.deviceImage3,
+    required this.deviceId,
   });
   factory Devices.fromMap(Map<String, dynamic> map) {
     return Devices(
@@ -34,6 +36,7 @@ class Devices {
       deviceImage1: map['DeviceImages_1'] ?? '',
       deviceImage2: map['DeviceImages_2'] ?? '',
       deviceImage3: map['DeviceImages_3'] ?? '',
+      deviceId: map['DeviseId'] ?? '',
     );
   }
 }
