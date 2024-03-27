@@ -21,6 +21,7 @@ class _AccountState extends State<Account> {
   String phoneNumber = ""; // Add this variable for phone number
   String nationalID = ""; // Add this variable for national ID
   DateTime? dateOfBirth; // Add this variable for date of birth
+  String? userProfile;
 
   @override
   void initState() {
@@ -38,16 +39,19 @@ class _AccountState extends State<Account> {
       if (userDoc.docs.isNotEmpty) {
         var userData = userDoc.docs[0].data();
 
-        setState(() {
-          fullname = userData['fullname'] ?? "";
-          phoneNumber = userData['Phone Number'] ?? "";
-          nationalID = userData['NationalID'] ?? "";
+        setState(
+          () {
+            fullname = userData['fullname'] ?? "";
+            phoneNumber = userData['Phone Number'] ?? "";
+            nationalID = userData['NationalID'] ?? "";
 
-          // Parse the date string if available
-          if (userData['DateOfBirth'] != null) {
-            dateOfBirth = DateTime.parse(userData['DateOfBirth']);
-          }
-        });
+            // Parse the date string if available
+            if (userData['DateOfBirth'] != null) {
+              dateOfBirth = DateTime.parse(userData['DateOfBirth']);
+            }
+            userProfile = userDoc.docs[0]['users_profile'];
+          },
+        );
       }
     } catch (e) {
       print('Error fetching user data: $e');
@@ -139,9 +143,12 @@ class _AccountState extends State<Account> {
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: CircleAvatar(
-                            radius: 67,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage: AssetImage("images/profile.webp"),
+                            radius: MediaQuery.of(context).size.width /
+                                6, // Adjust the radius as needed
+                            backgroundImage: userProfile != null
+                                ? NetworkImage(userProfile!)
+                                : AssetImage("images/profile.webp")
+                                    as ImageProvider,
                           ),
                         ),
                         Text(

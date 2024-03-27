@@ -1,6 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:test/utils/pickImage.dart';
+import 'package:test/utils/storeImg%20.dart';
 
 class YourAccountInfoPage extends StatefulWidget {
   final String userEmail;
@@ -13,6 +19,28 @@ class YourAccountInfoPage extends StatefulWidget {
 }
 
 class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
+  Uint8List? _profileImageUser;
+  String? userProfile;
+
+  void selectProfileImageSupplier(
+      {required ImageSource galleryOrCamera}) async {
+    Uint8List img = await pickImage(galleryOrCamera);
+    setState(
+      () {
+        _profileImageUser = img;
+      },
+    );
+  }
+
+  void saveUserProfile() async {
+    StoreImg().saveUserProfile(
+        file: _profileImageUser!,
+        supplierEmail: widget.userEmail,
+        storagePath: 'usersProfile',
+        firestoreCollectionName: 'users',
+        supplierFireStoreFiledName: 'users_profile');
+  }
+
   String userName = ""; // Store the user's name
   final formKey = GlobalKey<FormState>();
   @override
@@ -47,6 +75,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
 
           selectedGender = userData['Gender'] ?? "";
           receiveOffers = userData['ReceiveOffers'] ?? false;
+          userProfile = userData['users_profile'];
         });
       }
     } catch (e) {
@@ -156,41 +185,70 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                                 width: MediaQuery.of(context).size.width / 3,
                                 height: MediaQuery.of(context).size.width / 3,
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 4,
-                                      color: Color(0xFF1C8892),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          spreadRadius: 2,
-                                          blurRadius: 10,
-                                          color: Colors.black.withOpacity(0.1))
-                                    ],
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image:
-                                            AssetImage("images/profile.webp"))),
+                                  border: Border.all(
+                                    width: 4,
+                                    color: Color(0xFF1C8892),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        spreadRadius: 2,
+                                        blurRadius: 10,
+                                        color: Colors.black.withOpacity(0.1))
+                                  ],
+                                  borderRadius: BorderRadius.circular(
+                                      MediaQuery.of(context).size.width /
+                                          3 /
+                                          2), // Make the container circular
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      MediaQuery.of(context).size.width /
+                                          3 /
+                                          2), // Make the image circular
+                                  child: _profileImageUser != null
+                                      ? Image(
+                                          image: MemoryImage(
+                                            _profileImageUser!,
+                                          ),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : userProfile != null
+                                          ? Image(
+                                              image: NetworkImage(
+                                                userProfile!,
+                                              ),
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image(
+                                              image: AssetImage(
+                                                "images/profile.webp",
+                                              ),
+                                              fit: BoxFit.cover,
+                                            ),
+                                ),
                               ),
-
-                              // Positioned(
-                              //   bottom: 0,
-                              //   right: 0,
-                              //   child: Container(
-                              //     // color: Colors.amber,
-                              //     height: 40,
-                              //     width: 40,
-                              //     decoration: BoxDecoration(
-                              //       shape: BoxShape.circle,
-                              //       border:
-                              //           Border.all(width: 4, color: Colors.red),
-                              //     ),
-                              //     child: Icon(
-                              //       Icons.edit,
-                              //       color: Colors.red,
-                              //     ),
-                              //   ),
-                              // )
+                              Visibility(
+                                visible:
+                                    isEditing, // This will make the Positioned widget visible when isEditing is false
+                                child: Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(),
+                                    child: IconButton(
+                                      icon: Icon(
+                                        FontAwesomeIcons.camera,
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: () {
+                                        showImageSelectionBottomSheet();
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -427,6 +485,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                                             Navigator.of(context)
                                                 .pop(); // Close the dialog
                                             await _submitUserData();
+                                            saveUserProfile();
                                           },
                                           child: Text(
                                             'Yes',
@@ -537,5 +596,63 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
         ),
       );
     }
+  }
+
+  void showImageSelectionBottomSheet() {
+    showModalBottomSheet<void>(
+      showDragHandle: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 130,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Colors.grey[300],
+                          child: Icon(FontAwesomeIcons.image,
+                              color: Colors.black)),
+                      SizedBox(width: 10),
+                      Text("Choose from library",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    selectProfileImageSupplier(
+                        galleryOrCamera: ImageSource.gallery);
+                  },
+                ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Colors.grey[300],
+                          child: Icon(FontAwesomeIcons.camera,
+                              color: Colors.black)),
+                      SizedBox(width: 10),
+                      Text("Take photo",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    selectProfileImageSupplier(
+                        galleryOrCamera: ImageSource.camera);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

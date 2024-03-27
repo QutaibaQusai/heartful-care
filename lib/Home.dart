@@ -18,6 +18,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String? userProfile;
+
   String userName = ""; // Store the user's name
   @override
   void initState() {
@@ -35,6 +37,7 @@ class _HomeState extends State<Home> {
       if (userDoc.docs.isNotEmpty) {
         setState(() {
           userName = userDoc.docs[0]['fullname'];
+          userProfile = userDoc.docs[0]['users_profile'];
         });
       }
     } catch (e) {
@@ -64,7 +67,6 @@ class _HomeState extends State<Home> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: TabBarView(
-            // TODO swipe between bar
             physics: NeverScrollableScrollPhysics(),
             children: [
               Account(
@@ -94,17 +96,23 @@ class _HomeState extends State<Home> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) => Account(
-                                                    userEmail: widget.userEmail,
-                                                    userName: userName,
-                                                  )));
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => Account(
+                                            userEmail: widget.userEmail,
+                                            userName: userName,
+                                          ),
+                                        ),
+                                      );
                                     },
-                                    child: const CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage:
-                                          AssetImage("images/profile.webp"),
+                                    child: CircleAvatar(
+                                      radius:
+                                          MediaQuery.of(context).size.width /
+                                              18, // Adjust the radius as needed
+                                      backgroundImage: userProfile != null
+                                          ? NetworkImage(userProfile!)
+                                          : AssetImage("images/profile.webp")
+                                              as ImageProvider,
                                     ),
                                   ),
                                   SizedBox(width: 8),
@@ -284,8 +292,10 @@ class _HomeState extends State<Home> {
                                 userEmail: widget.userEmail,
                               )));
                     } else if (sections.sectionName == "Medical devices") {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Medical(userEmail: widget.userEmail,)));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Medical(
+                                userEmail: widget.userEmail,
+                              )));
                     }
                   },
                   child: Row(

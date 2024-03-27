@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:test/sections/MedicalDevicesSection/loading.dart';
 
 class Checkout extends StatefulWidget {
   final double paymentAmount; // Payment amount parameter
@@ -295,7 +296,11 @@ class _CheckoutState extends State<Checkout> {
                 Color(0xFF1C8892), // Button background color
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return Loading();
+              }));
+            },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

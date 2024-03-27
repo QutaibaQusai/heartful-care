@@ -538,6 +538,30 @@ class _SupplierDetailsState extends State<SupplierDetails> {
             ],
           ),
         ),
+        floatingActionButton: CircleAvatar(
+          radius: 25,
+          backgroundColor: Color(0xFF1C8892),
+          child: IconButton(
+            icon: Icon(
+              FontAwesomeIcons.cartShopping,
+              size: 20,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // Navigator.of(context)
+              //   ..push(MaterialPageRoute(
+              //       builder: (context) => ItemCart(
+              //             itemName: '',
+              //             itemPrice: '',
+              //             itemOption: '',
+              //             quantity: 5,
+              //             weeks: 5,
+              //             onItemAddedToCart: () {},
+              //             userEmail: '',
+              //           )));
+            },
+          ),
+        ),
       ),
     );
   }
