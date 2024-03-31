@@ -7,6 +7,7 @@ final FirebaseStorage _storage = FirebaseStorage.instance;
 final FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
 class StoreImg {
+  // covert images to string
   Future<String> uploadImageToStorage(String childName, Uint8List file) async {
     Reference ref = _storage.ref().child(childName);
     UploadTask uploadTask = ref.putData(file);
@@ -50,40 +51,7 @@ class StoreImg {
     return resp;
   }
 
-  Future<String> saveSupplierDevicesImages({
-    required Uint8List file,
-    required String supplierEmail,
-    required String storagePath,
-    required String firestoreCollectionName,
-    required String supplierFireStoreFiledName,
-  }) async {
-    String resp = "Error Occurred";
-    try {
-      String fileChildPath =
-          '$storagePath/${Uri.encodeComponent(supplierEmail)}';
 
-      String imageUrl = await uploadImageToStorage(fileChildPath, file);
-      QuerySnapshot querySnapshot = await fireStore
-          .collection(firestoreCollectionName)
-          .where('Email', isEqualTo: supplierEmail)
-          .get();
-      if (querySnapshot.docs.isNotEmpty) {
-        String supplierId = querySnapshot.docs.first.id;
-        await fireStore
-            .collection(firestoreCollectionName)
-            .doc(supplierId)
-            .update({
-          supplierFireStoreFiledName: imageUrl,
-        });
-        resp = "success";
-      } else {
-        resp = "Supplier with email $supplierEmail not found";
-      }
-    } catch (err) {
-      resp = err.toString();
-    }
-    return resp;
-  }
 
 
     Future<String> saveUserProfile({
@@ -120,5 +88,22 @@ class StoreImg {
     }
     return resp;
   }
+
+   Future<List<String>> uploadDeviceImages({
+    required List<Uint8List> files,
+    required String supplierEmail,
+    required String deviceName,
+    required String storagePath,
+  }) async {
+    List<String> imageUrls = [];
+    for (int i = 0; i < files.length; i++) {
+      String fileChildPath =
+          '$storagePath/${Uri.encodeComponent(supplierEmail)}/${Uri.encodeComponent(deviceName)}/image$i';
+      String imageUrl = await uploadImageToStorage(fileChildPath, files[i]);
+      imageUrls.add(imageUrl);
+    }
+    return imageUrls;
+  }
+
   
 }

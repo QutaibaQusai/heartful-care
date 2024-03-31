@@ -118,11 +118,11 @@ class _MyDevicesState extends State<MyDevices> {
                                         deviceQuantity: device.deviceQuantity,
                                         deviceInstruction:
                                             device.deviceInstruction,
-                                        deviceImage1: device.deviceImage1,
-                                        deviceImage2: device.deviceImage2,
-                                        deviceImage3: device.deviceImage3,
                                         supplierEmail: widget.supplierEmail,
                                         deviceId: device.deviceId,
+                                        deviceImage1: device.deviceImages[0],
+                                        deviceImage2: device.deviceImages[1],
+                                        deviceImage3: device.deviceImages[2],
                                       );
                                     },
                                   ),
@@ -168,7 +168,7 @@ class _MyDevicesState extends State<MyDevices> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(13),
                                       child: Image.network(
-                                        device.deviceImage1,
+                                        device.deviceImages[0],
                                         width: double.infinity,
                                         height: double.infinity,
                                         fit: BoxFit.cover,

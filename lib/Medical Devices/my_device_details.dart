@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test/utils/pickImage.dart';
-import 'package:test/utils/storeImg%20.dart';
 
 class MyDeviceDetails extends StatefulWidget {
   final String supplierEmail;
@@ -69,20 +68,22 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
       if (supplierDoc.docs.isNotEmpty) {
         var deviceData = supplierDoc.docs[0].data();
 
-        setState(() {
-          deviceName.text = deviceData['Device_Name'] ?? "";
-          devicePriceForPuy.text = deviceData['devicePriceForPuy'] ?? "";
-          devicePriceForRent.text = deviceData['devicePriceForRent'] ?? "";
-          deviceDescription.text = deviceData['deviceDescription'] ?? "";
-          deviceQuantity.text = deviceData['deviceQuantity'] ?? "";
-          deviceInstructions.text = deviceData['deviceInstructions'] ?? "";
-          imageDevice1 = deviceData['DeviceImages_1'] ??
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
-          imageDevice2 = deviceData['DeviceImages_2'] ??
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
-          imageDevice3 = deviceData['DeviceImages_3'] ??
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
-        });
+        setState(
+          () {
+            deviceName.text = deviceData['Device_Name'] ?? "";
+            devicePriceForPuy.text = deviceData['devicePriceForPuy'] ?? "";
+            devicePriceForRent.text = deviceData['devicePriceForRent'] ?? "";
+            deviceDescription.text = deviceData['deviceDescription'] ?? "";
+            deviceQuantity.text = deviceData['deviceQuantity'] ?? "";
+            deviceInstructions.text = deviceData['deviceInstructions'] ?? "";
+            imageDevice1 = deviceData['DeviceImages_1'] ??
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
+            imageDevice2 = deviceData['DeviceImages_2'] ??
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
+            imageDevice3 = deviceData['DeviceImages_3'] ??
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
+          },
+        );
       }
     } catch (e) {
       print('Error fetching user data:$e');
@@ -110,33 +111,6 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
     setState(() {
       _device3 = img3;
     });
-  }
-
-  void firstImageDevice() async {
-    StoreImg().saveProfileSupplierImg(
-        file: _device2!,
-        supplierEmail: widget.supplierEmail,
-        storagePath: 'DeviceImage1',
-        firestoreCollectionName: 'Devices',
-        supplierFireStoreFiledName: 'DeviceImages_2');
-  }
-
-  void secondImageDevice() async {
-    StoreImg().saveProfileSupplierImg(
-        file: _device3!,
-        supplierEmail: widget.supplierEmail,
-        storagePath: 'DeviceImage2',
-        firestoreCollectionName: 'Devices',
-        supplierFireStoreFiledName: 'DeviceImages_3');
-  }
-
-  void thirdImageDevice() async {
-    StoreImg().saveProfileSupplierImg(
-        file: _device1!,
-        supplierEmail: widget.supplierEmail,
-        storagePath: 'DeviceImage3',
-        firestoreCollectionName: 'Devices',
-        supplierFireStoreFiledName: 'DeviceImages_1');
   }
 
   @override
@@ -266,9 +240,7 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
             ),
             onPressed: () {
               updateDeviceData();
-              firstImageDevice();
-              secondImageDevice();
-              thirdImageDevice();
+
               // Navigator.of(context).pop();
             },
             child: Padding(

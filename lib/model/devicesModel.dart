@@ -6,12 +6,11 @@ class Devices {
   final String deviceQuantity;
   final String deviceInstruction;
   final String supplierId;
-  final String deviceImage1;
-  final String deviceImage2;
-  final String deviceImage3;
+  final List<String> deviceImages; // Now a list to hold multiple image URLs
+
   final String deviceId;
 
-  Devices({
+  Devices( {required this.deviceImages,
     required this.deviceName,
     required this.devicePrice,
     required this.deviceRent,
@@ -19,12 +18,17 @@ class Devices {
     required this.deviceQuantity,
     required this.deviceInstruction,
     required this.supplierId,
-    required this.deviceImage1,
-    required this.deviceImage2,
-    required this.deviceImage3,
+   
     required this.deviceId,
   });
   factory Devices.fromMap(Map<String, dynamic> map) {
+     // Attempt to extract image URLs from the map
+    // Assuming the images are stored in a list format under a key in the map
+    List<String> images = [];
+    if (map['ImageUrls'] != null) {
+      images = List<String>.from(map['ImageUrls']);
+    }
+
     return Devices(
       deviceName: map['Device_Name'] ?? '',
       devicePrice: map['devicePriceForPuy'] ?? '',
@@ -33,10 +37,8 @@ class Devices {
       deviceQuantity: map['deviceQuantity'] ?? '',
       deviceInstruction: map['deviceInstruction'] ?? '',
       supplierId: map['supplierId'] ?? '',
-      deviceImage1: map['DeviceImages_1'] ?? '',
-      deviceImage2: map['DeviceImages_2'] ?? '',
-      deviceImage3: map['DeviceImages_3'] ?? '',
-      deviceId: map['DeviseId'] ?? '',
+     
+      deviceId: map['DeviseId'] ?? '', deviceImages: images,
     );
   }
 }

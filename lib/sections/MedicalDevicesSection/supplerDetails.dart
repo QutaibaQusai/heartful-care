@@ -430,7 +430,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                             borderRadius:
                                                 BorderRadius.circular(13),
                                             child: Image.network(
-                                              device.deviceImage1,
+                                              device.deviceImages[0],
                                               width: double.infinity,
                                               height: double.infinity,
                                               fit: BoxFit.cover,
@@ -514,18 +514,21 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                 ],
                               ),
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
                                     builder: (context) => DeviceDetails(
-                                          deviceName: device.deviceName,
-                                          deviceDescription:
-                                              device.deviceDescription,
-                                          priceForBuying: device.devicePrice,
-                                          priceForRent: device.deviceRent,
-                                          userEmail: widget.userEmail,
-                                          deviceImage1: device.deviceImage1,
-                                          deviceImage2: device.deviceImage2,
-                                          deviceImage3: device.deviceImage3,
-                                        )));
+                                      deviceName: device.deviceName,
+                                      deviceDescription:
+                                          device.deviceDescription,
+                                      priceForBuying: device.devicePrice,
+                                      priceForRent: device.deviceRent,
+                                      userEmail: widget.userEmail,
+                                      deviceImage1: device.deviceImages[0],
+                                      deviceImage2: device.deviceImages[1],
+                                      deviceImage3: device.deviceImages[2],
+                                    ),
+                                  ),
+                                );
                               },
                             ),
                           );
