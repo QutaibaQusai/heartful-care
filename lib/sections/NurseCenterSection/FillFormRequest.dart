@@ -52,13 +52,13 @@ class _FormRequestState extends State<FormRequest> {
     // Wait for the widget tree to be built before showing the snackbar
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (FirebaseAuth.instance.currentUser != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            content:
-                Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     backgroundColor: Color(0xFF1C8892),
+        //     content:
+        //         Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
+        //   ),
+        // );
       }
     });
   }
@@ -149,7 +149,6 @@ class _FormRequestState extends State<FormRequest> {
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: Column(
               children: [
-                Text(widget.centerId),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -390,7 +389,7 @@ class _FormRequestState extends State<FormRequest> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Is the patient able to walk, or do they use a wheelchair?",
+                              "Does the patient rely on a wheelchair?",
                               style: TextStyle(fontSize: 16),
                             ),
                             SizedBox(width: 10),
@@ -610,24 +609,11 @@ class _FormRequestState extends State<FormRequest> {
                                   activeColor: Color(0xFF1C8892),
                                 ),
                                 Text(
-                                  'Per Hour',
+                                  ' quickly checkups',
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 SizedBox(width: 10),
-                                DropdownButton<int>(
-                                  value: selectedPaymentPerHour,
-                                  onChanged: (int? value) {
-                                    setState(() {
-                                      selectedPaymentPerHour = value!;
-                                    });
-                                  },
-                                  items: List.generate(12, (index) {
-                                    return DropdownMenuItem<int>(
-                                      value: index + 1,
-                                      child: Text((index + 1).toString()),
-                                    );
-                                  }),
-                                ),
+                            
                               ],
                             ),
                             SizedBox(height: 10),

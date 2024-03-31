@@ -109,7 +109,7 @@ class _NurseCentersState extends State<NurseCenters> {
                                           setState(() {
                                             newRating = overallRating;
                                           });
-                                        },
+                                        }, priceCheckups: center.checkup
                                       );
                                     },
                                     transitionsBuilder: (context, animation,

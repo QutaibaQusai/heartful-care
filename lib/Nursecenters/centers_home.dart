@@ -33,6 +33,7 @@ class _CentersHome extends State<CentersHome> {
   TextEditingController centerLocation = TextEditingController();
   TextEditingController centerPricePerDay = TextEditingController();
   TextEditingController centerPricePerMonth = TextEditingController();
+  TextEditingController centerPriceCheckup = TextEditingController();
 
   @override
   void initState() {
@@ -78,6 +79,7 @@ class _CentersHome extends State<CentersHome> {
           centerLocation.text = userData["Center Location"] ?? "";
           centerPricePerDay.text = userData["Price Per Day"] ?? "";
           centerPricePerMonth.text = userData["Price Per Month"] ?? "";
+          centerPriceCheckup.text = userData["Price_checkup"];
         });
       }
     } catch (e) {
@@ -385,9 +387,28 @@ class _CentersHome extends State<CentersHome> {
                   SizedBox(
                     height: 25,
                   ),
+                  // centerPriceCheckup
+
                   Text(
                     "Prices Details",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    enabled: isEditing,
+                    controller: centerPriceCheckup,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Checkup Price',
+                    ),
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Description is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -580,7 +601,8 @@ class _CentersHome extends State<CentersHome> {
           'Center Location': centerLocation.text,
           'Center operating Days': centerOpiningDays.text,
           'Price Per Day': centerPricePerDay.text,
-          'Price Per Month': centerPricePerMonth.text
+          'Price Per Month': centerPricePerMonth.text,
+          'Price_checkup': centerPriceCheckup.text
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(

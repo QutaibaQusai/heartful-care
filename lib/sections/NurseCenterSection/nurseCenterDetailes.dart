@@ -22,6 +22,7 @@ class DetailedNurseCenter extends StatefulWidget {
   final String userEmail;
   final String centerId;
   final Function(double) onOverallRatingChanged; // Callback function
+  final String priceCheckups;
 
   DetailedNurseCenter({
     required this.centerName,
@@ -39,6 +40,7 @@ class DetailedNurseCenter extends StatefulWidget {
     required this.operatingDays,
     required this.pricePreDay,
     required this.pricePreMonth,
+    required this.priceCheckups,
   });
 
   @override
@@ -365,17 +367,25 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Price per day: " + widget.pricePreDay.toString(),
+                        "Price for quickly checkups: " +
+                            widget.priceCheckups.toString(),
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Price per Month: " + widget.pricePreMonth.toString(),
+                        "Price per day: " + widget.pricePreDay.toString(),
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Text(
+                    //     "Price per Month: " + widget.pricePreMonth.toString(),
+                    //     style: TextStyle(fontSize: 15),
+                    //   ),
+                    // ),
                   ],
                 )
               ],

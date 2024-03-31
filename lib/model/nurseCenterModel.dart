@@ -7,6 +7,7 @@ class NurseCenter {
   final String addressTwo;
   final String operatingHours;
   final String operatingDays;
+  final String checkup;
 
   final String contactName;
   final String contactPosition;
@@ -32,27 +33,26 @@ class NurseCenter {
     required this.contactPosition,
     required this.description,
     required this.website,
+    required this.checkup,
   });
 
   factory NurseCenter.fromMap(Map<String, dynamic> map) {
     return NurseCenter(
-      name: map['Center Name'] ?? '',
-      phoneNumber: map['Center phone number'] ?? '',
-      emailAddress: map['Email'] ?? '',
-      urlLogoImage: map['URL Logo Image'] ?? '',
-      addressOne: map['Center Address 1'] ?? '',
-      addressTwo: map['Center Address 2'] ?? '',
-      operatingHours: map['Center operating Hours'] ?? '',
-      operatingDays: map['Center operating Days'] ?? '',
-      contactName: map['Contact Center name'] ?? '',
-      contactPosition: map['Contact Center position'] ?? '',
-      description: map['Center Description'] ?? '',
-      website: map['Center website'] ?? '',
-      centerLocation: map['Center location'] ?? '',
-      pricePreDay: map['Price Per Day'] ?? '',
-      pricePreMonth: map['Price Per Month'] ?? '',
-
-      
-    );
+        name: map['Center Name'] ?? '',
+        phoneNumber: map['Center phone number'] ?? '',
+        emailAddress: map['Email'] ?? '',
+        urlLogoImage: map['URL Logo Image'] ?? '',
+        addressOne: map['Center Address 1'] ?? '',
+        addressTwo: map['Center Address 2'] ?? '',
+        operatingHours: map['Center operating Hours'] ?? '',
+        operatingDays: map['Center operating Days'] ?? '',
+        contactName: map['Contact Center name'] ?? '',
+        contactPosition: map['Contact Center position'] ?? '',
+        description: map['Center Description'] ?? '',
+        website: map['Center website'] ?? '',
+        centerLocation: map['Center location'] ?? '',
+        pricePreDay: map['Price Per Day'] ?? '',
+        pricePreMonth: map['Price Per Month'] ?? '',
+        checkup: map['Price_checkup'] ?? '');
   }
 }
