@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/multiSelect.dart';
 
-// for the payment option
-enum PaymentOption { perHour, perDay, perMonth, none }
+
 
 class FormRequest extends StatefulWidget {
   final String userEmail;
@@ -24,7 +23,6 @@ class _FormRequestState extends State<FormRequest> {
   bool? _hasAllergies;
   bool? _isWalk;
   bool? _historyOfSurgeries;
-  // String? _needNurse;
   TextEditingController patientFirstName = TextEditingController();
   TextEditingController patientLastName = TextEditingController();
   TextEditingController patientPhoneNumber = TextEditingController();
@@ -33,19 +31,10 @@ class _FormRequestState extends State<FormRequest> {
   TextEditingController patientGender = TextEditingController();
   TextEditingController patientAddress = TextEditingController();
   List<String> _selectedItem = [];
-  // payment option
-  // PaymentOption _selectedPaymentOption = PaymentOption.none;
-  // int? _numDays;
-  // int? _numMonths;
-
-  // for the date and time
   DateTime? _selectedDate;
-  int selectedPaymentPerHour = 1;
   int selectedPaymentPerDay = 1;
   TimeOfDay? _selectedTime;
 
-  // String _selectedHours = '1';
-  // String _selectedDays = '1';
   @override
   void initState() {
     super.initState();
@@ -599,7 +588,7 @@ class _FormRequestState extends State<FormRequest> {
                             Row(
                               children: [
                                 Radio(
-                                  value: 'Per Hour',
+                                  value: 'quickly checkups',
                                   groupValue: selectedPaymentOption,
                                   onChanged: (value) {
                                     setState(() {
@@ -609,11 +598,10 @@ class _FormRequestState extends State<FormRequest> {
                                   activeColor: Color(0xFF1C8892),
                                 ),
                                 Text(
-                                  ' quickly checkups',
+                                  'quickly checkups',
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 SizedBox(width: 10),
-                            
                               ],
                             ),
                             SizedBox(height: 10),
@@ -706,6 +694,7 @@ class _FormRequestState extends State<FormRequest> {
     }
 
     try {
+      // Initialize the form data map
       Map<String, dynamic> formData = {
         'user_id': userId,
         'center_id': widget.centerId,
@@ -722,9 +711,15 @@ class _FormRequestState extends State<FormRequest> {
         'date':
             _selectedDate != null ? Timestamp.fromDate(_selectedDate!) : null,
         'time': _selectedTime != null ? _selectedTime!.format(context) : null,
-        'selectedPaymentPerDay': selectedPaymentPerDay,
-        'selectedPaymentPerHour': selectedPaymentPerHour,
+        'selectedPaymentOption': selectedPaymentOption,
       };
+
+      // Conditionally add the 'selectedPaymentPerDay' field
+      if (selectedPaymentOption == "quickly checkups") {
+        formData['selectedPaymentPerDay'] = "none";
+      } else {
+        formData['selectedPaymentPerDay'] = selectedPaymentPerDay;
+      }
 
       await FirebaseFirestore.instance.collection('form_request').add(formData);
       Navigator.of(context).pop();
