@@ -161,6 +161,17 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
               ),
             ],
           ),
+          leading: Container(
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                FontAwesomeIcons.chevronLeft,
+                color: Colors.black,
+              ),
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Form(

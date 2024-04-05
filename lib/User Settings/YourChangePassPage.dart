@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/utils/Authentication%20firebase/firebase_auth.dart';
 
 class YourChangePassPage extends StatefulWidget {
@@ -29,6 +30,17 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
           ),
           centerTitle: true,
+          leading: Container(
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                FontAwesomeIcons.chevronLeft,
+                color: Colors.black,
+              ),
+            ),
+          ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(

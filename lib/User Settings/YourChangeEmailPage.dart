@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class YourChangeEmailPage extends StatefulWidget {
   const YourChangeEmailPage({Key? key, required String userEmail})
@@ -22,6 +23,17 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
         ),
         centerTitle: true,
+        leading: Container(
+          child: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              FontAwesomeIcons.chevronLeft,
+              color: Colors.black,
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

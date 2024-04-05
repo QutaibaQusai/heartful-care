@@ -405,32 +405,43 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
               ),
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                    return FormRequest(
-                      userEmail: widget.userEmail,
-                      centerId: widget.centerId,
-                    );
-                  },
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(0.0, 1.0);
-                    const end = Offset.zero;
-                    const curve = Curves.easeInOutQuart;
+              if (widget.userEmail.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Color(0xFF1C8892),
+                    content: Text('Please log in first'),
+                  ),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return FormRequest(
+                        userEmail: widget.userEmail,
+                        centerId: widget.centerId,
+                        centerName: widget.centerName,
+                        centerAddress1: widget.centerAddress1,
+                      );
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(0.0, 1.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOutQuart;
 
-                    var tween = Tween(begin: begin, end: end)
-                        .chain(CurveTween(curve: curve));
-                    var offsetAnimation = animation.drive(tween);
+                      var tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+                      var offsetAnimation = animation.drive(tween);
 
-                    return SlideTransition(
-                      position: offsetAnimation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              }
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

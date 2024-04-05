@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddAddressPage extends StatefulWidget {
   final String userEmail;
@@ -59,6 +60,17 @@ class _AddAddressPageState extends State<AddAddressPage> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
         ),
         centerTitle: true,
+        leading: Container(
+          child: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              FontAwesomeIcons.chevronLeft,
+              color: Colors.black,
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

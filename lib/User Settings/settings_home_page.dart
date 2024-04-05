@@ -63,7 +63,7 @@ class _SettingFirstPage extends State<SettingFirstPage> {
             buildSectionHeader(Icons.person, "Account"),
             buildAccountOption(context, "Account Info"),
             SizedBox(height: 5),
-            buildAccountOption(context, "Saved Addresses"),
+            buildAccountOption(context, "Your Address"),
             SizedBox(height: 5),
             buildAccountOption(context, "Change Email"),
             SizedBox(height: 5),
@@ -122,37 +122,26 @@ class _SettingFirstPage extends State<SettingFirstPage> {
         if (title == "Account Info") {
           // Navigate to the desired page (replace YourAccountInfoPage with the actual page class)
           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => YourAccountInfoPage(
-                      userEmail: widget.userEmail,
-                    )),
-          );
+              context,
+              _createRightToLeftRoute(
+                  YourAccountInfoPage(userEmail: widget.userEmail)));
         }
         if (title == "Change Email") {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => YourChangeEmailPage(
-                      userEmail: widget.userEmail,
-                    )),
-          );
+              context,
+              _createRightToLeftRoute(
+                  YourChangeEmailPage(userEmail: widget.userEmail)));
         }
-        if (title == "Saved Addresses") {
+        if (title == "Your Address") {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AddAddressPage(
-                      userEmail: widget.userEmail,
-                    )),
-          );
+              context,
+              _createRightToLeftRoute(
+                  AddAddressPage(userEmail: widget.userEmail)));
         }
         if (title == "Change Password") {
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => YourChangePassPage()),
-          );
-        } else {}
+              context, _createRightToLeftRoute(YourChangePassPage()));
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
@@ -466,6 +455,26 @@ class _SettingFirstPage extends State<SettingFirstPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Route _createRightToLeftRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
     );
   }
 }

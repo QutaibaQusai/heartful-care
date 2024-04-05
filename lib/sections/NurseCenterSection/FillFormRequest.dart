@@ -2,15 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/sections/NurseCenterSection/checkout_nurseCenter.dart';
 import 'package:test/sections/NurseCenterSection/multiSelect.dart';
-
-
 
 class FormRequest extends StatefulWidget {
   final String userEmail;
   final String centerId;
+  final String centerName;
+  final String centerAddress1;
 
-  const FormRequest({Key? key, required this.userEmail, required this.centerId})
+  const FormRequest(
+      {Key? key,
+      required this.userEmail,
+      required this.centerId,
+      required this.centerName,
+      required this.centerAddress1})
       : super(key: key);
 
   @override
@@ -661,13 +667,21 @@ class _FormRequestState extends State<FormRequest> {
               ),
             ),
             onPressed: () {
-              _saveFormDataToFirestore();
+              Navigator.push(
+                  context,
+                  _createRightToLeftRoute(CheckoutNurseCenter(
+                    centerName: widget.centerName,
+                    centerAddress1: widget.centerAddress1,
+                    userEmail: widget.userEmail,
+                  )));
+
+              // _saveFormDataToFirestore();
               // Navigator.of(context).pop();
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Continue to confirm".toUpperCase(),
+                "Continue to checkout".toUpperCase(),
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -738,5 +752,25 @@ class _FormRequestState extends State<FormRequest> {
         ),
       );
     }
+  }
+
+  Route _createRightToLeftRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
   }
 }
