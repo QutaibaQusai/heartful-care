@@ -216,7 +216,8 @@ class _AddCardState extends State<AddCard> {
           'expiryDate': expiryDateController.text,
           'cvv': cvvController.text,
           'createdAt':
-              FieldValue.serverTimestamp(), // Tracks when the card was added
+              FieldValue.serverTimestamp(),
+               // Tracks when the card was added
         });
 
         // Confirmation message

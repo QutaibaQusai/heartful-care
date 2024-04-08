@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:test/model/card.dart';
 import 'package:test/sections/NurseCenterSection/addCard.dart';
 
 class CheckoutNurseCenter extends StatefulWidget {
@@ -10,10 +10,11 @@ class CheckoutNurseCenter extends StatefulWidget {
   final String userEmail;
 
   const CheckoutNurseCenter(
-      {super.key,
+      {Key? key,
       required this.centerName,
       required this.centerAddress1,
-      required this.userEmail});
+      required this.userEmail})
+      : super(key: key);
 
   @override
   State<CheckoutNurseCenter> createState() => _CheckoutNurseCenterState();
@@ -153,7 +154,6 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                         SizedBox(
                           height: 10,
                         ),
-                        // Text("ss")
                         GestureDetector(
                           onTap: () {
                             setState(() {
@@ -168,7 +168,6 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              // borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 color: Colors.grey,
                                 style: BorderStyle.solid,
@@ -216,16 +215,118 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                         SizedBox(
                           height: 10,
                         ),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('users')
+                              .where('email', isEqualTo: widget.userEmail)
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+                            if (!snapshot.hasData ||
+                                snapshot.data!.docs.isEmpty) {
+                              return Text('No user data found');
+                            }
+
+                            var userDoc = snapshot.data!.docs.first;
+                            String userId = userDoc.id;
+
+                            return StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(userId)
+                                  .collection('Cards')
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> cardsSnapshot) {
+                                if (cardsSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                if (cardsSnapshot.hasError) {
+                                  return Text(
+                                      'Error fetching cards: ${cardsSnapshot.error}');
+                                }
+                                if (!cardsSnapshot.hasData ||
+                                    cardsSnapshot.data!.docs.isEmpty) {
+                                  return Text('No cards found for this user');
+                                }
+
+                                // Mapping card data and adding to cards list
+                                List<UsersCards> cards =
+                                    cardsSnapshot.data!.docs.map((cardDoc) {
+                                  return UsersCards.fromMap(
+                                      cardDoc.data() as Map<String, dynamic>);
+                                }).toList();
+
+                                return ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: cards.length,
+                                  itemBuilder: (context, index) {
+                                    var card = cards[index];
+                                    return GestureDetector(
+                                      onTap: () {},
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              style: BorderStyle.solid,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16.0, vertical: 17),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      FontAwesomeIcons.ccVisa,
+                                                      color: Color(0xFF1C8892),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    Text(card.cardNumber),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         GestureDetector(
                           onTap: () {
                             setState(() {
                               _selectedPaymentMethod = 'cash';
                             });
-                            // print("cash");
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              // borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 color: Colors.grey,
                                 style: BorderStyle.solid,
@@ -234,7 +335,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8),
+                                  horizontal: 16.0, vertical: 12),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -346,17 +447,17 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                       borderRadius: BorderRadius.zero,
                       side: BorderSide(color: Colors.transparent))),
               backgroundColor: MaterialStateProperty.all<Color>(
-                Color(0xFF1C8892), // Button background color
+                Color(0xFF1C8892),
               ),
             ),
             onPressed: () {
               if (_selectedPaymentMethod == "card") {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return AddCard(
-                    userEmail: widget.userEmail,
-                  );
-                }));
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(builder: (context) {
+                //   return AddCard(
+                //     userEmail: widget.userEmail,
+                //   );
+                // }));
               } else {}
               print(_selectedPaymentMethod);
             },
@@ -378,9 +479,8 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    fetchUserName();
     super.initState();
+    fetchUserName();
   }
 
   void fetchUserName() async {
@@ -401,5 +501,4 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
       print('Error fetching user data: $e');
     }
   }
-  
 }
