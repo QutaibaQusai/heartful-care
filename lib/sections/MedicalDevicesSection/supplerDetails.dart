@@ -20,6 +20,7 @@ class SupplierDetails extends StatefulWidget {
   final String userEmail;
   final String supplierCover;
   final String supplierId;
+
   final Function(double) onOverallRatingChanged;
   const SupplierDetails({
     Key? key,

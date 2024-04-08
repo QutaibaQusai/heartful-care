@@ -604,7 +604,7 @@ class _FormRequestState extends State<FormRequest> {
                                   activeColor: Color(0xFF1C8892),
                                 ),
                                 Text(
-                                  'quickly checkups',
+                                  'Quickly checkups',
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 SizedBox(width: 10),

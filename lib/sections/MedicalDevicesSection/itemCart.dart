@@ -8,6 +8,7 @@ class ItemCart extends StatefulWidget {
   final int quantity;
   final int weeks;
   final String userEmail;
+  final String deviceImage1;
 
   const ItemCart({
     Key? key,
@@ -18,6 +19,7 @@ class ItemCart extends StatefulWidget {
     required this.weeks,
     required Null Function() onItemAddedToCart,
     required this.userEmail,
+    required this.deviceImage1,
   }) : super(key: key);
 
   @override
@@ -116,9 +118,7 @@ class _ItemCart extends State<ItemCart> {
                                       10,
                                     ), // Adjust border radius as needed
                                     image: DecorationImage(
-                                      image: NetworkImage(
-                                        "https://lynemouthpharmacy.co.uk/wp-content/uploads/2022/03/blood_pressure-02.jpg",
-                                      ),
+                                      image: NetworkImage(widget.deviceImage1),
                                       fit: BoxFit.cover,
                                     ),
                                   ),

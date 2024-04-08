@@ -74,6 +74,7 @@ class _DeviceDetailsState extends State<DeviceDetails> {
                           });
                         },
                         userEmail: widget.userEmail,
+                        deviceImage1: widget.deviceImage1,
                       ),
                     ),
                   );

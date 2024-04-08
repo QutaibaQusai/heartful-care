@@ -9,12 +9,12 @@ class CheckoutNurseCenter extends StatefulWidget {
   final String centerAddress1;
   final String userEmail;
 
-  const CheckoutNurseCenter(
-      {Key? key,
-      required this.centerName,
-      required this.centerAddress1,
-      required this.userEmail})
-      : super(key: key);
+  const CheckoutNurseCenter({
+    Key? key,
+    required this.centerName,
+    required this.centerAddress1,
+    required this.userEmail,
+  }) : super(key: key);
 
   @override
   State<CheckoutNurseCenter> createState() => _CheckoutNurseCenterState();
@@ -25,6 +25,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
   String userStreet = '';
   String userMobileNumber = '';
   String _selectedPaymentMethod = '';
+  String? _selectedCard;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                   child: Container(
                     clipBehavior: Clip.antiAlias,
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height / 3.5,
+                    height: MediaQuery.of(context).size.height / 3.3,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
@@ -156,9 +157,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _selectedPaymentMethod = 'card';
-                            });
+                            setState(() {});
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (context) {
                               return AddCard(
@@ -166,48 +165,37 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                               );
                             }));
                           },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
-                                style: BorderStyle.solid,
-                                width: 1.0,
+                          child: SizedBox(
+                            height: 80,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  style: BorderStyle.solid,
+                                  width: 1.0,
+                                ),
                               ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        FontAwesomeIcons.plus,
-                                        color: Color(0xFF1C8892),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Text("Add a new card"),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Radio<String>(
-                                        activeColor: Color(0xFF1C8892),
-                                        value: 'card',
-                                        groupValue: _selectedPaymentMethod,
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            _selectedPaymentMethod = value!;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 8),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.plus,
+                                          color: Color(0xFF1C8892),
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Text("Add a new card"),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -254,11 +242,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                                       'Error fetching cards: ${cardsSnapshot.error}');
                                 }
                                 if (!cardsSnapshot.hasData ||
-                                    cardsSnapshot.data!.docs.isEmpty) {
-                                  return Text('No cards found for this user');
-                                }
-
-                                // Mapping card data and adding to cards list
+                                    cardsSnapshot.data!.docs.isEmpty) {}
                                 List<UsersCards> cards =
                                     cardsSnapshot.data!.docs.map((cardDoc) {
                                   return UsersCards.fromMap(
@@ -266,13 +250,49 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                                 }).toList();
 
                                 return ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: cards.length,
                                   itemBuilder: (context, index) {
-                                    var card = cards[index];
-                                    return GestureDetector(
-                                      onTap: () {},
+                                    return Dismissible(
+                                      key: UniqueKey(),
+                                      direction: DismissDirection.startToEnd,
+                                      onDismissed: (direction) async {
+                                        setState(() {
+                                          // Remove card from the list view
+                                          cards.removeAt(index);
+                                        });
+
+                                        // Get the auto-generated document ID of the card
+                                        String cardId =
+                                            cardsSnapshot.data!.docs[index].id;
+
+                                        // Delete card from Firestore
+                                        try {
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc(userId)
+                                              .collection('Cards')
+                                              .doc(cardId)
+                                              .delete();
+                                        } catch (e) {
+                                          print('Error deleting card: $e');
+                                          // Re-add the card to the list if deletion fails
+                                          setState(() {
+                                            cards.insert(index, cards[index]);
+                                          });
+                                        }
+                                      },
+                                      background: Container(
+                                        color: Color(0xFF1C8892),
+                                        alignment: Alignment.center,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(right: 16.0),
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10),
@@ -301,8 +321,23 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                                                     SizedBox(
                                                       width: 15,
                                                     ),
-                                                    Text(card.cardNumber),
+                                                    Text(cards[index]
+                                                        .cardNumber),
                                                   ],
+                                                ),
+                                                Radio<String>(
+                                                  activeColor:
+                                                      Color(0xFF1C8892),
+                                                  value:
+                                                      cards[index].cardNumber,
+                                                  groupValue: _selectedCard,
+                                                  onChanged: (String? value) {
+                                                    setState(() {
+                                                      _selectedCard = value;
+                                                      _selectedPaymentMethod =
+                                                          'card'; // Select payment method as card
+                                                    });
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -317,12 +352,13 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                           },
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 8,
                         ),
                         GestureDetector(
                           onTap: () {
                             setState(() {
                               _selectedPaymentMethod = 'cash';
+                              _selectedCard = null; // Clear selected card
                             });
                           },
                           child: Container(
@@ -352,19 +388,17 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                                       Text("Cash"),
                                     ],
                                   ),
-                                  Row(
-                                    children: [
-                                      Radio(
-                                        activeColor: Color(0xFF1C8892),
-                                        value: 'cash',
-                                        groupValue: _selectedPaymentMethod,
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            _selectedPaymentMethod = value!;
-                                          });
-                                        },
-                                      ),
-                                    ],
+                                  Radio(
+                                    activeColor: Color(0xFF1C8892),
+                                    value: 'cash',
+                                    groupValue: _selectedPaymentMethod,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        _selectedPaymentMethod = value!;
+                                        _selectedCard =
+                                            null; // Clear selected card
+                                      });
+                                    },
                                   ),
                                 ],
                               ),
@@ -387,14 +421,10 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Pay with",
+                        "Payment summary",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text("Payment summary"),
                       SizedBox(
                         height: 10,
                       ),
@@ -411,7 +441,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Delivery free"),
+                          Text("Delivery fee"),
                           Text("JOD " + "0.25"),
                         ],
                       ),
