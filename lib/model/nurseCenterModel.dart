@@ -8,13 +8,12 @@ class NurseCenter {
   final String operatingHours;
   final String operatingDays;
   final String checkup;
-
+  final String pricePreDay;
   final String contactName;
   final String contactPosition;
   final String description;
   final String website;
   final String centerLocation;
-  final String pricePreDay;
   final String pricePreMonth;
 
   NurseCenter({

@@ -422,6 +422,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                         centerId: widget.centerId,
                         centerName: widget.centerName,
                         centerAddress1: widget.centerAddress1,
+                        checkup: widget.priceCheckups,
+                        pricePerDay: widget.pricePreDay,
                       );
                     },
                     transitionsBuilder:

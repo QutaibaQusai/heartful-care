@@ -8,12 +8,17 @@ class CheckoutNurseCenter extends StatefulWidget {
   final String centerName;
   final String centerAddress1;
   final String userEmail;
+  final double subtotal;
+  final double deliveryFee; // Add delivery fee parameter
+// Added subtotal parameter
 
   const CheckoutNurseCenter({
     Key? key,
     required this.centerName,
     required this.centerAddress1,
     required this.userEmail,
+    required this.subtotal,
+    required this.deliveryFee, // Added subtotal parameter
   }) : super(key: key);
 
   @override
@@ -431,8 +436,8 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Subtotal"),
-                          Text("JOD " + "4.00"),
+                          Text(
+                              "Subtotal: ${widget.subtotal.toStringAsFixed(2)}"), // Display subtotal
                         ],
                       ),
                       SizedBox(
@@ -442,7 +447,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Delivery fee"),
-                          Text("JOD " + "0.25"),
+                          Text("JOD ${widget.deliveryFee.toStringAsFixed(2)}"),
                         ],
                       ),
                       SizedBox(
@@ -456,7 +461,8 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
-                          Text("JOD " + "4.25",
+                          Text(
+                              "JOD ${widget.subtotal + 0.25}", // Calculate total amount
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold)),
                         ],
