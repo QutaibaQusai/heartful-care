@@ -5,8 +5,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddCard extends StatefulWidget {
   final String userEmail;
+  final double total;
+  final double deliveryFee;
 
-  const AddCard({super.key, required this.userEmail});
+  const AddCard(
+      {super.key,
+      required this.userEmail,
+      required this.total,
+      required this.deliveryFee});
 
   @override
   State<AddCard> createState() => _AddCardState();
@@ -176,7 +182,7 @@ class _AddCardState extends State<AddCard> {
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "4.25".toUpperCase(),
+                  "JOD ${widget.total + widget.deliveryFee}".toUpperCase(),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -215,9 +221,8 @@ class _AddCardState extends State<AddCard> {
           'cardNumber': cardNumberController.text,
           'expiryDate': expiryDateController.text,
           'cvv': cvvController.text,
-          'createdAt':
-              FieldValue.serverTimestamp(),
-               // Tracks when the card was added
+          'createdAt': FieldValue.serverTimestamp(),
+          // Tracks when the card was added
         });
 
         // Confirmation message

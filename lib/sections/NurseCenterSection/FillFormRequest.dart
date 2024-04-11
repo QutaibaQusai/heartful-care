@@ -30,6 +30,7 @@ class FormRequest extends StatefulWidget {
 class _FormRequestState extends State<FormRequest> {
   double deliveryFee = 1;
   double total = 0.0;
+
   int selectedPaymentPerDay = 1;
   bool selectedPaymentOptionQuicklyCheckups = false;
   bool selectedPaymentOptionPerDay = false;
@@ -519,7 +520,7 @@ class _FormRequestState extends State<FormRequest> {
                                 activeColor: Color(0xFF1C8892),
                               ),
                               Text(
-                                'Quickly checkups ${widget.checkup}',
+                                'Quickly checkups ',
                                 style: TextStyle(fontSize: 18),
                               ),
                               SizedBox(width: 10),
@@ -541,7 +542,7 @@ class _FormRequestState extends State<FormRequest> {
                                 activeColor: Color(0xFF1C8892),
                               ),
                               Text(
-                                'Per Day ${widget.pricePerDay}',
+                                'Per Day',
                                 style: TextStyle(fontSize: 18),
                               ),
                               SizedBox(width: 10),
@@ -574,6 +575,8 @@ class _FormRequestState extends State<FormRequest> {
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
             onPressed: () {
+              // _saveFormDataToFirestore();
+
               _calculateTotal();
               print('Total before navigation: $total');
               Navigator.push(
@@ -585,6 +588,7 @@ class _FormRequestState extends State<FormRequest> {
                     userEmail: widget.userEmail,
                     subtotal: total,
                     deliveryFee: deliveryFee,
+                    total: total,
                   ),
                 ),
               );
@@ -626,7 +630,7 @@ class _FormRequestState extends State<FormRequest> {
       }
 
       if (selectedPaymentOptionQuicklyCheckups || selectedPaymentOptionPerDay) {
-        total = subtotal + deliveryFee;
+        total = subtotal;
       } else {
         total = 0.0;
       }
@@ -713,5 +717,66 @@ class _FormRequestState extends State<FormRequest> {
         );
       },
     );
+  }
+
+  void _saveFormDataToFirestore() async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null || userId.isEmpty) {
+      print('User ID is missing');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          content: Text('You need to be logged in to submit a form.'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Initialize the form data map
+      Map<String, dynamic> formData = {
+        'user_id': userId,
+        'center_id': widget.centerId,
+        'firstName': patientFirstName.text,
+        'lastName': patientLastName.text,
+        'phoneNumber': patientPhoneNumber.text,
+        'age': int.tryParse(patientAge.text) ?? 0,
+        'gender': _selectedGender ?? "",
+        'address': patientAddress.text,
+        'hasAllergies': _hasAllergies ?? false,
+        'isWalk': _isWalk ?? false,
+        'historyOfSurgeries': _historyOfSurgeries ?? false,
+        'needNurse': _selectedItem,
+        'date':
+            _selectedDate != null ? Timestamp.fromDate(_selectedDate!) : null,
+        'time': _selectedTime != null ? _selectedTime!.format(context) : null,
+        'selectedPaymentOptionQuicklyCheckups':
+            selectedPaymentOptionQuicklyCheckups,
+      };
+
+      // Conditionally add the 'selectedPaymentPerDay' field
+      if (selectedPaymentOptionQuicklyCheckups == "quickly checkups") {
+        formData['selectedPaymentPerDay'] = "none";
+      } else {
+        formData['selectedPaymentPerDay'] = selectedPaymentOptionPerDay;
+      }
+
+      await FirebaseFirestore.instance.collection('form_request').add(formData);
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          content: Text('Form data saved successfully!'),
+        ),
+      );
+    } catch (e) {
+      print('Error saving form data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          content: Text('Error saving form data. Please try again later.'),
+        ),
+      );
+    }
   }
 }

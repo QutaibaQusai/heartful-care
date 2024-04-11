@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/FillFormRequest.dart';
 import 'package:test/sections/NurseCenterSection/rating.dart';
+import 'package:test/sections/NurseCenterSection/subcription.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailedNurseCenter extends StatefulWidget {
@@ -198,23 +199,27 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 24),
+                              SizedBox(width: 17),
                               Column(
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      // Handle chat action
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Subscribe()),
+                                      );
                                     },
-                                    icon: Icon(Icons.chat,
+                                    icon: Icon(Icons.new_releases_outlined,
                                         color: Color(0xFF1C8892)),
                                   ),
                                   Text(
-                                    'Chat',
+                                    'Subscribe',
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 24),
+                              SizedBox(width: 18),
                               Column(
                                 children: [
                                   IconButton(

@@ -9,7 +9,9 @@ class CheckoutNurseCenter extends StatefulWidget {
   final String centerAddress1;
   final String userEmail;
   final double subtotal;
-  final double deliveryFee; // Add delivery fee parameter
+  final double deliveryFee;
+  final double total;
+  // Add delivery fee parameter
 // Added subtotal parameter
 
   const CheckoutNurseCenter({
@@ -18,7 +20,8 @@ class CheckoutNurseCenter extends StatefulWidget {
     required this.centerAddress1,
     required this.userEmail,
     required this.subtotal,
-    required this.deliveryFee, // Added subtotal parameter
+    required this.deliveryFee,
+    required this.total, // Added subtotal parameter
   }) : super(key: key);
 
   @override
@@ -167,6 +170,8 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                                 .push(MaterialPageRoute(builder: (context) {
                               return AddCard(
                                 userEmail: widget.userEmail,
+                                total: widget.total,
+                                deliveryFee: widget.deliveryFee,
                               );
                             }));
                           },
@@ -436,8 +441,9 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                              "Subtotal: ${widget.subtotal.toStringAsFixed(2)}"), // Display subtotal
+                          Text("Subtotal"),
+                          Text("JOD ${widget.subtotal.toStringAsFixed(2)}"),
+                          // Display subtotal
                         ],
                       ),
                       SizedBox(
@@ -462,7 +468,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                              "JOD ${widget.subtotal + 0.25}", // Calculate total amount
+                              "JOD ${widget.total + widget.deliveryFee}", // Calculate total amount
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold)),
                         ],
