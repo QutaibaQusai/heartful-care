@@ -13,23 +13,24 @@ class Patient_request {
   final double total_amount;
   final String payment_method;
   final int status;
+  final String formRequestId;
 
-  Patient_request({
-    required this.age,
-    required this.firstName,
-    required this.lastName,
-    required this.gender,
-    required this.phoneNumber,
-    required this.address,
-    required this.allergies,
-    required this.surgeriesHistory,
-    required this.isWalk,
-    required this.needNurse,
-    required this.centerId,
-    required this.total_amount,
-    required this.payment_method,
-    required this.status
-  });
+  Patient_request(
+      {required this.age,
+      required this.firstName,
+      required this.lastName,
+      required this.gender,
+      required this.phoneNumber,
+      required this.address,
+      required this.allergies,
+      required this.surgeriesHistory,
+      required this.isWalk,
+      required this.needNurse,
+      required this.centerId,
+      required this.total_amount,
+      required this.payment_method,
+      required this.status,
+      required this.formRequestId});
 
   factory Patient_request.fromMap(Map<String, dynamic> map) {
     return Patient_request(
@@ -46,7 +47,8 @@ class Patient_request {
       centerId: map['center_id'] ?? '',
       total_amount: map['total_amount'] ?? '',
       payment_method: map['payment_method'],
-      status: map['status']
+      status: map['status'],
+      formRequestId: map['form_request_id'] ?? "",
     );
   }
 }

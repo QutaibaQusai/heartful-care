@@ -91,6 +91,7 @@ class _PatientRequestState extends State<PatientRequest> {
                                     total_amount: patient.total_amount,
                                     payment_method: patient.payment_method,
                                     status: patient.status,
+                                    formRequestId: patient.formRequestId,
                                   ),
                                 ),
                               );

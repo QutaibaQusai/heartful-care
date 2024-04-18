@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test/model/card.dart';
 import 'package:test/sections/NurseCenterSection/addCard.dart';
+import 'package:test/sections/NurseCenterSection/loadingRequestResult.dart';
 
 class CheckoutNurseCenter extends StatefulWidget {
   final String centerName;
@@ -520,8 +521,8 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
             ),
             onPressed: () {
               _saveFormDataToFirestore();
-
-              print(selectedPaymentMethod + "=============================");
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => RequestResult()));
 
               // if (selectedPaymentMethod == "card") {
               //   // Navigator.of(context)
@@ -587,8 +588,14 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
     }
 
     try {
-      // Initialize the form data map
+      // Generate a new document ID
+      DocumentReference newDocRef =
+          FirebaseFirestore.instance.collection('form_request').doc();
+
+      // Initialize the form data map including the new document ID
       Map<String, dynamic> formData = {
+        'form_request_id':
+            newDocRef.id, // Include the pre-generated ID in the data
         'user_id': userId,
         'center_id': widget.centerId,
         'firstName': widget.patientFirstName,
@@ -603,26 +610,21 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
         'needNurse': widget.needNurse,
         'date': widget.selectedDate,
         'time': widget.selectedTime.format(context),
-        // 'selectedPaymentOptionQuicklyCheckups':
-        //     selectedPaymentOptionQuicklyCheckups,
         'total_amount': widget.total,
         'payment_method': selectedPaymentMethod,
         'status': status,
       };
 
-      // // Conditionally add the 'selectedPaymentPerDay' field
-      // if (selectedPaymentOptionQuicklyCheckups == "quickly checkups") {
-      //   formData['selectedPaymentPerDay'] = "none";
-      // } else {
-      //   formData['selectedPaymentPerDay'] = selectedPaymentOptionPerDay;
-      // }
+      // Add the document with the pre-generated ID
+      await newDocRef.set(formData);
 
-      await FirebaseFirestore.instance.collection('form_request').add(formData);
-      Navigator.of(context).pop();
+      print("Document ID of newly created form_request: ${newDocRef.id}");
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color(0xFF1C8892),
-          content: Text('Form data saved successfully!'),
+          content: Text(
+              'Form data saved successfully! Document ID: ${newDocRef.id}'),
         ),
       );
     } catch (e) {

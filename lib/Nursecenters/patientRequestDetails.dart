@@ -17,6 +17,7 @@ class PatientDetails extends StatefulWidget {
   final double total_amount;
   final String payment_method;
   final int status;
+  final String formRequestId;
 
   const PatientDetails(
       {super.key,
@@ -34,7 +35,8 @@ class PatientDetails extends StatefulWidget {
       required this.total_amount,
       required this.payment_method,
       required this.status,
-      required});
+      required,
+      required this.formRequestId});
 
   @override
   State<PatientDetails> createState() => _PatientDetailsState();
@@ -46,7 +48,7 @@ class _PatientDetailsState extends State<PatientDetails> {
   void updateStatus(int newStatus) {
     _firestore
         .collection('form_request')
-        .doc("o4XDYrGbSLAY7KhO85we") 
+        .doc(widget.formRequestId)
         .update({'status': newStatus})
         .then((_) => print("Status updated"))
         .catchError((error) => print("Failed to update status: $error"));
@@ -343,7 +345,8 @@ class _PatientDetailsState extends State<PatientDetails> {
                               labelText: "Payment method",
                               labelStyle: TextStyle(color: Colors.black)),
                         ),
-                        Text(widget.status.toString())
+                        Text(widget.status.toString()),
+                        Text(widget.formRequestId + "Ss")
                       ],
                     ),
                   ),
