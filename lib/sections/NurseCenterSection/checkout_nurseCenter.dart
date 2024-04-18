@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,8 +12,19 @@ class CheckoutNurseCenter extends StatefulWidget {
   final double subtotal;
   final double deliveryFee;
   final double total;
-  // Add delivery fee parameter
-// Added subtotal parameter
+  final String centerId;
+  final String patientFirstName;
+  final String patientLastName;
+  final String patientPhoneNumber;
+  final String age;
+  final String gender;
+  final String address;
+  final bool hasAllergies;
+  final bool isWalk;
+  final bool historyOfSurgeries;
+  final List needNurse;
+  final DateTime selectedDate;
+  final TimeOfDay selectedTime;
 
   const CheckoutNurseCenter({
     Key? key,
@@ -21,7 +33,20 @@ class CheckoutNurseCenter extends StatefulWidget {
     required this.userEmail,
     required this.subtotal,
     required this.deliveryFee,
-    required this.total, // Added subtotal parameter
+    required this.total,
+    required this.centerId,
+    required this.patientFirstName,
+    required this.patientLastName,
+    required this.patientPhoneNumber,
+    required this.age,
+    required this.gender,
+    required this.address,
+    required this.hasAllergies,
+    required this.isWalk,
+    required this.historyOfSurgeries,
+    required this.needNurse,
+    required this.selectedDate,
+    required this.selectedTime,
   }) : super(key: key);
 
   @override
@@ -32,8 +57,9 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
   String userArea = '';
   String userStreet = '';
   String userMobileNumber = '';
-  String _selectedPaymentMethod = '';
+  String selectedPaymentMethod = '';
   String? _selectedCard;
+  int status = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -344,7 +370,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                                                   onChanged: (String? value) {
                                                     setState(() {
                                                       _selectedCard = value;
-                                                      _selectedPaymentMethod =
+                                                      selectedPaymentMethod =
                                                           'card'; // Select payment method as card
                                                     });
                                                   },
@@ -367,7 +393,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              _selectedPaymentMethod = 'cash';
+                              selectedPaymentMethod = 'cash';
                               _selectedCard = null; // Clear selected card
                             });
                           },
@@ -401,10 +427,10 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                                   Radio(
                                     activeColor: Color(0xFF1C8892),
                                     value: 'cash',
-                                    groupValue: _selectedPaymentMethod,
+                                    groupValue: selectedPaymentMethod,
                                     onChanged: (String? value) {
                                       setState(() {
-                                        _selectedPaymentMethod = value!;
+                                        selectedPaymentMethod = value!;
                                         _selectedCard =
                                             null; // Clear selected card
                                       });
@@ -493,15 +519,18 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
               ),
             ),
             onPressed: () {
-              if (_selectedPaymentMethod == "card") {
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (context) {
-                //   return AddCard(
-                //     userEmail: widget.userEmail,
-                //   );
-                // }));
-              } else {}
-              print(_selectedPaymentMethod);
+              _saveFormDataToFirestore();
+
+              print(selectedPaymentMethod + "=============================");
+
+              // if (selectedPaymentMethod == "card") {
+              //   // Navigator.of(context)
+              //   //     .push(MaterialPageRoute(builder: (context) {
+              //   //   return AddCard(
+              //   //     userEmail: widget.userEmail,
+              //   //   );
+              //   // }));
+              // } else {}
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -541,6 +570,69 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
       }
     } catch (e) {
       print('Error fetching user data: $e');
+    }
+  }
+
+  void _saveFormDataToFirestore() async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null || userId.isEmpty) {
+      print('User ID is missing');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          content: Text('You need to be logged in to submit a form.'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Initialize the form data map
+      Map<String, dynamic> formData = {
+        'user_id': userId,
+        'center_id': widget.centerId,
+        'firstName': widget.patientFirstName,
+        'lastName': widget.patientLastName,
+        'phoneNumber': widget.patientPhoneNumber,
+        'age': widget.age,
+        'gender': widget.gender,
+        'address': widget.address,
+        'hasAllergies': widget.hasAllergies,
+        'isWalk': widget.isWalk,
+        'historyOfSurgeries': widget.historyOfSurgeries,
+        'needNurse': widget.needNurse,
+        'date': widget.selectedDate,
+        'time': widget.selectedTime.format(context),
+        // 'selectedPaymentOptionQuicklyCheckups':
+        //     selectedPaymentOptionQuicklyCheckups,
+        'total_amount': widget.total,
+        'payment_method': selectedPaymentMethod,
+        'status': status,
+      };
+
+      // // Conditionally add the 'selectedPaymentPerDay' field
+      // if (selectedPaymentOptionQuicklyCheckups == "quickly checkups") {
+      //   formData['selectedPaymentPerDay'] = "none";
+      // } else {
+      //   formData['selectedPaymentPerDay'] = selectedPaymentOptionPerDay;
+      // }
+
+      await FirebaseFirestore.instance.collection('form_request').add(formData);
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          content: Text('Form data saved successfully!'),
+        ),
+      );
+    } catch (e) {
+      print('Error saving form data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          content: Text('Error saving form data. Please try again later.'),
+        ),
+      );
     }
   }
 }

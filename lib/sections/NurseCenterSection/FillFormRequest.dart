@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/checkout_nurseCenter.dart';
@@ -35,18 +35,18 @@ class _FormRequestState extends State<FormRequest> {
   bool selectedPaymentOptionQuicklyCheckups = false;
   bool selectedPaymentOptionPerDay = false;
 
-  String? _selectedGender;
-  bool? _hasAllergies;
-  bool? _isWalk;
-  bool? _historyOfSurgeries;
+  String? selectedGender;
+  bool? hasAllergies;
+  bool? isWalk;
+  bool? historyOfSurgeries;
   TextEditingController patientFirstName = TextEditingController();
   TextEditingController patientLastName = TextEditingController();
   TextEditingController patientPhoneNumber = TextEditingController();
   TextEditingController patientAge = TextEditingController();
   TextEditingController patientAddress = TextEditingController();
-  List<String> _selectedItem = [];
-  DateTime? _selectedDate;
-  TimeOfDay? _selectedTime;
+  List<String> selectedItem = [];
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -193,10 +193,10 @@ class _FormRequestState extends State<FormRequest> {
                           SizedBox(width: 10),
                           Expanded(
                             child: DropdownButtonFormField<String>(
-                              value: _selectedGender,
+                              value: selectedGender,
                               onChanged: (newValue) {
                                 setState(() {
-                                  _selectedGender = newValue;
+                                  selectedGender = newValue;
                                 });
                               },
                               decoration: InputDecoration(
@@ -277,10 +277,10 @@ class _FormRequestState extends State<FormRequest> {
                             children: [
                               Radio<bool>(
                                 value: true,
-                                groupValue: _hasAllergies,
+                                groupValue: hasAllergies,
                                 onChanged: (value) {
                                   setState(() {
-                                    _hasAllergies = value;
+                                    hasAllergies = value;
                                   });
                                 },
                                 activeColor: Color(0xFF1C8892),
@@ -288,10 +288,10 @@ class _FormRequestState extends State<FormRequest> {
                               Text('Yes'),
                               Radio<bool>(
                                 value: false,
-                                groupValue: _hasAllergies,
+                                groupValue: hasAllergies,
                                 onChanged: (value) {
                                   setState(() {
-                                    _hasAllergies = value;
+                                    hasAllergies = value;
                                   });
                                 },
                                 activeColor: Color(0xFF1C8892),
@@ -314,10 +314,10 @@ class _FormRequestState extends State<FormRequest> {
                             children: [
                               Radio<bool>(
                                 value: true,
-                                groupValue: _isWalk,
+                                groupValue: isWalk,
                                 onChanged: (value) {
                                   setState(() {
-                                    _isWalk = value;
+                                    isWalk = value;
                                   });
                                 },
                                 activeColor: Color(0xFF1C8892),
@@ -325,10 +325,10 @@ class _FormRequestState extends State<FormRequest> {
                               Text('Yes'),
                               Radio<bool>(
                                 value: false,
-                                groupValue: _isWalk,
+                                groupValue: isWalk,
                                 onChanged: (value) {
                                   setState(() {
-                                    _isWalk = value;
+                                    isWalk = value;
                                   });
                                 },
                                 activeColor: Color(0xFF1C8892),
@@ -351,10 +351,10 @@ class _FormRequestState extends State<FormRequest> {
                             children: [
                               Radio<bool>(
                                 value: true,
-                                groupValue: _historyOfSurgeries,
+                                groupValue: historyOfSurgeries,
                                 onChanged: (value) {
                                   setState(() {
-                                    _historyOfSurgeries = value;
+                                    historyOfSurgeries = value;
                                   });
                                 },
                                 activeColor: Color(0xFF1C8892),
@@ -362,10 +362,10 @@ class _FormRequestState extends State<FormRequest> {
                               Text('Yes'),
                               Radio<bool>(
                                 value: false,
-                                groupValue: _historyOfSurgeries,
+                                groupValue: historyOfSurgeries,
                                 onChanged: (value) {
                                   setState(() {
-                                    _historyOfSurgeries = value;
+                                    historyOfSurgeries = value;
                                   });
                                 },
                                 activeColor: Color(0xFF1C8892),
@@ -391,7 +391,7 @@ class _FormRequestState extends State<FormRequest> {
                         ),
                       ),
                       Wrap(
-                        children: _selectedItem
+                        children: selectedItem
                             .map(
                               (e) => Chip(
                                 label: Text(e),
@@ -435,8 +435,8 @@ class _FormRequestState extends State<FormRequest> {
                               TextFormField(
                                 readOnly: true,
                                 controller: TextEditingController(
-                                  text: _selectedDate != null
-                                      ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
+                                  text: selectedDate != null
+                                      ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
                                       : '',
                                 ),
                                 decoration: InputDecoration(
@@ -469,8 +469,8 @@ class _FormRequestState extends State<FormRequest> {
                               TextFormField(
                                 readOnly: true,
                                 controller: TextEditingController(
-                                  text: _selectedTime != null
-                                      ? '${_selectedTime!.format(context)}'
+                                  text: selectedTime != null
+                                      ? '${selectedTime!.format(context)}'
                                       : '',
                                 ),
                                 decoration: InputDecoration(
@@ -589,6 +589,19 @@ class _FormRequestState extends State<FormRequest> {
                     subtotal: total,
                     deliveryFee: deliveryFee,
                     total: total,
+                    centerId: widget.centerId,
+                    patientFirstName: patientFirstName.text,
+                    patientLastName: patientLastName.text,
+                    patientPhoneNumber: patientPhoneNumber.text,
+                    age: patientAge.text,
+                    gender: selectedGender!,
+                    address: patientAddress.text,
+                    hasAllergies: hasAllergies!,
+                    isWalk: isWalk!,
+                    historyOfSurgeries: historyOfSurgeries!,
+                    needNurse: selectedItem,
+                    selectedDate: selectedDate!,
+                    selectedTime: selectedTime!,
                   ),
                 ),
               );
@@ -657,14 +670,14 @@ class _FormRequestState extends State<FormRequest> {
       builder: (BuildContext context) {
         return MutiSelect(
           items: item,
-          selectedItems: _selectedItem, // Pass selected items to MutiSelect
+          selectedItems: selectedItem, // Pass selected items to MutiSelect
         );
       },
     );
 
     if (results != null) {
       setState(() {
-        _selectedItem = results;
+        selectedItem = results;
       });
     }
   }
@@ -676,9 +689,9 @@ class _FormRequestState extends State<FormRequest> {
       firstDate: DateTime.now(),
       lastDate: DateTime(DateTime.now().year + 1),
     );
-    if (picked != null && picked != _selectedDate) {
+    if (picked != null && picked != selectedDate) {
       setState(() {
-        _selectedDate = picked;
+        selectedDate = picked;
       });
     }
   }
@@ -688,14 +701,14 @@ class _FormRequestState extends State<FormRequest> {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    if (picked != null && picked != _selectedTime) {
+    if (picked != null && picked != selectedTime) {
       setState(() {
-        _selectedTime = picked;
+        selectedTime = picked;
       });
     }
-    String formattedTime = _selectedTime!.format(context);
+    String formattedTime = selectedTime!.format(context);
     setState(() {
-      _selectedTime = TimeOfDay.fromDateTime(DateTime.parse(formattedTime));
+      selectedTime = TimeOfDay.fromDateTime(DateTime.parse(formattedTime));
     });
   }
 
@@ -719,64 +732,64 @@ class _FormRequestState extends State<FormRequest> {
     );
   }
 
-  void _saveFormDataToFirestore() async {
-    String? userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null || userId.isEmpty) {
-      print('User ID is missing');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          content: Text('You need to be logged in to submit a form.'),
-        ),
-      );
-      return;
-    }
+  // void _saveFormDataToFirestore() async {
+  //   String? userId = FirebaseAuth.instance.currentUser?.uid;
+  //   if (userId == null || userId.isEmpty) {
+  //     print('User ID is missing');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Color(0xFF1C8892),
+  //         content: Text('You need to be logged in to submit a form.'),
+  //       ),
+  //     );
+  //     return;
+  //   }
 
-    try {
-      // Initialize the form data map
-      Map<String, dynamic> formData = {
-        'user_id': userId,
-        'center_id': widget.centerId,
-        'firstName': patientFirstName.text,
-        'lastName': patientLastName.text,
-        'phoneNumber': patientPhoneNumber.text,
-        'age': int.tryParse(patientAge.text) ?? 0,
-        'gender': _selectedGender ?? "",
-        'address': patientAddress.text,
-        'hasAllergies': _hasAllergies ?? false,
-        'isWalk': _isWalk ?? false,
-        'historyOfSurgeries': _historyOfSurgeries ?? false,
-        'needNurse': _selectedItem,
-        'date':
-            _selectedDate != null ? Timestamp.fromDate(_selectedDate!) : null,
-        'time': _selectedTime != null ? _selectedTime!.format(context) : null,
-        'selectedPaymentOptionQuicklyCheckups':
-            selectedPaymentOptionQuicklyCheckups,
-      };
+  //   try {
+  //     // Initialize the form data map
+  //     Map<String, dynamic> formData = {
+  //       'user_id': userId,
+  //       'center_id': widget.centerId,
+  //       'firstName': patientFirstName.text,
+  //       'lastName': patientLastName.text,
+  //       'phoneNumber': patientPhoneNumber.text,
+  //       'age': int.tryParse(patientAge.text) ?? 0,
+  //       'gender': _selectedGender ?? "",
+  //       'address': patientAddress.text,
+  //       'hasAllergies': _hasAllergies ?? false,
+  //       'isWalk': _isWalk ?? false,
+  //       'historyOfSurgeries': _historyOfSurgeries ?? false,
+  //       'needNurse': _selectedItem,
+  //       'date':
+  //           _selectedDate != null ? Timestamp.fromDate(_selectedDate!) : null,
+  //       'time': _selectedTime != null ? _selectedTime!.format(context) : null,
+  //       'selectedPaymentOptionQuicklyCheckups':
+  //           selectedPaymentOptionQuicklyCheckups,
+  //     };
 
-      // Conditionally add the 'selectedPaymentPerDay' field
-      if (selectedPaymentOptionQuicklyCheckups == "quickly checkups") {
-        formData['selectedPaymentPerDay'] = "none";
-      } else {
-        formData['selectedPaymentPerDay'] = selectedPaymentOptionPerDay;
-      }
+  //     // Conditionally add the 'selectedPaymentPerDay' field
+  //     if (selectedPaymentOptionQuicklyCheckups == "quickly checkups") {
+  //       formData['selectedPaymentPerDay'] = "none";
+  //     } else {
+  //       formData['selectedPaymentPerDay'] = selectedPaymentOptionPerDay;
+  //     }
 
-      await FirebaseFirestore.instance.collection('form_request').add(formData);
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          content: Text('Form data saved successfully!'),
-        ),
-      );
-    } catch (e) {
-      print('Error saving form data: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          content: Text('Error saving form data. Please try again later.'),
-        ),
-      );
-    }
-  }
+  //     await FirebaseFirestore.instance.collection('form_request').add(formData);
+  //     Navigator.of(context).pop();
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Color(0xFF1C8892),
+  //         content: Text('Form data saved successfully!'),
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     print('Error saving form data: $e');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Color(0xFF1C8892),
+  //         content: Text('Error saving form data. Please try again later.'),
+  //       ),
+  //     );
+  //   }
+  // }
 }

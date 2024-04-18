@@ -88,6 +88,9 @@ class _PatientRequestState extends State<PatientRequest> {
                                     patientIsWalk: patient.isWalk,
                                     patientNeedNurse: patient.needNurse,
                                     centerId: patient.centerId,
+                                    total_amount: patient.total_amount,
+                                    payment_method: patient.payment_method,
+                                    status: patient.status,
                                   ),
                                 ),
                               );

@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PatientDetails extends StatefulWidget {
   final String patientFirstName;
   final String patientLastName;
-  final int patientAge;
+  final String patientAge;
   final String patientGender;
   final String patientPhoneNumber;
   final String patientAddress;
@@ -12,7 +13,10 @@ class PatientDetails extends StatefulWidget {
   final bool patientSurgeriesHistory;
   final bool patientIsWalk;
   final List patientNeedNurse;
-  final String centerId; // Add this field to receive the center ID
+  final String centerId;
+  final double total_amount;
+  final String payment_method;
+  final int status;
 
   const PatientDetails(
       {super.key,
@@ -26,13 +30,28 @@ class PatientDetails extends StatefulWidget {
       required this.patientSurgeriesHistory,
       required this.patientIsWalk,
       required this.patientNeedNurse,
-      required this.centerId});
+      required this.centerId,
+      required this.total_amount,
+      required this.payment_method,
+      required this.status,
+      required});
 
   @override
   State<PatientDetails> createState() => _PatientDetailsState();
 }
 
 class _PatientDetailsState extends State<PatientDetails> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  void updateStatus(int newStatus) {
+    _firestore
+        .collection('form_request')
+        .doc("o4XDYrGbSLAY7KhO85we") 
+        .update({'status': newStatus})
+        .then((_) => print("Status updated"))
+        .catchError((error) => print("Failed to update status: $error"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -288,7 +307,43 @@ class _PatientDetailsState extends State<PatientDetails> {
                               labelText: "Why do you need a nurse?",
                               labelStyle: TextStyle(color: Colors.black)),
                         ),
-                        // Text(widget.patientNeedNurse.toString())
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          enabled: false,
+                          initialValue: widget.total_amount.toString(),
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Color(0xFF1C8892), width: 2.0),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              labelText: "Total price",
+                              labelStyle: TextStyle(color: Colors.black)),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          enabled: false,
+                          initialValue: widget.payment_method,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Color(0xFF1C8892), width: 2.0),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              labelText: "Payment method",
+                              labelStyle: TextStyle(color: Colors.black)),
+                        ),
+                        Text(widget.status.toString())
                       ],
                     ),
                   ),
@@ -314,7 +369,9 @@ class _PatientDetailsState extends State<PatientDetails> {
                       Color(0xFF1C8892), // Button background color
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () =>
+                      updateStatus(2), // Update status to 2 on reject
+
                   child: Text("reject".toUpperCase(),
                       style: TextStyle(
                           color: Colors.white,
@@ -334,7 +391,9 @@ class _PatientDetailsState extends State<PatientDetails> {
                         Color(0xFF1C8892), // Button background color
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () =>
+                        updateStatus(1), // Update status to 2 on reject
+
                     child: Text("accept".toUpperCase(),
                         style: TextStyle(
                             color: Colors.white,
