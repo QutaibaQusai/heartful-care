@@ -61,6 +61,8 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
   String selectedPaymentMethod = '';
   String? _selectedCard;
   int status = 0;
+  DocumentReference newDocRef =
+      FirebaseFirestore.instance.collection('form_request').doc();
 
   @override
   Widget build(BuildContext context) {
@@ -521,8 +523,11 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
             ),
             onPressed: () {
               _saveFormDataToFirestore();
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => RequestResult()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => RequestResult(
+                        status: status,
+                        formRequestId: newDocRef.id.toString(),
+                      )));
 
               // if (selectedPaymentMethod == "card") {
               //   // Navigator.of(context)
@@ -589,8 +594,6 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
 
     try {
       // Generate a new document ID
-      DocumentReference newDocRef =
-          FirebaseFirestore.instance.collection('form_request').doc();
 
       // Initialize the form data map including the new document ID
       Map<String, dynamic> formData = {
