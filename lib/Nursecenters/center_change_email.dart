@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:test/utils/Authentication%20firebase/firebase_auth.dart';
 
-class SupplierChangeEmail extends StatefulWidget {
-  const SupplierChangeEmail({super.key});
+class CenterChangeEmail extends StatefulWidget {
+  const CenterChangeEmail({super.key});
 
   @override
-  State<SupplierChangeEmail> createState() => _supplierChangeEmailState();
+  State<CenterChangeEmail> createState() => _CenterChangeEmailState();
 }
 
-class _supplierChangeEmailState extends State<SupplierChangeEmail> {
+class _CenterChangeEmailState extends State<CenterChangeEmail> {
   bool showHidePassword = false;
-  TextEditingController passwordSupplierController = TextEditingController();
-  TextEditingController newSupplierEmail = TextEditingController();
-
+  TextEditingController passwordCenterController = TextEditingController();
+  TextEditingController newCenterEmail = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,7 +30,7 @@ class _supplierChangeEmailState extends State<SupplierChangeEmail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: newSupplierEmail,
+                  controller: newCenterEmail,
                   decoration: InputDecoration(
                     labelText: 'New email',
                     labelStyle: TextStyle(color: Colors.grey),
@@ -56,7 +55,7 @@ class _supplierChangeEmailState extends State<SupplierChangeEmail> {
                     Expanded(
                       child: TextField(
                         obscureText: !showHidePassword,
-                        controller: passwordSupplierController,
+                        controller: passwordCenterController,
                         decoration: InputDecoration(
                           labelText: 'Password',
                           labelStyle: TextStyle(color: Colors.grey),
@@ -87,8 +86,8 @@ class _supplierChangeEmailState extends State<SupplierChangeEmail> {
                     onPressed: () async {
                       await MyFirebaseAuth().changeEmail(
                           context: context,
-                          newEmail: newSupplierEmail.text,
-                          password: passwordSupplierController.text);
+                          newEmail: newCenterEmail.text,
+                          password: passwordCenterController.text);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

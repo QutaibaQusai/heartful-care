@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:test/Nursecenters/center_patient_request.dart';
+import 'package:test/Nursecenters/center_settings.dart';
 
 class CentersHome extends StatefulWidget {
   final String centerEmail;
@@ -92,6 +93,7 @@ class _CentersHome extends State<CentersHome> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           title: Text(
             'Home',
@@ -120,7 +122,7 @@ class _CentersHome extends State<CentersHome> {
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return PatientRequest();
+                    return CenterSettings();
                   }));
                 },
                 icon: Icon(FontAwesomeIcons.bell, color: Color(0xFF1C8892)))

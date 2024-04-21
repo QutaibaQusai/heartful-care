@@ -529,14 +529,7 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
                         formRequestId: newDocRef.id.toString(),
                       )));
 
-              // if (selectedPaymentMethod == "card") {
-              //   // Navigator.of(context)
-              //   //     .push(MaterialPageRoute(builder: (context) {
-              //   //   return AddCard(
-              //   //     userEmail: widget.userEmail,
-              //   //   );
-              //   // }));
-              // } else {}
+      
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
