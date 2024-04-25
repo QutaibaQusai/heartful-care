@@ -3,19 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:test/Nursecenters/center_patient_request.dart';
-import 'package:test/Nursecenters/center_settings.dart';
 
-class CentersHome extends StatefulWidget {
+class CenterInformation extends StatefulWidget {
   final String centerEmail;
 
-  const CentersHome({super.key, required this.centerEmail});
+  const CenterInformation({super.key, required this.centerEmail});
 
   @override
-  State<CentersHome> createState() => _CentersHome();
+  State<CenterInformation> createState() => _CenterInformationState();
 }
 
-class _CentersHome extends State<CentersHome> {
+class _CenterInformationState extends State<CenterInformation> {
   bool isEditing = false;
   bool receiveOffers = false;
   final _formKey = GlobalKey<FormState>();
@@ -35,7 +33,6 @@ class _CentersHome extends State<CentersHome> {
   TextEditingController centerPricePerDay = TextEditingController();
   TextEditingController centerPricePerMonth = TextEditingController();
   TextEditingController centerPriceCheckup = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -70,7 +67,6 @@ class _CentersHome extends State<CentersHome> {
           centerAddressTwo.text = userData["Center Address 2"] ?? "";
           centerOpiningHours.text = userData["Center operating Hours"] ?? "";
           centerOpiningDays.text = userData["Center operating Days"] ?? "";
-
           centerContactName.text = userData["Contact Center name"] ?? "";
           centerContractPosition.text =
               userData["Contact Center position"] ?? "";
@@ -93,12 +89,6 @@ class _CentersHome extends State<CentersHome> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          title: Text(
-            'Home',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-          ),
           actions: [
             GestureDetector(
               onTap: () {
@@ -118,16 +108,27 @@ class _CentersHome extends State<CentersHome> {
                 ),
               ),
             ),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return CenterSettings();
-                  }));
-                },
-                icon: Icon(FontAwesomeIcons.bell, color: Color(0xFF1C8892)))
+            // IconButton(
+            //     onPressed: () {
+            //       Navigator.of(context)
+            //           .push(MaterialPageRoute(builder: (context) {
+            //         return CenterSettings(
+            //           supplierEmail: '',
+            //         );
+            //       }));
+            //     },
+            //     icon: Icon(FontAwesomeIcons.bell, color: Color(0xFF1C8892)))
           ],
         ),
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   centerTitle: true,
+        //   title: Text(
+        //     'Home',
+        //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+        //   ),
+
+        // ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),

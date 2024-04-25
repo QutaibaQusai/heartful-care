@@ -18,6 +18,7 @@ class PatientDetails extends StatefulWidget {
   final String payment_method;
   final int status;
   final String formRequestId;
+  final bool isTheListRequest;
 
   const PatientDetails(
       {super.key,
@@ -36,7 +37,8 @@ class PatientDetails extends StatefulWidget {
       required this.payment_method,
       required this.status,
       required,
-      required this.formRequestId});
+      required this.formRequestId,
+      required this.isTheListRequest});
 
   @override
   State<PatientDetails> createState() => _PatientDetailsState();
@@ -359,58 +361,63 @@ class _PatientDetailsState extends State<PatientDetails> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 2.5,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(color: Colors.transparent))),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      Color(0xFF1C8892), // Button background color
-                    ),
-                  ),
-                  onPressed: () {
-                    updateStatus(2);
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("reject".toUpperCase(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold)),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 2.5,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(color: Colors.transparent))),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        Color(0xFF1C8892), // Button background color
+        bottomNavigationBar: widget.isTheListRequest == true
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  side: BorderSide(color: Colors.transparent))),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Color(0xFF1C8892), // Button background color
+                          ),
+                        ),
+                        onPressed: () {
+                          updateStatus(2);
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("reject".toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold)),
                       ),
                     ),
-                    onPressed: () {
-                      acceptRequest();
-                    },
-                    child: Text("accept".toUpperCase(),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold))),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    side:
+                                        BorderSide(color: Colors.transparent))),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFF1C8892), // Button background color
+                            ),
+                          ),
+                          onPressed: () {
+                            acceptRequest();
+                          },
+                          child: Text("accept".toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold))),
+                    )
+                  ],
+                ),
               )
-            ],
-          ),
-        ),
+            : Row(),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:test/Nursecenters/patientRequestDetails.dart';
 import 'package:test/model/patientRequestModel.dart';
 
 Future<String> getCurrentCenterId() async {
@@ -72,29 +71,29 @@ class _PatientRequestState extends State<PatientRequest> {
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PatientDetails(
-                                    patientFirstName: patient.firstName,
-                                    patientLastName: patient.lastName,
-                                    patientAge: patient.age,
-                                    patientGender: patient.gender,
-                                    patientPhoneNumber: patient.phoneNumber,
-                                    patientAddress: patient.address,
-                                    patientAllergies: patient.allergies,
-                                    patientSurgeriesHistory:
-                                        patient.surgeriesHistory,
-                                    patientIsWalk: patient.isWalk,
-                                    patientNeedNurse: patient.needNurse,
-                                    centerId: patient.centerId,
-                                    total_amount: patient.total_amount,
-                                    payment_method: patient.payment_method,
-                                    status: patient.status,
-                                    formRequestId: patient.formRequestId,
-                                  ),
-                                ),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => PatientDetails(
+                              //       patientFirstName: patient.firstName,
+                              //       patientLastName: patient.lastName,
+                              //       patientAge: patient.age,
+                              //       patientGender: patient.gender,
+                              //       patientPhoneNumber: patient.phoneNumber,
+                              //       patientAddress: patient.address,
+                              //       patientAllergies: patient.allergies,
+                              //       patientSurgeriesHistory:
+                              //           patient.surgeriesHistory,
+                              //       patientIsWalk: patient.isWalk,
+                              //       patientNeedNurse: patient.needNurse,
+                              //       centerId: patient.centerId,
+                              //       total_amount: patient.total_amount,
+                              //       payment_method: patient.payment_method,
+                              //       status: patient.status,
+                              //       formRequestId: patient.formRequestId,
+                              //     ),
+                              //   ),
+                              // );
                             },
                             child: Container(
                               decoration: BoxDecoration(
