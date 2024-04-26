@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/Nursecenters/center_add_nurse.dart';
 import 'package:test/Nursecenters/center_change_email.dart';
 import 'package:test/Nursecenters/center_chnage_password.dart';
 import 'package:test/Nursecenters/center_information.dart';
+import 'package:test/Nursecenters/center_my_nurses.dart';
 import 'package:test/Nursecenters/center_requests_history.dart';
-import 'package:test/Nursecenters/nurse_centers_login.dart';
+import 'package:test/Nursecenters/center_login.dart';
 
 class CenterSettings extends StatefulWidget {
   final String centerEmail;
   final String centerName;
+  final String centerId;
   const CenterSettings(
-      {super.key, required this.centerEmail, required this.centerName});
+      {super.key,
+      required this.centerEmail,
+      required this.centerName,
+      required this.centerId});
 
   @override
   State<CenterSettings> createState() => _CenterSettingsState();
@@ -145,10 +151,10 @@ class _CenterSettingsState extends State<CenterSettings> {
                     ),
                   ),
                   onTap: () {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => Add_device(
-                    //           supplierEmail: widget.supplierEmail,
-                    //         )));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CenterAddNurse(
+                              centerId: widget.centerId,
+                            )));
                   },
                 ),
                 GestureDetector(
@@ -185,10 +191,13 @@ class _CenterSettingsState extends State<CenterSettings> {
                     ),
                   ),
                   onTap: () {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => MyDevices(
-                    //           supplierEmail: widget.supplierEmail,
-                    //         )));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CenterMyNurses(
+                          centerId: widget.centerId,
+                        ),
+                      ),
+                    );
                   },
                 ),
                 Padding(

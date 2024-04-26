@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
-import 'package:test/Nursecenters/nurse_centers_login.dart';
+import 'package:test/Nursecenters/center_login.dart';
 import 'package:test/home.dart';
 import 'package:test/User%20login-Sginup/sendPasswordResetEmail.dart';
 import 'package:test/User%20login-Sginup/signup_screen.dart';

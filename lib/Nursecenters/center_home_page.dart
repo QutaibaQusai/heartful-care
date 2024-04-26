@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:test/Nursecenters/center_settings.dart';
-import 'package:test/Nursecenters/patientRequestDetails.dart';
+import 'package:test/Nursecenters/center_patient_request_details.dart';
 import 'package:test/model/patientRequestModel.dart';
 
 Future<String> getCurrentCenterId() async {
@@ -33,6 +33,19 @@ class _CenterHomePageState extends State<CenterHomePage> {
     super.initState();
     centerIdFuture = getCurrentCenterId();
     fetchCenterData();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        if (FirebaseAuth.instance.currentUser != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Color(0xFF1C8892),
+              content:
+                  Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
+            ),
+          );
+        }
+      },
+    );
   }
 
   void fetchCenterData() async {
@@ -74,6 +87,7 @@ class _CenterHomePageState extends State<CenterHomePage> {
                     builder: (context) => CenterSettings(
                       centerEmail: widget.centerEmail,
                       centerName: centerName,
+                      centerId: FirebaseAuth.instance.currentUser!.uid,
                     ),
                   ),
                 );
@@ -240,7 +254,8 @@ class _CenterHomePageState extends State<CenterHomePage> {
                                                             .payment_method,
                                                         status: patient.status,
                                                         formRequestId: patient
-                                                            .formRequestId, isTheListRequest: true,
+                                                            .formRequestId,
+                                                        isTheListRequest: true,
                                                       ),
                                                     ),
                                                   );
