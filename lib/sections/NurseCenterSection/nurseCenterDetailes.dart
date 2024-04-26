@@ -20,6 +20,9 @@ class DetailedNurseCenter extends StatefulWidget {
   final String centerLocation;
   final String pricePreDay;
   final String pricePreMonth;
+  final String pricePertwoMonths;
+  final String pricePerthreeMonths;
+
   final String userEmail;
   final String centerId;
   final Function(double) onOverallRatingChanged; // Callback function
@@ -42,6 +45,8 @@ class DetailedNurseCenter extends StatefulWidget {
     required this.pricePreDay,
     required this.pricePreMonth,
     required this.priceCheckups,
+    required this.pricePertwoMonths,
+    required this.pricePerthreeMonths,
   });
 
   @override
@@ -207,7 +212,14 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => Subscribe()),
+                                            builder: (context) => Subscribe(
+                                                  pricePreMonth:
+                                                      widget.pricePreMonth,
+                                                  pricePertwoMonths:
+                                                      widget.pricePertwoMonths,
+                                                  pricePerthreeMonths: widget
+                                                      .pricePerthreeMonths,
+                                                )),
                                       );
                                     },
                                     icon: Icon(Icons.new_releases_outlined,
@@ -400,13 +412,14 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                      side: BorderSide(color: Colors.transparent))),
-              backgroundColor: MaterialStateProperty.all<Color>(
-                Color(0xFF1C8892), // Button background color
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: const Color(0xFF1C8892),
+              padding: const EdgeInsets.symmetric(
+                vertical: 5,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(60),
               ),
             ),
             onPressed: () {

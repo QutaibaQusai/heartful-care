@@ -155,22 +155,23 @@ class _AddCardState extends State<AddCard> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                    side: BorderSide(color: Colors.transparent))),
-            backgroundColor: MaterialStateProperty.all<Color>(
-              Color(0xFF1C8892), // Button background color
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color(0xFF1C8892),
+            padding: const EdgeInsets.symmetric(
+              vertical: 5,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(60),
             ),
           ),
           onPressed: () {
             submitCardDetails();
           },
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -90,29 +90,32 @@ class _NurseCentersState extends State<NurseCenters> {
                                     pageBuilder: (context, animation,
                                         secondaryAnimation) {
                                       return DetailedNurseCenter(
-                                          centerName: center.name,
-                                          operatingHours: center.operatingHours,
-                                          operatingDays: center.operatingDays,
-                                          centerDescription: center.description,
-                                          centerUrlImageLogo:
-                                              center.urlLogoImage,
-                                          centerPhoneNumber: center.phoneNumber,
-                                          centerAddress1: center.addressOne,
-                                          centerEmail: center.emailAddress,
-                                          centerWebsite: center.website,
-                                          centerLocation: center.centerLocation,
-                                          pricePreDay: center.pricePreDay,
-                                          pricePreMonth: center.pricePreMonth,
-                                          userEmail: widget.userEmail,
-                                          centerId:
-                                              snapshot.data!.docs[index].id,
-                                          onOverallRatingChanged:
-                                              (double newRating) {
-                                            setState(() {
-                                              newRating = overallRating;
-                                            });
-                                          },
-                                          priceCheckups: center.checkup);
+                                        centerName: center.name,
+                                        operatingHours: center.operatingHours,
+                                        operatingDays: center.operatingDays,
+                                        centerDescription: center.description,
+                                        centerUrlImageLogo: center.urlLogoImage,
+                                        centerPhoneNumber: center.phoneNumber,
+                                        centerAddress1: center.addressOne,
+                                        centerEmail: center.emailAddress,
+                                        centerWebsite: center.website,
+                                        centerLocation: center.centerLocation,
+                                        pricePreDay: center.pricePreDay,
+                                        pricePreMonth: center.pricePreMonth,
+                                        userEmail: widget.userEmail,
+                                        centerId: snapshot.data!.docs[index].id,
+                                        onOverallRatingChanged:
+                                            (double newRating) {
+                                          setState(() {
+                                            newRating = overallRating;
+                                          });
+                                        },
+                                        priceCheckups: center.checkup,
+                                        pricePertwoMonths:
+                                            center.pricePertwoMonths,
+                                        pricePerthreeMonths:
+                                            center.pricePerthreeMonths,
+                                      );
                                     },
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {

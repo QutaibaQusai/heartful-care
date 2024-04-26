@@ -18,7 +18,6 @@ class _CenterInformationState extends State<CenterInformation> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController centerNameController = TextEditingController();
   TextEditingController centerContactNumber = TextEditingController();
-  // TextEditingController centerEmailAddress = TextEditingController();
   TextEditingController centerAddressOne = TextEditingController();
   TextEditingController centerAddressTwo = TextEditingController();
   TextEditingController centerOpiningHours = TextEditingController();
@@ -31,24 +30,24 @@ class _CenterInformationState extends State<CenterInformation> {
   TextEditingController centerLocation = TextEditingController();
   TextEditingController centerPricePerDay = TextEditingController();
   TextEditingController centerPricePerMonth = TextEditingController();
+  TextEditingController centerPricePerMonth2 = TextEditingController();
+  TextEditingController centerPricePerMonth3 = TextEditingController();
   TextEditingController centerPriceCheckup = TextEditingController();
   @override
   void initState() {
     super.initState();
     fetchUserData();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (FirebaseAuth.instance.currentUser != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Color(0xFF1C8892),
-              content:
-                  Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
-            ),
-          );
-        }
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (FirebaseAuth.instance.currentUser != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            content:
+                Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
+          ),
+        );
+      }
+    });
   }
 
   void fetchUserData() async {
@@ -76,7 +75,10 @@ class _CenterInformationState extends State<CenterInformation> {
           urlLogoImage.text = userData["URL Logo Image"] ?? "";
           centerLocation.text = userData["Center Location"] ?? "";
           centerPricePerDay.text = userData["Price Per Day"] ?? "";
-          centerPricePerMonth.text = userData["Price Per Month"] ?? "";
+          centerPricePerMonth.text = userData["Price Per one Month"] ?? "";
+          centerPricePerMonth2.text = userData["Price Per two Months"] ?? "";
+          centerPricePerMonth3.text = userData["Price Per three Months"] ?? "";
+
           centerPriceCheckup.text = userData["Price_checkup"];
         });
       }
@@ -109,27 +111,8 @@ class _CenterInformationState extends State<CenterInformation> {
                 ),
               ),
             ),
-            // IconButton(
-            //     onPressed: () {
-            //       Navigator.of(context)
-            //           .push(MaterialPageRoute(builder: (context) {
-            //         return CenterSettings(
-            //           supplierEmail: '',
-            //         );
-            //       }));
-            //     },
-            //     icon: Icon(FontAwesomeIcons.bell, color: Color(0xFF1C8892)))
           ],
         ),
-        // appBar: AppBar(
-        //   automaticallyImplyLeading: false,
-        //   centerTitle: true,
-        //   title: Text(
-        //     'Home',
-        //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-        //   ),
-
-        // ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -391,8 +374,6 @@ class _CenterInformationState extends State<CenterInformation> {
                   SizedBox(
                     height: 25,
                   ),
-                  // centerPriceCheckup
-
                   Text(
                     "Prices Details",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -436,7 +417,39 @@ class _CenterInformationState extends State<CenterInformation> {
                     controller: centerPricePerMonth,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Price Per Month',
+                      hintText: 'Price Per one Month',
+                    ),
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Website is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    enabled: isEditing,
+                    controller: centerPricePerMonth2,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Price Per two Months',
+                    ),
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Website is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    enabled: isEditing,
+                    controller: centerPricePerMonth3,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Price Per three Months',
                     ),
                     // validator: (value) {
                     //   if (value == null || value.isEmpty) {
@@ -480,27 +493,6 @@ class _CenterInformationState extends State<CenterInformation> {
                           ? null
                           : () {
                               if (_formKey.currentState!.validate()) {
-                                // Confirm deletion
-                                // CollectionReference centers = FirebaseFirestore
-                                //     .instance
-                                //     .collection('centers');
-                                // centers.add({
-                                //   'Center Name': centerNameController.text,
-                                //   'Center phone number':
-                                //       centerNameController.text,
-                                //   'Center Email Address':
-                                //       centerEmailAddress.text,
-                                //   'Center Address 1': centerAddressOne.text,
-                                //   'Center Address 2': centerAddressTwo.text,
-                                //   'Center operating Hours':
-                                //       centerOpiningHours.text,
-                                //   'Contact Center name': centerContactName.text,
-                                //   'Contact Center position':
-                                //       centerContractPosition.text,
-                                //   'Contact Description': centerDescription.text,
-                                //   'Contact website': centerWebsite.text,
-                                //   'URL Logo Image': urlLogoImage.text,
-                                // });
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -605,7 +597,9 @@ class _CenterInformationState extends State<CenterInformation> {
           'Center Location': centerLocation.text,
           'Center operating Days': centerOpiningDays.text,
           'Price Per Day': centerPricePerDay.text,
-          'Price Per Month': centerPricePerMonth.text,
+          'Price Per one Month': centerPricePerMonth.text,
+          'Price Per two Months': centerPricePerMonth2.text,
+          'Price Per three Months': centerPricePerMonth3.text,
           'Price_checkup': centerPriceCheckup.text
         }, SetOptions(merge: true));
 

@@ -49,13 +49,13 @@ class _HomeState extends State<Home> {
   List<Sections> mySectionList = [
     Sections(
         sectionImage: "images/nurse-card-home.png",
-        sectionName: "Nurse centers",
+        sectionName: "Nurse Centers",
         sectionDis:
             "Access professional nursing \ncare right at your doorstep."),
     Sections(
         sectionImage:
             "images/WhatsApp_Image_2023-11-03_at_19.30.49_c6ac0fb0-removebg-preview-removebg-preview.png",
-        sectionName: "Medical devices",
+        sectionName: "Medical Devices",
         sectionDis:
             "Explore our comprehensive range\n of medical devices available \nfor purchase or rent."),
   ];

@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:test/sections/NurseCenterSection/subcriptionConfirmation.dart';
 
 class Subscribe extends StatefulWidget {
-  const Subscribe({Key? key}) : super(key: key);
+  final String pricePreMonth;
+  final String pricePertwoMonths;
+  final String pricePerthreeMonths;
+  const Subscribe(
+      {Key? key,
+      required this.pricePreMonth,
+      required this.pricePertwoMonths,
+      required this.pricePerthreeMonths})
+      : super(key: key);
 
   @override
   State<Subscribe> createState() => _SubscribeState();
@@ -12,20 +21,16 @@ class _SubscribeState extends State<Subscribe> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Subscription Plans'),
+        centerTitle: true,
+        title: Text(
+          'Subscription Plans',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Choose your Subscription Plan',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white, // White text color
-              ),
-            ),
             SizedBox(height: 20),
             Expanded(
               child: ListView(
@@ -33,20 +38,27 @@ class _SubscribeState extends State<Subscribe> {
                 children: [
                   SubscriptionPlanCard(
                     name: '1 Month',
-                    price: '100 JD',
-                    description: 'Access to basic features',
+                    price: widget.pricePreMonth + 'JD',
+                    description: 'Get access to premium features for 1 months.',
+                    onPressed: () {},
                   ),
                   SizedBox(height: 20),
                   SubscriptionPlanCard(
                     name: '2 Months',
-                    price: '200 JD',
-                    description: 'Access to pro features',
+                    price: widget.pricePertwoMonths + 'JD',
+                    description: 'Get access to premium features for 2 months.',
+                    onPressed: () {
+                      // Add logic for 3 months subscription
+                    },
                   ),
                   SizedBox(height: 20),
                   SubscriptionPlanCard(
                     name: '3 Months',
-                    price: '250 JD',
-                    description: 'Access to premium features',
+                    price: widget.pricePerthreeMonths + 'JD',
+                    description: 'Get access to premium features for 3 months.',
+                    onPressed: () {
+                      // Add logic for 3 months subscription
+                    },
                   ),
                 ],
               ),
@@ -62,11 +74,13 @@ class SubscriptionPlanCard extends StatelessWidget {
   final String name;
   final String price;
   final String description;
+  final VoidCallback onPressed;
 
   const SubscriptionPlanCard({
     required this.name,
     required this.price,
     required this.description,
+    required this.onPressed,
   });
 
   @override
@@ -85,6 +99,7 @@ class SubscriptionPlanCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
                 color: Colors.white, // White text color
               ),
             ),
@@ -94,6 +109,8 @@ class SubscriptionPlanCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+
                 color: Colors.white, // White text color
               ),
             ),
@@ -108,12 +125,17 @@ class SubscriptionPlanCard extends StatelessWidget {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                // Implement subscription logic here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SubscriptionConfirmationPage(),
+                  ),
+                );
               },
               child: Text(
-                'Subscribe',
+                'Subscribe Now ',
                 style: TextStyle(
-                  color: Colors.white, // White text color
+                  color: Color(0xFF1C8892), // White text color
                 ),
               ),
             ),
