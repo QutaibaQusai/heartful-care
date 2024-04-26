@@ -136,11 +136,13 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
         appBar: AppBar(
           title: Row(
             children: [
+              Spacer(),
               Text(
                 'Account info',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               ),
-              Spacer(), // Add some space between the title and "Edit"
+              Spacer(),
+              // Add some space between the title and "Edit"
               GestureDetector(
                 onTap: () {
                   setState(() {
