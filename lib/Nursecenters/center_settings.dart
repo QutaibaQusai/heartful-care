@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Nursecenters/center_add_nurse.dart';
+import 'package:test/Nursecenters/center_add&update_nurse_info.dart';
 import 'package:test/Nursecenters/center_change_email.dart';
 import 'package:test/Nursecenters/center_chnage_password.dart';
 import 'package:test/Nursecenters/center_information.dart';
@@ -152,10 +152,10 @@ class _CenterSettingsState extends State<CenterSettings> {
                   ),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CenterAddNurse(
+                        builder: (context) => CenterAddAndUpdateNurseInfo(
                               centerId: widget.centerId,
                               isPageAddNurse: true,
-                              nurse_firstName: '', nurse_lastName: '',
+                              nurse_firstName: '', nurse_lastName: '', nurseId: '',
                             )));
                   },
                 ),

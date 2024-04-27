@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Nursecenters/center_add_nurse.dart';
+import 'package:test/Nursecenters/center_add&update_nurse_info.dart';
 import 'package:test/model/nursers.dart';
 
 class CenterMyNurses extends StatelessWidget {
@@ -61,10 +61,11 @@ class CenterMyNurses extends StatelessWidget {
                     onTap: () {
                       // CenterAddNurse
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CenterAddNurse(
+                          builder: (context) => CenterAddAndUpdateNurseInfo(
                                 centerId: '',
                                 isPageAddNurse: false,
-                                nurse_firstName: nurse.nurse_firstName, nurse_lastName: nurse.nurse_lastName,
+                                nurse_firstName: nurse.nurse_firstName,
+                                nurse_lastName: nurse.nurse_lastName, nurseId: nurse.nurseId,
                               )));
                     },
                     child: Container(

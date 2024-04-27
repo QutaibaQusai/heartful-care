@@ -5,25 +5,27 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CenterAddNurse extends StatefulWidget {
+class CenterAddAndUpdateNurseInfo extends StatefulWidget {
   final String centerId;
   final bool isPageAddNurse;
   final String nurse_firstName;
   final String nurse_lastName;
+  final String nurseId;
 
-  const CenterAddNurse({
+  const CenterAddAndUpdateNurseInfo({
     super.key,
     required this.centerId,
     required this.isPageAddNurse,
     required this.nurse_firstName,
     required this.nurse_lastName,
+    required this.nurseId,
   });
 
   @override
-  State<CenterAddNurse> createState() => _CenterAddNurseState();
+  State<CenterAddAndUpdateNurseInfo> createState() => _CenterAddNurseState();
 }
 
-class _CenterAddNurseState extends State<CenterAddNurse> {
+class _CenterAddNurseState extends State<CenterAddAndUpdateNurseInfo> {
   // gender drop down menu
   String? selectedGender;
   String? nurseSpecialization;
@@ -34,6 +36,15 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
   TextEditingController nurse_phoneNumber = TextEditingController();
   TextEditingController nurse_yearsExperience = TextEditingController();
   TextEditingController nurse_yearsQualifications = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.isPageAddNurse == false) {
+      nurse_firstName.text = widget.nurse_firstName;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,53 +154,28 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                             height: 25,
                           ),
                           SizedBox(
-                            height: 50,
-                            child: widget.isPageAddNurse
-                                ? TextFormField(
-                                    // initialValue: widget.nurse_firstName,
-                                    controller: nurse_firstName,
-                                    keyboardType: TextInputType.name,
-                                    cursorColor: Color(0xFF1C8892),
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Color(0xFF1C8892),
-                                            width: 2.0),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      labelText: "Nurse first name",
-                                      labelStyle:
-                                          TextStyle(color: Color(0xFF1C8892)),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
-                                    ),
-                                  )
-                                : TextFormField(
-                                    initialValue: widget.nurse_firstName,
-                                    // controller: nurse_firstName,
-                                    keyboardType: TextInputType.name,
-                                    cursorColor: Color(0xFF1C8892),
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Color(0xFF1C8892),
-                                            width: 2.0),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      labelText: "Nurse first name",
-                                      labelStyle:
-                                          TextStyle(color: Color(0xFF1C8892)),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
-                                    ),
+                              height: 50,
+                              child: TextFormField(
+                                // initialValue: widget.nurse_firstName,
+                                controller: nurse_firstName,
+                                keyboardType: TextInputType.name,
+                                cursorColor: Color(0xFF1C8892),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                          ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF1C8892), width: 2.0),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  labelText: "Nurse first name",
+                                  labelStyle:
+                                      TextStyle(color: Color(0xFF1C8892)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                              )),
                           SizedBox(
                             height: 20,
                           ),
@@ -461,7 +447,11 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
           padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
           child: ElevatedButton(
             onPressed: () {
-              submitNurseData();
+              if (widget.isPageAddNurse == true) {
+                submitNurseData();
+              } else {
+                updateNurseData();
+              }
               Navigator.of(context).pop;
             },
             child: Padding(
@@ -494,8 +484,12 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
   Future<void> submitNurseData() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
-      // Create a document in the 'Nurses' collection
-      await db.collection('Nurses').add({
+      // Generate a unique ID for the nurse document
+      var nurseId = db.collection('Nurses').doc().id;
+
+      // Create a document in the 'Nurses' collection with the generated ID
+      await db.collection('Nurses').doc(nurseId).set({
+        'nurseId': nurseId,
         'first_name': nurse_firstName.text.trim(),
         'last_name': nurse_lastName.text.trim(),
         'age': nurse_age.text.trim(),
@@ -506,8 +500,8 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
         'centerId': widget.centerId,
         'nurseSpecialization': nurseSpecialization,
       });
-      // Show a success message or perform actions after the data is successfully saved
 
+      // Show a success message or perform actions after the data is successfully saved
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color(0xFF1C8892),
@@ -521,11 +515,8 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
           ),
         ),
       );
-      // Optionally, clear the form or navigate away
-      clearForm();
     } catch (e) {
       // Handle errors, for instance, show an error message
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
@@ -542,30 +533,20 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
     }
   }
 
-  void clearForm() {
-    nurse_firstName.clear();
-    nurse_lastName.clear();
-    nurse_age.clear();
-    nurse_phoneNumber.clear();
-    nurse_yearsExperience.clear();
-    nurse_yearsQualifications.clear();
-    selectedGender = null;
-  }
-
   Future<void> updateNurseData() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       // Create a document in the 'Nurses' collection
-      await db.collection('Nurses').add({
-        'first_name': nurse_firstName.text.trim(),
-        'last_name': nurse_lastName.text.trim(),
-        'age': nurse_age.text.trim(),
-        'phone_number': nurse_phoneNumber.text.trim(),
-        'years_experience': nurse_yearsExperience.text.trim(),
-        'qualifications': nurse_yearsQualifications.text.trim(),
-        'gender': selectedGender,
-        'centerId': widget.centerId,
-        'nurseSpecialization': nurseSpecialization,
+      await db.collection('Nurses').doc(widget.nurseId).update({
+        'first_name': widget.nurse_firstName,
+        'last_name': widget.nurse_lastName.trim(),
+        // 'age': nurse_age.text.trim(),
+        // 'phone_number': nurse_phoneNumber.text.trim(),
+        // 'years_experience': nurse_yearsExperience.text.trim(),
+        // 'qualifications': nurse_yearsQualifications.text.trim(),
+        // 'gender': selectedGender,
+        // 'centerId': widget.centerId,
+        // 'nurseSpecialization': nurseSpecialization,
       });
       // Show a success message or perform actions after the data is successfully saved
 
@@ -574,7 +555,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
           backgroundColor: Color(0xFF1C8892),
           behavior: SnackBarBehavior.floating,
           content: Text(
-            "Nurse profile created successfully!",
+            "Nurse profile updated successfully!",
             style: TextStyle(
               fontSize: 17,
               fontFamily: GoogleFonts.poppins().fontFamily,
@@ -582,8 +563,6 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
           ),
         ),
       );
-      // Optionally, clear the form or navigate away
-      clearForm();
     } catch (e) {
       // Handle errors, for instance, show an error message
 
