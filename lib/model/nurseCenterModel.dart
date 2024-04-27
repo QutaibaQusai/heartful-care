@@ -15,11 +15,11 @@ class NurseCenter {
   final String website;
   final String centerLocation;
   final String pricePreMonth;
-  final String pricePertwoMonths;
   final String pricePerthreeMonths;
+  final String pricePersixMonths;
 
   NurseCenter({
-    required this.pricePertwoMonths,
+    required this.pricePersixMonths,
     required this.pricePerthreeMonths,
     required this.pricePreMonth,
     required this.pricePreDay,
@@ -56,7 +56,7 @@ class NurseCenter {
         centerLocation: map['Center location'] ?? '',
         pricePreDay: map['Price Per Day'] ?? '',
         pricePreMonth: map['Price Per one Month'] ?? '',
-        pricePertwoMonths: map['Price Per two Months'] ?? '',
+        pricePersixMonths: map['Price Per six Months'] ?? '',
         pricePerthreeMonths: map['Price Per three Months'] ?? '',
         checkup: map['Price_checkup'] ?? '');
   }

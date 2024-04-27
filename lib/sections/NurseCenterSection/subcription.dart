@@ -3,12 +3,12 @@ import 'package:test/sections/NurseCenterSection/subcriptionConfirmation.dart';
 
 class Subscribe extends StatefulWidget {
   final String pricePreMonth;
-  final String pricePertwoMonths;
+  final String pricePersixMonths;
   final String pricePerthreeMonths;
   const Subscribe(
       {Key? key,
       required this.pricePreMonth,
-      required this.pricePertwoMonths,
+      required this.pricePersixMonths,
       required this.pricePerthreeMonths})
       : super(key: key);
 
@@ -39,23 +39,24 @@ class _SubscribeState extends State<Subscribe> {
                   SubscriptionPlanCard(
                     name: '1 Month',
                     price: widget.pricePreMonth + 'JD',
-                    description: 'Get access to premium features for 1 months.',
+                    description:
+                        'Subscribe now for our 1-month plan and start saving instantly',
                     onPressed: () {},
                   ),
                   SizedBox(height: 20),
                   SubscriptionPlanCard(
-                    name: '2 Months',
-                    price: widget.pricePertwoMonths + 'JD',
-                    description: 'Get access to premium features for 2 months.',
+                    name: '3 Months',
+                    price: widget.pricePerthreeMonths + 'JD',
+                    description: 'Save big with our 3-month subscription plan!',
                     onPressed: () {
                       // Add logic for 3 months subscription
                     },
                   ),
                   SizedBox(height: 20),
                   SubscriptionPlanCard(
-                    name: '3 Months',
-                    price: widget.pricePerthreeMonths + 'JD',
-                    description: 'Get access to premium features for 3 months.',
+                    name: '6 Months',
+                    price: widget.pricePersixMonths + 'JD',
+                    description: 'Subscribe for 6 months and save more!',
                     onPressed: () {
                       // Add logic for 3 months subscription
                     },
@@ -99,7 +100,6 @@ class SubscriptionPlanCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
                 color: Colors.white, // White text color
               ),
             ),
@@ -109,7 +109,6 @@ class SubscriptionPlanCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
 
                 color: Colors.white, // White text color
               ),

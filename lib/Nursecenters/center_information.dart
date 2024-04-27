@@ -30,7 +30,7 @@ class _CenterInformationState extends State<CenterInformation> {
   TextEditingController centerLocation = TextEditingController();
   TextEditingController centerPricePerDay = TextEditingController();
   TextEditingController centerPricePerMonth = TextEditingController();
-  TextEditingController centerPricePerMonth2 = TextEditingController();
+  TextEditingController centerPricePerMonth6 = TextEditingController();
   TextEditingController centerPricePerMonth3 = TextEditingController();
   TextEditingController centerPriceCheckup = TextEditingController();
   @override
@@ -76,7 +76,7 @@ class _CenterInformationState extends State<CenterInformation> {
           centerLocation.text = userData["Center Location"] ?? "";
           centerPricePerDay.text = userData["Price Per Day"] ?? "";
           centerPricePerMonth.text = userData["Price Per one Month"] ?? "";
-          centerPricePerMonth2.text = userData["Price Per two Months"] ?? "";
+          centerPricePerMonth6.text = userData["Price Per six Months"] ?? "";
           centerPricePerMonth3.text = userData["Price Per three Months"] ?? "";
 
           centerPriceCheckup.text = userData["Price_checkup"];
@@ -430,22 +430,6 @@ class _CenterInformationState extends State<CenterInformation> {
                   SizedBox(height: 10),
                   TextFormField(
                     enabled: isEditing,
-                    controller: centerPricePerMonth2,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Price Per two Months',
-                    ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Website is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    enabled: isEditing,
                     controller: centerPricePerMonth3,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -459,9 +443,23 @@ class _CenterInformationState extends State<CenterInformation> {
                     //   return null; // Validation passed
                     // },
                   ),
-                  SizedBox(
-                    height: 25,
+                  SizedBox(height: 10),
+                  TextFormField(
+                    enabled: isEditing,
+                    controller: centerPricePerMonth6,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Price Per six Months',
+                    ),
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Website is required';
+                    //   }
+                    //
+                    //   return null; // Validation passed
+                    // },
                   ),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Checkbox(
@@ -598,7 +596,7 @@ class _CenterInformationState extends State<CenterInformation> {
           'Center operating Days': centerOpiningDays.text,
           'Price Per Day': centerPricePerDay.text,
           'Price Per one Month': centerPricePerMonth.text,
-          'Price Per two Months': centerPricePerMonth2.text,
+          'Price Per six Months': centerPricePerMonth6.text,
           'Price Per three Months': centerPricePerMonth3.text,
           'Price_checkup': centerPriceCheckup.text
         }, SetOptions(merge: true));

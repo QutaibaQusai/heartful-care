@@ -20,7 +20,7 @@ class DetailedNurseCenter extends StatefulWidget {
   final String centerLocation;
   final String pricePreDay;
   final String pricePreMonth;
-  final String pricePertwoMonths;
+  final String pricePersixMonths;
   final String pricePerthreeMonths;
 
   final String userEmail;
@@ -45,7 +45,7 @@ class DetailedNurseCenter extends StatefulWidget {
     required this.pricePreDay,
     required this.pricePreMonth,
     required this.priceCheckups,
-    required this.pricePertwoMonths,
+    required this.pricePersixMonths,
     required this.pricePerthreeMonths,
   });
 
@@ -215,8 +215,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                             builder: (context) => Subscribe(
                                                   pricePreMonth:
                                                       widget.pricePreMonth,
-                                                  pricePertwoMonths:
-                                                      widget.pricePertwoMonths,
+                                                  pricePersixMonths:
+                                                      widget.pricePersixMonths,
                                                   pricePerthreeMonths: widget
                                                       .pricePerthreeMonths,
                                                 )),

@@ -111,8 +111,8 @@ class _NurseCentersState extends State<NurseCenters> {
                                           });
                                         },
                                         priceCheckups: center.checkup,
-                                        pricePertwoMonths:
-                                            center.pricePertwoMonths,
+                                        pricePersixMonths:
+                                            center.pricePersixMonths,
                                         pricePerthreeMonths:
                                             center.pricePerthreeMonths,
                                       );
