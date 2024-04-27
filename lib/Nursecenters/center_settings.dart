@@ -154,6 +154,8 @@ class _CenterSettingsState extends State<CenterSettings> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => CenterAddNurse(
                               centerId: widget.centerId,
+                              isPageAddNurse: true,
+                              nurse_firstName: '', nurse_lastName: '',
                             )));
                   },
                 ),

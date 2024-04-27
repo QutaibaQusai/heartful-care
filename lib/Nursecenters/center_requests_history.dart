@@ -52,8 +52,18 @@ class _CenterRequestsHistoryState extends State<CenterRequestsHistory> {
             ),
           ),
         ),
-        body: Column(
+        body: Stack(
           children: [
+            Container(
+              height: MediaQuery.of(context).size.height / 2,
+              decoration: BoxDecoration(
+                color: Color(0xFF1C8892),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(50),
+                  bottomLeft: Radius.circular(50),
+                ),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),

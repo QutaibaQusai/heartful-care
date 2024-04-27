@@ -286,12 +286,12 @@ class _HomeState extends State<Home> {
                 SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
-                    if (sections.sectionName == "Nurse centers") {
+                    if (sections.sectionName == "Nurse Centers") {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => NurseCenters(
                                 userEmail: widget.userEmail,
                               )));
-                    } else if (sections.sectionName == "Medical devices") {
+                    } else if (sections.sectionName == "Medical Devices") {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => Medical(
                                 userEmail: widget.userEmail,

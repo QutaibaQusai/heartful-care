@@ -3,12 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CenterAddNurse extends StatefulWidget {
   final String centerId;
+  final bool isPageAddNurse;
+  final String nurse_firstName;
+  final String nurse_lastName;
+
   const CenterAddNurse({
     super.key,
     required this.centerId,
+    required this.isPageAddNurse,
+    required this.nurse_firstName,
+    required this.nurse_lastName,
   });
 
   @override
@@ -16,8 +24,9 @@ class CenterAddNurse extends StatefulWidget {
 }
 
 class _CenterAddNurseState extends State<CenterAddNurse> {
-  // gender radio button
+  // gender drop down menu
   String? selectedGender;
+  String? nurseSpecialization;
   // Nurse Controllers
   TextEditingController nurse_firstName = TextEditingController();
   TextEditingController nurse_lastName = TextEditingController();
@@ -35,7 +44,9 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
           backgroundColor: Color(0xFF1C8892),
           elevation: 0,
           title: Text(
-            "Create nurse profile",
+            widget.isPageAddNurse
+                ? "Create nurse profile"
+                : "Edit nurse profile",
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
@@ -52,7 +63,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
         body: Stack(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height / 2.5,
+              height: MediaQuery.of(context).size.height / 2,
               decoration: BoxDecoration(
                 color: Color(0xFF1C8892),
                 borderRadius: BorderRadius.only(
@@ -133,51 +144,102 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                           ),
                           SizedBox(
                             height: 50,
-                            child: TextFormField(
-                              controller: nurse_firstName,
-                              keyboardType: TextInputType.name,
-                              cursorColor: Color(0xFF1C8892),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF1C8892), width: 2.0),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                labelText: "Nurse fist name",
-                                labelStyle: TextStyle(color: Color(0xFF1C8892)),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                            ),
+                            child: widget.isPageAddNurse
+                                ? TextFormField(
+                                    // initialValue: widget.nurse_firstName,
+                                    controller: nurse_firstName,
+                                    keyboardType: TextInputType.name,
+                                    cursorColor: Color(0xFF1C8892),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF1C8892),
+                                            width: 2.0),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      labelText: "Nurse first name",
+                                      labelStyle:
+                                          TextStyle(color: Color(0xFF1C8892)),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                    ),
+                                  )
+                                : TextFormField(
+                                    initialValue: widget.nurse_firstName,
+                                    // controller: nurse_firstName,
+                                    keyboardType: TextInputType.name,
+                                    cursorColor: Color(0xFF1C8892),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF1C8892),
+                                            width: 2.0),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      labelText: "Nurse first name",
+                                      labelStyle:
+                                          TextStyle(color: Color(0xFF1C8892)),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                    ),
+                                  ),
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           SizedBox(
                             height: 50,
-                            child: TextFormField(
-                              cursorColor: Color(0xFF1C8892),
-                              keyboardType: TextInputType.name,
-                              controller: nurse_lastName,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF1C8892), width: 2.0),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                // hintText: 'First Name',
-                                labelText: "Nurse last name",
-                                labelStyle: TextStyle(color: Color(0xFF1C8892)),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                            ),
+                            child: widget.isPageAddNurse
+                                ? TextFormField(
+                                    controller: nurse_lastName,
+                                    cursorColor: Color(0xFF1C8892),
+                                    keyboardType: TextInputType.name,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF1C8892),
+                                            width: 2.0),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      // hintText: 'First Name',
+                                      labelText: "Nurse last name",
+                                      labelStyle:
+                                          TextStyle(color: Color(0xFF1C8892)),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                    ),
+                                  )
+                                : TextFormField(
+                                    initialValue: widget.nurse_lastName,
+                                    cursorColor: Color(0xFF1C8892),
+                                    keyboardType: TextInputType.name,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF1C8892),
+                                            width: 2.0),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      // hintText: 'First Name',
+                                      labelText: "Nurse last name",
+                                      labelStyle:
+                                          TextStyle(color: Color(0xFF1C8892)),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                    ),
+                                  ),
                           ),
                           SizedBox(
                             height: 20,
@@ -246,7 +308,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                             child: Text(
                                               value,
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Colors.black,
                                               ),
                                             ),
                                           ),
@@ -281,6 +343,59 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                               ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            height: 50,
+                            child: DropdownButtonFormField<String>(
+                              dropdownColor: Color(0xFF1C8892),
+                              value: nurseSpecialization,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  nurseSpecialization = newValue;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color(0xFF1C8892), width: 2.0),
+                                  borderRadius: BorderRadius.circular(20),
+                                ), // Change focus color
+                                labelText: "Specialization",
+                                labelStyle: TextStyle(color: Color(0xFF1C8892)),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                              items: <String>[
+                                'Pediatric Nursing',
+                                'Critical Care Nursing',
+                                'Emergency Nursing',
+                                'Mental Health Nursing',
+                                'Geriatric Nursing',
+                                'Oncology Nursing',
+                                'Perioperative Nursing',
+                                'Community Health Nursing',
+                                'Nurse Educator',
+                                'Nurse Practitioner'
+                              ]
+                                  .map<DropdownMenuItem<String>>(
+                                    (String value) => DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
                             ),
                           ),
                           SizedBox(
@@ -352,7 +467,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Create profile",
+                widget.isPageAddNurse ? "Create profile" : "Edit Profile",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -389,22 +504,39 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
         'qualifications': nurse_yearsQualifications.text.trim(),
         'gender': selectedGender,
         'centerId': widget.centerId,
+        'nurseSpecialization': nurseSpecialization,
       });
       // Show a success message or perform actions after the data is successfully saved
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Nurse profile created successfully!'),
-          backgroundColor: Colors.green,
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Nurse profile created successfully!",
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+          ),
         ),
       );
       // Optionally, clear the form or navigate away
       clearForm();
     } catch (e) {
       // Handle errors, for instance, show an error message
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to create nurse profile: $e'),
           backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Failed to create nurse profile: $e",
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+          ),
         ),
       );
     }
@@ -418,5 +550,56 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
     nurse_yearsExperience.clear();
     nurse_yearsQualifications.clear();
     selectedGender = null;
+  }
+
+  Future<void> updateNurseData() async {
+    try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      // Create a document in the 'Nurses' collection
+      await db.collection('Nurses').add({
+        'first_name': nurse_firstName.text.trim(),
+        'last_name': nurse_lastName.text.trim(),
+        'age': nurse_age.text.trim(),
+        'phone_number': nurse_phoneNumber.text.trim(),
+        'years_experience': nurse_yearsExperience.text.trim(),
+        'qualifications': nurse_yearsQualifications.text.trim(),
+        'gender': selectedGender,
+        'centerId': widget.centerId,
+        'nurseSpecialization': nurseSpecialization,
+      });
+      // Show a success message or perform actions after the data is successfully saved
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Nurse profile created successfully!",
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+          ),
+        ),
+      );
+      // Optionally, clear the form or navigate away
+      clearForm();
+    } catch (e) {
+      // Handle errors, for instance, show an error message
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Failed to create nurse profile: $e",
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+          ),
+        ),
+      );
+    }
   }
 }
