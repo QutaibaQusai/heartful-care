@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class RequestResult extends StatefulWidget {
   final int status;
@@ -29,7 +30,10 @@ class _RequestResultState extends State<RequestResult> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
         title: Text('Request Result'),
       ),
       body: Center(
@@ -46,21 +50,31 @@ class _RequestResultState extends State<RequestResult> {
               final data = snapshot.data!;
               final status = data['status'] as int?;
               if (status == 0) {
-                return Text('Status not found');
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset('images/Animation - 1714324335561.json',
+                        width: 150),
+                    Text(
+                        "please wait while center accept or reject your request")
+                  ],
+                );
               } else if (status == 1) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("accept request"),
-                    Text('Form Request ID: ${widget.formRequestId}')
+                    // Text('Form Request ID: ${widget.formRequestId}')
                   ],
                 );
               } else {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('request rejected'),
-                    Text('Form Request ID: ${widget.formRequestId}')
+                    Lottie.asset("images/Animation - 1714324734362.json"),
+                    Text(
+                        'your request has been rejected please choose another center to help you :)'),
+                    // Text('Form Request ID: ${widget.formRequestId}')
                   ],
                 );
               }

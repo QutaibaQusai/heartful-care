@@ -94,7 +94,8 @@ class _NurseCentersState extends State<NurseCenters> {
                                         operatingHours: center.operatingHours,
                                         operatingDays: center.operatingDays,
                                         centerDescription: center.description,
-                                        centerUrlImageLogo: center.urlLogoImage,
+                                        centerProfileImage:
+                                            center.centerProfileImage,
                                         centerPhoneNumber: center.phoneNumber,
                                         centerAddress1: center.addressOne,
                                         centerEmail: center.emailAddress,
@@ -170,7 +171,7 @@ class _NurseCentersState extends State<NurseCenters> {
                                                     .height /
                                                 14,
                                             backgroundImage: NetworkImage(
-                                              center.urlLogoImage,
+                                              center.centerProfileImage,
                                             ),
                                           ),
                                         ),

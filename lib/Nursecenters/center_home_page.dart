@@ -12,7 +12,6 @@ Future<String> getCurrentCenterId() async {
   if (center != null) {
     return center.uid;
   }
-
   return '';
 }
 
@@ -27,6 +26,7 @@ class CenterHomePage extends StatefulWidget {
 class _CenterHomePageState extends State<CenterHomePage> {
   late Future<String> centerIdFuture;
   String centerName = "";
+  String? centerProfileImage;
 
   @override
   void initState() {
@@ -59,10 +59,9 @@ class _CenterHomePageState extends State<CenterHomePage> {
         var userData = supplierDoc.docs[0].data();
 
         setState(() {
-          // _imageUrl = userData['supplier_profile'];
+          centerProfileImage = userData['centerProfileImage'];
           centerName = userData['Center Name'];
         });
-        print(centerName);
       }
     } catch (e) {
       print('Error fetching user data:$e');
@@ -87,7 +86,7 @@ class _CenterHomePageState extends State<CenterHomePage> {
                     builder: (context) => CenterSettings(
                       centerEmail: widget.centerEmail,
                       centerName: centerName,
-                      centerId: FirebaseAuth.instance.currentUser!.uid,
+                      centerId: FirebaseAuth.instance.currentUser!.uid, centerProfileImage: centerProfileImage!,
                     ),
                   ),
                 );
@@ -102,12 +101,19 @@ class _CenterHomePageState extends State<CenterHomePage> {
                     //         backgroundColor: Colors.white,
                     //       )
                     //     :
-                    CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'),
-                  backgroundColor: Colors.white,
-                ),
+
+                    centerProfileImage != null
+                        ? CircleAvatar(
+                            radius: 16,
+                            backgroundImage: NetworkImage(centerProfileImage!),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 16,
+                            backgroundImage: NetworkImage(
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'),
+                            backgroundColor: Colors.white,
+                          ),
               ),
             ),
           ],

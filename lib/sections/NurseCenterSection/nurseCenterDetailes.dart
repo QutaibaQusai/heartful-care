@@ -12,7 +12,7 @@ class DetailedNurseCenter extends StatefulWidget {
   final String operatingHours;
   final String operatingDays;
   final String centerPhoneNumber;
-  final String centerUrlImageLogo;
+  final String centerProfileImage;
   final String centerDescription;
   final String centerAddress1;
   final String centerEmail;
@@ -32,7 +32,7 @@ class DetailedNurseCenter extends StatefulWidget {
     required this.centerName,
     required this.operatingHours,
     required this.centerPhoneNumber,
-    required this.centerUrlImageLogo,
+    required this.centerProfileImage,
     required this.centerDescription,
     required this.centerAddress1,
     required this.centerEmail,
@@ -103,8 +103,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                             child: GestureDetector(
                               onTap: () {},
                               child: Image.network(
-                                widget.centerUrlImageLogo,
-                                fit: BoxFit.contain,
+                                widget.centerProfileImage,
+                                fit: BoxFit.cover,
                                 height: 170,
                               ),
                             ),

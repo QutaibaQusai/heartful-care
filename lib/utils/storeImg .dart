@@ -51,10 +51,7 @@ class StoreImg {
     return resp;
   }
 
-
-
-
-    Future<String> saveUserProfile({
+  Future<String> saveUserProfile({
     required Uint8List file,
     required String supplierEmail,
     required String storagePath,
@@ -89,7 +86,7 @@ class StoreImg {
     return resp;
   }
 
-   Future<List<String>> uploadDeviceImages({
+  Future<List<String>> uploadDeviceImages({
     required List<Uint8List> files,
     required String supplierEmail,
     required String deviceName,
@@ -105,5 +102,54 @@ class StoreImg {
     return imageUrls;
   }
 
-  
+  Future<String> uploadNurseProfile({
+    required Uint8List file,
+    required String nurseId,
+    required String storagePath,
+  }) async {
+    String resp = "Error Occurred";
+    try {
+      String fileChildPath = '$storagePath/${Uri.encodeComponent(nurseId)}';
+
+      String imageUrl = await uploadImageToStorage(fileChildPath, file);
+      await fireStore.collection("Nurses").doc(nurseId).set({
+        "nurseProfileImage": imageUrl,
+      });
+      resp = "success";
+    } catch (err) {
+      resp = err.toString();
+    }
+    return resp;
+  }
+
+  // save center profile image
+  Future<String> saveProfileCenterImg({
+    required Uint8List file,
+    required String centerEmail,
+    required String storagePath,
+  }) async {
+    String resp = "Error Occurred";
+    try {
+      String fileChildPath = '$storagePath/${Uri.encodeComponent(centerEmail)}';
+
+      String imageUrl = await uploadImageToStorage(fileChildPath, file);
+      QuerySnapshot querySnapshot = await fireStore
+          .collection("centers")
+          .where('Email', isEqualTo: centerEmail)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        String centerId = querySnapshot.docs.first.id;
+        await fireStore.collection("centers").doc(centerId).update({
+          "centerProfileImage": imageUrl,
+        });
+        resp = "success";
+      } else {
+        resp = "Supplier with email $centerEmail not found";
+      }
+      print(resp + "=====================================================");
+    } catch (err) {
+      resp = err.toString();
+    }
+    return resp;
+  }
 }

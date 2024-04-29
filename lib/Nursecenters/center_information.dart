@@ -1,7 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:test/utils/pickImage.dart';
+import 'package:test/utils/storeImg%20.dart';
 
 class CenterInformation extends StatefulWidget {
   final String centerEmail;
@@ -26,13 +31,28 @@ class _CenterInformationState extends State<CenterInformation> {
   TextEditingController centerContractPosition = TextEditingController();
   TextEditingController centerDescription = TextEditingController();
   TextEditingController centerWebsite = TextEditingController();
-  TextEditingController urlLogoImage = TextEditingController();
   TextEditingController centerLocation = TextEditingController();
   TextEditingController centerPricePerDay = TextEditingController();
   TextEditingController centerPricePerMonth = TextEditingController();
   TextEditingController centerPricePerMonth6 = TextEditingController();
   TextEditingController centerPricePerMonth3 = TextEditingController();
   TextEditingController centerPriceCheckup = TextEditingController();
+  Uint8List? centerImage;
+  String? centerImageProfile;
+  void selectCenterImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      centerImage = img;
+    });
+  }
+
+  void saveProfileImageCenter() async {
+    StoreImg().saveProfileCenterImg(
+        file: centerImage!,
+        centerEmail: widget.centerEmail,
+        storagePath: "centerProfileImage");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,7 +92,6 @@ class _CenterInformationState extends State<CenterInformation> {
               userData["Contact Center position"] ?? "";
           centerDescription.text = userData["Center Description"] ?? "";
           centerWebsite.text = userData["Center website"] ?? "";
-          urlLogoImage.text = userData["URL Logo Image"] ?? "";
           centerLocation.text = userData["Center Location"] ?? "";
           centerPricePerDay.text = userData["Price Per Day"] ?? "";
           centerPricePerMonth.text = userData["Price Per one Month"] ?? "";
@@ -80,6 +99,7 @@ class _CenterInformationState extends State<CenterInformation> {
           centerPricePerMonth3.text = userData["Price Per three Months"] ?? "";
 
           centerPriceCheckup.text = userData["Price_checkup"];
+          centerImageProfile = userData["centerProfileImage"] ?? "";
         });
       }
     } catch (e) {
@@ -92,6 +112,15 @@ class _CenterInformationState extends State<CenterInformation> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              FontAwesomeIcons.chevronLeft,
+              color: Colors.black,
+            ),
+          ),
           actions: [
             GestureDetector(
               onTap: () {
@@ -122,8 +151,75 @@ class _CenterInformationState extends State<CenterInformation> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Lottie.asset('images/lottie/Animation - 1706116974821.json',
-                      width: 1000),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        children: [
+                          ClipOval(
+                            child: SizedBox.fromSize(
+                              size: Size.fromRadius(60),
+                              child: centerImage != null
+                                  ? Image.memory(centerImage!,
+                                      fit: BoxFit.cover)
+                                  : centerImageProfile != null
+                                      ? ClipOval(
+                                          child: SizedBox.fromSize(
+                                            size: Size.fromRadius(60),
+                                            child: Image.network(
+                                                centerImageProfile!,
+                                                fit: BoxFit.cover),
+                                          ),
+                                        )
+                                      : ClipOval(
+                                          child: SizedBox.fromSize(
+                                            size: Size.fromRadius(60),
+                                            child: Image.asset(
+                                                "images/logo.png",
+                                                fit: BoxFit.cover),
+                                          ),
+                                        ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 3,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: isEditing
+                                  ? CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          selectCenterImage();
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.camera,
+                                          color: Color(0xFF1C8892),
+                                          size: 20,
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     height: 25,
                   ),
@@ -187,22 +283,6 @@ class _CenterInformationState extends State<CenterInformation> {
                     //   } else {
                     //     return null;
                     //   }
-                    // },
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    enabled: isEditing,
-                    controller: urlLogoImage,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'URL logo Image',
-                    ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'URL logo Image is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
                     // },
                   ),
                   SizedBox(
@@ -506,8 +586,10 @@ class _CenterInformationState extends State<CenterInformation> {
                                       actions: [
                                         TextButton(
                                           onPressed: () async {
-                                            Navigator.of(context).pop();
                                             _submitUserData();
+                                            saveProfileImageCenter();
+                                            Navigator.of(context).pop();
+                                            // print(widget.centerEmail);
                                           },
                                           child: Text(
                                             'Yes',
@@ -578,10 +660,10 @@ class _CenterInformationState extends State<CenterInformation> {
 
       if (querySnapshot.docs.isNotEmpty) {
         var documentSnapshot = querySnapshot.docs[0];
-        var userId = documentSnapshot.id;
+        var centerId = documentSnapshot.id;
 
         // Add new fields to the existing document
-        await centers.doc(userId).set({
+        await centers.doc(centerId).set({
           'Center Name': centerNameController.text,
           'Center phone number': centerContactNumber.text,
           'Center Address 1': centerAddressOne.text,
@@ -591,7 +673,6 @@ class _CenterInformationState extends State<CenterInformation> {
           'Contact Center position': centerContractPosition.text,
           'Center Description': centerDescription.text,
           'Center website': centerWebsite.text,
-          'URL Logo Image': urlLogoImage.text,
           'Center Location': centerLocation.text,
           'Center operating Days': centerOpiningDays.text,
           'Price Per Day': centerPricePerDay.text,

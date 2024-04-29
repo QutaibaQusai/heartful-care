@@ -12,11 +12,13 @@ class CenterSettings extends StatefulWidget {
   final String centerEmail;
   final String centerName;
   final String centerId;
+  final String centerProfileImage;
   const CenterSettings(
       {super.key,
       required this.centerEmail,
       required this.centerName,
-      required this.centerId});
+      required this.centerId,
+      required this.centerProfileImage});
 
   @override
   State<CenterSettings> createState() => _CenterSettingsState();
@@ -55,24 +57,23 @@ class _CenterSettingsState extends State<CenterSettings> {
                 GestureDetector(
                   child: Row(
                     children: [
-                      // _imageUrl != null
-                      //     ? ClipOval(
-                      //         child: Image.network(
-                      //           _imageUrl!,
-                      //           width: 56,
-                      //           height: 56,
-                      //           fit: BoxFit.cover,
-                      //         ),
-                      //       )
-                      //     :
-                      ClipOval(
-                        child: Image.network(
-                          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png",
-                          width: 56,
-                          height: 56,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      widget.centerProfileImage.isNotEmpty
+                          ? ClipOval(
+                              child: Image.network(
+                                widget.centerProfileImage,
+                                width: 56,
+                                height: 56,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : ClipOval(
+                              child: Image.network(
+                                "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png",
+                                width: 56,
+                                height: 56,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                       SizedBox(
                         width: 16,
                       ),
@@ -108,7 +109,7 @@ class _CenterSettingsState extends State<CenterSettings> {
                   child: Row(
                     children: [
                       Text(
-                        "Nurses",
+                        "About Nurses",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
@@ -128,7 +129,7 @@ class _CenterSettingsState extends State<CenterSettings> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(
-                            FontAwesomeIcons.upload,
+                            FontAwesomeIcons.plus,
                             color: Color(0xFF1C8892),
                             size: 20,
                           ),
@@ -151,12 +152,17 @@ class _CenterSettingsState extends State<CenterSettings> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
                         builder: (context) => CenterAddAndUpdateNurseInfo(
-                              centerId: widget.centerId,
-                              isPageAddNurse: true,
-                              nurse_firstName: '', nurse_lastName: '', nurseId: '',
-                            )));
+                          centerId: widget.centerId,
+                          isPageAddNurse: true,
+                          nurse_firstName: '',
+                          nurse_lastName: '',
+                          nurseId: '',
+                        ),
+                      ),
+                    );
                   },
                 ),
                 GestureDetector(
@@ -172,7 +178,7 @@ class _CenterSettingsState extends State<CenterSettings> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(
-                            Icons.device_hub_outlined,
+                            FontAwesomeIcons.userNurse,
                             color: Color(0xFF1C8892),
                             size: 20,
                           ),

@@ -1,24 +1,29 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:test/utils/pickImage.dart';
+import 'package:test/utils/storeImg%20.dart';
 
 class CenterAddAndUpdateNurseInfo extends StatefulWidget {
-  final String centerId;
   final bool isPageAddNurse;
+  final String centerId;
+  final String nurseId;
   final String nurse_firstName;
   final String nurse_lastName;
-  final String nurseId;
 
   const CenterAddAndUpdateNurseInfo({
     super.key,
-    required this.centerId,
     required this.isPageAddNurse,
+    required this.centerId,
+    required this.nurseId,
     required this.nurse_firstName,
     required this.nurse_lastName,
-    required this.nurseId,
   });
 
   @override
@@ -36,10 +41,24 @@ class _CenterAddNurseState extends State<CenterAddAndUpdateNurseInfo> {
   TextEditingController nurse_phoneNumber = TextEditingController();
   TextEditingController nurse_yearsExperience = TextEditingController();
   TextEditingController nurse_yearsQualifications = TextEditingController();
+  Uint8List? nurserImage;
+
+  void selectDeviceImage1() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      nurserImage = img;
+    });
+  }
+
+  void saveProfileImageNurse() async {
+    StoreImg().uploadNurseProfile(
+        file: nurserImage!,
+        nurseId: widget.nurseId,
+        storagePath: "nurseProfileImage");
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.isPageAddNurse == false) {
       nurse_firstName.text = widget.nurse_firstName;
@@ -115,9 +134,16 @@ class _CenterAddNurseState extends State<CenterAddAndUpdateNurseInfo> {
                               ClipOval(
                                 child: SizedBox.fromSize(
                                   size: Size.fromRadius(60),
-                                  child: Image.network(
-                                      'https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg',
-                                      fit: BoxFit.cover),
+                                  child: nurserImage != null
+                                      ? Image.memory(nurserImage!,
+                                          fit: BoxFit.cover)
+                                      : ClipOval(
+                                          child: SizedBox.fromSize(
+                                          size: Size.fromRadius(60),
+                                          child: Image.network(
+                                              "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
+                                              fit: BoxFit.cover),
+                                        )),
                                 ),
                               ),
                               Positioned(
@@ -138,7 +164,10 @@ class _CenterAddNurseState extends State<CenterAddAndUpdateNurseInfo> {
                                   child: CircleAvatar(
                                     backgroundColor: Colors.white,
                                     child: IconButton(
-                                      onPressed: null,
+                                      onPressed: () {
+                                        selectDeviceImage1();
+                                        print("add nurse image");
+                                      },
                                       icon: Icon(
                                         FontAwesomeIcons.camera,
                                         color: Color(0xFF1C8892),
@@ -447,12 +476,13 @@ class _CenterAddNurseState extends State<CenterAddAndUpdateNurseInfo> {
           padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
           child: ElevatedButton(
             onPressed: () {
-              if (widget.isPageAddNurse == true) {
-                submitNurseData();
-              } else {
-                updateNurseData();
-              }
-              Navigator.of(context).pop;
+              // if (widget.isPageAddNurse == true) {
+              //   submitNurseData();
+              //   saveProfileImageNurse();
+              // } else {
+              //   updateNurseData();
+              // }
+              print("nurseId:" + widget.nurseId);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
