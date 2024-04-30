@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Nursecenters/center_add&update_nurse_info.dart';
 import 'package:test/model/nursers.dart';
 
 class CenterMyNurses extends StatelessWidget {
@@ -58,16 +57,7 @@ class CenterMyNurses extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
-                    onTap: () {
-                      // CenterAddNurse
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CenterAddAndUpdateNurseInfo(
-                                centerId: '',
-                                isPageAddNurse: false,
-                                nurse_firstName: nurse.nurse_firstName,
-                                nurse_lastName: nurse.nurse_lastName, nurseId: nurse.nurseId,
-                              )));
-                    },
+                    onTap: () {},
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -102,10 +92,15 @@ class CenterMyNurses extends StatelessWidget {
                                 ],
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Image.network(
-                                "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
-                                fit: BoxFit.cover,
-                              ),
+                              child: nurse.nurseImage.isNotEmpty
+                                  ? Image.network(
+                                      nurse.nurseImage,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                             SizedBox(
                               width: 15,

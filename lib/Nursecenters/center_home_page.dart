@@ -86,7 +86,8 @@ class _CenterHomePageState extends State<CenterHomePage> {
                     builder: (context) => CenterSettings(
                       centerEmail: widget.centerEmail,
                       centerName: centerName,
-                      centerId: FirebaseAuth.instance.currentUser!.uid, centerProfileImage: centerProfileImage!,
+                      centerId: FirebaseAuth.instance.currentUser!.uid,
+                      centerProfileImage: centerProfileImage!,
                     ),
                   ),
                 );
@@ -94,26 +95,19 @@ class _CenterHomePageState extends State<CenterHomePage> {
               icon: Container(
                 margin: const EdgeInsets.only(right: 10.0),
                 child:
-                    // _imageUrl != null
-                    //     ? CircleAvatar(
-                    //         radius: 16,
-                    //         backgroundImage: NetworkImage(_imageUrl!),
-                    //         backgroundColor: Colors.white,
-                    //       )
-                    //     :
-
-                    centerProfileImage != null
-                        ? CircleAvatar(
-                            radius: 16,
-                            backgroundImage: NetworkImage(centerProfileImage!),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 16,
-                            backgroundImage: NetworkImage(
-                                'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'),
-                            backgroundColor: Colors.white,
-                          ),
+                 centerProfileImage != null
+                    ? CircleAvatar(
+                        radius: 16,
+                        backgroundImage: NetworkImage(centerProfileImage!),
+                        backgroundColor: Colors.white,
+                      )
+                    : 
+                    CircleAvatar(
+                        radius: 16,
+                        backgroundImage: NetworkImage(
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'),
+                        backgroundColor: Colors.white,
+                      ),
               ),
             ),
           ],

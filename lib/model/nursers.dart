@@ -9,6 +9,7 @@ class Nurses {
   final String centerId;
   final String nurseSpecialization;
   final String nurseId;
+  final String nurseImage;
 
   Nurses(
       {required this.nurse_firstName,
@@ -20,7 +21,8 @@ class Nurses {
       required this.nurse_qualifications,
       required this.centerId,
       required this.nurseSpecialization,
-      required this.nurseId});
+      required this.nurseId,
+      required this.nurseImage});
 
   factory Nurses.fromMap(Map<String, dynamic> map) {
     return Nurses(
@@ -34,6 +36,7 @@ class Nurses {
       centerId: map['centerId'] ?? '',
       nurseSpecialization: map['nurseSpecialization'] ?? '',
       nurseId: map['nurseId'] ?? '',
+      nurseImage: map['nurseProfileImage'] ?? '',
     );
   }
 }

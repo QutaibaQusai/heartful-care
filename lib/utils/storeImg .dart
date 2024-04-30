@@ -112,7 +112,7 @@ class StoreImg {
       String fileChildPath = '$storagePath/${Uri.encodeComponent(nurseId)}';
 
       String imageUrl = await uploadImageToStorage(fileChildPath, file);
-      await fireStore.collection("Nurses").doc(nurseId).set({
+      await fireStore.collection("Nurses").doc(nurseId).update({
         "nurseProfileImage": imageUrl,
       });
       resp = "success";

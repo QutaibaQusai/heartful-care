@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/fillFormRequest.dart';
 import 'package:test/sections/NurseCenterSection/rating.dart';
 import 'package:test/sections/NurseCenterSection/subcription.dart';
+import 'package:test/widgets/image_selector.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailedNurseCenter extends StatefulWidget {
@@ -101,7 +102,9 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                               ),
                             ),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () => ImageSelectorWidget(
+                                imageUrl: widget.centerProfileImage,
+                              ),
                               child: Image.network(
                                 widget.centerProfileImage,
                                 fit: BoxFit.cover,

@@ -112,6 +112,8 @@ class _CenterInformationState extends State<CenterInformation> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: Text("Center Information"),
+          centerTitle: true,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();

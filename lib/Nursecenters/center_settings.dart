@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Nursecenters/center_add&update_nurse_info.dart';
+import 'package:test/Nursecenters/center_add_nurse.dart';
 import 'package:test/Nursecenters/center_change_email.dart';
 import 'package:test/Nursecenters/center_chnage_password.dart';
 import 'package:test/Nursecenters/center_information.dart';
@@ -13,12 +13,13 @@ class CenterSettings extends StatefulWidget {
   final String centerName;
   final String centerId;
   final String centerProfileImage;
-  const CenterSettings(
-      {super.key,
-      required this.centerEmail,
-      required this.centerName,
-      required this.centerId,
-      required this.centerProfileImage});
+  const CenterSettings({
+    super.key,
+    required this.centerEmail,
+    required this.centerName,
+    required this.centerId,
+    required this.centerProfileImage,
+  });
 
   @override
   State<CenterSettings> createState() => _CenterSettingsState();
@@ -156,10 +157,6 @@ class _CenterSettingsState extends State<CenterSettings> {
                       MaterialPageRoute(
                         builder: (context) => CenterAddAndUpdateNurseInfo(
                           centerId: widget.centerId,
-                          isPageAddNurse: true,
-                          nurse_firstName: '',
-                          nurse_lastName: '',
-                          nurseId: '',
                         ),
                       ),
                     );
