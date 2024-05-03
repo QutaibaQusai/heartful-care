@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/Nursecenters/center_add_nurse.dart';
@@ -10,15 +11,11 @@ import 'package:test/Nursecenters/center_login.dart';
 
 class CenterSettings extends StatefulWidget {
   final String centerEmail;
-  final String centerName;
   final String centerId;
-  final String centerProfileImage;
   const CenterSettings({
     super.key,
     required this.centerEmail,
-    required this.centerName,
     required this.centerId,
-    required this.centerProfileImage,
   });
 
   @override
@@ -26,6 +23,36 @@ class CenterSettings extends StatefulWidget {
 }
 
 class _CenterSettingsState extends State<CenterSettings> {
+  String centerName = "";
+  String? centerProfileImage;
+  @override
+  void initState() {
+    super.initState();
+    fetchCenterData();
+  }
+
+  void fetchCenterData() async {
+    try {
+      var supplierDoc = await FirebaseFirestore.instance
+          .collection('centers')
+          .where('Email', isEqualTo: widget.centerEmail)
+          .get();
+
+      if (supplierDoc.docs.isNotEmpty) {
+        var userData = supplierDoc.docs[0].data();
+
+        setState(
+          () {
+            centerProfileImage = userData['centerProfileImage'];
+            centerName = userData['Center Name'];
+          },
+        );
+      }
+    } catch (e) {
+      print('Error fetching user data:$e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,10 +85,10 @@ class _CenterSettingsState extends State<CenterSettings> {
                 GestureDetector(
                   child: Row(
                     children: [
-                      widget.centerProfileImage.isNotEmpty
+                      centerProfileImage != null
                           ? ClipOval(
                               child: Image.network(
-                                widget.centerProfileImage,
+                                centerProfileImage!,
                                 width: 56,
                                 height: 56,
                                 fit: BoxFit.cover,
@@ -82,11 +109,10 @@ class _CenterSettingsState extends State<CenterSettings> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.centerName,
+                            centerName,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 17),
                           ),
-                          //Text("data", style: TextStyle(color: Colors.grey[700])),
                         ],
                       ),
                       Expanded(child: Container()),
@@ -155,7 +181,7 @@ class _CenterSettingsState extends State<CenterSettings> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => CenterAddAndUpdateNurseInfo(
+                        builder: (context) => CenterAddNurse(
                           centerId: widget.centerId,
                         ),
                       ),

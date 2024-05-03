@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:test/Nursecenters/center_accept_request.dart';
 
 class PatientDetails extends StatefulWidget {
   final String patientFirstName;
@@ -20,35 +21,32 @@ class PatientDetails extends StatefulWidget {
   final String formRequestId;
   final bool isTheListRequest;
 
-  const PatientDetails(
-      {super.key,
-      required this.patientFirstName,
-      required this.patientLastName,
-      required this.patientAge,
-      required this.patientGender,
-      required this.patientPhoneNumber,
-      required this.patientAddress,
-      required this.patientAllergies,
-      required this.patientSurgeriesHistory,
-      required this.patientIsWalk,
-      required this.patientNeedNurse,
-      required this.centerId,
-      required this.total_amount,
-      required this.payment_method,
-      required this.status,
-      required,
-      required this.formRequestId,
-      required this.isTheListRequest});
+  const PatientDetails({
+    super.key,
+    required this.patientFirstName,
+    required this.patientLastName,
+    required this.patientAge,
+    required this.patientGender,
+    required this.patientPhoneNumber,
+    required this.patientAddress,
+    required this.patientAllergies,
+    required this.patientSurgeriesHistory,
+    required this.patientIsWalk,
+    required this.patientNeedNurse,
+    required this.centerId,
+    required this.total_amount,
+    required this.payment_method,
+    required this.status,
+    required,
+    required this.formRequestId,
+    required this.isTheListRequest,
+  });
 
   @override
   State<PatientDetails> createState() => _PatientDetailsState();
 }
 
 class _PatientDetailsState extends State<PatientDetails> {
-  // Nurse controllers
-  TextEditingController nurseName = TextEditingController();
-  TextEditingController nursePhoneNumber = TextEditingController();
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void updateStatus(int newStatus) {
@@ -302,9 +300,8 @@ class _PatientDetailsState extends State<PatientDetails> {
                         ),
                         TextFormField(
                           enabled: false,
-                          initialValue: widget.patientNeedNurse.join(
-                              '\n'), // Use join() to concatenate elements with newline
-                          maxLines: null, // Allow multiple lines
+                          initialValue: widget.patientNeedNurse.join('\n'),
+                          maxLines: null,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -394,108 +391,6 @@ class _PatientDetailsState extends State<PatientDetails> {
                     Container(
                       width: MediaQuery.of(context).size.width / 2.5,
                       child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    side:
-                                        BorderSide(color: Colors.transparent))),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xFF1C8892), // Button background color
-                            ),
-                          ),
-                          onPressed: () {
-                            acceptRequest();
-                          },
-                          child: Text("accept".toUpperCase(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold))),
-                    )
-                  ],
-                ),
-              )
-            : Row(),
-      ),
-    );
-  }
-
-  void acceptRequest() {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height / 1.3,
-          color: Colors.white,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Nurse information",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: nurseName,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF1C8892), width: 2.0),
-                          borderRadius:
-                              BorderRadius.all(Radius.elliptical(15, 15)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Color(0xFF1C8892), width: 2.0),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        labelText: "Nurse Name ",
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        )),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextFormField(
-                    controller: nursePhoneNumber,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF1C8892), width: 2.0),
-                          borderRadius:
-                              BorderRadius.all(Radius.elliptical(15, 15)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Color(0xFF1C8892), width: 2.0),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        labelText: "Nurse Phone number",
-                        labelStyle: TextStyle(
-                          color: Colors.grey,
-                        )),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2.5,
-                    child: ElevatedButton(
                         style: ButtonStyle(
                           shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
@@ -503,48 +398,34 @@ class _PatientDetailsState extends State<PatientDetails> {
                                   borderRadius: BorderRadius.circular(15),
                                   side: BorderSide(color: Colors.transparent))),
                           backgroundColor: MaterialStateProperty.all<Color>(
-                            Color(0xFF1C8892), // Button background color
+                            Color(0xFF1C8892),
                           ),
                         ),
                         onPressed: () {
-                          updateStatus(1); // Update the status
-
-                          // Set additional data in Firestore and navigate back
-                          _firestore
-                              .collection("form_request")
-                              .doc(widget.formRequestId)
-                              .set(
-                                  {
-                                'nurseName': nurseName.text,
-                                'nursePhoneNumber': nursePhoneNumber.text
-                              },
-                                  SetOptions(
-                                      merge:
-                                          true)) // Use merge option to update the document without overwriting other fields
-                              .then(
-                            (_) {
-                              print("Data updated successfully");
-                              Navigator.of(context).pop();
-                              // Navigate back after successful update
-                              nurseName.clear();
-                              nursePhoneNumber.clear();
-                            },
-                          ).catchError((error) {
-                            print("Failed to update data: $error");
-                          });
+                          // updateStatus(1);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CenterAcceptRequest(
+                                centerId: widget.centerId,
+                                formRequestId: widget.formRequestId,
+                              ),
+                            ),
+                          );
                         },
-                        child: Text("accept".toUpperCase(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold))),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+                        child: Text(
+                          "accept".toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            : Row(),
+      ),
     );
   }
 }

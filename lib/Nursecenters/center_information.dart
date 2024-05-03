@@ -1,7 +1,5 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,7 +9,10 @@ import 'package:test/utils/storeImg%20.dart';
 class CenterInformation extends StatefulWidget {
   final String centerEmail;
 
-  const CenterInformation({super.key, required this.centerEmail});
+  const CenterInformation({
+    super.key,
+    required this.centerEmail,
+  });
 
   @override
   State<CenterInformation> createState() => _CenterInformationState();
@@ -39,8 +40,9 @@ class _CenterInformationState extends State<CenterInformation> {
   TextEditingController centerPriceCheckup = TextEditingController();
   Uint8List? centerImage;
   String? centerImageProfile;
-  void selectCenterImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
+
+  void selectCenterImage({required ImageSource galleryOrCamera}) async {
+    Uint8List img = await pickImage(galleryOrCamera);
     setState(() {
       centerImage = img;
     });
@@ -57,17 +59,17 @@ class _CenterInformationState extends State<CenterInformation> {
   void initState() {
     super.initState();
     fetchUserData();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (FirebaseAuth.instance.currentUser != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color(0xFF1C8892),
-            content:
-                Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
-          ),
-        );
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (FirebaseAuth.instance.currentUser != null) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(
+    //         backgroundColor: Color(0xFF1C8892),
+    //         content:
+    //             Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
+    //       ),
+    //     );
+    //   }
+    // });
   }
 
   void fetchUserData() async {
@@ -206,7 +208,7 @@ class _CenterInformationState extends State<CenterInformation> {
                                       backgroundColor: Colors.white,
                                       child: IconButton(
                                         onPressed: () {
-                                          selectCenterImage();
+                                          showImageSelectionBottomSheet();
                                         },
                                         icon: Icon(
                                           FontAwesomeIcons.camera,
@@ -724,5 +726,61 @@ class _CenterInformationState extends State<CenterInformation> {
         ),
       );
     }
+  }
+
+  void showImageSelectionBottomSheet() {
+    showModalBottomSheet<void>(
+      showDragHandle: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 130,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Colors.grey[300],
+                          child: Icon(FontAwesomeIcons.image,
+                              color: Colors.black)),
+                      SizedBox(width: 10),
+                      Text("Choose from library",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    selectCenterImage(galleryOrCamera: ImageSource.gallery);
+                  },
+                ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                          backgroundColor: Colors.grey[300],
+                          child: Icon(FontAwesomeIcons.camera,
+                              color: Colors.black)),
+                      SizedBox(width: 10),
+                      Text("Take photo",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    selectCenterImage(galleryOrCamera: ImageSource.camera);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,5 +1,4 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/checkout_nurseCenter.dart';
@@ -578,7 +577,6 @@ class _FormRequestState extends State<FormRequest> {
               // _saveFormDataToFirestore();
 
               _calculateTotal();
-              print('Total before navigation: $total');
               Navigator.push(
                 context,
                 _createRightToLeftRoute(
@@ -733,64 +731,4 @@ class _FormRequestState extends State<FormRequest> {
     );
   }
 
-  // void _saveFormDataToFirestore() async {
-  //   String? userId = FirebaseAuth.instance.currentUser?.uid;
-  //   if (userId == null || userId.isEmpty) {
-  //     print('User ID is missing');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         backgroundColor: Color(0xFF1C8892),
-  //         content: Text('You need to be logged in to submit a form.'),
-  //       ),
-  //     );
-  //     return;
-  //   }
-
-  //   try {
-  //     // Initialize the form data map
-  //     Map<String, dynamic> formData = {
-  //       'user_id': userId,
-  //       'center_id': widget.centerId,
-  //       'firstName': patientFirstName.text,
-  //       'lastName': patientLastName.text,
-  //       'phoneNumber': patientPhoneNumber.text,
-  //       'age': int.tryParse(patientAge.text) ?? 0,
-  //       'gender': _selectedGender ?? "",
-  //       'address': patientAddress.text,
-  //       'hasAllergies': _hasAllergies ?? false,
-  //       'isWalk': _isWalk ?? false,
-  //       'historyOfSurgeries': _historyOfSurgeries ?? false,
-  //       'needNurse': _selectedItem,
-  //       'date':
-  //           _selectedDate != null ? Timestamp.fromDate(_selectedDate!) : null,
-  //       'time': _selectedTime != null ? _selectedTime!.format(context) : null,
-  //       'selectedPaymentOptionQuicklyCheckups':
-  //           selectedPaymentOptionQuicklyCheckups,
-  //     };
-
-  //     // Conditionally add the 'selectedPaymentPerDay' field
-  //     if (selectedPaymentOptionQuicklyCheckups == "quickly checkups") {
-  //       formData['selectedPaymentPerDay'] = "none";
-  //     } else {
-  //       formData['selectedPaymentPerDay'] = selectedPaymentOptionPerDay;
-  //     }
-
-  //     await FirebaseFirestore.instance.collection('form_request').add(formData);
-  //     Navigator.of(context).pop();
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         backgroundColor: Color(0xFF1C8892),
-  //         content: Text('Form data saved successfully!'),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     print('Error saving form data: $e');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         backgroundColor: Color(0xFF1C8892),
-  //         content: Text('Error saving form data. Please try again later.'),
-  //       ),
-  //     );
-  //   }
-  // }
 }

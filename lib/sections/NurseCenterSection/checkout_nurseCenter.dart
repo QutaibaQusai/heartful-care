@@ -615,13 +615,13 @@ class _CheckoutNurseCenterState extends State<CheckoutNurseCenter> {
 
       print("Document ID of newly created form_request: ${newDocRef.id}");
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          content: Text(
-              'Form data saved successfully! Document ID: ${newDocRef.id}'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     backgroundColor: Color(0xFF1C8892),
+      //     content: Text(
+      //         'Form data saved successfully! Document ID: ${newDocRef.id}'),
+      //   ),
+      // );
     } catch (e) {
       print('Error saving form data: $e');
       ScaffoldMessenger.of(context).showSnackBar(

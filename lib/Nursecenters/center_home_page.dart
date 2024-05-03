@@ -25,7 +25,6 @@ class CenterHomePage extends StatefulWidget {
 
 class _CenterHomePageState extends State<CenterHomePage> {
   late Future<String> centerIdFuture;
-  String centerName = "";
   String? centerProfileImage;
 
   @override
@@ -33,19 +32,19 @@ class _CenterHomePageState extends State<CenterHomePage> {
     super.initState();
     centerIdFuture = getCurrentCenterId();
     fetchCenterData();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (FirebaseAuth.instance.currentUser != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Color(0xFF1C8892),
-              content:
-                  Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
-            ),
-          );
-        }
-      },
-    );
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) {
+    //     if (FirebaseAuth.instance.currentUser != null) {
+    //       ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(
+    //           backgroundColor: Color(0xFF1C8892),
+    //           content:
+    //               Text('Your ID is: ' + FirebaseAuth.instance.currentUser!.uid),
+    //         ),
+    //       );
+    //     }
+    //   },
+    // );
   }
 
   void fetchCenterData() async {
@@ -58,10 +57,11 @@ class _CenterHomePageState extends State<CenterHomePage> {
       if (supplierDoc.docs.isNotEmpty) {
         var userData = supplierDoc.docs[0].data();
 
-        setState(() {
-          centerProfileImage = userData['centerProfileImage'];
-          centerName = userData['Center Name'];
-        });
+        setState(
+          () {
+            centerProfileImage = userData['centerProfileImage'];
+          },
+        );
       }
     } catch (e) {
       print('Error fetching user data:$e');
@@ -85,24 +85,20 @@ class _CenterHomePageState extends State<CenterHomePage> {
                   MaterialPageRoute(
                     builder: (context) => CenterSettings(
                       centerEmail: widget.centerEmail,
-                      centerName: centerName,
                       centerId: FirebaseAuth.instance.currentUser!.uid,
-                      centerProfileImage: centerProfileImage!,
                     ),
                   ),
                 );
               },
               icon: Container(
                 margin: const EdgeInsets.only(right: 10.0),
-                child:
-                 centerProfileImage != null
+                child: centerProfileImage != null
                     ? CircleAvatar(
                         radius: 16,
                         backgroundImage: NetworkImage(centerProfileImage!),
                         backgroundColor: Colors.white,
                       )
-                    : 
-                    CircleAvatar(
+                    : CircleAvatar(
                         radius: 16,
                         backgroundImage: NetworkImage(
                             'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'),

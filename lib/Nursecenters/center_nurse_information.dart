@@ -1,56 +1,62 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:test/utils/pickImage.dart';
-import 'package:test/utils/storeImg%20.dart';
 
-class CenterAddNurse extends StatefulWidget {
-  final String centerId;
+class CenterNurseInformation extends StatefulWidget {
+  final String nurseName;
+  final String nurse_lastName;
+  final String nurse_age;
+  final String nurse_gender;
+  final String nurse_phoneNumber;
+  final String nurse_yearsExperience;
+  final String nurse_qualifications;
+  final String nurseSpecialization;
+  final String nurseImage;
+  final String formRequestId;
 
-  const CenterAddNurse({
-    super.key,
-    required this.centerId,
-  });
+  const CenterNurseInformation(
+      {super.key,
+      required this.nurseName,
+      required this.formRequestId,
+      required this.nurse_lastName,
+      required this.nurse_age,
+      required this.nurse_gender,
+      required this.nurse_phoneNumber,
+      required this.nurse_yearsExperience,
+      required this.nurse_qualifications,
+      required this.nurseSpecialization,
+      required this.nurseImage});
 
   @override
-  State<CenterAddNurse> createState() => _CenterAddNurseState();
+  State<CenterNurseInformation> createState() => _JustTestState();
 }
 
-class _CenterAddNurseState extends State<CenterAddNurse> {
-  // gender drop down menu
-  String? selectedGender;
-  String? nurseSpecialization;
-  // Nurse Controllers
-  TextEditingController nurse_firstName = TextEditingController();
-  TextEditingController nurse_lastName = TextEditingController();
-  TextEditingController nurse_age = TextEditingController();
-  TextEditingController nurse_phoneNumber = TextEditingController();
-  TextEditingController nurse_yearsExperience = TextEditingController();
-  TextEditingController nurse_yearsQualifications = TextEditingController();
-  Uint8List? nurserImage;
+class _JustTestState extends State<CenterNurseInformation> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void selectNurseImage({required ImageSource galleryOrCamera}) async {
-    Uint8List img = await pickImage(galleryOrCamera);
-    setState(() {
-      nurserImage = img;
-    });
+  void updateStatus(int newStatus) {
+    _firestore
+        .collection('form_request')
+        .doc(widget.formRequestId)
+        .update({
+          'status': newStatus,
+        })
+        .then((_) => print("Status updated"))
+        .catchError(
+          (error) => print("Failed to update status: $error"),
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Color(0xFF1C8892),
+          elevation: 0,
           title: Text(
-            "Create nurse profile",
+            "Nurse Information",
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
@@ -103,54 +109,24 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                           SizedBox(
                             height: 10,
                           ),
-                          Stack(
-                            children: [
-                              ClipOval(
-                                child: SizedBox.fromSize(
-                                  size: Size.fromRadius(60),
-                                  child: nurserImage != null
-                                      ? Image.memory(nurserImage!,
-                                          fit: BoxFit.cover)
-                                      : ClipOval(
-                                          child: SizedBox.fromSize(
-                                          size: Size.fromRadius(60),
-                                          child: Image.network(
-                                              "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
-                                              fit: BoxFit.cover),
-                                        )),
-                                ),
-                              ),
-                              Positioned(
-                                right: 0,
-                                bottom: 0,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 1,
-                                        blurRadius: 3,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: IconButton(
-                                      onPressed: () {
-                                        showImageSelectionBottomSheet();
-                                      },
-                                      icon: Icon(
-                                        FontAwesomeIcons.camera,
-                                        color: Color(0xFF1C8892),
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+                          ClipOval(
+                            child: SizedBox.fromSize(
+                              size: Size.fromRadius(60),
+                              child: widget.nurseImage.isNotEmpty
+                                  ? ClipOval(
+                                      child: SizedBox.fromSize(
+                                      size: Size.fromRadius(60),
+                                      child: Image.network(widget.nurseImage,
+                                          fit: BoxFit.cover),
+                                    ))
+                                  : ClipOval(
+                                      child: SizedBox.fromSize(
+                                      size: Size.fromRadius(60),
+                                      child: Image.network(
+                                          "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
+                                          fit: BoxFit.cover),
+                                    )),
+                            ),
                           ),
                           SizedBox(
                             height: 25,
@@ -158,7 +134,8 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                           SizedBox(
                               height: 50,
                               child: TextFormField(
-                                controller: nurse_firstName,
+                                readOnly: true,
+                                initialValue: widget.nurseName,
                                 keyboardType: TextInputType.name,
                                 cursorColor: Color(0xFF1C8892),
                                 decoration: InputDecoration(
@@ -176,6 +153,9 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                 ),
+                                style: TextStyle(
+                                    color: Colors
+                                        .grey[600]), // Change text color here
                               )),
                           SizedBox(
                             height: 20,
@@ -183,7 +163,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                           SizedBox(
                               height: 50,
                               child: TextFormField(
-                                controller: nurse_lastName,
+                                initialValue: widget.nurse_lastName,
                                 cursorColor: Color(0xFF1C8892),
                                 keyboardType: TextInputType.name,
                                 decoration: InputDecoration(
@@ -201,6 +181,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                 ),
+                                style: TextStyle(color: Colors.grey[600]),
                               )),
                           SizedBox(
                             height: 20,
@@ -213,7 +194,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                   child: TextFormField(
                                     cursorColor: Color(0xFF1C8892),
                                     keyboardType: TextInputType.number,
-                                    controller: nurse_age,
+                                    initialValue: widget.nurse_age,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(20),
@@ -230,6 +211,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always,
                                     ),
+                                    style: TextStyle(color: Colors.grey[600]),
                                   ),
                                 ),
                               ),
@@ -239,12 +221,8 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                   height: 60,
                                   child: DropdownButtonFormField<String>(
                                     dropdownColor: Color(0xFF1C8892),
-                                    value: selectedGender,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        selectedGender = newValue;
-                                      });
-                                    },
+                                    value: widget.nurse_gender,
+                                    onChanged: null,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(20),
@@ -269,7 +247,9 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                             child: Text(
                                               value,
                                               style: TextStyle(
-                                                color: Colors.black,
+                                                color: Colors.grey[600],
+                                                fontSize:
+                                                    16, // Adjust the font size here
                                               ),
                                             ),
                                           ),
@@ -288,7 +268,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                             child: TextFormField(
                               cursorColor: Color(0xFF1C8892),
                               keyboardType: TextInputType.phone,
-                              controller: nurse_phoneNumber,
+                              initialValue: widget.nurse_phoneNumber,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -298,12 +278,12 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                       color: Color(0xFF1C8892), width: 2.0),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                // hintText: 'First Name',
                                 labelText: "Nurse phone number",
                                 labelStyle: TextStyle(color: Color(0xFF1C8892)),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                               ),
+                              style: TextStyle(color: Colors.grey[600]),
                             ),
                           ),
                           SizedBox(
@@ -313,14 +293,8 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                             height: 60,
                             child: DropdownButtonFormField<String>(
                               dropdownColor: Color(0xFF1C8892),
-                              value: nurseSpecialization,
-                              onChanged: (newValue) {
-                                setState(
-                                  () {
-                                    nurseSpecialization = newValue;
-                                  },
-                                );
-                              },
+                              value: widget.nurseSpecialization,
+                              onChanged: null,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -353,7 +327,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                       child: Text(
                                         value,
                                         style: TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.grey[600],
                                         ),
                                       ),
                                     ),
@@ -369,7 +343,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                             child: TextFormField(
                               cursorColor: Color(0xFF1C8892),
                               keyboardType: TextInputType.number,
-                              controller: nurse_yearsExperience,
+                              initialValue: widget.nurse_yearsExperience,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -384,6 +358,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                               ),
+                              style: TextStyle(color: Colors.grey[600]),
                             ),
                           ),
                           SizedBox(
@@ -394,7 +369,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                             child: TextFormField(
                               cursorColor: Color(0xFF1C8892),
                               keyboardType: TextInputType.text,
-                              controller: nurse_yearsQualifications,
+                              initialValue: widget.nurse_qualifications,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -409,6 +384,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                               ),
+                              style: TextStyle(color: Colors.grey[600]),
                             ),
                           ),
                         ],
@@ -421,30 +397,36 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
           ],
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
-          child: ElevatedButton(
-            onPressed: () {
-              submitNurseData();
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: MediaQuery.of(context).size.width / 2.5,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    side: BorderSide(color: Colors.transparent),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Color(0xFF1C8892), // Button background color
+                ),
+              ),
+              onPressed: () {
+                submitNurseData();
+                updateStatus(1);
+
+                Navigator.of(context)
+                  ..pop()
+                  ..pop()
+                  ..pop();
+              },
               child: Text(
-                "Create profile",
+                "accept ".toUpperCase() + widget.nurseName.toUpperCase(),
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  side: BorderSide(color: Colors.transparent),
-                ),
-              ),
-              backgroundColor: MaterialStateProperty.all<Color>(
-                Color(0xFF1C8892),
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -453,117 +435,51 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
     );
   }
 
+
+  
+
   Future<void> submitNurseData() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
-      // Generate a unique ID for the nurse document
-      var nurseId = db.collection('Nurses').doc().id;
 
-      // Create a document in the 'Nurses' collection with the generated ID
-      await db.collection('Nurses').doc(nurseId).set({
-        'nurseId': nurseId,
-        'first_name': nurse_firstName.text.trim(),
-        'last_name': nurse_lastName.text.trim(),
-        'age': nurse_age.text.trim(),
-        'phone_number': nurse_phoneNumber.text.trim(),
-        'years_experience': nurse_yearsExperience.text.trim(),
-        'qualifications': nurse_yearsQualifications.text.trim(),
-        'gender': selectedGender,
-        'centerId': widget.centerId,
-        'nurseSpecialization': nurseSpecialization,
+      await db.collection('form_request').doc(widget.formRequestId).update({
+        "nurse_FirstName": widget.nurseName,
+        "nurse_LastName": widget.nurse_lastName,
+        "nurse_age": widget.nurse_age,
+        "nurse_Gender": widget.nurse_gender,
+        "nurse_phoneNumber": widget.nurse_phoneNumber,
+        "nurse_specialization": widget.nurseSpecialization,
+        "nurse_yearsExperience": widget.nurse_yearsExperience,
+        "nurse_Qualification": widget.nurse_qualifications
       });
 
-      // Show a success message or perform actions after the data is successfully saved
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Nurse profile created successfully!",
-            style: TextStyle(
-              fontSize: 17,
-              fontFamily: GoogleFonts.poppins().fontFamily,
-            ),
-          ),
-        ),
-      );
-      StoreImg().uploadNurseProfile(
-          file: nurserImage!,
-          nurseId: nurseId,
-          storagePath: "nurseProfileImage");
-
-      print(nurseId);
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     backgroundColor: Color(0xFF1C8892),
+      //     behavior: SnackBarBehavior.floating,
+      //     content: Text(
+      //       "Nurse profile created successfully!",
+      //       style: TextStyle(
+      //         fontSize: 17,
+      //         fontFamily: GoogleFonts.poppins().fontFamily,
+      //       ),
+      //     ),
+      //   ),
+      // );
     } catch (e) {
-      // Handle errors, for instance, show an error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Failed to create nurse profile: $e",
-            style: TextStyle(
-              fontSize: 17,
-              fontFamily: GoogleFonts.poppins().fontFamily,
-            ),
-          ),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     backgroundColor: Colors.red,
+      //     behavior: SnackBarBehavior.floating,
+      //     content: Text(
+      //       "Failed to create nurse profile: $e",
+      //       style: TextStyle(
+      //         fontSize: 17,
+      //         fontFamily: GoogleFonts.poppins().fontFamily,
+      //       ),
+      //     ),
+      //   ),
+      // );
     }
-  }
-
-  void showImageSelectionBottomSheet() {
-    showModalBottomSheet<void>(
-      showDragHandle: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 130,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                          backgroundColor: Colors.grey[300],
-                          child: Icon(FontAwesomeIcons.image,
-                              color: Colors.black)),
-                      SizedBox(width: 10),
-                      Text("Choose from library",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    selectNurseImage(galleryOrCamera: ImageSource.gallery);
-                  },
-                ),
-                SizedBox(height: 15),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                          backgroundColor: Colors.grey[300],
-                          child: Icon(FontAwesomeIcons.camera,
-                              color: Colors.black)),
-                      SizedBox(width: 10),
-                      Text("Take photo",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    selectNurseImage(galleryOrCamera: ImageSource.camera);
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 }

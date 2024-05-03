@@ -77,92 +77,90 @@ class _CenterRequestsHistoryState extends State<CenterRequestsHistory> {
                         doc.data() as Map<String, dynamic>);
                   }).toList();
 
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: patientRequests.length,
-                      itemBuilder: (context, index) {
-                        final patient = patientRequests[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PatientDetails(
-                                    patientFirstName: patient.firstName,
-                                    patientLastName: patient.lastName,
-                                    patientAge: patient.age,
-                                    patientGender: patient.gender,
-                                    patientPhoneNumber: patient.phoneNumber,
-                                    patientAddress: patient.address,
-                                    patientAllergies: patient.allergies,
-                                    patientSurgeriesHistory:
-                                        patient.surgeriesHistory,
-                                    patientIsWalk: patient.isWalk,
-                                    patientNeedNurse: patient.needNurse,
-                                    centerId: patient.centerId,
-                                    total_amount: patient.total_amount,
-                                    payment_method: patient.payment_method,
-                                    status: patient.status,
-                                    formRequestId: patient.formRequestId,
-                                    isTheListRequest: false,
-                                  ),
+                  return ListView.builder(
+                    itemCount: patientRequests.length,
+                    itemBuilder: (context, index) {
+                      final patient = patientRequests[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PatientDetails(
+                                  patientFirstName: patient.firstName,
+                                  patientLastName: patient.lastName,
+                                  patientAge: patient.age,
+                                  patientGender: patient.gender,
+                                  patientPhoneNumber: patient.phoneNumber,
+                                  patientAddress: patient.address,
+                                  patientAllergies: patient.allergies,
+                                  patientSurgeriesHistory:
+                                      patient.surgeriesHistory,
+                                  patientIsWalk: patient.isWalk,
+                                  patientNeedNurse: patient.needNurse,
+                                  centerId: patient.centerId,
+                                  total_amount: patient.total_amount,
+                                  payment_method: patient.payment_method,
+                                  status: patient.status,
+                                  formRequestId: patient.formRequestId,
+                                  isTheListRequest: false,
                                 ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 4,
-                                    blurRadius: 7,
-                                    offset: Offset(0, 1),
-                                  ),
-                                ],
                               ),
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height / 6.5,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "${patient.firstName} ${patient.lastName}",
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Expanded(child: Container()),
-                                        Text(
-                                          patient.status == 1
-                                              ? "Accepted"
-                                              : "Rejected",
-                                          style: TextStyle(
-                                              color: patient.status == 1
-                                                  ? Color(0xFF1C8892)
-                                                  : Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 4,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 1),
                                 ),
+                              ],
+                            ),
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height / 6.5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "${patient.firstName} ${patient.lastName}",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Column(
+                                    children: [
+                                      Expanded(child: Container()),
+                                      Text(
+                                        patient.status == 1
+                                            ? "Accepted"
+                                            : "Rejected",
+                                        style: TextStyle(
+                                            color: patient.status == 1
+                                                ? Color(0xFF1C8892)
+                                                : Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   );
                 },
               );

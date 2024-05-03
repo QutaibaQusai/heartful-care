@@ -12,127 +12,128 @@ class CenterMyNurses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Color(0xFF1C8892),
-          elevation: 0,
-          title: Text(
-            "Nurses List",
-            style: TextStyle(color: Colors.white),
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(
-              FontAwesomeIcons.chevronLeft,
-              color: Colors.white,
-            ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Color(0xFF1C8892),
+        elevation: 0,
+        title: Text(
+          "Nurses List",
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            FontAwesomeIcons.chevronLeft,
+            color: Colors.white,
           ),
         ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection("Nurses")
-              .where("centerId", isEqualTo: centerId)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            }
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("Nurses")
+            .where("centerId", isEqualTo: centerId)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-            List<Nurses> nurses = snapshot.data!.docs
-                .map(
-                    (doc) => Nurses.fromMap(doc.data() as Map<String, dynamic>))
-                .toList();
+          List<Nurses> nurses = snapshot.data!.docs
+              .map((doc) => Nurses.fromMap(doc.data() as Map<String, dynamic>))
+              .toList();
 
-            return ListView.builder(
-              itemCount: nurses.length,
-              itemBuilder: (context, index) {
-                final nurse = nurses[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 4,
-                            blurRadius: 7,
-                            offset: Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height / 6.5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              width: MediaQuery.of(context).size.width / 3,
-                              height: MediaQuery.of(context).size.height,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 4,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 0),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: nurse.nurseImage.isNotEmpty
-                                  ? Image.network(
-                                      nurse.nurseImage,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.network(
-                                      "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  nurse.nurseSpecialization,
-                                  style: TextStyle(color: Colors.grey[500]),
-                                ),
-                                Text(
-                                  '${nurse.nurse_yearsExperience} years of Experience',
+          return ListView.builder(
+            itemCount: nurses.length,
+            itemBuilder: (context, index) {
+              final nurse = nurses[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () {
+                    
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 4,
+                          blurRadius: 7,
+                          offset: Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 6.5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            width: MediaQuery.of(context).size.width / 3,
+                            height: MediaQuery.of(context).size.height,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 4,
+                                  blurRadius: 10,
+                                  offset: Offset(0, 0),
                                 ),
                               ],
-                            )
-                          ],
-                        ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: nurse.nurseImage.isNotEmpty
+                                ? Image.network(
+                                    nurse.nurseImage,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                nurse.nurseSpecialization,
+                                style: TextStyle(color: Colors.grey[500]),
+                              ),
+                              Text(
+                                '${nurse.nurse_yearsExperience} years of Experience',
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ),
-                );
-              },
-            );
-          },
-        ));
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }
