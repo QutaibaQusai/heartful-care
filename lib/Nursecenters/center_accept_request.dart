@@ -8,7 +8,6 @@ import 'package:test/model/nursers.dart';
 
 class CenterAcceptRequest extends StatefulWidget {
   final String centerId;
-
   final String formRequestId;
 
   const CenterAcceptRequest(
@@ -46,16 +45,12 @@ class _CenterAcceptRequestState extends State<CenterAcceptRequest> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               Text(
                 "Choose the appropriate nurse:",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
@@ -66,7 +61,6 @@ class _CenterAcceptRequestState extends State<CenterAcceptRequest> {
                     if (snapshot.hasError) {
                       return Center(child: Text("Error: ${snapshot.error}"));
                     }
-
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
@@ -126,60 +120,54 @@ class _CenterAcceptRequestState extends State<CenterAcceptRequest> {
                                     Container(
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                       width:
-                                          MediaQuery.of(context).size.width / 3,
+                                          MediaQuery.of(context).size.width / 4,
                                       height:
                                           MediaQuery.of(context).size.height,
                                       decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 4,
-                                            blurRadius: 10,
-                                            offset: Offset(0, 0),
-                                          ),
-                                        ],
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: nurse.nurseImage.isNotEmpty
-                                          ? Image.network(
-                                              nurse.nurseImage,
-                                              fit: BoxFit.cover,
-                                            )
+                                          ? Image.network(nurse.nurseImage,
+                                              fit: BoxFit.cover)
                                           : Image.network(
                                               "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
                                               fit: BoxFit.cover,
                                             ),
                                     ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
+                                    SizedBox(width: 15),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Flexible(
+                                            child: Container(
+                                              child: Text(
+                                                "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines:
+                                                    1, // Limiting to 1 line
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        Flexible(
-                                          child: Text(
-                                            nurse.nurseSpecialization,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Colors.grey[500]),
+                                          Flexible(
+                                            child: Text(
+                                              nurse.nurseSpecialization,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.grey[500]),
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          '${nurse.nurse_yearsExperience} years of Experience',
-                                        ),
-                                      ],
+                                          Text(
+                                              '${nurse.nurse_yearsExperience} years of Experience'),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),

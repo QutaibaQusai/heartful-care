@@ -56,9 +56,7 @@ class CenterMyNurses extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
-                  onTap: () {
-                    
-                  },
+                  onTap: () {},
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -80,7 +78,7 @@ class CenterMyNurses extends StatelessWidget {
                         children: [
                           Container(
                             clipBehavior: Clip.antiAliasWithSaveLayer,
-                            width: MediaQuery.of(context).size.width / 3,
+                            width: MediaQuery.of(context).size.width / 4,
                             height: MediaQuery.of(context).size.height,
                             decoration: BoxDecoration(
                               boxShadow: [
@@ -110,10 +108,16 @@ class CenterMyNurses extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              Flexible(
+                                child: Container(
+                                  child: Text(
+                                    "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               ),
                               Text(
                                 nurse.nurseSpecialization,

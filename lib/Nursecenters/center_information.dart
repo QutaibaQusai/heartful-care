@@ -20,7 +20,6 @@ class CenterInformation extends StatefulWidget {
 
 class _CenterInformationState extends State<CenterInformation> {
   bool isEditing = false;
-  bool receiveOffers = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController centerNameController = TextEditingController();
   TextEditingController centerContactNumber = TextEditingController();
@@ -545,28 +544,6 @@ class _CenterInformationState extends State<CenterInformation> {
                     //
                     //   return null; // Validation passed
                     // },
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: receiveOffers,
-                        onChanged: isEditing
-                            ? (value) {
-                                setState(() {
-                                  receiveOffers = value!;
-                                });
-                              }
-                            : null,
-                        activeColor: Color(0xFF1C8892),
-                      ),
-                      Flexible(
-                        child: Text(
-                          'By registering, the nurse center agrees the apps terms and conditions.',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ),
-                    ],
                   ),
                   SizedBox(
                     height: 25,

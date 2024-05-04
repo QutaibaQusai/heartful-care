@@ -74,7 +74,6 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
           }
 
           selectedGender = userData['Gender'] ?? "";
-          receiveOffers = userData['ReceiveOffers'] ?? false;
           userProfile = userData['users_profile'];
         });
       }
@@ -86,7 +85,6 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
   bool isEditing = false;
   DateTime? selectedDate;
   String? selectedGender;
-  bool receiveOffers = false;
   final fullNameTextController = TextEditingController();
   final phoneNumberTextController = TextEditingController();
   final nationalIdTextController = TextEditingController();
@@ -452,25 +450,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: receiveOffers,
-                        onChanged: isEditing
-                            ? (value) {
-                                setState(() {
-                                  receiveOffers = value!;
-                                });
-                              }
-                            : null,
-                        activeColor: Color(0xFF1C8892),
-                      ),
-                      Text(
-                        'Yes, I want to receive offers and discounts',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
-                  ),
+
                   SizedBox(height: 16),
                   Container(
                     width: double.infinity,
