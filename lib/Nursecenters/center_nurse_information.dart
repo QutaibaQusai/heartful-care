@@ -15,18 +15,19 @@ class CenterNurseInformation extends StatefulWidget {
   final String nurseImage;
   final String formRequestId;
 
-  const CenterNurseInformation(
-      {super.key,
-      required this.nurseName,
-      required this.formRequestId,
-      required this.nurse_lastName,
-      required this.nurse_age,
-      required this.nurse_gender,
-      required this.nurse_phoneNumber,
-      required this.nurse_yearsExperience,
-      required this.nurse_qualifications,
-      required this.nurseSpecialization,
-      required this.nurseImage});
+  const CenterNurseInformation({
+    super.key,
+    required this.nurseName,
+    required this.formRequestId,
+    required this.nurse_lastName,
+    required this.nurse_age,
+    required this.nurse_gender,
+    required this.nurse_phoneNumber,
+    required this.nurse_yearsExperience,
+    required this.nurse_qualifications,
+    required this.nurseSpecialization,
+    required this.nurseImage,
+  });
 
   @override
   State<CenterNurseInformation> createState() => _JustTestState();
@@ -435,9 +436,6 @@ class _JustTestState extends State<CenterNurseInformation> {
     );
   }
 
-
-  
-
   Future<void> submitNurseData() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
@@ -450,7 +448,8 @@ class _JustTestState extends State<CenterNurseInformation> {
         "nurse_phoneNumber": widget.nurse_phoneNumber,
         "nurse_specialization": widget.nurseSpecialization,
         "nurse_yearsExperience": widget.nurse_yearsExperience,
-        "nurse_Qualification": widget.nurse_qualifications
+        "nurse_Qualification": widget.nurse_qualifications,
+        "nurseImage": widget.nurseImage
       });
 
       // ScaffoldMessenger.of(context).showSnackBar(

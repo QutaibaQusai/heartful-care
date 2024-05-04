@@ -49,13 +49,13 @@ class _CenterHomePageState extends State<CenterHomePage> {
 
   void fetchCenterData() async {
     try {
-      var supplierDoc = await FirebaseFirestore.instance
+      var centerDoc = await FirebaseFirestore.instance
           .collection('centers')
           .where('Email', isEqualTo: widget.centerEmail)
           .get();
 
-      if (supplierDoc.docs.isNotEmpty) {
-        var userData = supplierDoc.docs[0].data();
+      if (centerDoc.docs.isNotEmpty) {
+        var userData = centerDoc.docs[0].data();
 
         setState(
           () {
@@ -75,7 +75,10 @@ class _CenterHomePageState extends State<CenterHomePage> {
         backgroundColor: Color(0xFFD1E7E9),
         appBar: AppBar(
           backgroundColor: Color(0xFFD1E7E9),
-          title: Text("Requests"),
+          title: Text(
+            "Requests",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           centerTitle: true,
           automaticallyImplyLeading: false,
           actions: [

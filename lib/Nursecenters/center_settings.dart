@@ -12,6 +12,7 @@ import 'package:test/Nursecenters/center_login.dart';
 class CenterSettings extends StatefulWidget {
   final String centerEmail;
   final String centerId;
+
   const CenterSettings({
     super.key,
     required this.centerEmail,
@@ -33,13 +34,13 @@ class _CenterSettingsState extends State<CenterSettings> {
 
   void fetchCenterData() async {
     try {
-      var supplierDoc = await FirebaseFirestore.instance
+      var centerDoc = await FirebaseFirestore.instance
           .collection('centers')
           .where('Email', isEqualTo: widget.centerEmail)
           .get();
 
-      if (supplierDoc.docs.isNotEmpty) {
-        var userData = supplierDoc.docs[0].data();
+      if (centerDoc.docs.isNotEmpty) {
+        var userData = centerDoc.docs[0].data();
 
         setState(
           () {

@@ -46,7 +46,6 @@ class _RequestResultState extends State<RequestResult> {
             children: [
               ColorfulBackground(
                 duration: Duration(milliseconds: 1000),
-
                 backgroundColors: [
                   const Color(0xFF1C8892),
                   const Color.fromARGB(255, 255, 255, 255),
@@ -54,7 +53,6 @@ class _RequestResultState extends State<RequestResult> {
                   const Color(0xFF1C8892),
                   const Color.fromARGB(255, 255, 255, 255),
                 ],
-                // A child widget
               ),
               Center(
                 child: StreamBuilder<DocumentSnapshot>(
@@ -86,15 +84,31 @@ class _RequestResultState extends State<RequestResult> {
                           ],
                         );
                       } else if (status == 1) {
+                        final nurseImage =
+                            data['nurseImage'] as String? ?? 'Unknown';
+
+                        final nurseFirstName =
+                            data['nurse_FirstName'] as String? ?? 'Unknown';
+                        final nurseLastName =
+                            data['nurse_LastName'] as String? ?? 'Unknown';
+
+                        final nursePhoneNumber =
+                            data['nurse_phoneNumber'] as String? ?? 'Unknown';
+
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              "accept request".toUpperCase(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
+                            Text(nurseFirstName),
+                            Text(nurseLastName),
+
+                            Text(nursePhoneNumber),
+
+                            // Text(
+                            //   "accept request " + nurseName.toUpperCase(),
+                            //   textAlign: TextAlign.center,
+                            //   style: TextStyle(
+                            //       fontSize: 20, fontWeight: FontWeight.bold),
+                            // ),
                           ],
                         );
                       } else {

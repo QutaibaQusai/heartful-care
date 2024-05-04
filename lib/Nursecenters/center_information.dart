@@ -114,7 +114,10 @@ class _CenterInformationState extends State<CenterInformation> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Center Information"),
+          title: Text(
+            "Center Information",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           centerTitle: true,
           leading: IconButton(
             onPressed: () {

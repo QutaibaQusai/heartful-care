@@ -211,23 +211,21 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                               Column(
                                 children: [
                                   IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Subscribe(
-                                                  pricePreMonth:
-                                                      widget.pricePreMonth,
-                                                  pricePersixMonths:
-                                                      widget.pricePersixMonths,
-                                                  pricePerthreeMonths: widget
-                                                      .pricePerthreeMonths,
-                                                )),
-                                      );
-                                    },
-                                    icon: Icon(Icons.new_releases_outlined,
-                                        color: Color(0xFF1C8892)),
-                                  ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Subscribe(
+                                                    pricePreMonth:
+                                                        widget.pricePreMonth,
+                                                    pricePersixMonths: widget
+                                                        .pricePersixMonths,
+                                                    pricePerthreeMonths: widget
+                                                        .pricePerthreeMonths,
+                                                  )),
+                                        );
+                                      },
+                                      icon: Icon(Icons.abc)),
                                   Text(
                                     'Subscribe',
                                     style: TextStyle(color: Colors.black),
