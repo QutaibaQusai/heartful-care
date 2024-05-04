@@ -161,12 +161,14 @@ class _CenterAcceptRequestState extends State<CenterAcceptRequest> {
                                       children: [
                                         Text(
                                           "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
                                           nurse.nurseSpecialization,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: Colors.grey[500]),
                                         ),

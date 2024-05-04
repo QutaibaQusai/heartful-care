@@ -98,17 +98,33 @@ class _RequestResultState extends State<RequestResult> {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(nurseFirstName),
-                            Text(nurseLastName),
-
-                            Text(nursePhoneNumber),
-
-                            // Text(
-                            //   "accept request " + nurseName.toUpperCase(),
-                            //   textAlign: TextAlign.center,
-                            //   style: TextStyle(
-                            //       fontSize: 20, fontWeight: FontWeight.bold),
-                            // ),
+                            ClipOval(
+                              child: Image.network(
+                                nurseImage,
+                                width:
+                                    150, 
+                                height: 150,
+                                fit: BoxFit
+                                    .cover, 
+                              ),
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Text(
+                                "Your request has been" +
+                                    " accepted ".toUpperCase() +
+                                    "we assigned " +
+                                    nurseFirstName +
+                                    " " +
+                                    nurseLastName +
+                                    " " +
+                                    "to be your nurse for today \n" +
+                                    "Call: " +
+                                    nursePhoneNumber,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold))
                           ],
                         );
                       } else {
