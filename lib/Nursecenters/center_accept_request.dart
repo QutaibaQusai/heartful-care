@@ -159,18 +159,22 @@ class _CenterAcceptRequestState extends State<CenterAcceptRequest> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
+                                        Flexible(
+                                          child: Text(
+                                            "Rn. ${nurse.nurse_firstName} ${nurse.nurse_lastName}",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
-                                        Text(
-                                          nurse.nurseSpecialization,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: Colors.grey[500]),
+                                        Flexible(
+                                          child: Text(
+                                            nurse.nurseSpecialization,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.grey[500]),
+                                          ),
                                         ),
                                         Text(
                                           '${nurse.nurse_yearsExperience} years of Experience',
