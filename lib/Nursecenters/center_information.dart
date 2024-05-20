@@ -241,33 +241,34 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Enter center name',
                     ),
-                    // validator: (value) {
-                    //   if (value!.isEmpty ||
-                    //       !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                    //     return "Please enter your name correctly ";
-                    //   } else {
-                    //     return null;
-                    //   }
-                    // },
+                    validator: (value) {
+                      if (value!.isEmpty ||
+                          !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                        return "Please enter your name correctly ";
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
+                    keyboardType: TextInputType.phone,
                     enabled: isEditing,
                     controller: centerContactNumber,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Phone Number',
                     ),
-                    // validator: (value) {
-                    //   if (value!.isEmpty ||
-                    //       !RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
-                    //           .hasMatch(value) ||
-                    //       value.length != 10) {
-                    //     return "Please enter your mobile phone number correctly ";
-                    //   } else {
-                    //     return null;
-                    //   }
-                    // },
+                    validator: (value) {
+                      if (value!.isEmpty ||
+                          !RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
+                              .hasMatch(value) ||
+                          value.length != 10) {
+                        return "Please enter your mobile phone number correctly ";
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -279,17 +280,17 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Email Address',
                     ),
-                    // validator: (value) {
-                    //   if (value!.isEmpty) {
-                    //     return "Please enter your email address";
-                    //   } else if (!RegExp(
-                    //           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    //       .hasMatch(value)) {
-                    //     return "Please enter a valid email address";
-                    //   } else {
-                    //     return null;
-                    //   }
-                    // },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your email address";
+                      } else if (!RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value)) {
+                        return "Please enter a valid email address";
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 25,
@@ -306,13 +307,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Address 1',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Address is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Address is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -347,17 +348,17 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Business Hours',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Please enter operating hours';
-                    //   }
-                    //
-                    //   if (!isValidOperatingHours12HourFormat(value)) {
-                    //     return 'Invalid operating hours format. Please enter in hh:mm AM/PM - hh:mm AM/PM format';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter operating hours';
+                      }
+
+                      if (!isValidOperatingHours12HourFormat(value)) {
+                        return 'Invalid operating hours format. Please enter in hh:mm AM/PM - hh:mm AM/PM format';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -371,11 +372,11 @@ class _CenterInformationState extends State<CenterInformation> {
                     //   if (value == null || value.isEmpty) {
                     //     return 'Please enter operating hours';
                     //   }
-                    //
+
                     //   if (!isValidOperatingHours12HourFormat(value)) {
                     //     return 'Invalid operating hours format. Please enter in hh:mm AM/PM - hh:mm AM/PM format';
                     //   }
-                    //
+
                     //   return null; // Validation passed
                     // },
                   ),
@@ -394,13 +395,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Name',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Name is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Name is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -410,13 +411,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Position',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Position is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Position is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(
                     height: 25,
@@ -433,13 +434,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Description',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Description is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Description is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -449,13 +450,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Website',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Website is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Website is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(
                     height: 25,
@@ -473,13 +474,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Checkup Price',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Description is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Description is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -489,13 +490,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Price Per Day',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Description is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Description is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -505,13 +506,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Price Per one Month',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Website is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Website is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -521,13 +522,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Price Per three Months',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Website is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Website is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
@@ -537,13 +538,13 @@ class _CenterInformationState extends State<CenterInformation> {
                       border: OutlineInputBorder(),
                       hintText: 'Price Per six Months',
                     ),
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Website is required';
-                    //   }
-                    //
-                    //   return null; // Validation passed
-                    // },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Website is required';
+                      }
+
+                      return null; // Validation passed
+                    },
                   ),
                   SizedBox(
                     height: 25,
@@ -570,10 +571,9 @@ class _CenterInformationState extends State<CenterInformation> {
                                       actions: [
                                         TextButton(
                                           onPressed: () async {
-                                            _submitUserData();
+                                            _submitCenterData();
                                             saveProfileImageCenter();
                                             Navigator.of(context).pop();
-                                            // print(widget.centerEmail);
                                           },
                                           child: Text(
                                             'Yes',
@@ -633,12 +633,11 @@ class _CenterInformationState extends State<CenterInformation> {
     return regex.hasMatch(value);
   }
 
-  Future<void> _submitUserData() async {
+  Future<void> _submitCenterData() async {
     try {
       CollectionReference centers =
           FirebaseFirestore.instance.collection('centers');
 
-      // Find the user document
       var querySnapshot =
           await centers.where("Email", isEqualTo: widget.centerEmail).get();
 
@@ -668,10 +667,11 @@ class _CenterInformationState extends State<CenterInformation> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            // duration: Duration(microseconds: 30),
             backgroundColor: Color(0xFF1C8892),
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'User data updated successfully!',
+              'Your Center updated successfully!',
               style: TextStyle(
                 fontSize: 17,
               ),
@@ -684,7 +684,7 @@ class _CenterInformationState extends State<CenterInformation> {
             backgroundColor: Color(0xFF1C8892),
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'User not found',
+              'Something went wrong',
               style: TextStyle(
                 fontSize: 17,
               ),
@@ -692,6 +692,7 @@ class _CenterInformationState extends State<CenterInformation> {
           ),
         );
       }
+      Navigator.of(context).pop();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

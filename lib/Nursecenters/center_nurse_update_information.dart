@@ -1,45 +1,89 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test/utils/pickImage.dart';
 import 'package:test/utils/storeImg%20.dart';
 
-class CenterAddNurse extends StatefulWidget {
-  final String centerId;
-
-  const CenterAddNurse({
+class CenterNurseUpdateInformation extends StatefulWidget {
+  final String nurseFirstName;
+  final String nurseLastName;
+  final String nurseAge;
+  final String nurseGender;
+  final String nursePhoneNumber;
+  final String nurseSpecialization;
+  final String nurseExpedience;
+  final String nurseQualification;
+  final String nurseId;
+  final String nurseImage;
+  const CenterNurseUpdateInformation({
     super.key,
-    required this.centerId,
+    required this.nurseFirstName,
+    required this.nurseLastName,
+    required this.nurseAge,
+    required this.nurseGender,
+    required this.nursePhoneNumber,
+    required this.nurseSpecialization,
+    required this.nurseExpedience,
+    required this.nurseQualification,
+    required this.nurseId,
+    required this.nurseImage,
   });
 
   @override
-  State<CenterAddNurse> createState() => _CenterAddNurseState();
+  State<CenterNurseUpdateInformation> createState() =>
+      _CenterNurseUpdateInformationState();
 }
 
-class _CenterAddNurseState extends State<CenterAddNurse> {
+class _CenterNurseUpdateInformationState
+    extends State<CenterNurseUpdateInformation> {
   // gender drop down menu
   String? selectedGender;
   String? nurseSpecialization;
-  // Nurse Controllers
-  TextEditingController nurse_firstName = TextEditingController();
-  TextEditingController nurse_lastName = TextEditingController();
-  TextEditingController nurse_age = TextEditingController();
-  TextEditingController nurse_phoneNumber = TextEditingController();
-  TextEditingController nurse_yearsExperience = TextEditingController();
-  TextEditingController nurse_yearsQualifications = TextEditingController();
   Uint8List? nurserImage;
-
   void selectNurseImage({required ImageSource galleryOrCamera}) async {
     Uint8List img = await pickImage(galleryOrCamera);
     setState(() {
       nurserImage = img;
     });
+  }
+
+  // Define TextEditingControllers with initial values
+  late TextEditingController nurse_firstName;
+  late TextEditingController nurse_lastName;
+  late TextEditingController nurse_age;
+  late TextEditingController nurse_phoneNumber;
+  late TextEditingController nurse_yearsExperience;
+  late TextEditingController nurse_yearsQualifications;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the controllers with data from the widget fields
+    nurse_firstName = TextEditingController(text: widget.nurseFirstName);
+    nurse_lastName = TextEditingController(text: widget.nurseLastName);
+    nurse_age = TextEditingController(text: widget.nurseAge);
+    nurse_phoneNumber = TextEditingController(text: widget.nursePhoneNumber);
+    nurse_yearsExperience = TextEditingController(text: widget.nurseExpedience);
+    nurse_yearsQualifications =
+        TextEditingController(text: widget.nurseQualification);
+    selectedGender = widget.nurseGender;
+    nurseSpecialization = widget.nurseSpecialization;
+  }
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the screen is disposed
+    nurse_firstName.dispose();
+    nurse_lastName.dispose();
+    nurse_age.dispose();
+    nurse_phoneNumber.dispose();
+    nurse_yearsExperience.dispose();
+    nurse_yearsQualifications.dispose();
+    super.dispose();
   }
 
   @override
@@ -50,7 +94,7 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
         appBar: AppBar(
           backgroundColor: Color(0xFF1C8892),
           title: Text(
-            "Create nurse profile",
+            "Update nurse profile",
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
@@ -111,13 +155,23 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
                                   child: nurserImage != null
                                       ? Image.memory(nurserImage!,
                                           fit: BoxFit.cover)
-                                      : ClipOval(
-                                          child: SizedBox.fromSize(
-                                          size: Size.fromRadius(60),
-                                          child: Image.network(
-                                              "https://online-learning-college.com/wp-content/uploads/2022/05/How-to-Become-a-Nurse-.jpg",
-                                              fit: BoxFit.cover),
-                                        )),
+                                      : widget.nurseImage.isNotEmpty
+                                          ? ClipOval(
+                                              child: SizedBox.fromSize(
+                                                size: Size.fromRadius(60),
+                                                child: Image.network(
+                                                    widget.nurseImage,
+                                                    fit: BoxFit.cover),
+                                              ),
+                                            )
+                                          : ClipOval(
+                                              child: SizedBox.fromSize(
+                                                size: Size.fromRadius(60),
+                                                child: Image.network(
+                                                    "https://img.freepik.com/premium-photo/portrait-two-smiling-medical-workers_53419-5671.jpg",
+                                                    fit: BoxFit.cover),
+                                              ),
+                                            ),
                                 ),
                               ),
                               Positioned(
@@ -424,12 +478,13 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
           padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
           child: ElevatedButton(
             onPressed: () {
-              submitNurseData();
+              // submitNurseData();
+              submitUpdatedNurseData();
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Create profile",
+                "Update profile",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -451,63 +506,6 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
         ),
       ),
     );
-  }
-
-  Future<void> submitNurseData() async {
-    try {
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      // Generate a unique ID for the nurse document
-      var nurseId = db.collection('Nurses').doc().id;
-
-      // Create a document in the 'Nurses' collection with the generated ID
-      await db.collection('Nurses').doc(nurseId).set({
-        'nurseId': nurseId,
-        'first_name': nurse_firstName.text.trim(),
-        'last_name': nurse_lastName.text.trim(),
-        'age': nurse_age.text.trim(),
-        'phone_number': nurse_phoneNumber.text.trim(),
-        'years_experience': nurse_yearsExperience.text.trim(),
-        'qualifications': nurse_yearsQualifications.text.trim(),
-        'gender': selectedGender,
-        'centerId': widget.centerId,
-        'nurseSpecialization': nurseSpecialization,
-      });
-
-      // Show a success message or perform actions after the data is successfully saved
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Nurse profile created successfully!",
-            style: TextStyle(
-              fontSize: 17,
-              fontFamily: GoogleFonts.poppins().fontFamily,
-            ),
-          ),
-        ),
-      );
-      StoreImg().uploadNurseProfile(
-          file: nurserImage!,
-          nurseId: nurseId,
-          storagePath: "nurseProfileImage");
-      Navigator.of(context).pop();
-    } catch (e) {
-      // Handle errors, for instance, show an error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Failed to create nurse profile: $e",
-            style: TextStyle(
-              fontSize: 17,
-              fontFamily: GoogleFonts.poppins().fontFamily,
-            ),
-          ),
-        ),
-      );
-    }
   }
 
   void showImageSelectionBottomSheet() {
@@ -564,5 +562,71 @@ class _CenterAddNurseState extends State<CenterAddNurse> {
         );
       },
     );
+  }
+
+  Future<void> submitUpdatedNurseData() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    String nurseId;
+
+    // Check if we are updating an existing nurse or creating a new one
+    if (widget.nurseId != null) {
+      nurseId = widget.nurseId; // Existing nurse ID passed through widget
+    } else {
+      // Generate a unique ID for a new nurse document
+      nurseId = db.collection('Nurses').doc().id;
+    }
+
+    try {
+      await db.collection('Nurses').doc(nurseId).update(
+        {
+          // Use trim() to clean the text inputs
+          'first_name': nurse_firstName.text.trim(),
+          'last_name': nurse_lastName.text.trim(),
+          'age': nurse_age.text.trim(),
+          'phone_number': nurse_phoneNumber.text.trim(),
+          'years_experience': nurse_yearsExperience.text.trim(),
+          'qualifications': nurse_yearsQualifications.text.trim(),
+          'gender': selectedGender,
+          'nurseSpecialization': nurseSpecialization,
+        },
+      );
+
+      // Handle image uploading if there's an image to upload
+      if (nurserImage != null) {
+        await StoreImg().uploadNurseProfile(
+            file: nurserImage!,
+            nurseId: nurseId,
+            storagePath: "nurseProfileImage");
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Nurse profile updated successfully!",
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+          ),
+        ),
+      );
+      Navigator.of(context).pop();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Failed to update nurse profile: $e",
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

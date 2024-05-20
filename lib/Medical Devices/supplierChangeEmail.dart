@@ -85,10 +85,10 @@ class _supplierChangeEmailState extends State<SupplierChangeEmail> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await MyFirebaseAuth().changeEmail(
-                          context: context,
-                          newEmail: newSupplierEmail.text,
-                          password: passwordSupplierController.text);
+                      // await MyFirebaseAuth().changeEmail(
+                      //     context: context,
+                      //     newEmail: newSupplierEmail.text,
+                      //     password: passwordSupplierController.text);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

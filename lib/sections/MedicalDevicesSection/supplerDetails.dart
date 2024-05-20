@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:test/model/devicesModel.dart';
-import 'package:test/sections/MedicalDevicesSection/deviceDetails.dart';
+import 'package:test/sections/MedicalDevicesSection/supplierDeviceDetails.dart';
 import 'package:test/sections/MedicalDevicesSection/ratingSupp.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierinfo.dart';
 
@@ -20,7 +20,6 @@ class SupplierDetails extends StatefulWidget {
   final String userEmail;
   final String supplierCover;
   final String supplierId;
-
   final Function(double) onOverallRatingChanged;
   const SupplierDetails({
     Key? key,
@@ -44,29 +43,8 @@ class SupplierDetails extends StatefulWidget {
 
 class _SupplierDetailsState extends State<SupplierDetails> {
   double overallRating = 0.0;
-
-  ScrollController _scrollController = ScrollController();
-
-  static const String optionTopDevices = "Top Device";
-  static const String optionRent = "Rent device";
-  static const String optionBuy = "Buy device";
-
-  void _scrollToSection(String option) {
-    double offset = 0.0;
-    switch (option) {
-      case optionTopDevices:
-        offset = 0.0;
-        break;
-      case optionRent:
-        offset = MediaQuery.of(context).size.height / 3.3 + 50.0;
-        break;
-      case optionBuy:
-        offset = MediaQuery.of(context).size.height / 3.3 + 50.0 + 50.0;
-        break;
-    }
-    _scrollController.animateTo(offset,
-        duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-  }
+  List<bool> onClick = [true, false, false];
+  List<Devices> cart = [];
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +52,11 @@ class _SupplierDetailsState extends State<SupplierDetails> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          title: Text(
+            widget.name,
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
           backgroundColor: Color(0xFF1C8892),
           leading: IconButton(
             onPressed: () {
@@ -95,7 +78,6 @@ class _SupplierDetailsState extends State<SupplierDetails> {
           ],
         ),
         body: SingleChildScrollView(
-          controller: _scrollController,
           child: Column(
             children: [
               Container(
@@ -350,13 +332,90 @@ class _SupplierDetailsState extends State<SupplierDetails> {
               ),
               Container(
                 height: 35,
-                color: Color(0xFF1C8892),
+                // color: Color(0xFF1C8892),
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildOptionButton(optionTopDevices),
-                    _buildOptionButton(optionRent),
-                    _buildOptionButton(optionBuy),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    //  TextButton(onPressed: null, child: Text("Sort by")),
+                    TextButton(
+                      child: Text(
+                        "All Devices",
+                        style: onClick[0]
+                            ? TextStyle(color: Colors.white)
+                            : TextStyle(color: Colors.black),
+                      ),
+                      style: onClick[0]
+                          ? TextButton.styleFrom(
+                              backgroundColor: Color(0xFF1C8892),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            )
+                          : ButtonStyle(),
+                      onPressed: () {
+                        setState(() {
+                          onClick[0] = !onClick[0];
+                          onClick[1] = false;
+                          onClick[2] = false;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    TextButton(
+                      child: Text(
+                        "Buy Device",
+                        style: onClick[1]
+                            ? TextStyle(color: Colors.white)
+                            : TextStyle(color: Colors.black),
+                      ),
+                      style: onClick[1]
+                          ? TextButton.styleFrom(
+                              backgroundColor: Color(0xFF1C8892),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            )
+                          : ButtonStyle(),
+                      onPressed: () {
+                        setState(() {
+                          onClick[1] = !onClick[1];
+                          onClick[0] = false;
+                          onClick[2] = false;
+                        });
+                        // TODO
+                      },
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    TextButton(
+                      child: Text(
+                        "Rent Device",
+                        style: onClick[2]
+                            ? TextStyle(color: Colors.white)
+                            : TextStyle(color: Colors.black),
+                      ),
+                      style: onClick[2]
+                          ? TextButton.styleFrom(
+                              backgroundColor: Color(0xFF1C8892),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            )
+                          : ButtonStyle(),
+                      onPressed: () {
+                        setState(() {
+                          onClick[2] = !onClick[2];
+                          onClick[0] = false;
+                          onClick[1] = false;
+                        });
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -370,7 +429,9 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                 builder: (context, supplierSnapshot) {
                   if (supplierSnapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return CircularProgressIndicator(
+                      color: Color(0xFF1C8892),
+                    );
                   }
                   if (supplierSnapshot.hasError) {
                     return Text('Error: ${supplierSnapshot.error}');
@@ -407,121 +468,371 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                             child: GestureDetector(
                               child: Column(
                                 children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height:
-                                        MediaQuery.of(context).size.height / 6,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: double.infinity,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(13),
-                                            border: Border.all(
-                                              color: Colors.grey,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(13),
-                                            child: Image.network(
-                                              device.deviceImages[0],
+                                  onClick[0] == true
+                                      ? Column(
+                                          children: [
+                                            Container(
                                               width: double.infinity,
-                                              height: double.infinity,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            height: double.infinity,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  device.deviceName
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                    fontSize: 19,
-                                                    fontWeight: FontWeight.bold,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  6,
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    height: double.infinity,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            3,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              13),
+                                                      border: Border.all(
+                                                        color: Colors.grey,
+                                                        width: 1.0,
+                                                      ),
+                                                    ),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              13),
+                                                      child: Image.network(
+                                                        device.deviceImages[0],
+                                                        width: double.infinity,
+                                                        height: double.infinity,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Text(
-                                                  device.deviceDescription,
-                                                  overflow: TextOverflow.clip,
-                                                  maxLines: 3,
-                                                ),
-                                                Expanded(child: Container()),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: double.infinity,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            device.deviceName
+                                                                .toUpperCase(),
+                                                            style: TextStyle(
+                                                              fontSize: 19,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Text(
+                                                            device
+                                                                .deviceDescription,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .clip,
+                                                            maxLines: 3,
+                                                          ),
+                                                          Expanded(
+                                                              child:
+                                                                  Container()),
+                                                          device.deviceBuyPrice
+                                                                      .isNotEmpty &&
+                                                                  device
+                                                                      .deviceRent
+                                                                      .isNotEmpty
+                                                              ? Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        border:
+                                                                            Border(
+                                                                          right:
+                                                                              BorderSide(
+                                                                            color:
+                                                                                Colors.grey,
+                                                                            width:
+                                                                                1.0,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: const EdgeInsets
+                                                                            .only(
+                                                                            right:
+                                                                                10.0),
+                                                                        child: Text(
+                                                                            "${device.deviceBuyPrice}JD"),
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              10.0),
+                                                                      child: Text(
+                                                                          "Rent per week ${device.deviceRent}JD"),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              : device.deviceBuyPrice
+                                                                          .isNotEmpty &&
+                                                                      device
+                                                                          .deviceRent
+                                                                          .isEmpty
+                                                                  ? Text(
+                                                                      "Device Price: ${device.deviceBuyPrice}JD")
+                                                                  : Text(
+                                                                      "Rent per week ${device.deviceRent}JD"),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Divider(),
+                                          ],
+                                        )
+                                      : onClick[1] == true &&
+                                              device.deviceRent == ""
+                                          ? Column(
+                                              children: [
                                                 Container(
+                                                  width: double.infinity,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      6,
                                                   child: Row(
                                                     children: [
                                                       Container(
+                                                        height: double.infinity,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            3,
                                                         decoration:
                                                             BoxDecoration(
-                                                          border: Border(
-                                                            right: BorderSide(
-                                                              color:
-                                                                  Colors.grey,
-                                                              width: 1.0,
-                                                            ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(13),
+                                                          border: Border.all(
+                                                            color: Colors.grey,
+                                                            width: 1.0,
                                                           ),
                                                         ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 10.0),
-                                                          child: Text(device
-                                                              .devicePrice),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(13),
+                                                          child: Image.network(
+                                                            device.deviceImages[
+                                                                0],
+                                                            width:
+                                                                double.infinity,
+                                                            height:
+                                                                double.infinity,
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                left: 10.0),
-                                                        child: Text(
-                                                            "Rent per week 30JD"),
+                                                      SizedBox(
+                                                        width: 15,
                                                       ),
+                                                      Expanded(
+                                                        child: Container(
+                                                          height:
+                                                              double.infinity,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                device
+                                                                    .deviceName
+                                                                    .toUpperCase(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 19,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              Text(
+                                                                device
+                                                                    .deviceDescription,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .clip,
+                                                                maxLines: 3,
+                                                              ),
+                                                              Expanded(
+                                                                  child:
+                                                                      Container()),
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(),
+                                                                child: Text(
+                                                                    "Device Price: ${device.deviceBuyPrice}JD"),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
-                                                )
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Divider(),
                                               ],
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Divider(),
+                                            )
+                                          : onClick[2] == true &&
+                                                  device.deviceBuyPrice.isEmpty
+                                              ? Column(
+                                                  children: [
+                                                    Container(
+                                                      width: double.infinity,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height /
+                                                              6,
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            height:
+                                                                double.infinity,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                3,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          13),
+                                                              border:
+                                                                  Border.all(
+                                                                color:
+                                                                    Colors.grey,
+                                                                width: 1.0,
+                                                              ),
+                                                            ),
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          13),
+                                                              child:
+                                                                  Image.network(
+                                                                device.deviceImages[
+                                                                    0],
+                                                                width: double
+                                                                    .infinity,
+                                                                height: double
+                                                                    .infinity,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 15,
+                                                          ),
+                                                          Expanded(
+                                                            child: Container(
+                                                              height: double
+                                                                  .infinity,
+                                                              child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      device
+                                                                          .deviceName
+                                                                          .toUpperCase(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            19,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 5,
+                                                                    ),
+                                                                    Text(
+                                                                      device
+                                                                          .deviceDescription,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .clip,
+                                                                      maxLines:
+                                                                          3,
+                                                                    ),
+                                                                    Expanded(
+                                                                        child:
+                                                                            Container()),
+                                                                    Container(
+                                                                      child: Text(
+                                                                          "Rent per week ${device.deviceRent}JD"),
+                                                                    ),
+                                                                  ]),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Divider(),
+                                                  ],
+                                                )
+                                              : Container(),
                                 ],
                               ),
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => DeviceDetails(
+                                    builder: (context) => SupplierDeviceDetails(
                                       deviceName: device.deviceName,
                                       deviceDescription:
                                           device.deviceDescription,
-                                      priceForBuying: device.devicePrice,
+                                      priceForBuying: device.deviceBuyPrice,
                                       priceForRent: device.deviceRent,
                                       userEmail: widget.userEmail,
                                       deviceImage1: device.deviceImages[0],
@@ -564,25 +875,6 @@ class _SupplierDetailsState extends State<SupplierDetails> {
               //             userEmail: '',
               //           )));
             },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOptionButton(String option) {
-    return InkWell(
-      onTap: () {
-        _scrollToSection(option);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        alignment: Alignment.center,
-        child: Text(
-          option,
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -643,5 +935,12 @@ class _SupplierDetailsState extends State<SupplierDetails> {
         throw 'Could not launch $googleUrl';
       }
     }
+  }
+
+  void addItemToCart({required Devices item}) {
+    cart.add(item);
+    setState(() {
+      
+    });
   }
 }

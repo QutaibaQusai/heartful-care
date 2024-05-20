@@ -10,8 +10,10 @@ class CenterChangeEmail extends StatefulWidget {
 
 class _CenterChangeEmailState extends State<CenterChangeEmail> {
   bool showHidePassword = false;
+  TextEditingController newCenterEmailController = TextEditingController();
+  TextEditingController oldCenterEmailController = TextEditingController();
   TextEditingController passwordCenterController = TextEditingController();
-  TextEditingController newCenterEmail = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,9 +32,9 @@ class _CenterChangeEmailState extends State<CenterChangeEmail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: newCenterEmail,
+                  controller: oldCenterEmailController,
                   decoration: InputDecoration(
-                    labelText: 'New email',
+                    labelText: 'Old center email',
                     labelStyle: TextStyle(color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
@@ -41,8 +43,9 @@ class _CenterChangeEmailState extends State<CenterChangeEmail> {
                 ),
                 SizedBox(height: 16),
                 TextField(
+                  controller: newCenterEmailController,
                   decoration: InputDecoration(
-                    labelText: 'Confirm email',
+                    labelText: 'New center email',
                     labelStyle: TextStyle(color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
@@ -57,7 +60,7 @@ class _CenterChangeEmailState extends State<CenterChangeEmail> {
                         obscureText: !showHidePassword,
                         controller: passwordCenterController,
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: 'Center Password',
                           labelStyle: TextStyle(color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
@@ -84,9 +87,10 @@ class _CenterChangeEmailState extends State<CenterChangeEmail> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await MyFirebaseAuth().changeEmail(
+                      await MyFirebaseAuth().updateEmailWithoutVerification(
                           context: context,
-                          newEmail: newCenterEmail.text,
+                          oldEmail: oldCenterEmailController.text,
+                          newEmail: newCenterEmailController.text,
                           password: passwordCenterController.text);
                     },
                     style: ElevatedButton.styleFrom(

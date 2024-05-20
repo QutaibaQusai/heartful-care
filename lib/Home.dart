@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:test/Profile/account.dart';
 import 'package:test/User%20Settings/settings_home_page.dart';
 import 'package:test/model/Home_Sections_Model.dart';
-import 'package:test/sections/MedicalDevicesSection/medicalSuppliers.dart';
+import 'package:test/sections/MedicalDevicesSection/supplierMedicalSuppliers.dart';
 import 'package:test/sections/NurseCenterSection/nurse_centersTils.dart';
 
 class Home extends StatefulWidget {
@@ -19,12 +20,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String? userProfile;
-
-  String userName = ""; // Store the user's name
+  String userName = "";
   @override
   void initState() {
     super.initState();
-    fetchUserName(); // Fetch the user's name when the widget is created
+    fetchUserName();
   }
 
   void fetchUserName() async {
@@ -45,7 +45,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // list of object
   List<Sections> mySectionList = [
     Sections(
         sectionImage: "images/nurse-card-home.png",
@@ -66,152 +65,159 @@ class _HomeState extends State<Home> {
         initialIndex: 1,
         child: Scaffold(
           backgroundColor: Colors.white,
-          body: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
-            children: [
-              Account(
-                userEmail: widget.userEmail,
-                userName: userName,
-              ),
-              Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 2.5,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF1C8892),
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, right: 20, top: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => Account(
-                                            userEmail: widget.userEmail,
-                                            userName: userName,
+          body: RefreshIndicator(
+            onRefresh: () async {
+              print("object");
+            },
+            child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                Account(
+                  userEmail: widget.userEmail,
+                  userName: userName,
+                ),
+                Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 2.5,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1C8892),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => Account(
+                                              userEmail: widget.userEmail,
+                                              userName: userName,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: CircleAvatar(
+                                        radius: MediaQuery.of(context)
+                                                .size
+                                                .width /
+                                            18, // Adjust the radius as needed
+                                        backgroundImage: userProfile != null
+                                            ? NetworkImage(userProfile!)
+                                            : AssetImage("images/profile.webp")
+                                                as ImageProvider,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          greeting(),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color:
+                                                Colors.grey, // Change as needed
                                           ),
                                         ),
-                                      );
-                                    },
-                                    child: CircleAvatar(
-                                      radius:
-                                          MediaQuery.of(context).size.width /
-                                              18, // Adjust the radius as needed
-                                      backgroundImage: userProfile != null
-                                          ? NetworkImage(userProfile!)
-                                          : AssetImage("images/profile.webp")
-                                              as ImageProvider,
+                                        Text(
+                                          userName.isNotEmpty
+                                              ? userName
+                                              : "Guest",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                CircleAvatar(
+                                  radius: 20,
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: Colors.white,
+                                  child: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Iconsax.notification,
+                                      size: 20,
                                     ),
                                   ),
-                                  SizedBox(width: 8),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        greeting(),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color:
-                                              Colors.grey, // Change as needed
-                                        ),
-                                      ),
-                                      Text(
-                                        userName.isNotEmpty
-                                            ? userName
-                                            : "Guest",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              CircleAvatar(
-                                radius: 20,
-                                foregroundColor: Colors.black,
-                                backgroundColor: Colors.white,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Iconsax.notification,
-                                    size: 20,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 30),
-                          Text(
-                            "How are you feeling \ntoday?",
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.white,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
-                              letterSpacing: 1,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            width: double.infinity,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(1000),
-                              color: Colors.white,
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(FontAwesomeIcons.search),
-                                SizedBox(width: 8),
-                                Flexible(
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      hintText: 'Search here',
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                ),
+                                )
                               ],
                             ),
-                          ),
-                        ],
+                            SizedBox(height: 30),
+                            Text(
+                              "How are you feeling \ntoday?",
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontFamily: GoogleFonts.poppins().fontFamily,
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              width: double.infinity,
+                              height: 55,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(1000),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(FontAwesomeIcons.search),
+                                  SizedBox(width: 8),
+                                  Flexible(
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                        hintText: 'Search here',
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: mySectionList.length,
-                      itemBuilder: (context, index) {
-                        return tile(mySectionList[index]);
-                      },
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: mySectionList.length,
+                        itemBuilder: (context, index) {
+                          return tile(mySectionList[index]);
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SettingFirstPage(
-                userEmail: widget.userEmail,
-              )
-            ],
+                  ],
+                ),
+                SettingFirstPage(
+                  userEmail: widget.userEmail,
+                )
+              ],
+            ),
           ),
           bottomNavigationBar: TabBar(
             labelColor: Color(0xFF1C8892),
@@ -219,7 +225,7 @@ class _HomeState extends State<Home> {
             indicatorColor: Colors.transparent,
             tabs: [
               Tab(
-                text: " Profile",
+                text: "Profile",
                 icon: Icon(FontAwesomeIcons.user),
                 iconMargin: EdgeInsets.only(bottom: 8),
               ),
@@ -287,15 +293,20 @@ class _HomeState extends State<Home> {
                 GestureDetector(
                   onTap: () {
                     if (sections.sectionName == "Nurse Centers") {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => NurseCenters(
-                                userEmail: widget.userEmail,
-                              )));
+                      Navigator.push(
+                          context,
+                          _createRightToLeftRoute(NurseCenters(
+                            userEmail: widget.userEmail,
+                          )));
                     } else if (sections.sectionName == "Medical Devices") {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Medical(
-                                userEmail: widget.userEmail,
-                              )));
+                      Navigator.push(
+                        context,
+                        _createRightToLeftRoute(
+                          SupplierMedicalSupplier(
+                            userEmail: widget.userEmail,
+                          ),
+                        ),
+                      );
                     }
                   },
                   child: Row(
@@ -320,6 +331,26 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
+    );
+  }
+
+  Route _createRightToLeftRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
     );
   }
 }

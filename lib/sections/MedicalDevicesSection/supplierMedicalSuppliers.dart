@@ -5,15 +5,15 @@ import 'package:test/sections/MedicalDevicesSection/supplerDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Medical extends StatefulWidget {
+class SupplierMedicalSupplier extends StatefulWidget {
   final String userEmail;
-  const Medical({Key? key, required this.userEmail}) : super(key: key);
+  const SupplierMedicalSupplier({Key? key, required this.userEmail}) : super(key: key);
 
   @override
-  State<Medical> createState() => _MedicalState();
+  State<SupplierMedicalSupplier> createState() => _MedicalState();
 }
 
-class _MedicalState extends State<Medical> {
+class _MedicalState extends State<SupplierMedicalSupplier> {
   double overallRating = 0.0;
 
   @override

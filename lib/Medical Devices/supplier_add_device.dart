@@ -7,16 +7,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:test/utils/pickImage.dart';
 import 'package:test/utils/storeImg%20.dart';
 
-class Add_device extends StatefulWidget {
+class SupplierAddDevice extends StatefulWidget {
   final String supplierEmail;
 
-  const Add_device({Key? key, required this.supplierEmail}) : super(key: key);
+  const SupplierAddDevice({Key? key, required this.supplierEmail})
+      : super(key: key);
 
   @override
-  State<Add_device> createState() => _Add_deviceState();
+  State<SupplierAddDevice> createState() => _Add_deviceState();
 }
 
-class _Add_deviceState extends State<Add_device> {
+class _Add_deviceState extends State<SupplierAddDevice> {
   TextEditingController deviceName = TextEditingController();
   TextEditingController devicePriceForPuy = TextEditingController();
   TextEditingController devicePriceForRent = TextEditingController();
@@ -26,6 +27,7 @@ class _Add_deviceState extends State<Add_device> {
   Uint8List? _device1;
   Uint8List? _device2;
   Uint8List? _device3;
+  String? deviceSellingOptions;
 
   void selectDeviceImage1({required ImageSource galleryOrImage}) async {
     Uint8List img1 = await pickImage(galleryOrImage);
@@ -143,13 +145,85 @@ class _Add_deviceState extends State<Add_device> {
                 ),
                 SizedBox(height: 10),
                 buildTextFormField(deviceName, "Device Name"),
-                buildTextFormField(devicePriceForPuy, "Device Price"),
-                buildTextFormField(
-                    devicePriceForRent, "Device Price for rent per week"),
                 buildTextFormField(deviceDescription, "Description"),
                 buildTextFormField(deviceQuantity, "Device quantity"),
                 buildTextFormField(
                     deviceInstructions, "Instructions about device"),
+                SizedBox(height: 10),
+                // Text("This device for BUY of Rent or Both?"),
+                DropdownButtonFormField<String>(
+                  dropdownColor: Color(0xFF1C8892),
+                  value: deviceSellingOptions,
+                  onChanged: (newValue) {
+                    setState(
+                      () {
+                        deviceSellingOptions = newValue;
+                      },
+                    );
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                        // borderSide: const BorderSide(
+                        //     color: Color(0xFF1C8892), width: 2.0),
+                        ), // Change focus color
+                    labelText: "Device selling options",
+                    labelStyle: TextStyle(color: Colors.black),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  items: <String>[
+                    'Rent',
+                    'Buy',
+                    'Both',
+                  ]
+                      .map<DropdownMenuItem<String>>(
+                        (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+                // buildTextFormField(devicePriceForPuy, "Device Price"),
+                SizedBox(height: 10),
+                deviceSellingOptions == "Buy" || deviceSellingOptions == "Both"
+                    ? TextFormField(
+                        controller: devicePriceForPuy,
+                        cursorColor: Color(0xFF1C8892),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color(0xFF1C8892), width: 2.0),
+                          ),
+                          hintText: "Device Price",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      )
+                    : Container(),
+                SizedBox(height: 10),
+                // buildTextFormField(
+                //     devicePriceForRent, "Device Price for rent per week"),
+                deviceSellingOptions == "Rent" || deviceSellingOptions == "Both"
+                    ? TextFormField(
+                        controller: devicePriceForRent,
+                        cursorColor: Color(0xFF1C8892),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color(0xFF1C8892), width: 2.0),
+                          ),
+                          hintText: "Device Price for rent per week",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ),
@@ -195,6 +269,7 @@ class _Add_deviceState extends State<Add_device> {
                   const BorderSide(color: Color(0xFF1C8892), width: 2.0),
             ),
             hintText: hintText,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
         ),
         SizedBox(height: 10),
@@ -245,7 +320,7 @@ class _Add_deviceState extends State<Add_device> {
           'deviceInstructions': deviceInstructions.text,
           'supplierId': supplierId,
           'Email': widget.supplierEmail,
-          'ImageUrls': imageUrls, // Include image URLs in Firestore document
+          'ImageUrls': imageUrls,
         });
 
         ScaffoldMessenger.of(context).showSnackBar(

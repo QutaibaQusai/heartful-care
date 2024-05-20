@@ -30,11 +30,11 @@ class _Supplier_profileState extends State<Supplier_profile> {
 
   @override
   void initState() {
-    fetchUserData();
+    fetchSupplierData();
     super.initState();
   }
 
-  void fetchUserData() async {
+  void fetchSupplierData() async {
     try {
       var supplierDoc = await FirebaseFirestore.instance
           .collection('Suppliers')
@@ -65,216 +65,224 @@ class _Supplier_profileState extends State<Supplier_profile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 3,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: AlignmentDirectional.center,
-                      child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: _supplierCover != null
-                              ? Image.network(
-                                  _supplierCover!,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.network(
-                                  "https://www.healthcarefacilitiestoday.com/media/graphics/2018/18034-operating-room.jpg",
-                                  fit: BoxFit.cover,
-                                )),
-                    ),
-                    Align(
-                      alignment: AlignmentDirectional.topCenter,
-                      child: Container(
-                        child: ClipRRect(
+        body: RefreshIndicator(
+          backgroundColor: Color(0xFF1C8892),
+          color: Colors.white,
+          onRefresh: () async {
+            fetchSupplierData();
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional.center,
+                        child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: _supplierCover != null
+                                ? Image.network(
+                                    _supplierCover!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    "https://www.healthcarefacilitiestoday.com/media/graphics/2018/18034-operating-room.jpg",
+                                    fit: BoxFit.cover,
+                                  )),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional.topCenter,
+                        child: Container(
+                          child: ClipRRect(
+                            child: Stack(
+                              children: [
+                                BackdropFilter(
+                                  filter:
+                                      ImageFilter.blur(sigmaY: 2, sigmaX: 3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.angleLeft,
+                                          color: Colors.black,
+                                          size: 24,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Supplier profile",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
+                                      IconButton(
+                                        onPressed:
+                                            navigateAndUpdateProfile, // Update this line
+                                        icon: Icon(
+                                          FontAwesomeIcons.pen,
+                                          color: Colors.black,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: AlignmentDirectional.bottomCenter,
                           child: Stack(
                             children: [
-                              BackdropFilter(
-                                filter: ImageFilter.blur(sigmaY: 2, sigmaX: 3),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      icon: Icon(
-                                        FontAwesomeIcons.angleLeft,
-                                        color: Colors.black,
-                                        size: 24,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Supplier profile",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ),
-                                    IconButton(
-                                      onPressed:
-                                          navigateAndUpdateProfile, // Update this line
-                                      icon: Icon(
-                                        FontAwesomeIcons.pen,
-                                        color: Colors.black,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ],
+                              Container(
+                                width: 180,
+                                height: 180,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF1C8892),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: _supplierProfile != null
+                                      ? InstaImageViewer(
+                                          child: CircleAvatar(
+                                            radius: 64,
+                                            backgroundImage:
+                                                NetworkImage(_supplierProfile!),
+                                          ),
+                                        )
+                                      : ClipOval(
+                                          child: SizedBox.fromSize(
+                                            size: Size.fromRadius(48),
+                                            child: Image.network(
+                                              'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: AlignmentDirectional.bottomCenter,
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 180,
-                              height: 180,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF1C8892),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: _supplierProfile != null
-                                    ? InstaImageViewer(
-                                        child: CircleAvatar(
-                                          radius: 64,
-                                          backgroundImage:
-                                              NetworkImage(_supplierProfile!),
-                                        ),
-                                      )
-                                    : ClipOval(
-                                        child: SizedBox.fromSize(
-                                          size: Size.fromRadius(48),
-                                          child: Image.network(
-                                            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png',
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: supplierName,
-                      readOnly: true,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(FontAwesomeIcons.user,
-                            color: Color(0xFF1C8892)),
-                        hintText: 'Supplier name',
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      controller: supplierPhoneNumber,
-                      readOnly: true,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(FontAwesomeIcons.mobile,
-                            color: Color(0xFF1C8892)),
-                        hintText: 'Supplier phone number',
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      initialValue: widget.supplierEmail,
-                      // controller: supplierEmail,
-                      readOnly: true,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(
-                          FontAwesomeIcons.envelope,
-                          color: Color(0xFF1C8892),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: supplierName,
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          disabledBorder: InputBorder.none,
+                          prefixIcon: Icon(FontAwesomeIcons.user,
+                              color: Color(0xFF1C8892)),
+                          hintText: 'Supplier name',
                         ),
-                        hintText: 'Supplier email',
                       ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      controller: supplierWebsite,
-                      readOnly: true,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(
-                          FontAwesomeIcons.globe,
-                          color: Color(0xFF1C8892),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: supplierPhoneNumber,
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          disabledBorder: InputBorder.none,
+                          prefixIcon: Icon(FontAwesomeIcons.mobile,
+                              color: Color(0xFF1C8892)),
+                          hintText: 'Supplier phone number',
                         ),
-                        hintText: 'Supplier website',
                       ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      controller: supplierLocation,
-                      readOnly: true,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(FontAwesomeIcons.locationArrow,
-                            color: Color(0xFF1C8892)),
-                        hintText: 'Supplier Location',
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      controller: supplierDescription,
-                      readOnly: true,
-                      enabled: false,
-                      maxLines:
-                          null, // Setting maxLines to null to allow multiline input
-                      decoration: InputDecoration(
-                        disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(
-                          FontAwesomeIcons.info,
-                          color: Color(0xFF1C8892),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        initialValue: widget.supplierEmail,
+                        // controller: supplierEmail,
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          disabledBorder: InputBorder.none,
+                          prefixIcon: Icon(
+                            FontAwesomeIcons.envelope,
+                            color: Color(0xFF1C8892),
+                          ),
+                          hintText: 'Supplier email',
                         ),
-                        hintText: 'Supplier description',
                       ),
-                    ),
-                    SizedBox(height: 15),
-                    TextFormField(
-                      controller: supplierPaymentOption,
-                      readOnly: true,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        disabledBorder: InputBorder.none,
-                        prefixIcon: Icon(FontAwesomeIcons.solidCreditCard,
-                            color: Color(0xFF1C8892)),
-                        hintText: 'Supplier payment options',
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: supplierWebsite,
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          disabledBorder: InputBorder.none,
+                          prefixIcon: Icon(
+                            FontAwesomeIcons.globe,
+                            color: Color(0xFF1C8892),
+                          ),
+                          hintText: 'Supplier website',
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: supplierLocation,
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          disabledBorder: InputBorder.none,
+                          prefixIcon: Icon(FontAwesomeIcons.locationArrow,
+                              color: Color(0xFF1C8892)),
+                          hintText: 'Supplier Location',
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: supplierDescription,
+                        readOnly: true,
+                        enabled: false,
+                        maxLines:
+                            null, // Setting maxLines to null to allow multiline input
+                        decoration: InputDecoration(
+                          disabledBorder: InputBorder.none,
+                          prefixIcon: Icon(
+                            FontAwesomeIcons.info,
+                            color: Color(0xFF1C8892),
+                          ),
+                          hintText: 'Supplier description',
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: supplierPaymentOption,
+                        readOnly: true,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          disabledBorder: InputBorder.none,
+                          prefixIcon: Icon(FontAwesomeIcons.solidCreditCard,
+                              color: Color(0xFF1C8892)),
+                          hintText: 'Supplier payment options',
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -290,7 +298,7 @@ class _Supplier_profileState extends State<Supplier_profile> {
     );
 
     if (result == true) {
-      fetchUserData();
+      fetchSupplierData();
     }
   }
 }

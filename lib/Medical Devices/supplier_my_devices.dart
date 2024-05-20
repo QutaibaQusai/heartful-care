@@ -3,19 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Medical%20Devices/my_device_details.dart';
+import 'package:test/Medical%20Devices/supplier_edit_my_device.dart';
 import 'package:test/model/devicesModel.dart';
 
-class MyDevices extends StatefulWidget {
+class SupplierMyDevices extends StatefulWidget {
   final String supplierEmail;
 
-  const MyDevices({Key? key, required this.supplierEmail}) : super(key: key);
+  const SupplierMyDevices({Key? key, required this.supplierEmail})
+      : super(key: key);
 
   @override
-  State<MyDevices> createState() => _MyDevicesState();
+  State<SupplierMyDevices> createState() => _MyDevicesState();
 }
 
-class _MyDevicesState extends State<MyDevices> {
+class _MyDevicesState extends State<SupplierMyDevices> {
   late String _supplierId;
   late Stream<List<Devices>> _devicesStream;
 
@@ -91,10 +92,7 @@ class _MyDevicesState extends State<MyDevices> {
                           children: [
                             SlidableAction(
                               onPressed: (context) {
-                                deleteDevice(
-                                    context,
-                                    device
-                                        .deviceId); // Pass the deviceId to the method
+                                deleteDevice(context, device.deviceId);
                               },
                               backgroundColor: Color(0xFF1C8892),
                               icon: Icons.delete,
@@ -109,9 +107,9 @@ class _MyDevicesState extends State<MyDevices> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return MyDeviceDetails(
+                                      return SupplierEditMyDevice(
                                         deviceName: device.deviceName,
-                                        devicePrice: device.devicePrice,
+                                        devicePrice: device.deviceBuyPrice,
                                         deviceRent: device.deviceRent,
                                         deviceDescription:
                                             device.deviceDescription,

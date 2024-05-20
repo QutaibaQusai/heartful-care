@@ -102,6 +102,15 @@ class _EditSupplierProfileState extends State<EditSupplierProfile> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              FontAwesomeIcons.chevronLeft,
+              color: Colors.black,
+            ),
+          ),
           backgroundColor: Colors.white,
           title: Text("Edit Profile"),
           centerTitle: true,

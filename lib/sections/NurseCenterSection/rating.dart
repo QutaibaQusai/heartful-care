@@ -24,7 +24,7 @@ class CenterRating extends StatefulWidget {
 
 class _CenterRatingState extends State<CenterRating> {
   String userName = "";
-  double overallRating = 0.0; // Variable to hold the overall rating
+  double overallRating = 0.0; 
 
   bool isExpanded = false;
   TextEditingController writeReviewController = TextEditingController();

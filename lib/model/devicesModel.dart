@@ -1,6 +1,6 @@
 class Devices {
   final String deviceName;
-  final String devicePrice;
+  final String deviceBuyPrice;
   final String deviceRent;
   final String deviceDescription;
   final String deviceQuantity;
@@ -12,7 +12,7 @@ class Devices {
 
   Devices( {required this.deviceImages,
     required this.deviceName,
-    required this.devicePrice,
+    required this.deviceBuyPrice,
     required this.deviceRent,
     required this.deviceDescription,
     required this.deviceQuantity,
@@ -31,13 +31,12 @@ class Devices {
 
     return Devices(
       deviceName: map['Device_Name'] ?? '',
-      devicePrice: map['devicePriceForPuy'] ?? '',
+      deviceBuyPrice: map['devicePriceForPuy'] ?? '',
       deviceRent: map['devicePriceForRent'] ?? '',
       deviceDescription: map['deviceDescription'] ?? '',
       deviceQuantity: map['deviceQuantity'] ?? '',
       deviceInstruction: map['deviceInstruction'] ?? '',
       supplierId: map['supplierId'] ?? '',
-     
       deviceId: map['DeviseId'] ?? '', deviceImages: images,
     );
   }

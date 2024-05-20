@@ -5,14 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddCard extends StatefulWidget {
   final String userEmail;
-  final double total;
-  final double deliveryFee;
+  final double? deliveryFee;
+  final double? total;
 
   const AddCard(
-      {super.key,
-      required this.userEmail,
-      required this.total,
-      required this.deliveryFee});
+      {super.key, required this.userEmail, this.total, this.deliveryFee});
 
   @override
   State<AddCard> createState() => _AddCardState();
@@ -58,7 +55,12 @@ class _AddCardState extends State<AddCard> {
         child: Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        title: Text(
+          "Add card",
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        backgroundColor: Color(0xFF1C8892),
         leading: Container(
           child: IconButton(
             onPressed: () {
@@ -66,7 +68,7 @@ class _AddCardState extends State<AddCard> {
             },
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
         ),
@@ -182,13 +184,16 @@ class _AddCardState extends State<AddCard> {
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  "JOD ${widget.total + widget.deliveryFee}".toUpperCase(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
+                widget.total != null && widget.deliveryFee != null
+                    ? Text(
+                        "JOD ${widget.total! + widget.deliveryFee!}"
+                            .toUpperCase(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      )
+                    : Text(""),
               ],
             ),
           ),

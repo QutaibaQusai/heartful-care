@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Medical%20Devices/add_device.dart';
-import 'package:test/Medical%20Devices/my_devices.dart';
+import 'package:test/Medical%20Devices/supplier_add_device.dart';
+import 'package:test/Medical%20Devices/supplier_my_devices.dart';
 import 'package:test/Medical%20Devices/supplierChangeEmail.dart';
 import 'package:test/Medical%20Devices/supplierChangePassword.dart';
 import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
@@ -71,394 +71,402 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 18,
-            ),
-            child: Column(
-              children: [
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      _imageUrl != null
-                          ? ClipOval(
-                              child: Image.network(
-                                _imageUrl!,
-                                width: 56,
-                                height: 56,
-                                fit: BoxFit.cover,
+        body: RefreshIndicator(
+          backgroundColor: Color(0xFF1C8892),
+          color: Colors.white,
+          onRefresh: () async {
+            fetchSupplierData();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 18,
+              ),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    child: Row(
+                      children: [
+                        _imageUrl != null
+                            ? ClipOval(
+                                child: Image.network(
+                                  _imageUrl!,
+                                  width: 56,
+                                  height: 56,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : ClipOval(
+                                child: Image.network(
+                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png",
+                                  width: 56,
+                                  height: 56,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            )
-                          : ClipOval(
-                              child: Image.network(
-                                "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png",
-                                width: 56,
-                                height: 56,
-                                fit: BoxFit.cover,
-                              ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              supplierName.toUpperCase(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 17),
                             ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                            //Text("data", style: TextStyle(color: Colors.grey[700])),
+                          ],
+                        ),
+                        Expanded(child: Container()),
+                        Icon(
+                          FontAwesomeIcons.chevronRight,
+                          color: Color(0xFF1C8892),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      navigateAndUpdateProfile();
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Devices",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
                         children: [
-                          Text(
-                            supplierName.toUpperCase(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 17),
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0F2F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.upload,
+                              color: Color(0xFF1C8892),
+                              size: 20,
+                            ),
                           ),
-                          //Text("data", style: TextStyle(color: Colors.grey[700])),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "Add Device",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: Container(),
+                          ),
+                          Icon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Color(0xFF1C8892),
+                          ),
                         ],
                       ),
-                      Expanded(child: Container()),
-                      Icon(
-                        FontAwesomeIcons.chevronRight,
-                        color: Color(0xFF1C8892),
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    navigateAndUpdateProfile();
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Devices",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF0F2F5),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            FontAwesomeIcons.upload,
-                            color: Color(0xFF1C8892),
-                            size: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Add Device",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Expanded(
-                          child: Container(),
-                        ),
-                        Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: Color(0xFF1C8892),
-                        ),
-                      ],
                     ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SupplierAddDevice(
+                                supplierEmail: widget.supplierEmail,
+                              )));
+                    },
                   ),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Add_device(
-                              supplierEmail: widget.supplierEmail,
-                            )));
-                  },
-                ),
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF0F2F5),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            Icons.device_hub_outlined,
-                            color: Color(0xFF1C8892),
-                            size: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "My Devices",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Expanded(child: Container()),
-                        Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: Color(0xFF1C8892),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MyDevices(
-                              supplierEmail: widget.supplierEmail,
-                            )));
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Row(
-                    children: [
-                      Text(
-                        "About Me",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF0F2F5),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            FontAwesomeIcons.language,
-                            color: Color(0xFF1C8892),
-                            size: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Language",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Expanded(child: Container()),
-                        Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: Color(0xFF1C8892),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onTap: () {
-                    //TODO
-                  },
-                ),
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF0F2F5),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            FontAwesomeIcons.deleteLeft,
-                            color: Color(0xFF1C8892),
-                            size: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Delete Account",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Expanded(child: Container()),
-                        Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: Color(0xFF1C8892),
-                        ),
-                      ],
-                    ),
-                  ),
-                  onTap: () {
-                    // Show confirmation dialog
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Delete Account"),
-                          content: Text(
-                              "Are you sure you want to delete your account?"),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                // Call method to delete account
-                                _deleteAccount();
-                                // Close dialog and navigate to login screen
-                                Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SupplierRegistration()),
-                                  (Route<dynamic> route) => false,
-                                );
-                              },
-                              child: Text("Delete"),
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0F2F5),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("Cancel"),
+                            child: Icon(
+                              Icons.device_hub_outlined,
+                              color: Color(0xFF1C8892),
+                              size: 20,
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "My Devices",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(child: Container()),
+                          Icon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Color(0xFF1C8892),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SupplierMyDevices(
+                                supplierEmail: widget.supplierEmail,
+                              )));
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
                     child: Row(
                       children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF0F2F5),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            FontAwesomeIcons.envelope,
-                            color: Color(0xFF1C8892),
-                            size: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
                         Text(
-                          "Change Email",
+                          "About Me",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Expanded(child: Container()),
-                        Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: Color(0xFF1C8892),
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ],
                     ),
                   ),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SupplierChangeEmail()));
-                  },
-                ),
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF0F2F5),
-                            borderRadius: BorderRadius.circular(12),
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0F2F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.language,
+                              color: Color(0xFF1C8892),
+                              size: 20,
+                            ),
                           ),
-                          child: Icon(
-                            FontAwesomeIcons.lock,
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "Language",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Icon(
+                            FontAwesomeIcons.chevronRight,
                             color: Color(0xFF1C8892),
-                            size: 20,
                           ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Change Password",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Expanded(child: Container()),
-                        Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: Color(0xFF1C8892),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                    onTap: () {
+                      //TODO
+                    },
                   ),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SupplierChangePassword()));
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0F2F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.deleteLeft,
+                              color: Color(0xFF1C8892),
+                              size: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "Delete Account",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(child: Container()),
+                          Icon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Color(0xFF1C8892),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      // Show confirmation dialog
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Delete Account"),
+                            content: Text(
+                                "Are you sure you want to delete your account?"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // Call method to delete account
+                                  _deleteAccount();
+                                  // Close dialog and navigate to login screen
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SupplierRegistration()),
+                                    (Route<dynamic> route) => false,
+                                  );
+                                },
+                                child: Text("Delete"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("Cancel"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0F2F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.envelope,
+                              color: Color(0xFF1C8892),
+                              size: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "Change Email",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Icon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Color(0xFF1C8892),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SupplierChangeEmail()));
+                    },
+                  ),
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0F2F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.lock,
+                              color: Color(0xFF1C8892),
+                              size: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "Change Password",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Icon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Color(0xFF1C8892),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SupplierChangePassword()));
 
-                    //  MyFirebaseAuth().changePassword(context: context, currentPassword: currentPassword, newPassword: newPassword)
-                  },
-                ),
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF0F2F5),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            FontAwesomeIcons.signOut,
-                            color: Color(0xFF1C8892),
-                            size: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          "Log Out",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Expanded(child: Container()),
-                        Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: Color(0xFF1C8892),
-                        ),
-                      ],
-                    ),
+                      //  MyFirebaseAuth().changePassword(context: context, currentPassword: currentPassword, newPassword: newPassword)
+                    },
                   ),
-                  onTap: () {
-                    _showLogoutDialog(context);
-                  },
-                ),
-              ],
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0F2F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.signOut,
+                              color: Color(0xFF1C8892),
+                              size: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "Log Out",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Icon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Color(0xFF1C8892),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      _showLogoutDialog(context);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

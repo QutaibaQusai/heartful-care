@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:test/sections/NurseCenterSection/fillFormRequest.dart';
 import 'package:test/sections/NurseCenterSection/rating.dart';
-import 'package:test/sections/NurseCenterSection/subcription.dart';
+import 'package:test/sections/NurseCenterSection/user_center_subcription.dart';
 import 'package:test/widgets/image_selector.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,10 +25,8 @@ class DetailedNurseCenter extends StatefulWidget {
   final String pricePreMonth;
   final String pricePersixMonths;
   final String pricePerthreeMonths;
-
   final String userEmail;
   final String centerId;
-  final Function(double) onOverallRatingChanged; // Callback function
   final String priceCheckups;
 
   DetailedNurseCenter({
@@ -41,7 +41,6 @@ class DetailedNurseCenter extends StatefulWidget {
     required this.centerLocation,
     required this.userEmail,
     required this.centerId,
-    required this.onOverallRatingChanged,
     required this.operatingDays,
     required this.pricePreDay,
     required this.pricePreMonth,
@@ -55,7 +54,41 @@ class DetailedNurseCenter extends StatefulWidget {
 }
 
 class _DetailedNurseCenter extends State<DetailedNurseCenter> {
-  double overallRating = 0.0;
+    double overallRating = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAndSetRating();
+  }
+
+  void fetchAndSetRating() async {
+    try {
+      var reviewsSnapshot = await FirebaseFirestore.instance
+          .collection('Reviews_centers')
+          .where('centerId', isEqualTo: widget.centerId)
+          .get();
+
+      if (reviewsSnapshot.docs.isNotEmpty) {
+        double totalRating = 0.0;
+        int numReviews = reviewsSnapshot.docs.length;
+
+        reviewsSnapshot.docs.forEach((doc) {
+          totalRating += doc['rating'];
+        });
+        
+        double newOverallRating = totalRating / numReviews;
+        setState(() {
+          overallRating = newOverallRating;
+        });
+
+      }
+    } catch (e) {
+      print('Error fetching and calculating overall rating: $e');
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +109,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
             ),
           ),
           title: Text(
-            "Centers",
+            "Center",
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -126,39 +159,31 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
-                          // SizedBox(height: 8),
-                          // Text(
-                          //   widget.operatingHours,
-                          //   style: TextStyle(fontSize: 16, color: Colors.black),
-                          // ),
+                  
                           SizedBox(height: 10),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Icon(
-                              //   FontAwesomeIcons.solidStar,
-                              //   size: 13,
-                              //   color: Color.fromARGB(255, 241, 241, 47),
-                              // ),
+                            
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CenterRating(
-                                              userEmail: widget.userEmail,
-                                              centerId: widget.centerId,
-                                              onOverallRatingChanged:
-                                                  (newOverallRating) {
-                                                // Update the overallRating in the parent class
-                                                setState(() {
-                                                  overallRating =
-                                                      newOverallRating;
-                                                });
-                                              },
-                                            )),
+                                      builder: (context) => CenterRating(
+                                        userEmail: widget.userEmail,
+                                        centerId: widget.centerId,
+                                        onOverallRatingChanged:
+                                            (newOverallRating) {
+                                          // Update the overallRating in the parent class
+                                          setState(() {
+                                            overallRating = newOverallRating;
+                                          });
+                                        },
+                                      ),
+                                    ),
                                   );
                                 },
                                 child: Row(
@@ -178,9 +203,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                           Icons.star,
                                           color: Colors.amber,
                                         ),
-                                        onRatingUpdate: (rating) {
-                                          // Not needed here, just for demonstration
-                                        },
+                                        onRatingUpdate: (rating) {},
                                       ),
                                     ),
                                     Text(overallRating.toString())
@@ -215,17 +238,23 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Subscribe(
-                                                    pricePreMonth:
-                                                        widget.pricePreMonth,
-                                                    pricePersixMonths: widget
-                                                        .pricePersixMonths,
-                                                    pricePerthreeMonths: widget
-                                                        .pricePerthreeMonths,
-                                                  )),
+                                            builder: (context) =>
+                                                UserCenterSubscription(
+                                              pricePreMonth:
+                                                  widget.pricePreMonth,
+                                              pricePersixMonths:
+                                                  widget.pricePersixMonths,
+                                              pricePerthreeMonths:
+                                                  widget.pricePerthreeMonths,
+                                              centerId: widget.centerId, userEmail: widget.userEmail,
+                                            ),
+                                          ),
                                         );
                                       },
-                                      icon: Icon(Icons.abc)),
+                                      icon: Image.asset(
+                                        "images/pro (1).png",
+                                        width: 25,
+                                      )),
                                   Text(
                                     'Subscribe',
                                     style: TextStyle(color: Colors.black),

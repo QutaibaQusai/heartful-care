@@ -37,14 +37,19 @@ class _SupplierInfoState extends State<SupplierInfo> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          title: Text(
+            "Supplier Information",
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xFF1C8892),
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
         ),

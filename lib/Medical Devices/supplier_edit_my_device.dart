@@ -1,12 +1,11 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test/utils/pickImage.dart';
 
-class MyDeviceDetails extends StatefulWidget {
+class SupplierEditMyDevice extends StatefulWidget {
   final String supplierEmail;
   final String deviceName;
   final String devicePrice;
@@ -19,7 +18,7 @@ class MyDeviceDetails extends StatefulWidget {
   final String deviceImage3;
   final String deviceId;
 
-  const MyDeviceDetails({
+  const SupplierEditMyDevice({
     super.key,
     required this.deviceName,
     required this.devicePrice,
@@ -35,60 +34,16 @@ class MyDeviceDetails extends StatefulWidget {
   });
 
   @override
-  State<MyDeviceDetails> createState() => _MyDeviceDetailsState();
+  State<SupplierEditMyDevice> createState() => _SupplierMyDevicesDetailsState();
 }
 
-class _MyDeviceDetailsState extends State<MyDeviceDetails> {
-  TextEditingController deviceName = TextEditingController();
-  TextEditingController devicePriceForPuy = TextEditingController();
-  TextEditingController devicePriceForRent = TextEditingController();
-  TextEditingController deviceDescription = TextEditingController();
-  TextEditingController deviceQuantity = TextEditingController();
-  TextEditingController deviceInstructions = TextEditingController();
+class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
+  // TextEditingController deviceInstructions = TextEditingController();
   Uint8List? _device1;
   Uint8List? _device2;
   Uint8List? _device3;
-  String? imageDevice1;
-  String? imageDevice2;
-  String? imageDevice3;
 
-  @override
-  void initState() {
-    fetchDeviceData();
-    super.initState();
-  }
-
-  void fetchDeviceData() async {
-    try {
-      var supplierDoc = await FirebaseFirestore.instance
-          .collection('Devices')
-          .where('DeviseId', isEqualTo: widget.deviceId)
-          .get();
-
-      if (supplierDoc.docs.isNotEmpty) {
-        var deviceData = supplierDoc.docs[0].data();
-
-        setState(
-          () {
-            deviceName.text = deviceData['Device_Name'] ?? "";
-            devicePriceForPuy.text = deviceData['devicePriceForPuy'] ?? "";
-            devicePriceForRent.text = deviceData['devicePriceForRent'] ?? "";
-            deviceDescription.text = deviceData['deviceDescription'] ?? "";
-            deviceQuantity.text = deviceData['deviceQuantity'] ?? "";
-            deviceInstructions.text = deviceData['deviceInstructions'] ?? "";
-            imageDevice1 = deviceData['DeviceImages_1'] ??
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
-            imageDevice2 = deviceData['DeviceImages_2'] ??
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
-            imageDevice3 = deviceData['DeviceImages_3'] ??
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP9WxCuO9kRKoQ2G8C3DuO6DU7CjdL_urDMSMtR19lUQ&s";
-          },
-        );
-      }
-    } catch (e) {
-      print('Error fetching user data:$e');
-    }
-  }
+  String? deviceSellingOptions;
 
   void selectDeviceImage1() async {
     Uint8List img1 = await pickImage(ImageSource.gallery);
@@ -97,7 +52,6 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
     });
   }
 
-  // Method to select the second image
   void selectDeviceImage2() async {
     Uint8List img2 = await pickImage(ImageSource.gallery);
     setState(() {
@@ -111,6 +65,37 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
     setState(() {
       _device3 = img3;
     });
+  }
+
+  late TextEditingController deviceName;
+  late TextEditingController devicePriceForPuy;
+  late TextEditingController deviceDescription;
+  late TextEditingController devicePriceForRent;
+  late TextEditingController deviceQuantity;
+  late TextEditingController deviceInstructions;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    deviceName = TextEditingController(text: widget.deviceName);
+    devicePriceForPuy = TextEditingController(text: widget.devicePrice);
+    devicePriceForRent = TextEditingController(text: widget.deviceRent);
+    deviceDescription = TextEditingController(text: widget.deviceDescription);
+    deviceQuantity = TextEditingController(text: widget.deviceQuantity);
+    deviceInstructions = TextEditingController(text: widget.deviceInstruction);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    deviceName.dispose();
+    devicePriceForPuy.dispose();
+    deviceDescription.dispose();
+    devicePriceForRent.dispose();
+    deviceQuantity.dispose();
+    deviceInstructions.dispose();
+    super.dispose();
   }
 
   @override
@@ -152,10 +137,11 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
                               radius: 50,
                               backgroundImage: MemoryImage(_device1!),
                             )
-                          : imageDevice1 != null
+                          : widget.deviceImage1.isNotEmpty
                               ? CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: NetworkImage(imageDevice1!),
+                                  backgroundImage:
+                                      NetworkImage(widget.deviceImage1),
                                 )
                               : CircleAvatar(
                                   radius: 50,
@@ -174,10 +160,11 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
                               radius: 50,
                               backgroundImage: MemoryImage(_device2!),
                             )
-                          : imageDevice2 != null
+                          : widget.deviceImage2.isNotEmpty
                               ? CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: NetworkImage(imageDevice2!),
+                                  backgroundImage:
+                                      NetworkImage(widget.deviceImage2),
                                 )
                               : CircleAvatar(
                                   radius: 50,
@@ -196,10 +183,11 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
                               radius: 50,
                               backgroundImage: MemoryImage(_device3!),
                             )
-                          : imageDevice3 != null
+                          : widget.deviceImage3.isNotEmpty
                               ? CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: NetworkImage(imageDevice3!),
+                                  backgroundImage:
+                                      NetworkImage(widget.deviceImage3),
                                 )
                               : CircleAvatar(
                                   radius: 50,
@@ -218,13 +206,85 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
                 ),
                 SizedBox(height: 10),
                 buildTextFormField(deviceName, "Device Name"),
-                buildTextFormField(devicePriceForPuy, "Device Price"),
-                buildTextFormField(
-                    devicePriceForRent, "Device Price for rent per week"),
                 buildTextFormField(deviceDescription, "Description"),
                 buildTextFormField(deviceQuantity, "Device quantity"),
                 buildTextFormField(
                     deviceInstructions, "Instructions about device"),
+                SizedBox(height: 10),
+                // Text("This device for BUY of Rent or Both?"),
+                DropdownButtonFormField<String>(
+                  dropdownColor: Color(0xFF1C8892),
+                  value: deviceSellingOptions,
+                  onChanged: (newValue) {
+                    setState(
+                      () {
+                        deviceSellingOptions = newValue;
+                      },
+                    );
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color(0xFF1C8892), width: 2.0),
+                    ), // Change focus color
+                    labelText: "Device selling options",
+                    labelStyle: TextStyle(color: Color(0xFF1C8892)),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  items: <String>[
+                    'Rent',
+                    'Buy',
+                    'Both',
+                  ]
+                      .map<DropdownMenuItem<String>>(
+                        (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+                // buildTextFormField(devicePriceForPuy, "Device Price"),
+                SizedBox(height: 10),
+                deviceSellingOptions == "Buy" || deviceSellingOptions == "Both"
+                    ? TextFormField(
+                        controller: devicePriceForPuy,
+                        cursorColor: Color(0xFF1C8892),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color(0xFF1C8892), width: 2.0),
+                          ),
+                          hintText: "Device Price",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      )
+                    : Container(),
+                SizedBox(height: 10),
+                // buildTextFormField(
+                //     devicePriceForRent, "Device Price for rent per week"),
+                deviceSellingOptions == "Rent" || deviceSellingOptions == "Both"
+                    ? TextFormField(
+                        controller: devicePriceForRent,
+                        cursorColor: Color(0xFF1C8892),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Color(0xFF1C8892), width: 2.0),
+                          ),
+                          hintText: "Device Price for rent per week",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ),
@@ -241,7 +301,7 @@ class _MyDeviceDetailsState extends State<MyDeviceDetails> {
             onPressed: () {
               updateDeviceData();
 
-              // Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),

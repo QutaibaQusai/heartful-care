@@ -82,128 +82,137 @@ class _SuppliersHomeState extends State<SuppliersHome> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
-              child: Container(
-                height: MediaQuery.of(context).size.height / 6,
-                child: Stack(
-                  children: [
-                    Text(
-                      "Your Orders \nDevice",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                    Align(
-                      alignment: AlignmentDirectional.bottomEnd,
-                      child: SvgPicture.asset(
-                        "images/supplierHomePage.svg",
-                        width: MediaQuery.of(context).size.width / 2.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height / 5,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF1C8892),
-                            borderRadius: BorderRadius.circular(20),
+        body: RefreshIndicator(
+          color: Colors.white,
+          backgroundColor: Color(0xFF1C8892),
+          onRefresh: () async {
+            fetchSupplierData();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 6,
+                    child: Stack(
+                      children: [
+                        Text(
+                          "Your Orders \nDevice",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          child: SvgPicture.asset(
+                            "images/supplierHomePage.svg",
+                            width: MediaQuery.of(context).size.width / 2.5,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "New order request received. We've got it from here!",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height / 5,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF1C8892),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "New order request received. We've got it from here!",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
                                   ),
-                                ),
-                                Expanded(child: Container()),
-                                Text(
-                                  "Number of orders: 18",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 216, 210, 210),
-                                  ),
-                                )
-                              ],
+                                  Expanded(child: Container()),
+                                  Text(
+                                    "Number of orders: 18",
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 216, 210, 210),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Text(
-                        "Last Orders",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height / 9,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width / 4,
-                                  height: double.infinity,
-                                  child: Image.network(
-                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTvEkQUIq0n3AMgcKON0e2SkFvd1P4PIWoJz3GNN1Qul41UFBY1j7fweQJut4OM38Cu1o&usqp=CAU"),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    child: Text(
-                                      'Qutaiba Qusai Makahleh',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          "Last Orders",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height / 9,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 4,
+                                    height: double.infinity,
+                                    child: Image.network(
+                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTvEkQUIq0n3AMgcKON0e2SkFvd1P4PIWoJz3GNN1Qul41UFBY1j7fweQJut4OM38Cu1o&usqp=CAU"),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Flexible(
+                                    child: Container(
+                                      child: Text(
+                                        'Qutaiba Qusai Makahleh',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          Divider()
-                        ],
-                      )
-                    ],
+                            Divider()
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(50.0),
+                        topLeft: Radius.circular(50.0)),
                   ),
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50.0),
-                      topLeft: Radius.circular(50.0)),
-                ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

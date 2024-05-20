@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/Nursecenters/center_add_nurse.dart';
@@ -448,15 +449,7 @@ class _CenterSettingsState extends State<CenterSettings> {
                           actions: [
                             TextButton(
                               onPressed: () {
-                                // Call method to delete account
-                                // _deleteAccount();
-                                // Close dialog and navigate to login screen
-                                // Navigator.of(context).pushAndRemoveUntil(
-                                //   MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           SupplierRegistration()),
-                                //   (Route<dynamic> route) => false,
-                                // );
+                                deleteCenterAccount();
                               },
                               child: Text("Delete"),
                             ),
@@ -564,5 +557,53 @@ class _CenterSettingsState extends State<CenterSettings> {
         );
       },
     );
+  }
+
+  Future<void> deleteCenterAccount() async {
+    // Get a reference to the FirebaseAuth instance
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    // Get the current user
+    User? user = auth.currentUser;
+
+    try {
+      // Delete the user from FirebaseAuth
+      await user?.delete();
+
+      // Delete the center from Firestore
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      await db
+          .collection('centers')
+          .where('Email', isEqualTo: widget.centerEmail)
+          .get()
+          .then((snapshot) async {
+        for (var doc in snapshot.docs) {
+          await db.collection('centers').doc(doc.id).delete();
+        }
+      });
+
+      // Navigate to the login screen after successful deletion
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => CentersLogin()),
+        (Route<dynamic> route) => false,
+      );
+
+      // Optionally show a success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Center account successfully deleted.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      // Handle errors, for instance, if the user deletion fails
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete center account: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      print('Error deleting center account: $e');
+    }
   }
 }

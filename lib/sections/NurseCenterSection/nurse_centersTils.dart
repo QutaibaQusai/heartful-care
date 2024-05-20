@@ -14,15 +14,19 @@ class NurseCenters extends StatefulWidget {
 }
 
 class _NurseCentersState extends State<NurseCenters> {
-  double overallRating = 0.0;
-
   @override
   Widget build(BuildContext context) {
+    
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF1C8892),
         appBar: AppBar(
           backgroundColor: Color(0xFF1C8892),
+          title: Text(
+            "Centers",
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -105,12 +109,6 @@ class _NurseCentersState extends State<NurseCenters> {
                                         pricePreMonth: center.pricePreMonth,
                                         userEmail: widget.userEmail,
                                         centerId: snapshot.data!.docs[index].id,
-                                        onOverallRatingChanged:
-                                            (double newRating) {
-                                          setState(() {
-                                            newRating = overallRating;
-                                          });
-                                        },
                                         priceCheckups: center.checkup,
                                         pricePersixMonths:
                                             center.pricePersixMonths,
