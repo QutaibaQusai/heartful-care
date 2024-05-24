@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:test/home.dart';
 import 'package:test/model/Intro_Model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/User%20login-Sginup/login_screen.dart';
+import 'package:test/provider/myprovider.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({Key? key}) : super(key: key);
@@ -19,6 +22,27 @@ class _IntroPage extends State<IntroPage> {
   @override
   void initState() {
     _controller = PageController(initialPage: 0);
+
+    // check the saved the user data .
+    context.read<MyProvider>().GetUserlogin().then(
+      (data) {
+        print("is this empty  :${data.isEmpty} ");
+
+        if (data.isNotEmpty) {
+          print("there is  data found :${data[0]} ");
+
+          Navigator.push(
+            context,
+            PageTransition(
+                child: Home(userEmail: data[0]),
+                type: PageTransitionType.fade,
+                duration: Duration(milliseconds: 500)),
+          );
+        } else {
+          print("there is no data saved !");
+        }
+      },
+    );
     super.initState();
   }
 

@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:test/Medical%20Devices/editSupplierProfile.dart';
 
 class Supplier_profile extends StatefulWidget {
@@ -157,12 +156,10 @@ class _Supplier_profileState extends State<Supplier_profile> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: _supplierProfile != null
-                                      ? InstaImageViewer(
-                                          child: CircleAvatar(
-                                            radius: 64,
-                                            backgroundImage:
-                                                NetworkImage(_supplierProfile!),
-                                          ),
+                                      ? CircleAvatar(
+                                          radius: 64,
+                                          backgroundImage:
+                                              NetworkImage(_supplierProfile!),
                                         )
                                       : ClipOval(
                                           child: SizedBox.fromSize(

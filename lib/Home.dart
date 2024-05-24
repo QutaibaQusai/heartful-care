@@ -4,9 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import 'package:test/Profile/account.dart';
 import 'package:test/User%20Settings/settings_home_page.dart';
 import 'package:test/model/Home_Sections_Model.dart';
+import 'package:test/provider/myprovider.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierMedicalSuppliers.dart';
 import 'package:test/sections/NurseCenterSection/nurse_centersTils.dart';
 
@@ -23,6 +25,7 @@ class _HomeState extends State<Home> {
   String userName = "";
   @override
   void initState() {
+    context.read<MyProvider>().GetUserlogin();
     super.initState();
     fetchUserName();
   }

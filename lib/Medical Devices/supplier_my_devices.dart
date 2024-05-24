@@ -34,8 +34,9 @@ class _MyDevicesState extends State<SupplierMyDevices> {
           .collection("Devices")
           .where("supplierId", isEqualTo: _supplierId)
           .snapshots()
-          .map((snapshot) =>
-              snapshot.docs.map((doc) => Devices.fromMap(doc.data())).toList());
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Devices.fromMap(doc.id, doc.data()))
+              .toList());
     } else {
       _supplierId = '';
       _devicesStream = Stream.value([]);

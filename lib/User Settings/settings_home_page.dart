@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:test/User%20Settings/YourAccountInfoPage.dart';
 import 'package:test/User%20Settings/YourChangeEmailPage.dart';
 import 'package:test/User%20Settings/YourChangePassPage.dart';
 import 'package:test/User%20Settings/addaddresspage.dart';
 import 'package:test/intro_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test/provider/myprovider.dart';
 
 class SettingFirstPage extends StatefulWidget {
   final String userEmail;
@@ -52,7 +55,7 @@ class _SettingFirstPage extends State<SettingFirstPage> {
 
         centerTitle: true,
         title: Text(
-          'Settings',
+          'Settings ',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -399,12 +402,6 @@ class _SettingFirstPage extends State<SettingFirstPage> {
               onPressed: () async {
                 // Perform logout action
                 await _clearUserData();
-
-                // Navigate to home page
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => IntroPage()),
-                  (Route<dynamic> route) => false,
-                );
               },
               child: Text('Yes'),
             ),
@@ -422,15 +419,12 @@ class _SettingFirstPage extends State<SettingFirstPage> {
 
 // Function to clear user data
   Future<void> _clearUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // delete saved data .
+    await context.read<MyProvider>().DeleteSavedUserLogin();
 
-    // Clear relevant user data, for example:
-    prefs.remove('userEmail');
-    prefs.remove('fullname');
-    // Add any other data you want to clear
-
-    // You might also want to sign out from Firebase if you're using Firebase Authentication
-    // FirebaseAuth.instance.signOut();
+    // go back to inro page
+    Navigator.pushReplacement(context,
+        PageTransition(child: IntroPage(), type: PageTransitionType.fade));
   }
 
   Widget buildLogoutOption(BuildContext context) {

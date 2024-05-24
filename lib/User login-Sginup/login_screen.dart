@@ -1,12 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:test/Medical%20Devices/supplierRegistrationPage.dart';
 import 'package:test/Nursecenters/center_login.dart';
 import 'package:test/home.dart';
 import 'package:test/User%20login-Sginup/sendPasswordResetEmail.dart';
 import 'package:test/User%20login-Sginup/signup_screen.dart';
+import 'package:test/provider/myprovider.dart';
 import 'package:test/utils/Authentication%20firebase/firebase_auth.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -106,16 +109,14 @@ class _LogInScreenState extends State<LogInScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(0),
                               borderSide: BorderSide(
-                                color: Colors
-                                    .white, 
+                                color: Colors.white,
                                 width: 2.0,
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(0),
                               borderSide: BorderSide(
-                                color: Colors
-                                    .white, 
+                                color: Colors.white,
                                 width: 2.0,
                               ),
                             ),
@@ -232,20 +233,38 @@ class _LogInScreenState extends State<LogInScreen> {
                                   onPressed: () async {
                                     if (formKey.currentState!.validate()) {
                                       // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);
-                                      final x = await MyFirebaseAuth().signIn(
+                                      User? x = await MyFirebaseAuth().signIn(
                                           context: context,
                                           email: emailTextController.text,
                                           password:
                                               passwordTextController.text);
                                       if (x != null) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Home(
-                                                userEmail:
-                                                    emailTextController.text),
-                                          ),
+                                        print(
+                                            "the email or password is correct !");
+
+                                        // save the login credintial .
+                                        context
+                                            .read<MyProvider>()
+                                            .SaveUserlogin(
+                                                email: emailTextController.text,
+                                                password:
+                                                    passwordTextController.text)
+                                            .whenComplete(
+                                          () {
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => Home(
+                                                    userEmail:
+                                                        emailTextController
+                                                            .text),
+                                              ),
+                                            );
+                                          },
                                         );
+                                      } else {
+                                        print(
+                                            "the email or password is incorrect !");
                                       }
                                     }
                                   },

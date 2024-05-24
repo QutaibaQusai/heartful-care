@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+import 'package:test/provider/myprovider.dart';
+import 'package:test/sections/MedicalDevicesSection/supplierItemCart.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:test/model/devicesModel.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierDeviceDetails.dart';
 import 'package:test/sections/MedicalDevicesSection/ratingSupp.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierinfo.dart';
@@ -42,12 +43,20 @@ class SupplierDetails extends StatefulWidget {
 }
 
 class _SupplierDetailsState extends State<SupplierDetails> {
+  @override
+  void initState() {
+    context.read<MyProvider>().getItems(supplier_id: widget.supplierId);
+    super.initState();
+  }
+
   double overallRating = 0.0;
   List<bool> onClick = [true, false, false];
-  List<Devices> cart = [];
 
   @override
   Widget build(BuildContext context) {
+    double mainw = MediaQuery.of(context).size.width;
+    double mainh = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -61,21 +70,16 @@ class _SupplierDetailsState extends State<SupplierDetails> {
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
+              //
+              // delete item cart
+              context.read<MyProvider>().cart.clear();
+              //
             },
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
               color: Colors.white,
             ),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                FontAwesomeIcons.search,
-                color: Colors.white,
-              ),
-            ),
-          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -85,13 +89,11 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                 height: MediaQuery.of(context).size.height / 3.3,
                 child: Stack(
                   children: [
-                    InstaImageViewer(
-                      child: Image.network(
-                        widget.supplierCover,
-                        fit: BoxFit.cover,
-                        height: MediaQuery.of(context).size.height / 5,
-                        width: double.infinity,
-                      ),
+                    Image.network(
+                      widget.supplierCover,
+                      fit: BoxFit.cover,
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: double.infinity,
                     ),
                     Align(
                       alignment: AlignmentDirectional.bottomCenter,
@@ -129,15 +131,11 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                           width: 1.0,
                                         ),
                                       ),
-                                      child: InstaImageViewer(
-                                        backgroundColor: Color(0xFF1C8892),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(13),
-                                          child: Image.network(
-                                            widget.logoImage,
-                                            fit: BoxFit.cover,
-                                          ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(13),
+                                        child: Image.network(
+                                          widget.logoImage,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
@@ -178,11 +176,11 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                                                   onOverallRatingChanged:
                                                                       (newOverallRating) {
                                                                     // Update the overallRating in the parent class
-                                                                    setState(
-                                                                        () {
-                                                                      overallRating =
-                                                                          newOverallRating;
-                                                                    });
+                                                                    // setState(
+                                                                    //     () {
+                                                                    //   overallRating =
+                                                                    //       newOverallRating;
+                                                                    // });
                                                                   },
                                                                 )));
                                                   },
@@ -422,434 +420,9 @@ class _SupplierDetailsState extends State<SupplierDetails> {
               SizedBox(
                 height: 15,
               ),
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('Suppliers')
-                    .snapshots(),
-                builder: (context, supplierSnapshot) {
-                  if (supplierSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return CircularProgressIndicator(
-                      color: Color(0xFF1C8892),
-                    );
-                  }
-                  if (supplierSnapshot.hasError) {
-                    return Text('Error: ${supplierSnapshot.error}');
-                  }
-                  if (!supplierSnapshot.hasData ||
-                      supplierSnapshot.data!.docs.isEmpty) {
-                    return Text('No data available');
-                  }
 
-                  return StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('Devices')
-                        .where("supplierId", isEqualTo: widget.supplierId)
-                        .snapshots(),
-                    builder: (context, deviceSnapshot) {
-                      if (!deviceSnapshot.hasData) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      List<Devices> devices = deviceSnapshot.data!.docs
-                          .map((doc) => Devices.fromMap(
-                              doc.data() as Map<String, dynamic>))
-                          .toList();
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: devices.length,
-                        itemBuilder: (context, index) {
-                          var device = devices[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 16),
-                            child: GestureDetector(
-                              child: Column(
-                                children: [
-                                  onClick[0] == true
-                                      ? Column(
-                                          children: [
-                                            Container(
-                                              width: double.infinity,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  6,
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    height: double.infinity,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            3,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              13),
-                                                      border: Border.all(
-                                                        color: Colors.grey,
-                                                        width: 1.0,
-                                                      ),
-                                                    ),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              13),
-                                                      child: Image.network(
-                                                        device.deviceImages[0],
-                                                        width: double.infinity,
-                                                        height: double.infinity,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Expanded(
-                                                    child: Container(
-                                                      height: double.infinity,
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            device.deviceName
-                                                                .toUpperCase(),
-                                                            style: TextStyle(
-                                                              fontSize: 19,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Text(
-                                                            device
-                                                                .deviceDescription,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .clip,
-                                                            maxLines: 3,
-                                                          ),
-                                                          Expanded(
-                                                              child:
-                                                                  Container()),
-                                                          device.deviceBuyPrice
-                                                                      .isNotEmpty &&
-                                                                  device
-                                                                      .deviceRent
-                                                                      .isNotEmpty
-                                                              ? Row(
-                                                                  children: [
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        border:
-                                                                            Border(
-                                                                          right:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                Colors.grey,
-                                                                            width:
-                                                                                1.0,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsets
-                                                                            .only(
-                                                                            right:
-                                                                                10.0),
-                                                                        child: Text(
-                                                                            "${device.deviceBuyPrice}JD"),
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          left:
-                                                                              10.0),
-                                                                      child: Text(
-                                                                          "Rent per week ${device.deviceRent}JD"),
-                                                                    ),
-                                                                  ],
-                                                                )
-                                                              : device.deviceBuyPrice
-                                                                          .isNotEmpty &&
-                                                                      device
-                                                                          .deviceRent
-                                                                          .isEmpty
-                                                                  ? Text(
-                                                                      "Device Price: ${device.deviceBuyPrice}JD")
-                                                                  : Text(
-                                                                      "Rent per week ${device.deviceRent}JD"),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Divider(),
-                                          ],
-                                        )
-                                      : onClick[1] == true &&
-                                              device.deviceRent == ""
-                                          ? Column(
-                                              children: [
-                                                Container(
-                                                  width: double.infinity,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      6,
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        height: double.infinity,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width /
-                                                            3,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(13),
-                                                          border: Border.all(
-                                                            color: Colors.grey,
-                                                            width: 1.0,
-                                                          ),
-                                                        ),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(13),
-                                                          child: Image.network(
-                                                            device.deviceImages[
-                                                                0],
-                                                            width:
-                                                                double.infinity,
-                                                            height:
-                                                                double.infinity,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 15,
-                                                      ),
-                                                      Expanded(
-                                                        child: Container(
-                                                          height:
-                                                              double.infinity,
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                device
-                                                                    .deviceName
-                                                                    .toUpperCase(),
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 19,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                device
-                                                                    .deviceDescription,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .clip,
-                                                                maxLines: 3,
-                                                              ),
-                                                              Expanded(
-                                                                  child:
-                                                                      Container()),
-                                                              Container(
-                                                                decoration:
-                                                                    BoxDecoration(),
-                                                                child: Text(
-                                                                    "Device Price: ${device.deviceBuyPrice}JD"),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Divider(),
-                                              ],
-                                            )
-                                          : onClick[2] == true &&
-                                                  device.deviceBuyPrice.isEmpty
-                                              ? Column(
-                                                  children: [
-                                                    Container(
-                                                      width: double.infinity,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              6,
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            height:
-                                                                double.infinity,
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                3,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          13),
-                                                              border:
-                                                                  Border.all(
-                                                                color:
-                                                                    Colors.grey,
-                                                                width: 1.0,
-                                                              ),
-                                                            ),
-                                                            child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          13),
-                                                              child:
-                                                                  Image.network(
-                                                                device.deviceImages[
-                                                                    0],
-                                                                width: double
-                                                                    .infinity,
-                                                                height: double
-                                                                    .infinity,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 15,
-                                                          ),
-                                                          Expanded(
-                                                            child: Container(
-                                                              height: double
-                                                                  .infinity,
-                                                              child: Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      device
-                                                                          .deviceName
-                                                                          .toUpperCase(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            19,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    Text(
-                                                                      device
-                                                                          .deviceDescription,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .clip,
-                                                                      maxLines:
-                                                                          3,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      child: Text(
-                                                                          "Rent per week ${device.deviceRent}JD"),
-                                                                    ),
-                                                                  ]),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Divider(),
-                                                  ],
-                                                )
-                                              : Container(),
-                                ],
-                              ),
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => SupplierDeviceDetails(
-                                      deviceName: device.deviceName,
-                                      deviceDescription:
-                                          device.deviceDescription,
-                                      priceForBuying: device.deviceBuyPrice,
-                                      priceForRent: device.deviceRent,
-                                      userEmail: widget.userEmail,
-                                      deviceImage1: device.deviceImages[0],
-                                      deviceImage2: device.deviceImages[1],
-                                      deviceImage3: device.deviceImages[2],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
+              // Display items .
+              DisplayItems(),
             ],
           ),
         ),
@@ -863,21 +436,170 @@ class _SupplierDetailsState extends State<SupplierDetails> {
               color: Colors.white,
             ),
             onPressed: () {
-              // Navigator.of(context)
-              //   ..push(MaterialPageRoute(
-              //       builder: (context) => ItemCart(
-              //             itemName: '',
-              //             itemPrice: '',
-              //             itemOption: '',
-              //             quantity: 5,
-              //             weeks: 5,
-              //             onItemAddedToCart: () {},
-              //             userEmail: '',
-              //           )));
+              Navigator.push(
+                  context,
+                  PageTransition(
+                    child: SupplierItemCart(),
+                    type: PageTransitionType.bottomToTop,
+                  ));
             },
           ),
         ),
       ),
+    );
+  }
+
+  Widget DisplayItems() {
+    double mainw = MediaQuery.of(context).size.width;
+    double mainh = MediaQuery.of(context).size.height;
+    return Consumer<MyProvider>(
+      builder: (context, value, child) => value.items != null &&
+              value.items!.isNotEmpty
+          ? ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: value.items!.length,
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  //
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          child: SupplierDeviceDetails(
+                            index: index,
+                            userEmail: widget.userEmail,
+                            supplierName: widget.name,
+                          ),
+                          type: PageTransitionType.fade));
+                  //
+                },
+                child: UnconstrainedBox(
+                  child: Container(
+                    margin: EdgeInsets.only(top: mainh * .005),
+                    width: mainw * .95,
+                    height: mainh * .2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height / 6,
+                          child: Row(
+                            children: [
+                              Container(
+                                height: double.infinity,
+                                width: MediaQuery.of(context).size.width / 3,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(13),
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(13),
+                                  child: Image.network(
+                                    value.items![index].deviceImages[1],
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: double.infinity,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        value.items![index].deviceName
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        value.items![index].deviceDescription,
+                                        overflow: TextOverflow.clip,
+                                        maxLines: 3,
+                                      ),
+                                      Expanded(child: Container()),
+                                      value.items![index].deviceBuyPrice
+                                                  .isNotEmpty &&
+                                              value.items![index].deviceRent
+                                                  .isNotEmpty
+                                          ? Row(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      right: BorderSide(
+                                                        color: Colors.grey,
+                                                        width: 1.0,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 10.0),
+                                                    child: Text(
+                                                        "${value.items![index].deviceBuyPrice}JD"),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Text(
+                                                      "Rent per week ${value.items![index]..deviceRent}JD"),
+                                                ),
+                                              ],
+                                            )
+                                          : value.items![index].deviceBuyPrice
+                                                      .isNotEmpty &&
+                                                  value.items![index].deviceRent
+                                                      .isEmpty
+                                              ? Text(
+                                                  "Device Price: ${value.items![index].deviceBuyPrice}JD")
+                                              : Text(
+                                                  "Rent per week ${value.items![index].deviceRent}JD"),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : value.items == null
+              ? Container(
+                  width: mainw,
+                  height: mainh * 10 / 100,
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(),
+                )
+              : Container(
+                  width: mainw,
+                  height: mainh * 10 / 100,
+                  alignment: Alignment.center,
+                  child: Text("No Devices added yet"),
+                ),
     );
   }
 
@@ -935,12 +657,5 @@ class _SupplierDetailsState extends State<SupplierDetails> {
         throw 'Could not launch $googleUrl';
       }
     }
-  }
-
-  void addItemToCart({required Devices item}) {
-    cart.add(item);
-    setState(() {
-      
-    });
   }
 }

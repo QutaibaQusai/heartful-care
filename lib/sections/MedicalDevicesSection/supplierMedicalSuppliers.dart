@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:test/model/medicalDevicesSupplierModel.dart';
 import 'package:test/sections/MedicalDevicesSection/supplerDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SupplierMedicalSupplier extends StatefulWidget {
   final String userEmail;
-  const SupplierMedicalSupplier({Key? key, required this.userEmail}) : super(key: key);
+  const SupplierMedicalSupplier({Key? key, required this.userEmail})
+      : super(key: key);
 
   @override
   State<SupplierMedicalSupplier> createState() => _MedicalState();
@@ -58,8 +60,10 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
                 var supplier = medicalSupplier[index];
                 return GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SupplierDetails(
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: SupplierDetails(
                               name: supplier.name,
                               phoneNumber: supplier.phoneNumber,
                               emailAddress: supplier.emailAddress,
@@ -79,7 +83,8 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
                                   overallRating = newOverallRating;
                                 });
                               },
-                            )));
+                            ),
+                            type: PageTransitionType.fade));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(

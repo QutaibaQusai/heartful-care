@@ -1,52 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/sections/MedicalDevicesSection/itemCart.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+import 'package:test/provider/myprovider.dart';
+import 'package:test/sections/MedicalDevicesSection/supplierDeviceInstructions.dart';
+import 'package:test/sections/MedicalDevicesSection/supplierItemCart.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:carousel_slider/carousel_slider.dart';
 
 class SupplierDeviceDetails extends StatefulWidget {
-  final String deviceName;
-  final String deviceDescription;
-  final String priceForBuying;
-  final String priceForRent;
   final String userEmail;
-  final String deviceImage1;
-  final String deviceImage2;
-  final String deviceImage3;
+  final int index;
+  final String supplierName;
 
-  const SupplierDeviceDetails({
-    Key? key,
-    required this.deviceName,
-    required this.deviceDescription,
-    required this.priceForBuying,
-    required this.priceForRent,
-    required this.userEmail,
-    required this.deviceImage1,
-    required this.deviceImage2,
-    required this.deviceImage3,
-  }) : super(key: key);
+  SupplierDeviceDetails(
+      {Key? key,
+      required this.index,
+      required this.userEmail,
+      required this.supplierName})
+      : super(key: key);
 
   @override
   State<SupplierDeviceDetails> createState() => _SupplierDeviceDetailsState();
 }
 
 class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
-  int quantity = 1;
-  int weeks = 1;
-  int currentPage = 0;
   String? priceOption;
-  int cartItemCount = 0;
+  int weeks = 1;
 
   @override
   Widget build(BuildContext context) {
-    final List<String> images = [
-      widget.deviceImage1,
-      widget.deviceImage2,
-      widget.deviceImage3,
-    ];
+    double mainw = MediaQuery.of(context).size.width;
+    double mainh = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -59,308 +49,323 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
           ),
           backgroundColor: Color(0xFF1C8892),
           title: Text(
-            "Device Details",
+            "Device details",
             style: TextStyle(
               color: Colors.white,
             ),
           ),
           centerTitle: true,
           actions: [
-            //   if (priceOption != null)
-            //     badges.Badge(
-            //       position: badges.BadgePosition.topEnd(top: -8, end: 3),
-            //       showBadge: cartItemCount > 0,
-            //       badgeContent: Text(cartItemCount.toString()),
-            //       badgeColor: Colors.white,
-            //       child: IconButton(
-            //         onPressed: () {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //               builder: (context) => ItemCart(
-            //                 itemName: widget.deviceName,
-            //                 itemPrice: priceOption == 'Buy'
-            //                     ? widget.priceForBuying
-            //                     : widget.priceForRent,
-            //                 itemOption: priceOption!,
-            //                 quantity: quantity,
-            //                 weeks: weeks,
-            //                 onItemAddedToCart: () {
-            //                   setState(() {
-            //                     cartItemCount++;
-            //                   });
-            //                 },
-            //                 userEmail: widget.userEmail,
-            //                 deviceImage1: widget.deviceImage1,
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //         icon: Icon(
-            //           FontAwesomeIcons.cartShopping,
-            //           color: Colors.white,
-            //         ),
-            //       ),
-            //     ),
+            Consumer<MyProvider>(
+              builder: (context, value, child) => value.cart.length > 0
+                  ? badges.Badge(
+                      position: badges.BadgePosition.topEnd(top: -8, end: 3),
+                      badgeColor: Color(0xFF1C8892),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: SupplierItemCart(),
+                                  type: PageTransitionType.fade));
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.cartShopping,
+                          color: Colors.white,
+                        ),
+                      ),
+                      badgeContent: Text(value.cart.length.toString(),
+                          style: TextStyle(color: Colors.white)),
+                    )
+                  : SizedBox(),
+            ),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                        child: SupplierDeviceInstruction(
+                          index: widget.index,
+                        ),
+                        type: PageTransitionType.fade),
+                  );
+                },
+                icon: Icon(
+                  FontAwesomeIcons.list,
+                  color: Colors.white,
+                ))
           ],
         ),
         body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 2.5,
-                decoration: BoxDecoration(),
-                child: PageView.builder(
-                  onPageChanged: (int page) {
-                    setState(() {
-                      currentPage = page;
-                    });
-                  },
-                  itemCount: images.length,
-                  itemBuilder: (context, index) {
-                    return Image.network(
-                      images[index],
-                      fit: BoxFit.cover,
-                    );
-                  },
+          child: Consumer<MyProvider>(
+            builder: (context, value, child) {
+              int itemQuantity =
+                  int.tryParse(value.items![widget.index].deviceQuantity) ?? 0;
+
+              List<Widget> carouselItems = [
+                Image.network(
+                  value.items![widget.index].deviceImages[0],
+                  width: 400,
                 ),
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  images.length,
-                  (index) => buildDot(index),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                Image.network(value.items![widget.index].deviceImages[1]),
+                Image.network(value.items![widget.index].deviceImages[2]),
+              ];
+
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.deviceName.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    Center(
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: CarouselSlider(
+                              items: carouselItems,
+                              options: CarouselOptions(
+                                height: mainh * .50,
+                                autoPlay: true,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll: true,
+                              ),
+                            ),
                           ),
-                        ),
-                        widget.priceForBuying.isNotEmpty &&
-                                widget.priceForRent.isEmpty
-                            ? Text(
-                                "${widget.priceForBuying} JD",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            : widget.priceForRent.isNotEmpty &&
-                                    widget.priceForBuying.isEmpty
-                                ? Text(
-                                    "${widget.priceForRent} per week",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : Text(
-                                    "${widget.priceForBuying}JD \n|${widget.priceForRent}JD ",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Device Description:",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                          itemQuantity > 0
+                              ? Align(
+                                  alignment: AlignmentDirectional.topEnd,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF1C8892),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Text(
+                                          "Available",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      )),
+                                )
+                              : SizedBox()
+                        ],
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Text(
-                      widget.deviceDescription,
-                      style: TextStyle(fontSize: 16),
+                    SizedBox(height: mainh * .02),
+                    Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      value.items![widget.index].deviceName
+                                          .toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 2.0,
+                                      ),
+                                    ),
+                                    SizedBox(height: mainh * .005),
+                                    Text(
+                                      "by ${widget.supplierName}",
+                                      style: TextStyle(color: Colors.grey[800]),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(width: 15),
+                                value.items![widget.index].deviceRent.isEmpty
+                                    ? Flexible(
+                                        child: Text(
+                                          "${value.items![widget.index].deviceBuyPrice} JOD",
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 3,
+                                              fontSize: 16,
+                                              color: Color(0xFF1C8892)),
+                                        ),
+                                      )
+                                    : Flexible(
+                                        child: Text(
+                                          "${value.items![widget.index].deviceRent} JOD / Week",
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 0,
+                                            fontSize: 14,
+                                            color: Color(0xFF1C8892),
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
+                            SizedBox(height: mainh * 0.04),
+                            Text("Description",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1,
+                                    fontSize: 16)),
+                            SizedBox(height: mainh * .005),
+                            Text(value.items![widget.index].deviceDescription),
+                          ],
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Text(
-                        //   "Price Details:",
-                        //   style: TextStyle(
-                        //     fontSize: 20,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: [
-                        //     Row(
-                        //       children: [
-                        //         Radio<String>(
-                        //           value: 'Buy',
-                        //           groupValue: priceOption,
-                        //           onChanged: (value) {
-                        //             setState(() {
-                        //               priceOption = value!;
-                        //             });
-                        //           },
-                        //           materialTapTargetSize:
-                        //               MaterialTapTargetSize.shrinkWrap,
-                        //           activeColor: Color(0xFF1C8892),
-                        //         ),
-                        //         Text('Buy for ${widget.priceForBuying} JD'),
-                        //       ],
-                        //     ),
-                        //     Row(
-                        //       children: [
-                        //         Radio<String>(
-                        //           value: 'Rent',
-                        //           groupValue: priceOption,
-                        //           onChanged: (value) {
-                        //             setState(() {
-                        //               priceOption = value!;
-                        //             });
-                        //           },
-                        //           materialTapTargetSize:
-                        //               MaterialTapTargetSize.shrinkWrap,
-                        //           activeColor: Color(0xFF1C8892),
-                        //         ),
-                        //         Text(
-                        //             'Rent per week for ${widget.priceForRent} JD'),
-                        //         Spacer(flex: 5),
-                        //         priceOption == 'Rent'
-                        //             ? DropdownButton<int>(
-                        //                 value: weeks,
-                        //                 onChanged: (int? value) {
-                        //                   setState(() {
-                        //                     weeks = value!;
-                        //                   });
-                        //                 },
-                        //                 items: List.generate(
-                        //                   12,
-                        //                   (index) => DropdownMenuItem<int>(
-                        //                     value: index + 1,
-                        //                     child: Text('${index + 1} weeks'),
-                        //                   ),
-                        //                 ),
-                        //               )
-                        //             : SizedBox(),
-                        //       ],
-                        //     ),
-                        //   ],
-                        // ),
-                      ],
-                    ),
+                    SizedBox(height: mainh * 0.02),
+                    Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Price Details:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF1C8892),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Text(
+                                      "Required",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 10),
+                                    ),
+                                  ),
+                                ).animate().move()
+                              ],
+                            ),
+                            SizedBox(height: mainh * .005),
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'Buy',
+                                  groupValue: priceOption,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      priceOption = value!;
+                                    });
+                                  },
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text(
+                                    'Buy for ${value.items![widget.index].deviceBuyPrice} JD'),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'Rent',
+                                  groupValue: priceOption,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      priceOption = value!;
+                                    });
+                                  },
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text(
+                                    "Rent ${value.items![widget.index].deviceRent} per week"),
+                                Spacer(flex: 5),
+                                priceOption == 'Rent'
+                                    ? DropdownButton<int>(
+                                        value: weeks,
+                                        onChanged: (int? value) {
+                                          setState(() {
+                                            weeks = value!;
+                                          });
+                                        },
+                                        items: List.generate(
+                                          12,
+                                          (index) => DropdownMenuItem<int>(
+                                            value: index + 1,
+                                            child: Text('${index + 1} weeks'),
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              widget.priceForRent.isEmpty
-                  ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: decrementQuantity,
-                            icon: Icon(Icons.remove),
-                          ),
-                          Text(
-                            quantity.toString(),
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          IconButton(
-                            onPressed: incrementQuantity,
-                            icon: Icon(Icons.add),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Text(""),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    cartItemCount++;
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF1C8892),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.shopping_cart,
+          padding: const EdgeInsets.all(16.0),
+          child: Consumer<MyProvider>(
+            builder: (context, value, child) => ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                )),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Color(0xFF1C8892)),
+              ),
+              onPressed: () {
+                if (priceOption == null) {
+                  print("the vlaue of ${priceOption} is null");
+                } else {
+                  // add item to cart
+                  //
+                  context
+                      .read<MyProvider>()
+                      .additem(item: value.items![widget.index]);
+                  //
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Add to Cart",
+                    style: TextStyle(
+                      fontSize: 18,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 8),
-                    Text(
-                      "Add to Cart",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  Icon(
+                    FontAwesomeIcons.cartShopping,
+                    color: Colors.white,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
-  }
-
-  Widget buildDot(int index) {
-    return Container(
-      width: 8,
-      height: 8,
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: currentPage == index ? Color(0xFF1C8892) : Colors.grey,
-      ),
-    );
-  }
-
-  void incrementQuantity() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void decrementQuantity() {
-    if (quantity > 1) {
-      setState(() {
-        quantity--;
-      });
-    }
   }
 }
