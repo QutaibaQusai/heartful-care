@@ -44,7 +44,7 @@ class _SupplierDeviceInstructionState extends State<SupplierDeviceInstruction> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.",
+                      value.items![widget.index].deviceInstruction,
                       style: TextStyle(fontSize: 18),
                     ),
                   )

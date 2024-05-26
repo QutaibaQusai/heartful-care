@@ -111,17 +111,20 @@ class _MyDevicesState extends State<SupplierMyDevices> {
                                       return SupplierEditMyDevice(
                                         deviceName: device.deviceName,
                                         devicePrice: device.deviceBuyPrice,
-                                        deviceRent: device.deviceRent,
+                                        deviceRent: device.deviceRentPrice,
                                         deviceDescription:
                                             device.deviceDescription,
-                                        deviceQuantity: device.deviceQuantity,
+                                        //
                                         deviceInstruction:
                                             device.deviceInstruction,
+                                        //
                                         supplierEmail: widget.supplierEmail,
                                         deviceId: device.deviceId,
                                         deviceImage1: device.deviceImages[0],
                                         deviceImage2: device.deviceImages[1],
                                         deviceImage3: device.deviceImages[2],
+                                        deviceAavailability:
+                                            device.deviceAavailability,
                                       );
                                     },
                                   ),

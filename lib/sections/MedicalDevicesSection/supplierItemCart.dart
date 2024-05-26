@@ -6,8 +6,10 @@ import 'package:test/provider/myprovider.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierCheckOut.dart';
 
 class SupplierItemCart extends StatefulWidget {
+  final int? weekForRent;
   const SupplierItemCart({
     Key? key,
+    this.weekForRent,
   }) : super(key: key);
 
   @override
@@ -65,9 +67,11 @@ class _ItemCart extends State<SupplierItemCart> {
         double totalRent = 0.0;
         for (var item in value.cart) {
           totalBuyPrice += double.tryParse(item.deviceBuyPrice) ?? 0.0;
-          totalRent += double.tryParse(item.deviceRent) ?? 0.0;
+          totalRent += double.tryParse(item.deviceRentPrice) ?? 0.0;
         }
-        double total = totalBuyPrice + totalRent;
+        int weeksForRent = widget.weekForRent ?? 1;
+
+        double total = (totalBuyPrice + totalRent) * weeksForRent;
         return value.cart.isNotEmpty
             ? Container(
                 padding: const EdgeInsets.symmetric(
@@ -188,7 +192,7 @@ class _ItemCart extends State<SupplierItemCart> {
                           Container(
                             width: mainw * .40,
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Flexible(
@@ -206,18 +210,20 @@ class _ItemCart extends State<SupplierItemCart> {
                                 ),
                                 // Spacer(),
 
-                                // TODO
-                                value.cart[index].deviceRent.isEmpty
+                                // // TODO
+                                value.cart[index].deviceBuyPrice != null &&
+                                        value.cart[index].deviceBuyPrice
+                                            .isNotEmpty
                                     ? Text(
                                         "${value.cart[index].deviceBuyPrice} JOD",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       )
                                     : Text(
-                                        "${value.cart[index].deviceRent} JOD Per Week",
+                                        "${value.cart[index].deviceRentPrice} JOD for ${widget.weekForRent} Week",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold))
-                                //
+                                            fontWeight: FontWeight.bold),
+                                      )
                               ],
                             ),
                           ),

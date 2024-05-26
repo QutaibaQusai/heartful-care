@@ -328,98 +328,6 @@ class _SupplierDetailsState extends State<SupplierDetails> {
               SizedBox(
                 height: 15,
               ),
-              Container(
-                height: 35,
-                // color: Color(0xFF1C8892),
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    SizedBox(
-                      width: 16,
-                    ),
-                    //  TextButton(onPressed: null, child: Text("Sort by")),
-                    TextButton(
-                      child: Text(
-                        "All Devices",
-                        style: onClick[0]
-                            ? TextStyle(color: Colors.white)
-                            : TextStyle(color: Colors.black),
-                      ),
-                      style: onClick[0]
-                          ? TextButton.styleFrom(
-                              backgroundColor: Color(0xFF1C8892),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            )
-                          : ButtonStyle(),
-                      onPressed: () {
-                        setState(() {
-                          onClick[0] = !onClick[0];
-                          onClick[1] = false;
-                          onClick[2] = false;
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    TextButton(
-                      child: Text(
-                        "Buy Device",
-                        style: onClick[1]
-                            ? TextStyle(color: Colors.white)
-                            : TextStyle(color: Colors.black),
-                      ),
-                      style: onClick[1]
-                          ? TextButton.styleFrom(
-                              backgroundColor: Color(0xFF1C8892),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            )
-                          : ButtonStyle(),
-                      onPressed: () {
-                        setState(() {
-                          onClick[1] = !onClick[1];
-                          onClick[0] = false;
-                          onClick[2] = false;
-                        });
-                        // TODO
-                      },
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    TextButton(
-                      child: Text(
-                        "Rent Device",
-                        style: onClick[2]
-                            ? TextStyle(color: Colors.white)
-                            : TextStyle(color: Colors.black),
-                      ),
-                      style: onClick[2]
-                          ? TextButton.styleFrom(
-                              backgroundColor: Color(0xFF1C8892),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            )
-                          : ButtonStyle(),
-                      onPressed: () {
-                        setState(() {
-                          onClick[2] = !onClick[2];
-                          onClick[0] = false;
-                          onClick[1] = false;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
 
               // Display items .
               DisplayItems(),
@@ -534,46 +442,14 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                         maxLines: 3,
                                       ),
                                       Expanded(child: Container()),
-                                      value.items![index].deviceBuyPrice
-                                                  .isNotEmpty &&
-                                              value.items![index].deviceRent
+                                      value.items![index].deviceBuyPrice !=
+                                                  null &&
+                                              value.items![index].deviceBuyPrice
                                                   .isNotEmpty
-                                          ? Row(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border(
-                                                      right: BorderSide(
-                                                        color: Colors.grey,
-                                                        width: 1.0,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 10.0),
-                                                    child: Text(
-                                                        "${value.items![index].deviceBuyPrice}JD"),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10.0),
-                                                  child: Text(
-                                                      "Rent per week ${value.items![index]..deviceRent}JD"),
-                                                ),
-                                              ],
-                                            )
-                                          : value.items![index].deviceBuyPrice
-                                                      .isNotEmpty &&
-                                                  value.items![index].deviceRent
-                                                      .isEmpty
-                                              ? Text(
-                                                  "Device Price: ${value.items![index].deviceBuyPrice}JD")
-                                              : Text(
-                                                  "Rent per week ${value.items![index].deviceRent}JD"),
+                                          ? Text(
+                                              "Device Price: ${value.items![index].deviceBuyPrice}JD")
+                                          : Text(
+                                              "Rent per week: ${value.items![index].deviceRentPrice}JD")
                                     ],
                                   ),
                                 ),

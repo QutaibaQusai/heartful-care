@@ -11,7 +11,7 @@ class SupplierEditMyDevice extends StatefulWidget {
   final String devicePrice;
   final String deviceRent;
   final String deviceDescription;
-  final String deviceQuantity;
+  final bool deviceAavailability;
   final String deviceInstruction;
   final String deviceImage1;
   final String deviceImage2;
@@ -24,13 +24,13 @@ class SupplierEditMyDevice extends StatefulWidget {
     required this.devicePrice,
     required this.deviceRent,
     required this.deviceDescription,
-    required this.deviceQuantity,
     required this.deviceInstruction,
     required this.deviceImage1,
     required this.deviceImage2,
     required this.deviceImage3,
     required this.supplierEmail,
     required this.deviceId,
+    required this.deviceAavailability,
   });
 
   @override
@@ -38,12 +38,12 @@ class SupplierEditMyDevice extends StatefulWidget {
 }
 
 class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
-  // TextEditingController deviceInstructions = TextEditingController();
   Uint8List? _device1;
   Uint8List? _device2;
   Uint8List? _device3;
 
   String? deviceSellingOptions;
+  late bool? _isAvailable;
 
   void selectDeviceImage1() async {
     Uint8List img1 = await pickImage(ImageSource.gallery);
@@ -71,30 +71,32 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
   late TextEditingController devicePriceForPuy;
   late TextEditingController deviceDescription;
   late TextEditingController devicePriceForRent;
-  late TextEditingController deviceQuantity;
   late TextEditingController deviceInstructions;
 
   @override
   void initState() {
-    // TODO: implement initState
+    // Initialize controllers with the initial values
     deviceName = TextEditingController(text: widget.deviceName);
     devicePriceForPuy = TextEditingController(text: widget.devicePrice);
     devicePriceForRent = TextEditingController(text: widget.deviceRent);
     deviceDescription = TextEditingController(text: widget.deviceDescription);
-    deviceQuantity = TextEditingController(text: widget.deviceQuantity);
     deviceInstructions = TextEditingController(text: widget.deviceInstruction);
+
+    // Initialize _isAvailable with the widget's availability value
+    _isAvailable = widget.deviceAavailability;
+
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    // Dispose controllers
     deviceName.dispose();
     devicePriceForPuy.dispose();
     deviceDescription.dispose();
     devicePriceForRent.dispose();
-    deviceQuantity.dispose();
     deviceInstructions.dispose();
+
     super.dispose();
   }
 
@@ -124,6 +126,7 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -207,11 +210,39 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
                 SizedBox(height: 10),
                 buildTextFormField(deviceName, "Device Name"),
                 buildTextFormField(deviceDescription, "Description"),
-                buildTextFormField(deviceQuantity, "Device quantity"),
+                Text(
+                  'Is the device available?',
+                  style: TextStyle(fontSize: 18),
+                ),
+                ListTile(
+                  title: const Text('Available'),
+                  leading: Radio<bool>(
+                    value: true,
+                    groupValue: _isAvailable,
+                    activeColor: Color(0xFF1C8892),
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isAvailable = value!;
+                      });
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: const Text('Unavailable'),
+                  leading: Radio<bool>(
+                    value: false,
+                    groupValue: _isAvailable,
+                    activeColor: Color(0xFF1C8892),
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isAvailable = value!;
+                      });
+                    },
+                  ),
+                ),
                 buildTextFormField(
                     deviceInstructions, "Instructions about device"),
                 SizedBox(height: 10),
-                // Text("This device for BUY of Rent or Both?"),
                 DropdownButtonFormField<String>(
                   dropdownColor: Color(0xFF1C8892),
                   value: deviceSellingOptions,
@@ -227,7 +258,7 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
                           color: Color(0xFF1C8892), width: 2.0),
-                    ), // Change focus color
+                    ),
                     labelText: "Device selling options",
                     labelStyle: TextStyle(color: Color(0xFF1C8892)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -235,7 +266,6 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
                   items: <String>[
                     'Rent',
                     'Buy',
-                    'Both',
                   ]
                       .map<DropdownMenuItem<String>>(
                         (String value) => DropdownMenuItem<String>(
@@ -250,7 +280,6 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
                       )
                       .toList(),
                 ),
-                // buildTextFormField(devicePriceForPuy, "Device Price"),
                 SizedBox(height: 10),
                 deviceSellingOptions == "Buy" || deviceSellingOptions == "Both"
                     ? TextFormField(
@@ -268,8 +297,6 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
                       )
                     : Container(),
                 SizedBox(height: 10),
-                // buildTextFormField(
-                //     devicePriceForRent, "Device Price for rent per week"),
                 deviceSellingOptions == "Rent" || deviceSellingOptions == "Both"
                     ? TextFormField(
                         controller: devicePriceForRent,
@@ -300,8 +327,7 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
             ),
             onPressed: () {
               updateDeviceData();
-
-              Navigator.of(context).pop();
+              // print(_isAvailable);
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -350,8 +376,8 @@ class _SupplierMyDevicesDetailsState extends State<SupplierEditMyDevice> {
         'devicePriceForPuy': devicePriceForPuy.text,
         'devicePriceForRent': devicePriceForRent.text,
         'deviceDescription': deviceDescription.text,
-        'deviceQuantity': deviceQuantity.text,
         'deviceInstructions': deviceInstructions.text,
+        'Device_availability': _isAvailable,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(

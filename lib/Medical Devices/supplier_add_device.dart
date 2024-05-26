@@ -22,12 +22,12 @@ class _Add_deviceState extends State<SupplierAddDevice> {
   TextEditingController devicePriceForPuy = TextEditingController();
   TextEditingController devicePriceForRent = TextEditingController();
   TextEditingController deviceDescription = TextEditingController();
-  TextEditingController deviceQuantity = TextEditingController();
   TextEditingController deviceInstructions = TextEditingController();
   Uint8List? _device1;
   Uint8List? _device2;
   Uint8List? _device3;
   String? deviceSellingOptions;
+  bool? _isAvailable;
 
   void selectDeviceImage1({required ImageSource galleryOrImage}) async {
     Uint8List img1 = await pickImage(galleryOrImage);
@@ -78,6 +78,7 @@ class _Add_deviceState extends State<SupplierAddDevice> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -146,11 +147,43 @@ class _Add_deviceState extends State<SupplierAddDevice> {
                 SizedBox(height: 10),
                 buildTextFormField(deviceName, "Device Name"),
                 buildTextFormField(deviceDescription, "Description"),
-                buildTextFormField(deviceQuantity, "Device quantity"),
+                // device quantaity
+                //
+                Text(
+                  'Is the device available?',
+                  style: TextStyle(fontSize: 18),
+                ),
+                ListTile(
+                  title: const Text('Available'),
+                  leading: Radio<bool>(
+                    value: true,
+                    groupValue: _isAvailable,
+                    activeColor: Color(0xFF1C8892),
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isAvailable = value;
+                      });
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: const Text('Unavailable'),
+                  leading: Radio<bool>(
+                    value: false,
+                    groupValue: _isAvailable,
+                    activeColor: Color(0xFF1C8892),
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isAvailable = value;
+                      });
+                    },
+                  ),
+                ),
+
+                //
                 buildTextFormField(
                     deviceInstructions, "Instructions about device"),
                 SizedBox(height: 10),
-                // Text("This device for BUY of Rent or Both?"),
                 DropdownButtonFormField<String>(
                   dropdownColor: Color(0xFF1C8892),
                   value: deviceSellingOptions,
@@ -174,7 +207,6 @@ class _Add_deviceState extends State<SupplierAddDevice> {
                   items: <String>[
                     'Rent',
                     'Buy',
-                    'Both',
                   ]
                       .map<DropdownMenuItem<String>>(
                         (String value) => DropdownMenuItem<String>(
@@ -189,7 +221,6 @@ class _Add_deviceState extends State<SupplierAddDevice> {
                       )
                       .toList(),
                 ),
-                // buildTextFormField(devicePriceForPuy, "Device Price"),
                 SizedBox(height: 10),
                 deviceSellingOptions == "Buy" || deviceSellingOptions == "Both"
                     ? TextFormField(
@@ -239,6 +270,7 @@ class _Add_deviceState extends State<SupplierAddDevice> {
             ),
             onPressed: () {
               _submitDeviceData();
+              print(deviceInstructions.text);
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -254,7 +286,8 @@ class _Add_deviceState extends State<SupplierAddDevice> {
     );
   }
 
-  Widget buildTextFormField(TextEditingController controller, String hintText) {
+  Widget buildTextFormField(
+      TextEditingController controller, String labelText) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -268,7 +301,7 @@ class _Add_deviceState extends State<SupplierAddDevice> {
               borderSide:
                   const BorderSide(color: Color(0xFF1C8892), width: 2.0),
             ),
-            hintText: hintText,
+            labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
         ),
@@ -309,19 +342,32 @@ class _Add_deviceState extends State<SupplierAddDevice> {
           deviceName: deviceName.text,
           storagePath: storagePath,
         );
-        // Add device information along with image URLs to Firestore
-        await devices.doc(deviceId).set({
+
+        // Create a map to hold device data
+        Map<String, dynamic> deviceData = {
           'DeviseId': deviceId,
           'Device_Name': deviceName.text,
-          'devicePriceForPuy': devicePriceForPuy.text,
-          'devicePriceForRent': devicePriceForRent.text,
           'deviceDescription': deviceDescription.text,
-          'deviceQuantity': deviceQuantity.text,
+          'Device_availability': _isAvailable,
           'deviceInstructions': deviceInstructions.text,
           'supplierId': supplierId,
           'Email': widget.supplierEmail,
           'ImageUrls': imageUrls,
-        });
+          'devicePriceForRent': devicePriceForRent.text,
+          'devicePriceForPuy': devicePriceForPuy.text
+        };
+
+        // // Conditionally add price fields as doubles
+
+        // deviceData['devicePriceForPuy'] =
+        //     double.parse(devicePriceForPuy.text);
+
+        // deviceData['devicePriceForRent'] =
+        //     double.parse(devicePriceForRent.text);
+
+        // Add device information along with image URLs to Firestore
+        await devices.doc(deviceId).set(deviceData);
+        Navigator.of(context).pop();
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

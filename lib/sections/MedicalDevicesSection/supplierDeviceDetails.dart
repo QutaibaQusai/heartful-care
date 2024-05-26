@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:test/provider/myprovider.dart';
@@ -27,7 +28,6 @@ class SupplierDeviceDetails extends StatefulWidget {
 }
 
 class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
-  String? priceOption;
   int weeks = 1;
 
   @override
@@ -66,7 +66,9 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                           Navigator.push(
                               context,
                               PageTransition(
-                                  child: SupplierItemCart(),
+                                  child: SupplierItemCart(
+                                    weekForRent: weeks,
+                                  ),
                                   type: PageTransitionType.fade));
                         },
                         icon: Icon(
@@ -99,9 +101,6 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
         body: SingleChildScrollView(
           child: Consumer<MyProvider>(
             builder: (context, value, child) {
-              int itemQuantity =
-                  int.tryParse(value.items![widget.index].deviceQuantity) ?? 0;
-
               List<Widget> carouselItems = [
                 Image.network(
                   value.items![widget.index].deviceImages[0],
@@ -133,7 +132,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                               ),
                             ),
                           ),
-                          itemQuantity > 0
+                          value.items![widget.index].deviceAavailability == true
                               ? Align(
                                   alignment: AlignmentDirectional.topEnd,
                                   child: Container(
@@ -149,7 +148,21 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                         ),
                                       )),
                                 )
-                              : SizedBox()
+                              : Align(
+                                  alignment: AlignmentDirectional.topEnd,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Text(
+                                          "Not Available",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      )),
+                                )
                         ],
                       ),
                     ),
@@ -185,7 +198,10 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                   ],
                                 ),
                                 SizedBox(width: 15),
-                                value.items![widget.index].deviceRent.isEmpty
+                                value.items![widget.index].deviceBuyPrice !=
+                                            null &&
+                                        value.items![widget.index]
+                                            .deviceBuyPrice.isNotEmpty
                                     ? Flexible(
                                         child: Text(
                                           "${value.items![widget.index].deviceBuyPrice} JOD",
@@ -199,7 +215,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                       )
                                     : Flexible(
                                         child: Text(
-                                          "${value.items![widget.index].deviceRent} JOD / Week",
+                                          "${value.items![widget.index].deviceRentPrice} JOD / Week",
                                           maxLines: 2,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -224,77 +240,52 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                       ),
                     ),
                     SizedBox(height: mainh * 0.02),
-                    Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Price Details:",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                    value.items![widget.index].deviceRentPrice != null &&
+                            value
+                                .items![widget.index].deviceRentPrice.isNotEmpty
+                        ? Container(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Price Details:",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF1C8892),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Text(
+                                            "Required",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10),
+                                          ),
+                                        ),
+                                      ).animate().move()
+                                    ],
                                   ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF1C8892),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Text(
-                                      "Required",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10),
-                                    ),
-                                  ),
-                                ).animate().move()
-                              ],
-                            ),
-                            SizedBox(height: mainh * .005),
-                            Row(
-                              children: [
-                                Radio<String>(
-                                  value: 'Buy',
-                                  groupValue: priceOption,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      priceOption = value!;
-                                    });
-                                  },
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  activeColor: Color(0xFF1C8892),
-                                ),
-                                Text(
-                                    'Buy for ${value.items![widget.index].deviceBuyPrice} JD'),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Radio<String>(
-                                  value: 'Rent',
-                                  groupValue: priceOption,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      priceOption = value!;
-                                    });
-                                  },
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  activeColor: Color(0xFF1C8892),
-                                ),
-                                Text(
-                                    "Rent ${value.items![widget.index].deviceRent} per week"),
-                                Spacer(flex: 5),
-                                priceOption == 'Rent'
-                                    ? DropdownButton<int>(
+                                  SizedBox(height: mainh * .005),
+                                  Row(
+                                    children: [
+                                      Text(
+                                          "Rent ${value.items![widget.index].deviceRentPrice} per week"),
+                                      Spacer(flex: 5),
+                                      DropdownButton<int>(
                                         value: weeks,
                                         onChanged: (int? value) {
                                           setState(() {
@@ -305,17 +296,18 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                           12,
                                           (index) => DropdownMenuItem<int>(
                                             value: index + 1,
-                                            child: Text('${index + 1} weeks'),
+                                            child: Text(
+                                                '${index + 1} week${index + 1 > 1 ? 's' : ''}'),
                                           ),
                                         ),
-                                      )
-                                    : SizedBox(),
-                              ],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    )
+                          )
+                        : SizedBox(),
                   ],
                 ),
               );
@@ -335,8 +327,21 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                     MaterialStateProperty.all<Color>(Color(0xFF1C8892)),
               ),
               onPressed: () {
-                if (priceOption == null) {
-                  print("the vlaue of ${priceOption} is null");
+                if (value.items![widget.index].deviceAavailability == false) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.red,
+                      behavior: SnackBarBehavior.floating,
+                      duration: Duration(seconds: 1),
+                      content: Text(
+                        "${value.items![widget.index].deviceName} Not Available",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontFamily: GoogleFonts.poppins().fontFamily,
+                        ),
+                      ),
+                    ),
+                  );
                 } else {
                   // add item to cart
                   //
@@ -344,6 +349,20 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                       .read<MyProvider>()
                       .additem(item: value.items![widget.index]);
                   //
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Color(0xFF1C8892),
+                      behavior: SnackBarBehavior.floating,
+                      duration: Duration(seconds: 1),
+                      content: Text(
+                        "${value.items![widget.index].deviceName} added to cart ",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontFamily: GoogleFonts.poppins().fontFamily,
+                        ),
+                      ),
+                    ),
+                  );
                 }
               },
               child: Row(
