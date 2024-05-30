@@ -8,7 +8,6 @@ import 'package:test/User%20Settings/YourChangeEmailPage.dart';
 import 'package:test/User%20Settings/YourChangePassPage.dart';
 import 'package:test/User%20Settings/addaddresspage.dart';
 import 'package:test/intro_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/provider/myprovider.dart';
 
 class SettingFirstPage extends StatefulWidget {
@@ -40,7 +39,10 @@ class _SettingFirstPage extends State<SettingFirstPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+
         shadowColor: Colors.transparent,
         automaticallyImplyLeading: false,
         // leading: IconButton(
@@ -253,64 +255,6 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     );
   }
 
-  /*Future<void> _showLocationInputDialog(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Select Location',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          content: Column(
-            children: ammanAreas
-                .map((area) => GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedLocation = area;
-                        });
-                        Navigator.of(context).pop();
-                      },
-                      child: ListTile(
-                        title: Text(
-                          area,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ))
-                .toList(),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget buildLocationOption(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _showLocationInputDialog(context);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              selectedLocation,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-            ),
-            Icon(Icons.edit_location, color: Colors.black),
-          ],
-        ),
-      ),
-    );
-  }*/
-
   Widget buildDeleteOption(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -382,12 +326,6 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     if (user != null) {
       await user.delete();
     }
-
-    // Clear any local data if necessary
-    // ...
-
-    // You might want to sign out from Firebase if you're using Firebase Authentication
-    // FirebaseAuth.instance.signOut();
   }
 
   Future<void> _showLogoutDialog(BuildContext context) async {

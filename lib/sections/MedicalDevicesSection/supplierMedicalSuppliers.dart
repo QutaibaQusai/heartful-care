@@ -16,12 +16,11 @@ class SupplierMedicalSupplier extends StatefulWidget {
 }
 
 class _MedicalState extends State<SupplierMedicalSupplier> {
-  double overallRating = 0.0;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
             "Suppliers",
@@ -75,14 +74,6 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
                               userEmail: widget.userEmail,
                               supplierCover: supplier.supplierCover,
                               supplierId: snapshot.data!.docs[index].id,
-
-                              //supplierId: supplier.supplierId,
-                              onOverallRatingChanged: (newOverallRating) {
-                                // Update the overallRating in the parent class
-                                setState(() {
-                                  overallRating = newOverallRating;
-                                });
-                              },
                             ),
                             type: PageTransitionType.fade));
                   },
@@ -204,7 +195,6 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
       }
     } catch (e) {
       print('Error launching phone call: $e');
-      // Handle the error here, such as showing an error dialog
     }
   }
 }

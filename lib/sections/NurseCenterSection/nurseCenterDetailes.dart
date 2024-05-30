@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:test/provider/myprovider.dart';
 import 'package:test/sections/NurseCenterSection/fillFormRequest.dart';
 import 'package:test/sections/NurseCenterSection/rating.dart';
 import 'package:test/sections/NurseCenterSection/user_center_subcription.dart';
-import 'package:test/widgets/image_selector.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailedNurseCenter extends StatefulWidget {
@@ -54,12 +54,16 @@ class DetailedNurseCenter extends StatefulWidget {
 }
 
 class _DetailedNurseCenter extends State<DetailedNurseCenter> {
-    double overallRating = 0.0;
+  double overallRating = 0.0;
 
   @override
   void initState() {
     super.initState();
     fetchAndSetRating();
+    if (widget.userEmail.isNotEmpty) {
+      context.read<MyProvider>().fetchAndCheckUserSubscription(
+          userEmail: widget.userEmail, centerId: widget.centerId);
+    }
   }
 
   void fetchAndSetRating() async {
@@ -76,19 +80,16 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
         reviewsSnapshot.docs.forEach((doc) {
           totalRating += doc['rating'];
         });
-        
+
         double newOverallRating = totalRating / numReviews;
         setState(() {
           overallRating = newOverallRating;
         });
-
       }
     } catch (e) {
       print('Error fetching and calculating overall rating: $e');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +113,30 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
             "Center",
             style: TextStyle(color: Colors.white),
           ),
+          actions: [
+            Consumer<MyProvider>(builder: (context, value, child) {
+              if (value.userSubscription == null) {
+                return SizedBox();
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: value.userSubscription!.subscriptionStatus == 1
+                    ? Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xFFD1E7E9),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("PRO",
+                              style: TextStyle(
+                                  color: Color(0xFF1C8892),
+                                  fontWeight: FontWeight.bold)),
+                        ))
+                    : SizedBox(),
+              );
+            }),
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -134,15 +159,10 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                 width: 2.0, // You can set the border width here
                               ),
                             ),
-                            child: GestureDetector(
-                              onTap: () => ImageSelectorWidget(
-                                imageUrl: widget.centerProfileImage,
-                              ),
-                              child: Image.network(
-                                widget.centerProfileImage,
-                                fit: BoxFit.cover,
-                                height: 170,
-                              ),
+                            child: Image.network(
+                              widget.centerProfileImage,
+                              fit: BoxFit.cover,
+                              height: 170,
                             ),
                           )),
                     ),
@@ -159,14 +179,11 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
-                  
                           SizedBox(height: 10),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                            
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -231,35 +248,45 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                 ],
                               ),
                               SizedBox(width: 17),
-                              Column(
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                UserCenterSubscription(
-                                              pricePreMonth:
-                                                  widget.pricePreMonth,
-                                              pricePersixMonths:
-                                                  widget.pricePersixMonths,
-                                              pricePerthreeMonths:
-                                                  widget.pricePerthreeMonths,
-                                              centerId: widget.centerId, userEmail: widget.userEmail,
-                                            ),
+                              Consumer<MyProvider>(
+                                builder: (context, value, child) {
+                                  if (value.userSubscription == null) {
+                                    return Column(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserCenterSubscription(
+                                                  pricePreMonth:
+                                                      widget.pricePreMonth,
+                                                  pricePersixMonths:
+                                                      widget.pricePersixMonths,
+                                                  pricePerthreeMonths: widget
+                                                      .pricePerthreeMonths,
+                                                  centerId: widget.centerId,
+                                                  userEmail: widget.userEmail,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          icon: Image.asset(
+                                            "images/pro (1).png",
+                                            width: 25,
                                           ),
-                                        );
-                                      },
-                                      icon: Image.asset(
-                                        "images/pro (1).png",
-                                        width: 25,
-                                      )),
-                                  Text(
-                                    'Subscribe',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
+                                        ),
+                                        Text(
+                                          'Subscribe',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ],
+                                    );
+                                  }
+
+                                  return SizedBox();
+                                },
                               ),
                               SizedBox(width: 18),
                               Column(
@@ -321,12 +348,9 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      //color: Colors.red,
                       width: MediaQuery.of(context).size.width / 2,
-                      //height: MediaQuery.of(context).size.width / 2.5,
                       child: Column(
                         children: [
                           Row(
@@ -349,7 +373,6 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                             ],
                           ),
                           Row(
-                            // crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Icon(
                                 FontAwesomeIcons.clock,
@@ -372,19 +395,8 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2.80,
-                      // height: MediaQuery.of(context).size.width / 2.5,
-                      //color: Colors.green,
                       child: GestureDetector(
-                        onTap: () {
-                          // Open Google Maps
-                          // ignore: deprecated_member_use
-                          // launch(
-                          //     "https://maps.app.goo.gl/${widget.centerLocation}"
-                          //     // "https://maps.app.goo.gl/8jsAsANqBK12moaN8");
-                          //     // https://maps.app.goo.gl/qeV4zATskQaats889
-                          //     // "https://maps.app.goo.gl/qeV4zATskQaats889");
-                          //     );
-                        },
+                        onTap: () {},
                         child: SvgPicture.asset(
                           "images/center_loc.svg",
                           fit: BoxFit.contain,
@@ -397,44 +409,47 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                 SizedBox(
                   height: 40,
                 ),
-                Text(
-                  "Price details:".toUpperCase(),
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Price for quickly checkups: " +
-                            widget.priceCheckups.toString(),
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Price per day: " + widget.pricePreDay.toString(),
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: Text(
-                    //     "Price per Month: " + widget.pricePreMonth.toString(),
-                    //     style: TextStyle(fontSize: 15),
-                    //   ),
-                    // ),
-                  ],
-                )
+                Consumer<MyProvider>(builder: (context, value, child) {
+                  if (value.userSubscription == null) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Price details:".toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Price for quickly checkups: " +
+                                    widget.priceCheckups.toString(),
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Price per day: " +
+                                    widget.pricePreDay.toString(),
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    );
+                  }
+                  return SizedBox();
+                })
               ],
             ),
           ),

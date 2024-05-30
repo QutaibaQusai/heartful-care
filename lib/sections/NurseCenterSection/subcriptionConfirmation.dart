@@ -29,7 +29,6 @@ class _SubscriptionConfirmationPageState
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     saveSubscriptionDates();
   }
 
@@ -420,6 +419,7 @@ class _SubscriptionConfirmationPageState
       });
 
       print('Subscription data saved successfully with User ID: $userId');
+      Navigator.of(context)..pop();
     } catch (e) {
       print('Error saving subscription data: $e');
     }

@@ -3,10 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:test/provider/myprovider.dart';
+import 'package:test/sections/MedicalDevicesSection/ratingSupp.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierItemCart.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierDeviceDetails.dart';
-import 'package:test/sections/MedicalDevicesSection/ratingSupp.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierinfo.dart';
 
 class SupplierDetails extends StatefulWidget {
@@ -21,7 +21,6 @@ class SupplierDetails extends StatefulWidget {
   final String userEmail;
   final String supplierCover;
   final String supplierId;
-  final Function(double) onOverallRatingChanged;
   const SupplierDetails({
     Key? key,
     required this.name,
@@ -35,7 +34,6 @@ class SupplierDetails extends StatefulWidget {
     required this.userEmail,
     required this.supplierCover,
     required this.supplierId,
-    required this.onOverallRatingChanged,
   }) : super(key: key);
 
   @override
@@ -174,14 +172,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                                                   supplierId: widget
                                                                       .supplierId,
                                                                   onOverallRatingChanged:
-                                                                      (newOverallRating) {
-                                                                    // Update the overallRating in the parent class
-                                                                    // setState(
-                                                                    //     () {
-                                                                    //   overallRating =
-                                                                    //       newOverallRating;
-                                                                    // });
-                                                                  },
+                                                                      (newOverallRating) {},
                                                                 )));
                                                   },
                                                   child: Text(
@@ -347,7 +338,9 @@ class _SupplierDetailsState extends State<SupplierDetails> {
               Navigator.push(
                   context,
                   PageTransition(
-                    child: SupplierItemCart(),
+                    child: SupplierItemCart(
+                      userEmail: widget.userEmail, supplierId: widget.supplierId,
+                    ),
                     type: PageTransitionType.bottomToTop,
                   ));
             },
@@ -376,7 +369,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                           child: SupplierDeviceDetails(
                             index: index,
                             userEmail: widget.userEmail,
-                            supplierName: widget.name,
+                            supplierName: widget.name, supplierId: widget.supplierId,
                           ),
                           type: PageTransitionType.fade));
                   //

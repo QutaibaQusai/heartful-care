@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -21,30 +19,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String? userProfile;
-  String userName = "";
   @override
   void initState() {
     context.read<MyProvider>().GetUserlogin();
     super.initState();
-    fetchUserName();
-  }
-
-  void fetchUserName() async {
-    try {
-      var userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .where('email', isEqualTo: widget.userEmail)
-          .get();
-
-      if (userDoc.docs.isNotEmpty) {
-        setState(() {
-          userName = userDoc.docs[0]['fullname'];
-          userProfile = userDoc.docs[0]['users_profile'];
-        });
-      }
-    } catch (e) {
-      print('Error fetching user data: $e');
+    if (widget.userEmail.isNotEmpty) {
+      context.read<MyProvider>().getUserInfo(userEmail: widget.userEmail);
     }
   }
 
@@ -61,166 +41,174 @@ class _HomeState extends State<Home> {
         sectionDis:
             "Explore our comprehensive range\n of medical devices available \nfor purchase or rent."),
   ];
+
+  @override
   Widget build(BuildContext context) {
+    final isGuest = widget.userEmail.isEmpty;
+
     return SafeArea(
       child: DefaultTabController(
         length: 3,
         initialIndex: 1,
         child: Scaffold(
           backgroundColor: Colors.white,
-          body: RefreshIndicator(
-            onRefresh: () async {
-              print("object");
-            },
-            child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                Account(
-                  userEmail: widget.userEmail,
-                  userName: userName,
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 2.5,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1C8892),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) => Account(
-                                              userEmail: widget.userEmail,
-                                              userName: userName,
+          body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              Account(
+                userEmail: widget.userEmail,
+              ),
+              Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 2.5,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF1C8892),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 20, top: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Consumer<MyProvider>(
+                                builder: (context, value, child) {
+                                  final userInfo = value.userInfo;
+                                  return Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => Account(
+                                                userEmail: widget.userEmail,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: CircleAvatar(
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              18,
+                                          backgroundImage: isGuest
+                                              ? AssetImage(
+                                                  "images/profile.webp")
+                                              : (userInfo != null &&
+                                                          userInfo
+                                                              .userImage.isNotEmpty
+                                                      ? NetworkImage(
+                                                          userInfo.userImage)
+                                                      : AssetImage(
+                                                          "images/profile.webp"))
+                                                  as ImageProvider,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            greeting(),
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors
+                                                  .grey, // Change as needed
                                             ),
                                           ),
-                                        );
-                                      },
-                                      child: CircleAvatar(
-                                        radius: MediaQuery.of(context)
-                                                .size
-                                                .width /
-                                            18, // Adjust the radius as needed
-                                        backgroundImage: userProfile != null
-                                            ? NetworkImage(userProfile!)
-                                            : AssetImage("images/profile.webp")
-                                                as ImageProvider,
+                                          Text(
+                                            isGuest
+                                                ? "Guest"
+                                                : userInfo?.userName ?? '',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          greeting(),
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color:
-                                                Colors.grey, // Change as needed
-                                          ),
-                                        ),
-                                        Text(
-                                          userName.isNotEmpty
-                                              ? userName
-                                              : "Guest",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                    ],
+                                  );
+                                },
+                              ),
+                              CircleAvatar(
+                                radius: 20,
+                                foregroundColor: Colors.black,
+                                backgroundColor: Colors.white,
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Iconsax.notification,
+                                    size: 20,
+                                  ),
                                 ),
-                                CircleAvatar(
-                                  radius: 20,
-                                  foregroundColor: Colors.black,
-                                  backgroundColor: Colors.white,
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Iconsax.notification,
-                                      size: 20,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 30),
+                          Text(
+                            "How are you feeling \ntoday?",
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
+                              fontFamily: GoogleFonts.poppins().fontFamily,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            width: double.infinity,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(1000),
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(FontAwesomeIcons.search),
+                                SizedBox(width: 8),
+                                Flexible(
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      hintText: 'Search here',
+                                      border: InputBorder.none,
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
-                            SizedBox(height: 30),
-                            Text(
-                              "How are you feeling \ntoday?",
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.white,
-                                fontFamily: GoogleFonts.poppins().fontFamily,
-                                letterSpacing: 1,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              width: double.infinity,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(1000),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(FontAwesomeIcons.search),
-                                  SizedBox(width: 8),
-                                  Flexible(
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintText: 'Search here',
-                                        border: InputBorder.none,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: mySectionList.length,
-                        itemBuilder: (context, index) {
-                          return tile(mySectionList[index]);
-                        },
-                      ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: mySectionList.length,
+                      itemBuilder: (context, index) {
+                        return tile(mySectionList[index]);
+                      },
                     ),
-                  ],
-                ),
-                SettingFirstPage(
-                  userEmail: widget.userEmail,
-                )
-              ],
-            ),
+                  ),
+                ],
+              ),
+              SettingFirstPage(
+                userEmail: widget.userEmail,
+              ),
+            ],
           ),
           bottomNavigationBar: TabBar(
             labelColor: Color(0xFF1C8892),
@@ -243,7 +231,7 @@ class _HomeState extends State<Home> {
                 text: "Settings",
                 icon: Icon(FontAwesomeIcons.gear),
                 iconMargin: EdgeInsets.only(bottom: 8),
-              )
+              ),
             ],
           ),
         ),
@@ -297,17 +285,16 @@ class _HomeState extends State<Home> {
                   onTap: () {
                     if (sections.sectionName == "Nurse Centers") {
                       Navigator.push(
-                          context,
-                          _createRightToLeftRoute(NurseCenters(
-                            userEmail: widget.userEmail,
-                          )));
+                        context,
+                        _createRightToLeftRoute(
+                          NurseCenters(userEmail: widget.userEmail),
+                        ),
+                      );
                     } else if (sections.sectionName == "Medical Devices") {
                       Navigator.push(
                         context,
                         _createRightToLeftRoute(
-                          SupplierMedicalSupplier(
-                            userEmail: widget.userEmail,
-                          ),
+                          SupplierMedicalSupplier(userEmail: widget.userEmail),
                         ),
                       );
                     }

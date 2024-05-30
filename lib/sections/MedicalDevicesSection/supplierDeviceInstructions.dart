@@ -22,7 +22,7 @@ class _SupplierDeviceInstructionState extends State<SupplierDeviceInstruction> {
       appBar: AppBar(
         title: Consumer<MyProvider>(
           builder: (context, value, child) => Text(
-            "${value.items![widget.index].deviceName} Instractions",
+            "${value.items![widget.index].deviceName} Instructions",
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -48,7 +48,6 @@ class _SupplierDeviceInstructionState extends State<SupplierDeviceInstruction> {
                       style: TextStyle(fontSize: 18),
                     ),
                   )
-                  // Text(value.items![widget.index].deviceInstruction)
                 ],
               )),
     ));

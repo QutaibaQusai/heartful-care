@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/model/devicesModel.dart';
+import 'package:test/model/userCenterSubscription.dart';
+import 'package:test/model/userInfo.dart';
 
 class MyProvider with ChangeNotifier {
   // items for specific one .
@@ -39,9 +41,7 @@ class MyProvider with ChangeNotifier {
   }
 
   void deleteitem({required int index}) {
-    print("Tap 1: ${cart.length}");
     cart.removeAt(index);
-    print("Tap 2: ${cart.length}");
     notifyListeners();
   }
 
@@ -98,5 +98,62 @@ class MyProvider with ChangeNotifier {
     print("the deleteing proccess has been done successFully!");
 
     notifyListeners();
+  }
+
+  UserInfo? userInfo;
+  // get user info  function .
+  Future getUserInfo({required String userEmail}) async {
+    //  get data .
+    userInfo = await FirebaseFirestore.instance
+        .collection("users")
+        .where("email", isEqualTo: userEmail)
+        .get()
+        .then((value) =>
+            UserInfo.fromMap(value.docs.first.id, value.docs.first.data()));
+    notifyListeners();
+  }
+
+  UserCenterSubscription? userSubscription;
+
+  Future<void> fetchAndCheckUserSubscription({
+    required String userEmail,
+    required String centerId,
+  }) async {
+    // Fetch data from Firestore
+    userSubscription = await FirebaseFirestore.instance
+        .collection("Subscription")
+        .where("userEmail", isEqualTo: userEmail)
+        .where("centerId", isEqualTo: centerId)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        return UserCenterSubscription.fromMap(
+            value.docs.first.id, value.docs.first.data());
+      } else {
+        return null; // No subscription found
+      }
+    });
+
+    // Notify listeners if subscription found
+    if (userSubscription != null) {
+      notifyListeners();
+      // // Check subscription status
+      // DateTime now = DateTime.now();
+      // DateTime endDate = DateTime.parse(userSubscription!.endDate);
+
+      // if (endDate.isBefore(now)) {
+      //   userSubscription!.subscriptionStatus = 0;
+      //   notifyListeners();
+
+      //   // Update the subscription status in Firestore
+      //   await FirebaseFirestore.instance
+      //       .collection("Subscription")
+      //       .doc(userSubscription!.Id)
+      //       .update(
+      //           {'subscriptionStatus': userSubscription!.subscriptionStatus});
+      // }
+    } else {
+      notifyListeners(); // Ensure listeners are notified even if no subscription is found
+    }
   }
 }

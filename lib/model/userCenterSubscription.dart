@@ -1,14 +1,15 @@
-
 class UserCenterSubscription {
+  String Id;
   final String centerId;
   final String userId;
   final String userEmail;
   final String startDate;
   final String endDate;
-  final int subscriptionStatus;
+  int subscriptionStatus;
   final String paymentMethod;
 
   UserCenterSubscription({
+    required this.Id,
     required this.centerId,
     required this.userId,
     required this.userEmail,
@@ -18,9 +19,9 @@ class UserCenterSubscription {
     required this.paymentMethod,
   });
 
-  
-  factory UserCenterSubscription.fromMap(Map<String, dynamic> map) {
+  factory UserCenterSubscription.fromMap(String Id, Map<String, dynamic> map) {
     return UserCenterSubscription(
+      Id: Id,
       centerId: map['centerId'] ?? '',
       userId: map['userId'] ?? '',
       userEmail: map['userEmail'] ?? '',

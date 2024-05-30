@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:test/model/nurseCenterModel.dart';
+import 'package:test/provider/myprovider.dart';
 import 'package:test/sections/NurseCenterSection/nurseCenterDetailes.dart';
 
 class NurseCenters extends StatefulWidget {
@@ -14,9 +16,10 @@ class NurseCenters extends StatefulWidget {
 }
 
 class _NurseCentersState extends State<NurseCenters> {
+  
+
   @override
   Widget build(BuildContext context) {
-    
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF1C8892),
@@ -205,32 +208,6 @@ class _NurseCentersState extends State<NurseCenters> {
                                                   ),
                                                   Text(" " +
                                                       center.operatingDays),
-                                                  /*Text(
-                                                      overallRating.toString()),
-                                                  Transform.scale(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    scale: 0.9,
-                                                    child: RatingBar.builder(
-                                                      initialRating:
-                                                          overallRating,
-                                                      minRating: 1,
-                                                      direction:
-                                                          Axis.horizontal,
-                                                      allowHalfRating: true,
-                                                      ignoreGestures: true,
-                                                      itemCount: 5,
-                                                      itemSize: 20,
-                                                      itemBuilder:
-                                                          (context, _) => Icon(
-                                                        Icons.star,
-                                                        color: Colors.amber,
-                                                      ),
-                                                      onRatingUpdate: (rating) {
-                                                        // Not needed here, just for demonstration
-                                                      },
-                                                    ),
-                                                  ),*/
                                                 ],
                                               ),
                                               SizedBox(height: 8),

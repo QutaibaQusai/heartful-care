@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/checkout_nurseCenter.dart';
@@ -29,11 +28,9 @@ class FormRequest extends StatefulWidget {
 class _FormRequestState extends State<FormRequest> {
   double deliveryFee = 1;
   double total = 0.0;
-
   int selectedPaymentPerDay = 1;
   bool selectedPaymentOptionQuicklyCheckups = false;
   bool selectedPaymentOptionPerDay = false;
-
   String? selectedGender;
   bool? hasAllergies;
   bool? isWalk;
@@ -46,7 +43,8 @@ class _FormRequestState extends State<FormRequest> {
   List<String> selectedItem = [];
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
-
+  // key validation
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -73,501 +71,529 @@ class _FormRequestState extends State<FormRequest> {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            child: Column(children: [
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 13, horizontal: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Patient Information:".toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: patientFirstName,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF1C8892), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                hintText: 'First Name',
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: TextFormField(
-                              controller: patientLastName,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF1C8892), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ), // Change focus color
-                                hintText: 'Last Name',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFormField(
-                        controller: patientPhoneNumber,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Color(0xFF1C8892), width: 2.0),
-                            borderRadius: BorderRadius.circular(10),
-                          ), // Change focus color
-                          hintText: 'Phone Number',
+            child: Form(
+              key: _formKey,
+              child: Column(children: [
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 13, horizontal: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Patient Information:".toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFormField(
-                        enabled: false,
-                        initialValue: widget.userEmail.isNotEmpty
-                            ? widget.userEmail
-                            : "Gust",
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Color(0xFF1C8892), width: 2.0),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          hintText: 'Email',
+                        SizedBox(
+                          height: 16,
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: patientAge,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF1C8892), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ), // Change focus color
-                                hintText: 'Age',
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: DropdownButtonFormField<String>(
-                              value: selectedGender,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedGender = newValue;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF1C8892), width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ), // Change focus color
-                                hintText: 'Gender',
-                              ),
-                              items: <String>['Male', 'Female']
-                                  .map<DropdownMenuItem<String>>(
-                                    (String value) => DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                  controller: patientFirstName,
+                                  cursorColor: Color(0xFF1C8892),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                  )
-                                  .toList(),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF1C8892), width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    hintText: 'First Name',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Please enter your first name";
+                                    }
+                                    return null;
+                                  }),
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: TextFormField(
+                                controller: patientLastName,
+                                cursorColor: Color(0xFF1C8892),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF1C8892), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ), // Change focus color
+                                  hintText: 'Last Name',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your last name";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          maxLength: 10,
+                          keyboardType: TextInputType.phone,
+                          controller: patientPhoneNumber,
+                          cursorColor: Color(0xFF1C8892),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF1C8892), width: 2.0),
+                              borderRadius: BorderRadius.circular(10),
+                            ), // Change focus color
+                            hintText: 'Phone Number',
+                          ),
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                              return "Please enter your mobile phone number correctly";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          enabled: false,
+                          initialValue: widget.userEmail.isNotEmpty
+                              ? widget.userEmail
+                              : "Gust",
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF1C8892), width: 2.0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: 'Email',
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: patientAge,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF1C8892), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ), // Change focus color
+                                  hintText: 'Age',
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: DropdownButtonFormField<String>(
+                                value: selectedGender,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedGender = newValue;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF1C8892), width: 2.0),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ), // Change focus color
+                                  hintText: 'Gender',
+                                ),
+                                items: <String>['Male', 'Female']
+                                    .map<DropdownMenuItem<String>>(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          controller: patientAddress,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF1C8892), width: 2.0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: 'Address',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Medical Information:".toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Do you have any allergies?",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(width: 10),
+                            Row(
+                              children: [
+                                Radio<bool>(
+                                  value: true,
+                                  groupValue: hasAllergies,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      hasAllergies = value;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text('Yes'),
+                                Radio<bool>(
+                                  value: false,
+                                  groupValue: hasAllergies,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      hasAllergies = value;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text('No'),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Does the patient rely on a wheelchair?",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(width: 10),
+                            Row(
+                              children: [
+                                Radio<bool>(
+                                  value: true,
+                                  groupValue: isWalk,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isWalk = value;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text('Yes'),
+                                Radio<bool>(
+                                  value: false,
+                                  groupValue: isWalk,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isWalk = value;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text('No'),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Do you have a history of surgeries?",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(width: 10),
+                            Row(
+                              children: [
+                                Radio<bool>(
+                                  value: true,
+                                  groupValue: historyOfSurgeries,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      historyOfSurgeries = value;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text('Yes'),
+                                Radio<bool>(
+                                  value: false,
+                                  groupValue: historyOfSurgeries,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      historyOfSurgeries = value;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text('No'),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            _showMultiSelect();
+                          },
+                          child: Text(
+                            "Why do you need a nurse?",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFF1C8892),
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFormField(
-                        controller: patientAddress,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Color(0xFF1C8892), width: 2.0),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          hintText: 'Address',
                         ),
-                      ),
-                    ],
+                        Wrap(
+                          children: selectedItem
+                              .map(
+                                (e) => Chip(
+                                  label: Text(e),
+                                ),
+                              )
+                              .toList(),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Medical Information:".toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Do you have any allergies?",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(width: 10),
-                          Row(
-                            children: [
-                              Radio<bool>(
-                                value: true,
-                                groupValue: hasAllergies,
-                                onChanged: (value) {
-                                  setState(() {
-                                    hasAllergies = value;
-                                  });
-                                },
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text('Yes'),
-                              Radio<bool>(
-                                value: false,
-                                groupValue: hasAllergies,
-                                onChanged: (value) {
-                                  setState(() {
-                                    hasAllergies = value;
-                                  });
-                                },
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text('No'),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Does the patient rely on a wheelchair?",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(width: 10),
-                          Row(
-                            children: [
-                              Radio<bool>(
-                                value: true,
-                                groupValue: isWalk,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isWalk = value;
-                                  });
-                                },
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text('Yes'),
-                              Radio<bool>(
-                                value: false,
-                                groupValue: isWalk,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isWalk = value;
-                                  });
-                                },
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text('No'),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Do you have a history of surgeries?",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(width: 10),
-                          Row(
-                            children: [
-                              Radio<bool>(
-                                value: true,
-                                groupValue: historyOfSurgeries,
-                                onChanged: (value) {
-                                  setState(() {
-                                    historyOfSurgeries = value;
-                                  });
-                                },
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text('Yes'),
-                              Radio<bool>(
-                                value: false,
-                                groupValue: historyOfSurgeries,
-                                onChanged: (value) {
-                                  setState(() {
-                                    historyOfSurgeries = value;
-                                  });
-                                },
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text('No'),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          _showMultiSelect();
-                        },
-                        child: Text(
-                          "Why do you need a nurse?",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            Color(0xFF1C8892),
-                          ),
-                        ),
-                      ),
-                      Wrap(
-                        children: selectedItem
-                            .map(
-                              (e) => Chip(
-                                label: Text(e),
-                              ),
-                            )
-                            .toList(),
-                      )
-                    ],
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
                   ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Service details:".toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Date",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 5),
-                              TextFormField(
-                                readOnly: true,
-                                controller: TextEditingController(
-                                  text: selectedDate != null
-                                      ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                                      : '',
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Service details:".toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Date",
+                                  style: TextStyle(fontSize: 16),
                                 ),
-                                decoration: InputDecoration(
-                                  hintText: 'Select Date',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                SizedBox(height: 5),
+                                TextFormField(
+                                  readOnly: true,
+                                  controller: TextEditingController(
+                                    text: selectedDate != null
+                                        ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+                                        : '',
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF1C8892), width: 2.0),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  suffixIcon: IconButton(
-                                    onPressed: _selectDate,
-                                    icon: Icon(Icons.calendar_today),
+                                  decoration: InputDecoration(
+                                    hintText: 'Select Date',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF1C8892), width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: _selectDate,
+                                      icon: Icon(Icons.calendar_today),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Time",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 5),
-                              TextFormField(
-                                readOnly: true,
-                                controller: TextEditingController(
-                                  text: selectedTime != null
-                                      ? '${selectedTime!.format(context)}'
-                                      : '',
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time",
+                                  style: TextStyle(fontSize: 16),
                                 ),
-                                decoration: InputDecoration(
-                                  hintText: 'Select Time',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                SizedBox(height: 5),
+                                TextFormField(
+                                  readOnly: true,
+                                  controller: TextEditingController(
+                                    text: selectedTime != null
+                                        ? '${selectedTime!.format(context)}'
+                                        : '',
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF1C8892), width: 2.0),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  suffixIcon: IconButton(
-                                    onPressed: _selectTime,
-                                    icon: Icon(Icons.access_time),
+                                  decoration: InputDecoration(
+                                    hintText: 'Select Time',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF1C8892), width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      onPressed: _selectTime,
+                                      icon: Icon(Icons.access_time),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(height: 10),
-                      SizedBox(height: 10),
-                      Text(
-                        "Payment option: ".toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 10),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Radio<bool>(
-                                value: true,
-                                groupValue:
-                                    selectedPaymentOptionQuicklyCheckups,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedPaymentOptionQuicklyCheckups =
-                                        value!;
-                                    selectedPaymentOptionPerDay = false;
-                                  });
-                                },
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text(
-                                'Quickly checkups ',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(width: 10),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Radio<bool>(
-                                value: true,
-                                groupValue: selectedPaymentOptionPerDay,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedPaymentOptionPerDay = value!;
-                                    selectedPaymentOptionQuicklyCheckups =
-                                        false;
-                                  });
-                                },
-                                activeColor: Color(0xFF1C8892),
-                              ),
-                              Text(
-                                'Per Day',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(width: 10),
-                              DropdownButton<int>(
-                                value: selectedPaymentPerDay,
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    selectedPaymentPerDay = value!;
-                                  });
-                                },
-                                items: List.generate(30, (index) {
-                                  return DropdownMenuItem<int>(
-                                    value: index + 1,
-                                    child: Text((index + 1).toString()),
-                                  );
-                                }),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(height: 10),
+                        SizedBox(height: 10),
+                        Text(
+                          "Payment option: ".toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Radio<bool>(
+                                  value: true,
+                                  groupValue:
+                                      selectedPaymentOptionQuicklyCheckups,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedPaymentOptionQuicklyCheckups =
+                                          value!;
+                                      selectedPaymentOptionPerDay = false;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text(
+                                  'Quickly checkups ',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(width: 10),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Radio<bool>(
+                                  value: true,
+                                  groupValue: selectedPaymentOptionPerDay,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedPaymentOptionPerDay = value!;
+                                      selectedPaymentOptionQuicklyCheckups =
+                                          false;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF1C8892),
+                                ),
+                                Text(
+                                  'Per Day',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(width: 10),
+                                DropdownButton<int>(
+                                  value: selectedPaymentPerDay,
+                                  onChanged: (int? value) {
+                                    setState(() {
+                                      selectedPaymentPerDay = value!;
+                                    });
+                                  },
+                                  items: List.generate(30, (index) {
+                                    return DropdownMenuItem<int>(
+                                      value: index + 1,
+                                      child: Text((index + 1).toString()),
+                                    );
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ]),
+                )
+              ]),
+            ),
           ),
         ),
         bottomNavigationBar: Padding(
@@ -576,33 +602,35 @@ class _FormRequestState extends State<FormRequest> {
             onPressed: () {
               // _saveFormDataToFirestore();
 
-              _calculateTotal();
-              Navigator.push(
-                context,
-                _createRightToLeftRoute(
-                  CheckoutNurseCenter(
-                    centerName: widget.centerName,
-                    centerAddress1: widget.centerAddress1,
-                    userEmail: widget.userEmail,
-                    subtotal: total,
-                    deliveryFee: deliveryFee,
-                    total: total,
-                    centerId: widget.centerId,
-                    patientFirstName: patientFirstName.text,
-                    patientLastName: patientLastName.text,
-                    patientPhoneNumber: patientPhoneNumber.text,
-                    age: patientAge.text,
-                    gender: selectedGender!,
-                    address: patientAddress.text,
-                    hasAllergies: hasAllergies!,
-                    isWalk: isWalk!,
-                    historyOfSurgeries: historyOfSurgeries!,
-                    needNurse: selectedItem,
-                    selectedDate: selectedDate!,
-                    selectedTime: selectedTime!,
+              if (_formKey.currentState!.validate()) {
+                _calculateTotal();
+                Navigator.push(
+                  context,
+                  _createRightToLeftRoute(
+                    CheckoutNurseCenter(
+                      centerName: widget.centerName,
+                      centerAddress1: widget.centerAddress1,
+                      userEmail: widget.userEmail,
+                      subtotal: total,
+                      deliveryFee: deliveryFee,
+                      total: total,
+                      centerId: widget.centerId,
+                      patientFirstName: patientFirstName.text,
+                      patientLastName: patientLastName.text,
+                      patientPhoneNumber: patientPhoneNumber.text,
+                      age: patientAge.text,
+                      gender: selectedGender!,
+                      address: patientAddress.text,
+                      hasAllergies: hasAllergies!,
+                      isWalk: isWalk!,
+                      historyOfSurgeries: historyOfSurgeries!,
+                      needNurse: selectedItem,
+                      selectedDate: selectedDate!,
+                      selectedTime: selectedTime!,
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -730,5 +758,4 @@ class _FormRequestState extends State<FormRequest> {
       },
     );
   }
-
 }

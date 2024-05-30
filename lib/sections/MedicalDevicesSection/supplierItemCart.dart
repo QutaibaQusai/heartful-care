@@ -7,9 +7,13 @@ import 'package:test/sections/MedicalDevicesSection/supplierCheckOut.dart';
 
 class SupplierItemCart extends StatefulWidget {
   final int? weekForRent;
+  final String userEmail;
+  final String supplierId;
   const SupplierItemCart({
     Key? key,
     this.weekForRent,
+    required this.userEmail,
+    required this.supplierId,
   }) : super(key: key);
 
   @override
@@ -30,7 +34,7 @@ class _ItemCart extends State<SupplierItemCart> {
         child: Scaffold(
       appBar: AppBar(
         title: Text(
-          "Cart",
+          widget.supplierId,
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -123,7 +127,9 @@ class _ItemCart extends State<SupplierItemCart> {
                               Navigator.push(
                                   context,
                                   PageTransition(
-                                      child: SupplierCheckout(),
+                                      child: SupplierCheckout(
+                                        userEmail: widget.userEmail, supplierId: widget.supplierId,
+                                      ),
                                       type: PageTransitionType.fade));
                             },
                             child: const Text(

@@ -5,6 +5,8 @@ import 'package:date_format/date_format.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:test/provider/myprovider.dart';
 import 'package:test/utils/pickImage.dart';
 import 'package:test/utils/storeImg%20.dart';
 
@@ -41,12 +43,12 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
         supplierFireStoreFiledName: 'users_profile');
   }
 
-  String userName = ""; // Store the user's name
   final formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
-    fetchUserData(); // Fetch the user's name when the widget is created
+    fetchUserData();
+    context.read<MyProvider>().getUserInfo(userEmail: widget.userEmail);
   }
 
   void fetchUserData() async {
@@ -184,7 +186,6 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      // color: Colors.red,
                       child: GestureDetector(
                         onTap: () {
                           FocusScope.of(context).unfocus();
@@ -215,7 +216,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                                   borderRadius: BorderRadius.circular(
                                       MediaQuery.of(context).size.width /
                                           3 /
-                                          2), // Make the image circular
+                                          2),
                                   child: _profileImageUser != null
                                       ? Image(
                                           image: MemoryImage(
@@ -475,8 +476,7 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
                                       actions: [
                                         TextButton(
                                           onPressed: () async {
-                                            Navigator.of(context)
-                                                .pop(); // Close the dialog
+                                            Navigator.of(context).pop();
                                             await _submitUserData();
                                             saveUserProfile();
                                           },
@@ -554,13 +554,14 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
             backgroundColor: Color(0xFF1C8892),
             behavior: SnackBarBehavior.floating,
             content: Text(
-              ' User data updated successfully!',
+              '${fullNameTextController.text}data updated successfully!',
               style: TextStyle(
                 fontSize: 17,
               ),
             ),
           ),
         );
+        Navigator.of(context).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

@@ -15,12 +15,14 @@ class SupplierDeviceDetails extends StatefulWidget {
   final String userEmail;
   final int index;
   final String supplierName;
+  final String supplierId;
 
   SupplierDeviceDetails(
       {Key? key,
       required this.index,
       required this.userEmail,
-      required this.supplierName})
+      required this.supplierName,
+      required this.supplierId})
       : super(key: key);
 
   @override
@@ -68,6 +70,8 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                               PageTransition(
                                   child: SupplierItemCart(
                                     weekForRent: weeks,
+                                    userEmail: widget.userEmail,
+                                    supplierId: widget.supplierId,
                                   ),
                                   type: PageTransitionType.fade));
                         },
