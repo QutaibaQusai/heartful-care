@@ -166,45 +166,13 @@ class _SuppliersHomeState extends State<SuppliersHome> {
                           height: 20,
                         ),
                         Column(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height / 9,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 4,
-                                    height: double.infinity,
-                                    child: Image.network(
-                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTvEkQUIq0n3AMgcKON0e2SkFvd1P4PIWoJz3GNN1Qul41UFBY1j7fweQJut4OM38Cu1o&usqp=CAU"),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Flexible(
-                                    child: Container(
-                                      child: Text(
-                                        'Qutaiba Qusai Makahleh',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Divider()
-                          ],
+                          children: [],
                         )
                       ],
                     ),
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.red,
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(50.0),
                         topLeft: Radius.circular(50.0)),

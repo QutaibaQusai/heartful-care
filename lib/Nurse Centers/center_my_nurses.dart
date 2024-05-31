@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Nursecenters/center_nurse_update_information.dart';
+import 'package:test/Nurse%20Centers/center_nurse_update_information.dart';
 import 'package:test/model/nursers.dart';
 
 class CenterMyNurses extends StatelessWidget {

@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:test/model/card.dart';
 import 'package:test/provider/myprovider.dart';
+import 'package:test/sections/MedicalDevicesSection/loading.dart';
 import 'package:test/sections/NurseCenterSection/addCard.dart';
 
 class SupplierCheckout extends StatefulWidget {
@@ -450,7 +452,9 @@ class _SupplierCheckOitState extends State<SupplierCheckout> {
                   borderRadius: BorderRadius.circular(60),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                submitUserOrder();
+              },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -466,5 +470,42 @@ class _SupplierCheckOitState extends State<SupplierCheckout> {
         ),
       ),
     );
+  }
+
+  Future<void> submitUserOrder() async {
+    try {
+      final userInfo = context.read<MyProvider>().userInfo;
+      final orderData = {
+        'userEmail': widget.userEmail,
+        'supplierId': widget.supplierId,
+        'selectedPaymentMethod': selectedPaymentMethod,
+        'area': userInfo?.area,
+        'street': userInfo?.street,
+        'phoneNumber': userInfo?.phoneNumber,
+        'orderStatus': status,
+        'timestamp': FieldValue.serverTimestamp(),
+      };
+
+      DocumentReference orderRef = await FirebaseFirestore.instance
+          .collection('Device_order')
+          .add(orderData);
+
+      await context.read<MyProvider>().saveCartItems(orderRef.id);
+
+      // Navigate to the Loading page
+      Navigator.pushReplacement(
+          context,
+          PageTransition(
+              child: Loading(
+                status: status,
+              ),
+              type: PageTransitionType.fade));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to place order. Please try again. ${e}'),
+        ),
+      );
+    }
   }
 }

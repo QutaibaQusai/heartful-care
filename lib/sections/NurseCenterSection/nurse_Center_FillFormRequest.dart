@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:test/sections/NurseCenterSection/checkout_nurseCenter.dart';
 import 'package:test/sections/NurseCenterSection/multiSelect.dart';
 
-class FormRequest extends StatefulWidget {
+class NurseCenterFillFormRequest extends StatefulWidget {
   final String userEmail;
   final String centerId;
   final String centerName;
@@ -11,7 +11,7 @@ class FormRequest extends StatefulWidget {
   final String checkup;
   final String pricePerDay;
 
-  const FormRequest({
+  const NurseCenterFillFormRequest({
     Key? key,
     required this.userEmail,
     required this.centerId,
@@ -22,10 +22,10 @@ class FormRequest extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FormRequest> createState() => _FormRequestState();
+  State<NurseCenterFillFormRequest> createState() => _FormRequestState();
 }
 
-class _FormRequestState extends State<FormRequest> {
+class _FormRequestState extends State<NurseCenterFillFormRequest> {
   double deliveryFee = 1;
   double total = 0.0;
   int selectedPaymentPerDay = 1;
@@ -98,6 +98,7 @@ class _FormRequestState extends State<FormRequest> {
                           children: [
                             Expanded(
                               child: TextFormField(
+                                  autofocus: true,
                                   controller: patientFirstName,
                                   cursorColor: Color(0xFF1C8892),
                                   decoration: InputDecoration(
@@ -199,6 +200,7 @@ class _FormRequestState extends State<FormRequest> {
                           children: [
                             Expanded(
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 controller: patientAge,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -211,6 +213,14 @@ class _FormRequestState extends State<FormRequest> {
                                   ), // Change focus color
                                   hintText: 'Age',
                                 ),
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value.length > 2) {
+                                    return "Please enter your age";
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                             SizedBox(width: 10),
@@ -230,7 +240,7 @@ class _FormRequestState extends State<FormRequest> {
                                     borderSide: const BorderSide(
                                         color: Color(0xFF1C8892), width: 2.0),
                                     borderRadius: BorderRadius.circular(10),
-                                  ), // Change focus color
+                                  ),
                                   hintText: 'Gender',
                                 ),
                                 items: <String>['Male', 'Female']
@@ -242,12 +252,15 @@ class _FormRequestState extends State<FormRequest> {
                                       ),
                                     )
                                     .toList(),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Please select your gender';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           ],
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
                         SizedBox(
                           height: 10,
@@ -265,6 +278,12 @@ class _FormRequestState extends State<FormRequest> {
                             ),
                             hintText: 'Address',
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select your Address';
+                            }
+                            return null;
+                          },
                         ),
                       ],
                     ),
@@ -445,7 +464,9 @@ class _FormRequestState extends State<FormRequest> {
                             Text(
                               "Service details:".toUpperCase(),
                               style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold),
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             SizedBox(height: 10),
                             Column(
@@ -470,7 +491,9 @@ class _FormRequestState extends State<FormRequest> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                          color: Color(0xFF1C8892), width: 2.0),
+                                        color: Color(0xFF1C8892),
+                                        width: 2.0,
+                                      ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     suffixIcon: IconButton(
@@ -478,6 +501,12 @@ class _FormRequestState extends State<FormRequest> {
                                       icon: Icon(Icons.calendar_today),
                                     ),
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Please select a date";
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ],
                             ),
@@ -504,7 +533,9 @@ class _FormRequestState extends State<FormRequest> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                          color: Color(0xFF1C8892), width: 2.0),
+                                        color: Color(0xFF1C8892),
+                                        width: 2.0,
+                                      ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     suffixIcon: IconButton(
@@ -512,18 +543,24 @@ class _FormRequestState extends State<FormRequest> {
                                       icon: Icon(Icons.access_time),
                                     ),
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Please select a time";
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ],
                             ),
                           ],
                         ),
                         SizedBox(height: 10),
-                        SizedBox(height: 10),
-                        SizedBox(height: 10),
                         Text(
                           "Payment option: ".toUpperCase(),
                           style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(height: 10),
                         Column(
@@ -591,7 +628,7 @@ class _FormRequestState extends State<FormRequest> {
                       ],
                     ),
                   ),
-                )
+                ),
               ]),
             ),
           ),

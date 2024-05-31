@@ -331,14 +331,14 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                     MaterialStateProperty.all<Color>(Color(0xFF1C8892)),
               ),
               onPressed: () {
-                if (value.items![widget.index].deviceAavailability == false) {
+                if (widget.userEmail.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      backgroundColor: Colors.red,
+                      backgroundColor: Color(0xFF1C8892),
                       behavior: SnackBarBehavior.floating,
                       duration: Duration(seconds: 1),
                       content: Text(
-                        "${value.items![widget.index].deviceName} Not Available",
+                        "Log in first",
                         style: TextStyle(
                           fontSize: 17,
                           fontFamily: GoogleFonts.poppins().fontFamily,
@@ -347,26 +347,43 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                     ),
                   );
                 } else {
-                  // add item to cart
-                  //
-                  context
-                      .read<MyProvider>()
-                      .additem(item: value.items![widget.index]);
-                  //
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: Color(0xFF1C8892),
-                      behavior: SnackBarBehavior.floating,
-                      duration: Duration(seconds: 1),
-                      content: Text(
-                        "${value.items![widget.index].deviceName} added to cart ",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
+                  if (value.items![widget.index].deviceAavailability == false) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.floating,
+                        duration: Duration(seconds: 1),
+                        content: Text(
+                          "${value.items![widget.index].deviceName} Not Available",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    // add item to cart
+                    //
+                    context
+                        .read<MyProvider>()
+                        .additem(item: value.items![widget.index]);
+                    //
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Color(0xFF1C8892),
+                        behavior: SnackBarBehavior.floating,
+                        duration: Duration(seconds: 1),
+                        content: Text(
+                          "${value.items![widget.index].deviceName} added to cart ",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                 }
               },
               child: Row(

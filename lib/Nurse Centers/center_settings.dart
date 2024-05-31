@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Nursecenters/center_add_nurse.dart';
-import 'package:test/Nursecenters/center_change_email.dart';
-import 'package:test/Nursecenters/center_chnage_password.dart';
-import 'package:test/Nursecenters/center_information.dart';
-import 'package:test/Nursecenters/center_my_nurses.dart';
-import 'package:test/Nursecenters/center_requests_history.dart';
-import 'package:test/Nursecenters/center_login.dart';
+import 'package:test/Nurse%20Centers/center_add_nurse.dart';
+import 'package:test/Nurse%20Centers/center_change_email.dart';
+import 'package:test/Nurse%20Centers/center_chnage_password.dart';
+import 'package:test/Nurse%20Centers/center_information.dart';
+import 'package:test/Nurse%20Centers/center_my_nurses.dart';
+import 'package:test/Nurse%20Centers/center_requests_history.dart';
+import 'package:test/Nurse%20Centers/center_login.dart';
 
 class CenterSettings extends StatefulWidget {
   final String centerEmail;

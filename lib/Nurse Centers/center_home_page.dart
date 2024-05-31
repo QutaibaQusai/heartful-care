@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:test/Nursecenters/center_settings.dart';
-import 'package:test/Nursecenters/center_patient_request_details.dart';
+import 'package:test/Nurse%20Centers/center_settings.dart';
+import 'package:test/Nurse%20Centers/center_patient_request_details.dart';
 import 'package:test/model/patientRequestModel.dart';
 
 Future<String> getCurrentCenterId() async {

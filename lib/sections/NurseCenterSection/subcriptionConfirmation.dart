@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:test/model/card.dart';
+import 'package:test/provider/myprovider.dart';
 import 'package:test/sections/NurseCenterSection/addCard.dart';
-// import 'package:lottie/lottie.dart';
 
 class SubscriptionConfirmationPage extends StatefulWidget {
   final String? planPrice;
@@ -26,12 +28,6 @@ class SubscriptionConfirmationPage extends StatefulWidget {
 
 class _SubscriptionConfirmationPageState
     extends State<SubscriptionConfirmationPage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    saveSubscriptionDates();
-  }
-
   String selectedPaymentMethod = '';
   String? selectedCard;
   String? startDate;
@@ -338,28 +334,30 @@ class _SubscriptionConfirmationPageState
                       ),
                 Container(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      saveSubscriptionData();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Join pro".toUpperCase(),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
+                  child: Consumer<MyProvider>(
+                    builder: (context, value, child) => ElevatedButton(
+                      onPressed: () {
+                        saveSubscriptionData(userId: value.userInfo!.Id);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Join pro".toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color(0xFF1C8892),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 5,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(60),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color(0xFF1C8892),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(60),
+                        ),
                       ),
                     ),
                   ),
@@ -372,56 +370,61 @@ class _SubscriptionConfirmationPageState
     );
   }
 
-  void saveSubscriptionDates() {
-    // Current date
-    DateTime now = DateTime.now();
-    startDate = DateFormat('yyyy-MM-dd').format(now);
-    // Calculate end date based on the duration
-    DateTime endDateCalc =
-        now.add(Duration(days: int.tryParse(widget.planDuration ?? '0')! * 30));
-    endDate = DateFormat('yyyy-MM-dd').format(endDateCalc);
-  }
-
-  Future<String?> fetchUserIdByEmail() async {
+  Future<void> saveSubscriptionData({
+    required String userId,
+  }) async {
     try {
-      var userQuery = await FirebaseFirestore.instance
-          .collection('users')
-          .where('email', isEqualTo: widget.userEmail)
-          .limit(1)
-          .get();
-
-      if (userQuery.docs.isNotEmpty) {
-        return userQuery.docs.first.id; // Returns the user ID
-      }
-      return null;
-    } catch (e) {
-      print('Error fetching user ID: $e');
-      return null;
-    }
-  }
-
-  Future<void> saveSubscriptionData() async {
-    String? userId = await fetchUserIdByEmail();
-    if (userId == null) {
-      print('User not found, unable to save subscription data.');
-      return;
-    }
-
-    try {
-      await FirebaseFirestore.instance.collection('Subscription').add({
+      DateTime now = DateTime.now();
+      startDate = DateFormat('yyyy-MM-dd').format(now);
+      // Calculate end date based on the duration
+      DateTime endDateCalc = now
+          .add(Duration(days: int.tryParse(widget.planDuration ?? '0')! * 30));
+      endDate = DateFormat('yyyy-MM-dd').format(endDateCalc);
+      await FirebaseFirestore.instance
+          .collection('Subscription')
+          .doc(userId)
+          .set({
         'userId': userId,
         'startDate': startDate,
         'endDate': endDate,
         'userEmail': widget.userEmail,
         'centerId': widget.centerId,
         'paymentMethod': selectedPaymentMethod,
-        "subscriptionStatus": subscriptionStatus,
+        'subscriptionStatus': subscriptionStatus,
       });
 
-      print('Subscription data saved successfully with User ID: $userId');
-      Navigator.of(context)..pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Congratulations, you are now a subscriber for ${widget.planDuration} month(s)',
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+          ),
+          duration: Duration(seconds: 3),
+        ),
+      );
+
+      Navigator.of(context).pop();
     } catch (e) {
       print('Error saving subscription data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Error saving subscription data: $e',
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+          ),
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
   }
 }

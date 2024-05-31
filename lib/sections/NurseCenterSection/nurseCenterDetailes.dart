@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:test/provider/myprovider.dart';
-import 'package:test/sections/NurseCenterSection/fillFormRequest.dart';
+import 'package:test/sections/NurseCenterSection/nurse_Center_FillFormRequest.dart';
 import 'package:test/sections/NurseCenterSection/rating.dart';
 import 'package:test/sections/NurseCenterSection/user_center_subcription.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -138,319 +138,337 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
             }),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                          color: Colors.grey,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(
-                                    0xFF1C8892), // You can set the border color here
-                                width: 2.0, // You can set the border width here
-                              ),
-                            ),
-                            child: Image.network(
-                              widget.centerProfileImage,
-                              fit: BoxFit.cover,
-                              height: 170,
-                            ),
-                          )),
-                    ),
-                    SizedBox(width: 16), // Add spacing between image and text
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.centerName,
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CenterRating(
-                                        userEmail: widget.userEmail,
-                                        centerId: widget.centerId,
-                                        onOverallRatingChanged:
-                                            (newOverallRating) {
-                                          // Update the overallRating in the parent class
-                                          setState(() {
-                                            overallRating = newOverallRating;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Transform.scale(
-                                      alignment: Alignment.centerLeft,
-                                      scale: 0.9,
-                                      child: RatingBar.builder(
-                                        initialRating: overallRating,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        ignoreGestures: true,
-                                        itemCount: 5,
-                                        itemSize: 20,
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {},
-                                      ),
-                                    ),
-                                    Text(overallRating.toString())
-                                  ],
+        body: RefreshIndicator(
+          backgroundColor: Color(0xFF1C8892),
+          color: Colors.white,
+          onRefresh: () async {
+            if (widget.userEmail.isNotEmpty) {
+              context.read<MyProvider>().fetchAndCheckUserSubscription(
+                  userEmail: widget.userEmail, centerId: widget.centerId);
+            }
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            color: Colors.grey,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(
+                                      0xFF1C8892), // You can set the border color here
+                                  width:
+                                      2.0, // You can set the border width here
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      _makePhoneCall(widget.centerPhoneNumber);
-                                    },
-                                    icon: Icon(Icons.call,
-                                        color: Color(0xFF1C8892)),
-                                  ),
-                                  Text(
-                                    'Call',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
+                              child: Image.network(
+                                widget.centerProfileImage,
+                                fit: BoxFit.cover,
+                                height: 170,
                               ),
-                              SizedBox(width: 17),
-                              Consumer<MyProvider>(
-                                builder: (context, value, child) {
-                                  if (value.userSubscription == null) {
-                                    return Column(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserCenterSubscription(
-                                                  pricePreMonth:
-                                                      widget.pricePreMonth,
-                                                  pricePersixMonths:
-                                                      widget.pricePersixMonths,
-                                                  pricePerthreeMonths: widget
-                                                      .pricePerthreeMonths,
-                                                  centerId: widget.centerId,
-                                                  userEmail: widget.userEmail,
-                                                ),
-                                              ),
-                                            );
+                            )),
+                      ),
+                      SizedBox(width: 16), // Add spacing between image and text
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.centerName,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CenterRating(
+                                          userEmail: widget.userEmail,
+                                          centerId: widget.centerId,
+                                          onOverallRatingChanged:
+                                              (newOverallRating) {
+                                            // Update the overallRating in the parent class
+                                            setState(() {
+                                              overallRating = newOverallRating;
+                                            });
                                           },
-                                          icon: Image.asset(
-                                            "images/pro (1).png",
-                                            width: 25,
-                                          ),
                                         ),
-                                        Text(
-                                          'Subscribe',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ],
+                                      ),
                                     );
-                                  }
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Transform.scale(
+                                        alignment: Alignment.centerLeft,
+                                        scale: 0.9,
+                                        child: RatingBar.builder(
+                                          initialRating: overallRating,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: true,
+                                          ignoreGestures: true,
+                                          itemCount: 5,
+                                          itemSize: 20,
+                                          itemBuilder: (context, _) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {},
+                                        ),
+                                      ),
+                                      Text(overallRating.toString())
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        _makePhoneCall(
+                                            widget.centerPhoneNumber);
+                                      },
+                                      icon: Icon(Icons.call,
+                                          color: Color(0xFF1C8892)),
+                                    ),
+                                    Text(
+                                      'Call',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 17),
+                                Consumer<MyProvider>(
+                                  builder: (context, value, child) {
+                                    if (value.userSubscription == null ||
+                                        value.userSubscription!
+                                                .subscriptionStatus ==
+                                            0) {
+                                      return Column(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UserCenterSubscription(
+                                                    pricePreMonth:
+                                                        widget.pricePreMonth,
+                                                    pricePersixMonths: widget
+                                                        .pricePersixMonths,
+                                                    pricePerthreeMonths: widget
+                                                        .pricePerthreeMonths,
+                                                    centerId: widget.centerId,
+                                                    userEmail: widget.userEmail,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: Image.asset(
+                                              "images/pro (1).png",
+                                              width: 25,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Subscribe',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      );
+                                    }
 
-                                  return SizedBox();
-                                },
-                              ),
-                              SizedBox(width: 18),
-                              Column(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      _sendEmail();
-                                      // print("ssss :" + widget.centerEmail);
-                                    },
-                                    icon: Icon(Icons.email,
-                                        color: Color(0xFF1C8892)),
-                                  ),
-                                  Text(
-                                    'Email',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                    return SizedBox();
+                                  },
+                                ),
+                                SizedBox(width: 18),
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        _sendEmail();
+                                        // print("ssss :" + widget.centerEmail);
+                                      },
+                                      icon: Icon(Icons.email,
+                                          color: Color(0xFF1C8892)),
+                                    ),
+                                    Text(
+                                      'Email',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Text(
-                  "Description:".toUpperCase(),
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.centerDescription),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _launchWebsite();
-                      },
-                      child: Text(
-                        widget.centerWebsite,
-                        style: TextStyle(color: Color(0xFF1C8892)),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Text(
+                    "Description:".toUpperCase(),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.centerDescription),
+                      SizedBox(
+                        height: 5,
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.locationDot,
-                                color: Color(0xFF1C8892),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Flexible(
-                                child: ListTile(
-                                    title: Text("Address",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                    subtitle: Text(widget.centerAddress1)),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.clock,
-                                color: Color(0xFF1C8892),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Flexible(
+                      GestureDetector(
+                        onTap: () {
+                          _launchWebsite();
+                        },
+                        child: Text(
+                          widget.centerWebsite,
+                          style: TextStyle(color: Color(0xFF1C8892)),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.locationDot,
+                                  color: Color(0xFF1C8892),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Flexible(
                                   child: ListTile(
-                                      title: Text("Operating Hours",
+                                      title: Text("Address",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           )),
-                                      subtitle: Text(widget.operatingHours))),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2.80,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: SvgPicture.asset(
-                          "images/center_loc.svg",
-                          fit: BoxFit.contain,
-                          width: 180,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Consumer<MyProvider>(builder: (context, value, child) {
-                  if (value.userSubscription == null) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Price details:".toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Price for quickly checkups: " +
-                                    widget.priceCheckups.toString(),
-                                style: TextStyle(fontSize: 15),
-                              ),
+                                      subtitle: Text(widget.centerAddress1)),
+                                ),
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Price per day: " +
-                                    widget.pricePreDay.toString(),
-                                style: TextStyle(fontSize: 15),
-                              ),
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.clock,
+                                  color: Color(0xFF1C8892),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Flexible(
+                                    child: ListTile(
+                                        title: Text("Operating Hours",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        subtitle: Text(widget.operatingHours))),
+                              ],
                             ),
                           ],
-                        )
-                      ],
-                    );
-                  }
-                  return SizedBox();
-                })
-              ],
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2.80,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: SvgPicture.asset(
+                            "images/center_loc.svg",
+                            fit: BoxFit.contain,
+                            width: 180,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Consumer<MyProvider>(builder: (context, value, child) {
+                    if (value.userSubscription == null ||
+                        value.userSubscription!.subscriptionStatus == 0) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Price details:".toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Price for quickly checkups: " +
+                                      widget.priceCheckups.toString(),
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Price per day: " +
+                                      widget.pricePreDay.toString(),
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    }
+                    return SizedBox();
+                  })
+                ],
+              ),
             ),
           ),
         ),
@@ -480,7 +498,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation, secondaryAnimation) {
-                      return FormRequest(
+                      return NurseCenterFillFormRequest(
                         userEmail: widget.userEmail,
                         centerId: widget.centerId,
                         centerName: widget.centerName,

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:test/Nursecenters/center_patient_request_details.dart';
+import 'package:test/Nurse%20Centers/center_patient_request_details.dart';
 import 'package:test/model/patientRequestModel.dart';
 
 class CenterRequestsHistory extends StatefulWidget {

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:test/model/nurseCenterModel.dart';
-import 'package:test/provider/myprovider.dart';
 import 'package:test/sections/NurseCenterSection/nurseCenterDetailes.dart';
 
 class NurseCenters extends StatefulWidget {

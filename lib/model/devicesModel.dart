@@ -22,6 +22,7 @@ class Devices {
     required this.supplierId,
     required this.deviceId,
   });
+
   factory Devices.fromMap(String Id, Map<String, dynamic> map) {
     List<String> images = [];
     if (map['ImageUrls'] != null) {
@@ -40,5 +41,19 @@ class Devices {
       deviceId: map['DeviseId'] ?? '',
       deviceImages: images,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'Device_Name': deviceName,
+      'devicePriceForPuy': deviceBuyPrice,
+      'devicePriceForRent': deviceRentPrice,
+      'deviceDescription': deviceDescription,
+      'Device_availability': deviceAavailability,
+      'deviceInstructions': deviceInstruction,
+      'supplierId': supplierId,
+      'DeviseId': deviceId,
+      'ImageUrls': deviceImages,
+    };
   }
 }

@@ -45,6 +45,16 @@ class MyProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> saveCartItems(String orderId) async {
+    for (var item in cart) {
+      await FirebaseFirestore.instance
+          .collection('Device_order')
+          .doc(orderId)
+          .collection('CartItems')
+          .add(item.toMap());
+    }
+  }
+
   // save data .
   Future SaveUserlogin(
       {required String email, required String password}) async {

@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/Nursecenters/center_home_page.dart';
+import 'package:test/Nurse%20Centers/center_home_page.dart';
 import 'package:test/utils/Authentication%20firebase/firebase_auth.dart';
 
 class CentersSignUp extends StatefulWidget {
@@ -169,20 +169,19 @@ class _CentersSignUpState extends State<CentersSignUp> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
-                        // validator: (value) {
-                        //   RegExp regex = RegExp(
-                        //       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                        //   var passNonNullValue = value ?? "";
-                        //   if (passNonNullValue.isEmpty) {
-                        //     return ("Password is required");
-                        //   } else if (passNonNullValue.length < 9) {
-                        //     return ("Password Must be more than 8 characters");
-                        //   } else if (!regex
-                        //       .hasMatch(passNonNullValue)) {
-                        //     return ("Password should contain upper,lower,digit and Special character ");
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          RegExp regex = RegExp(
+                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$.*~]).{8,}$');
+                          var passNonNullValue = value ?? "";
+                          if (passNonNullValue.isEmpty) {
+                            return ("Password is required");
+                          } else if (passNonNullValue.length < 9) {
+                            return ("Password Must be more than 8 characters");
+                          } else if (!regex.hasMatch(passNonNullValue)) {
+                            return ("Password should contain upper,lower,digit and Special character ");
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     Padding(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test/sections/NurseCenterSection/subcriptionConfirmation.dart';
 import 'package:test/widgets/widget_subscription_plan_card.dart';
 
@@ -25,6 +26,8 @@ class UserCenterSubscription extends StatefulWidget {
 class _UserCenterSubscriptionState extends State<UserCenterSubscription> {
   @override
   Widget build(BuildContext context) {
+    final isGuest = widget.userEmail.isEmpty;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -61,17 +64,36 @@ class _UserCenterSubscriptionState extends State<UserCenterSubscription> {
                       description:
                           'UserCenterSubscription now for our 1-month plan and start saving instantly',
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SubscriptionConfirmationPage(
-                              planPrice: widget.pricePreMonth,
-                              planDuration: "1",
-                              centerId: widget.centerId,
-                              userEmail: widget.userEmail,
+                        if (!isGuest == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SubscriptionConfirmationPage(
+                                planPrice: widget.pricePreMonth,
+                                planDuration: "1",
+                                centerId: widget.centerId,
+                                userEmail: widget.userEmail,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Color(0xFF1C8892),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                "Log in first",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontFamily: GoogleFonts.poppins().fontFamily,
+                                ),
+                              ),
+                              duration: Duration(
+                                  seconds: 1), // Set your custom duration here
+                            ),
+                          );
+                        }
                       },
                     ),
                     SizedBox(height: 20),
@@ -81,17 +103,36 @@ class _UserCenterSubscriptionState extends State<UserCenterSubscription> {
                       description:
                           'Save big with our 3-month subscription plan!',
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SubscriptionConfirmationPage(
-                              planPrice: widget.pricePerthreeMonths,
-                              planDuration: "3",
-                              centerId: widget.centerId,
-                              userEmail: widget.userEmail,
+                        if (!isGuest == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SubscriptionConfirmationPage(
+                                planPrice: widget.pricePreMonth,
+                                planDuration: "3",
+                                centerId: widget.centerId,
+                                userEmail: widget.userEmail,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Color(0xFF1C8892),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                "Log in first",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontFamily: GoogleFonts.poppins().fontFamily,
+                                ),
+                              ),
+                              duration: Duration(
+                                  seconds: 1), // Set your custom duration here
+                            ),
+                          );
+                        }
                       },
                     ),
                     SizedBox(height: 20),
@@ -101,17 +142,36 @@ class _UserCenterSubscriptionState extends State<UserCenterSubscription> {
                       description:
                           'UserCenterSubscription for 6 months and save more!',
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SubscriptionConfirmationPage(
-                              planPrice: widget.pricePreMonth,
-                              planDuration: "6",
-                              centerId: widget.centerId,
-                              userEmail: widget.userEmail,
+                        if (!isGuest == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SubscriptionConfirmationPage(
+                                planPrice: widget.pricePreMonth,
+                                planDuration: "6",
+                                centerId: widget.centerId,
+                                userEmail: widget.userEmail,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Color(0xFF1C8892),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                "Log in first",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontFamily: GoogleFonts.poppins().fontFamily,
+                                ),
+                              ),
+                              duration: Duration(
+                                  seconds: 1), // Set your custom duration here
+                            ),
+                          );
+                        }
                       },
                     ),
                   ],
