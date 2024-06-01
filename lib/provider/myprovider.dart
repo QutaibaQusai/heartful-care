@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/model/devicesModel.dart';
 import 'package:test/model/userCenterSubscription.dart';
 import 'package:test/model/userInfo.dart';
+import 'package:test/model/usersOrderRequest.dart';
 
 class MyProvider with ChangeNotifier {
   // items for specific one .
@@ -55,6 +56,7 @@ class MyProvider with ChangeNotifier {
     }
   }
 
+////////////////////////////////////////////////////
   // save data .
   Future SaveUserlogin(
       {required String email, required String password}) async {
@@ -110,6 +112,7 @@ class MyProvider with ChangeNotifier {
     notifyListeners();
   }
 
+////////////////////////////////////////////////////
   UserInfo? userInfo;
   // get user info  function .
   Future getUserInfo({required String userEmail}) async {
@@ -123,6 +126,7 @@ class MyProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  ////////////////////////////////////////////////////
   UserCenterSubscription? userSubscription;
 
   Future<void> fetchAndCheckUserSubscription({
@@ -163,7 +167,64 @@ class MyProvider with ChangeNotifier {
       //           {'subscriptionStatus': userSubscription!.subscriptionStatus});
       // }
     } else {
-      notifyListeners(); // Ensure listeners are notified even if no subscription is found
+      notifyListeners();
     }
   }
+  ////////////////////////////////////////////////////
+
+  // Orders list
+  List<DeviceRequest>? orders;
+    // CartItems list for an order
+  List<Devices>? cartItems;
+
+  Future getOrder({required String supplier_id}) async {
+    orders = await FirebaseFirestore.instance
+        .collection("Device_order")
+        .where("supplierId", isEqualTo: supplier_id)
+        .get()
+        .then((value) => value.docs
+            .map((e) => DeviceRequest.fromMap(e.id, e.data()))
+            .toList());
+    notifyListeners();
+  }
+    // Get CartItems for a specific order
+  Future<void> getCartItems(String orderId) async {
+    cartItems = await FirebaseFirestore.instance
+        .collection('Device_order')
+        .doc(orderId)
+        .collection('CartItems')
+        .get()
+        .then((value) =>
+            value.docs.map((e) => Devices.fromMap(e.id, e.data())).toList());
+
+    notifyListeners();
+  }
+  // Update order status
+  Future<void> updateOrderStatus(String orderId, int status) async {
+    await FirebaseFirestore.instance
+        .collection('Device_order')
+        .doc(orderId)
+        .update({'orderStatus': status});
+    
+    // Update the local order list
+    orders = orders?.map((order) {
+      if (order.id == orderId) {
+        return DeviceRequest(
+          id: order.id,
+          supplierId: order.supplierId,
+          userName: order.userName,
+          userImage: order.userImage,
+          userEmail: order.userEmail,
+          userOrderTimeAndDate: order.userOrderTimeAndDate,
+          userArea: order.userArea,
+          userStreet: order.userStreet,
+          orderStatus: status, // Make sure to add this field to your model
+        );
+      }
+      return order;
+    }).toList();
+    
+    notifyListeners();
+  }
+
 }

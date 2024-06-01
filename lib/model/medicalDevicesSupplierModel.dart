@@ -1,4 +1,5 @@
 class MedicalSupplier {
+  
   final String name;
   final String phoneNumber;
   final String emailAddress;

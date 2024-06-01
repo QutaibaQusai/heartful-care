@@ -479,6 +479,8 @@ class _SupplierCheckOitState extends State<SupplierCheckout> {
         'userEmail': widget.userEmail,
         'supplierId': widget.supplierId,
         'selectedPaymentMethod': selectedPaymentMethod,
+        'firstName': userInfo?.userName,
+        'userImage': userInfo?.userImage,
         'area': userInfo?.area,
         'street': userInfo?.street,
         'phoneNumber': userInfo?.phoneNumber,

@@ -52,8 +52,7 @@ class _SupplierDetailsState extends State<SupplierDetails> {
 
   @override
   Widget build(BuildContext context) {
-    double mainw = MediaQuery.of(context).size.width;
-    double mainh = MediaQuery.of(context).size.height;
+   
 
     return SafeArea(
       child: Scaffold(

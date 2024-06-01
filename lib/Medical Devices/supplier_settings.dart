@@ -229,6 +229,55 @@ class _Suppliers_sittingsState extends State<Suppliers_sittings> {
                     child: Row(
                       children: [
                         Text(
+                          "Orders",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0F2F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.history,
+                              color: Color(0xFF1C8892),
+                              size: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "History",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Icon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Color(0xFF1C8892),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: Row(
+                      children: [
+                        Text(
                           "About Me",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
