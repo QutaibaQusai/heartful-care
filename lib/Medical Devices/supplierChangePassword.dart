@@ -132,6 +132,7 @@ class _SupplierChangePasswordState extends State<SupplierChangePassword> {
                                 context: context,
                                 currentPassword: currentSupplierPassword.text,
                                 newPassword: newSupplierPassword.text);
+                            Navigator.of(context).pop();
                           }
                         },
                         style: ElevatedButton.styleFrom(

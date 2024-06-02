@@ -20,9 +20,12 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  // email password controller
   TextEditingController passwordTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
+  // for hide or show password
   bool showHidePassword = true;
+  // for email and password  vaildation
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -229,7 +232,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                 padding: const EdgeInsets.only(
                                     top: 5, left: 18.0, right: 18.0, bottom: 5),
                                 child: ElevatedButton(
-                                  style: ButtonStyle(),
                                   onPressed: () async {
                                     if (formKey.currentState!.validate()) {
                                       // final fullName = await MyFirebaseAuth().getFullName(emailTextController.text);

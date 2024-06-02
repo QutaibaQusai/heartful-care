@@ -105,7 +105,7 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                       ),
                       validator: (value) {
                         RegExp regex = RegExp(
-                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$.&*~]).{8,}$');
                         var passNonNullValue = value ?? "";
                         if (passNonNullValue.isEmpty) {
                           return ("Password is required");
@@ -218,12 +218,9 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
                             await MyFirebaseAuth().changePassword(
                                 context: context,
                                 currentPassword: currentPassword.text,
-                                newPassword: newPassword.text
-                                // currentPassword.text,
-                                // newPassword.text,
-                                );
+                                newPassword: newPassword.text);
+                            Navigator.pop(context);
                           }
-                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,

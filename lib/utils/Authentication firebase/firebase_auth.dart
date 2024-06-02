@@ -59,10 +59,12 @@ class MyFirebaseAuth {
     }
   }
 
+  // forget password
   Future forgetPassword({
     required BuildContext context,
     required String email,
   }) async {
+    // trim method to remove space
     try {
       return await auth.sendPasswordResetEmail(email: email.trim());
     } catch (e) {
@@ -88,53 +90,7 @@ class MyFirebaseAuth {
     }
   }
 
-  Future<void> changePassword(
-      {required BuildContext context,
-      required String currentPassword,
-      required String newPassword}) async {
-    try {
-      User? currentUser = auth.currentUser;
-
-      final AuthCredential credential = EmailAuthProvider.credential(
-        email: currentUser?.email ?? '',
-        password: currentPassword,
-      );
-
-      await currentUser?.reauthenticateWithCredential(credential);
-
-      await currentUser?.updatePassword(newPassword);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Password updated successfully",
-            style: TextStyle(
-              fontSize: 17,
-            ),
-          ),
-        ),
-      );
-
-      print(
-          '__________________Password updated successfully____________________');
-    } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color(0xFF1C8892),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Failed to update password",
-            style: TextStyle(
-              fontSize: 17,
-            ),
-          ),
-        ),
-      );
-      print('______________Failed to update password:_____________ $e');
-    }
-  }
-
+  // update Email
   Future<void> updateEmailWithoutVerification({
     required BuildContext context,
     required String oldEmail,
@@ -142,7 +98,7 @@ class MyFirebaseAuth {
     required String password,
   }) async {
     try {
-      User? currentUser = auth.currentUser;
+      User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -155,12 +111,16 @@ class MyFirebaseAuth {
         );
         return;
       }
+
+      // Reauthenticate the user
       final AuthCredential credential = EmailAuthProvider.credential(
         email: oldEmail,
         password: password,
       );
 
       await currentUser.reauthenticateWithCredential(credential);
+
+      // Update the email
       await currentUser.updateEmail(newEmail);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -172,11 +132,37 @@ class MyFirebaseAuth {
         ),
       );
     } on FirebaseAuthException catch (e) {
+      String errorMessage;
+
+      switch (e.code) {
+        case 'invalid-email':
+          errorMessage = 'The email address is not valid.';
+          break;
+        case 'email-already-in-use':
+          errorMessage =
+              'The email address is already in use by another account.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'The password is incorrect.';
+          break;
+        case 'user-mismatch':
+          errorMessage =
+              'The provided credentials do not match the current user.';
+          break;
+        case 'requires-recent-login':
+          errorMessage =
+              'You need to log in again before you can update your email.';
+          break;
+        default:
+          errorMessage = 'Failed to update email: ${e.message}';
+      }
+
+      // Show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color(0xFF1C8892),
           content: Text(
-            "Failed to update email: ${e.message}",
+            errorMessage,
             style: TextStyle(fontSize: 17),
           ),
         ),
@@ -189,6 +175,78 @@ class MyFirebaseAuth {
           backgroundColor: Color(0xFF1C8892),
           content: Text(
             "An unexpected error occurred",
+            style: TextStyle(fontSize: 17),
+          ),
+        ),
+      );
+    }
+  }
+
+  // update password
+  Future<void> changePassword({
+    required BuildContext context,
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser != null) {
+        // Reauthenticate the user
+        AuthCredential credential = EmailAuthProvider.credential(
+          email: currentUser.email ?? '',
+          password: currentPassword,
+        );
+
+        await currentUser.reauthenticateWithCredential(credential);
+
+        // Update the password
+        await currentUser.updatePassword(newPassword);
+
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color(0xFF1C8892),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              "Password updated successfully",
+              style: TextStyle(fontSize: 17),
+            ),
+          ),
+        );
+      } else {
+        throw FirebaseAuthException(
+            code: 'user-not-logged-in',
+            message: 'No user is currently logged in.');
+      }
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+
+      switch (e.code) {
+        case 'wrong-password':
+          errorMessage = 'The current password is incorrect.';
+          break;
+        case 'weak-password':
+          errorMessage = 'The new password is too weak.';
+          break;
+        case 'requires-recent-login':
+          errorMessage =
+              'You need to log in again before you can update your password.';
+          break;
+        case 'user-not-logged-in':
+          errorMessage = 'No user is currently logged in.';
+          break;
+        default:
+          errorMessage = 'Failed to update password: ${e.message}';
+      }
+
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF1C8892),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            errorMessage,
             style: TextStyle(fontSize: 17),
           ),
         ),

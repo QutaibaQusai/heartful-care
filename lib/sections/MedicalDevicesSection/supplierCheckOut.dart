@@ -6,7 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:test/model/card.dart';
 import 'package:test/provider/myprovider.dart';
-import 'package:test/sections/MedicalDevicesSection/loading.dart';
+import 'package:test/sections/MedicalDevicesSection/supplierLoadingPage.dart';
 import 'package:test/sections/NurseCenterSection/addCard.dart';
 
 class SupplierCheckout extends StatefulWidget {
@@ -486,6 +486,14 @@ class _SupplierCheckOitState extends State<SupplierCheckout> {
         'phoneNumber': userInfo?.phoneNumber,
         'orderStatus': status,
         'timestamp': FieldValue.serverTimestamp(),
+        'PhoneNumber': userInfo?.phoneNumber,
+        'dateOfBirth': userInfo?.dateOfBirth,
+        'nationalId': userInfo?.nationalId,
+        'gender': userInfo?.gender,
+        'addressNickname': userInfo?.addressNickname,
+        'building': userInfo?.building,
+        'floor': userInfo?.floor,
+        'appartment': userInfo?.appartment,
       };
 
       DocumentReference orderRef = await FirebaseFirestore.instance
@@ -498,8 +506,9 @@ class _SupplierCheckOitState extends State<SupplierCheckout> {
       Navigator.pushReplacement(
           context,
           PageTransition(
-              child: Loading(
-                status: status,
+              child: SupplierLoadingPage(
+                status: 0,
+                orderId: orderRef.id,
               ),
               type: PageTransitionType.fade));
     } catch (e) {

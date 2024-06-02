@@ -3,28 +3,25 @@ import 'package:colorful_background/colorful_background.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class RequestResult extends StatefulWidget {
+class SupplierLoadingPage extends StatefulWidget {
   final int status;
-  final String formRequestId;
-  const RequestResult({
-    super.key,
-    required this.status,
-    required this.formRequestId,
-  });
+  final String orderId;
+  const SupplierLoadingPage(
+      {super.key, required this.status, required this.orderId});
 
   @override
-  State<RequestResult> createState() => _RequestResultState();
+  State<SupplierLoadingPage> createState() => _LoadingState();
 }
 
-class _RequestResultState extends State<RequestResult> {
+class _LoadingState extends State<SupplierLoadingPage> {
   late Stream<DocumentSnapshot> _documentStream;
 
   @override
   void initState() {
     super.initState();
     _documentStream = FirebaseFirestore.instance
-        .collection('form_request')
-        .doc(widget.formRequestId)
+        .collection('Device_order')
+        .doc(widget.orderId)
         .snapshots();
   }
 
@@ -34,16 +31,8 @@ class _RequestResultState extends State<RequestResult> {
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Color(0xFF1C8892),
-            centerTitle: true,
-            title: Text(
-              'Request Result',
-              style: TextStyle(color: Colors.white),
-            ),
+            backgroundColor: Colors.white,
           ),
-
-          
           body: Stack(
             children: [
               ColorfulBackground(
@@ -68,7 +57,7 @@ class _RequestResultState extends State<RequestResult> {
                       return Text('Document not found');
                     } else {
                       final data = snapshot.data!;
-                      final status = data['status'] as int?;
+                      final status = data['orderStatus'] as int?;
                       if (status == 0) {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -86,44 +75,16 @@ class _RequestResultState extends State<RequestResult> {
                           ],
                         );
                       } else if (status == 1) {
-                        final nurseImage =
-                            data['nurseImage'] as String? ?? 'Unknown';
-
-                        final nurseFirstName =
-                            data['nurse_FirstName'] as String? ?? 'Unknown';
-                        final nurseLastName =
-                            data['nurse_LastName'] as String? ?? 'Unknown';
-
-                        final nursePhoneNumber =
-                            data['nurse_phoneNumber'] as String? ?? 'Unknown';
-
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ClipOval(
-                              child: Image.network(
-                                nurseImage,
-                                width:
-                                    150, 
-                                height: 150,
-                                fit: BoxFit
-                                    .cover, 
-                              ),
-                            ),
                             SizedBox(
                               height: 25,
                             ),
                             Text(
                                 "Your request has been" +
                                     " accepted ".toUpperCase() +
-                                    "we assigned " +
-                                    nurseFirstName +
-                                    " " +
-                                    nurseLastName +
-                                    " " +
-                                    "to be your nurse for today \n" +
-                                    "Call: " +
-                                    nursePhoneNumber,
+                                    "we assigned ",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold))
@@ -152,8 +113,6 @@ class _RequestResultState extends State<RequestResult> {
               ),
             ],
           )),
-    
-    
     );
   }
 }

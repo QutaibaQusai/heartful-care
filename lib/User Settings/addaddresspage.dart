@@ -35,7 +35,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
           buildingController.text = userData['Building'] ?? "";
           floorController.text = userData['Floor'] ?? "";
           apartmentController.text = userData['apartment'] ?? "";
-          mobilenumController.text = userData['Mobile number'] ?? "";
         });
       }
     } catch (e) {
@@ -49,7 +48,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
   TextEditingController buildingController = TextEditingController();
   TextEditingController floorController = TextEditingController();
   TextEditingController apartmentController = TextEditingController();
-  TextEditingController mobilenumController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -137,16 +135,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
                   ),
                 ),
               ),
-              TextField(
-                controller: mobilenumController,
-                decoration: InputDecoration(
-                  labelText: 'Mobile number',
-                  labelStyle: TextStyle(color: Colors.grey),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                ),
-              ),
               SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -209,7 +197,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
           'Building': buildingController.text,
           'Floor': floorController.text,
           'apartment': apartmentController.text,
-          'Mobile number': mobilenumController.text
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -274,7 +261,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
           'Building': FieldValue.delete(),
           'Floor': FieldValue.delete(),
           'apartment': FieldValue.delete(),
-          'Mobile number': FieldValue.delete(),
         });
 
         // Clear the text field values
@@ -285,7 +271,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
           buildingController.text = '';
           floorController.text = '';
           apartmentController.text = '';
-          mobilenumController.text = '';
         });
 
         ScaffoldMessenger.of(context).showSnackBar(

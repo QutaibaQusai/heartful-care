@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/utils/Authentication%20firebase/firebase_auth.dart';
 
 class SupplierChangeEmail extends StatefulWidget {
   const SupplierChangeEmail({super.key});
@@ -9,8 +10,9 @@ class SupplierChangeEmail extends StatefulWidget {
 
 class _supplierChangeEmailState extends State<SupplierChangeEmail> {
   bool showHidePassword = false;
-  TextEditingController passwordSupplierController = TextEditingController();
+  TextEditingController currentSupplierEmail = TextEditingController();
   TextEditingController newSupplierEmail = TextEditingController();
+  TextEditingController passwordSupplierController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,9 @@ class _supplierChangeEmailState extends State<SupplierChangeEmail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: newSupplierEmail,
+                  controller: currentSupplierEmail,
                   decoration: InputDecoration(
-                    labelText: 'New email',
+                    labelText: 'Current email',
                     labelStyle: TextStyle(color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
@@ -41,8 +43,9 @@ class _supplierChangeEmailState extends State<SupplierChangeEmail> {
                 ),
                 SizedBox(height: 16),
                 TextField(
+                  controller: newSupplierEmail,
                   decoration: InputDecoration(
-                    labelText: 'Confirm email',
+                    labelText: 'New Email',
                     labelStyle: TextStyle(color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
@@ -84,10 +87,11 @@ class _supplierChangeEmailState extends State<SupplierChangeEmail> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () async {
-                      // await MyFirebaseAuth().changeEmail(
-                      //     context: context,
-                      //     newEmail: newSupplierEmail.text,
-                      //     password: passwordSupplierController.text);
+                      await MyFirebaseAuth().updateEmailWithoutVerification(
+                          context: context,
+                          oldEmail: currentSupplierEmail.text,
+                          newEmail: newSupplierEmail.text,
+                          password: passwordSupplierController.text);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

@@ -45,15 +45,7 @@ class _SettingFirstPage extends State<SettingFirstPage> {
 
         shadowColor: Colors.transparent,
         automaticallyImplyLeading: false,
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.of(context).pop();
-        //   },
-        //   icon: Icon(
-        //     FontAwesomeIcons.chevronLeft,
-        //     color: Colors.black,
-        //   ),
-        // ),
+       
 
         centerTitle: true,
         title: Text(
@@ -79,18 +71,14 @@ class _SettingFirstPage extends State<SettingFirstPage> {
             buildSectionHeader(Icons.notifications, "Notifications"),
             buildNotificationOption(context, "News for you", notification1,
                 (value) => setState(() => notification1 = value)),
-            // buildNotificationOption(context, "App updates", notification2,
-            //(value) => setState(() => notification2 = value)),
+          
             Divider(height: 20, thickness: 0.5),
             SizedBox(height: 10),
             buildSectionHeader(Icons.language, "Language"),
             buildLanguageOption(context),
             Divider(height: 20, thickness: 0.5),
             SizedBox(height: 10),
-            // buildSectionHeader(Icons.location_on, "Location"),
-            // buildLocationOption(context),
-            // Divider(height: 20, thickness: 0.5),
-            // SizedBox(height: 10),
+        
             buildSectionHeader(Icons.delete, "Delete account"),
             buildDeleteOption(context),
             Divider(height: 20, thickness: 0.5),
@@ -125,7 +113,6 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     return InkWell(
       onTap: () {
         if (title == "Account Info") {
-          // Navigate to the desired page (replace YourAccountInfoPage with the actual page class)
           Navigator.push(
               context,
               _createRightToLeftRoute(
@@ -315,7 +302,6 @@ class _SettingFirstPage extends State<SettingFirstPage> {
 
   Future<void> _deleteAccount() async {
     // Delete Firestore document
-    // Replace 'users' with the actual collection name in your Firestore
     await FirebaseFirestore.instance
         .collection('users')
         .doc(userEmail)
