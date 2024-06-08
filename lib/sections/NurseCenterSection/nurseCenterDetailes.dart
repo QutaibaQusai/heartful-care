@@ -93,6 +93,10 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -107,11 +111,12 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
               color: Colors.white,
+              size: width * 0.05,
             ),
           ),
           title: Text(
             "Center",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: width * 0.05),
           ),
           actions: [
             Consumer<MyProvider>(builder: (context, value, child) {
@@ -120,18 +125,19 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
               }
 
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(width * 0.02),
                 child: value.userSubscription!.subscriptionStatus == 1
                     ? Container(
                         decoration: BoxDecoration(
                             color: Color(0xFFD1E7E9),
                             borderRadius: BorderRadius.circular(15)),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(width * 0.02),
                           child: Text("PRO",
                               style: TextStyle(
                                   color: Color(0xFF1C8892),
-                                  fontWeight: FontWeight.bold)),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: width * 0.04)),
                         ))
                     : SizedBox(),
               );
@@ -150,7 +156,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(width * 0.04),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -164,20 +170,18 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                             child: Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: Color(
-                                      0xFF1C8892), // You can set the border color here
-                                  width:
-                                      2.0, // You can set the border width here
+                                  color: Color(0xFF1C8892),
+                                  width: 2.0,
                                 ),
                               ),
                               child: Image.network(
                                 widget.centerProfileImage,
                                 fit: BoxFit.cover,
-                                height: 170,
+                                height: height * 0.2,
                               ),
                             )),
                       ),
-                      SizedBox(width: 16), // Add spacing between image and text
+                      SizedBox(width: width * 0.04),
                       Expanded(
                         flex: 2,
                         child: Column(
@@ -186,11 +190,11 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                             Text(
                               widget.centerName,
                               style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: width * 0.04,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: height * 0.01),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -205,7 +209,6 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                           centerId: widget.centerId,
                                           onOverallRatingChanged:
                                               (newOverallRating) {
-                                            // Update the overallRating in the parent class
                                             setState(() {
                                               overallRating = newOverallRating;
                                             });
@@ -226,7 +229,7 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                           allowHalfRating: true,
                                           ignoreGestures: true,
                                           itemCount: 5,
-                                          itemSize: 20,
+                                          itemSize: width * 0.05,
                                           itemBuilder: (context, _) => Icon(
                                             Icons.star,
                                             color: Colors.amber,
@@ -234,119 +237,138 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                           onRatingUpdate: (rating) {},
                                         ),
                                       ),
-                                      Text(overallRating.toString())
+                                      SizedBox(width: width * 0.02),
+                                      Text(
+                                        overallRating.toStringAsFixed(1),
+                                        style:
+                                            TextStyle(fontSize: width * 0.04),
+                                      ),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5),
                             Row(
                               children: [
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        _makePhoneCall(
-                                            widget.centerPhoneNumber);
-                                      },
-                                      icon: Icon(Icons.call,
-                                          color: Color(0xFF1C8892)),
-                                    ),
-                                    Text(
-                                      'Call',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  ],
+                                Flexible(
+                                  child: Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          _makePhoneCall(
+                                              widget.centerPhoneNumber);
+                                        },
+                                        icon: Icon(Icons.call,
+                                            color: Color(0xFF1C8892),
+                                            size: width * 0.07),
+                                      ),
+                                      Text(
+                                        'Call',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: width * 0.04),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(width: 17),
-                                Consumer<MyProvider>(
-                                  builder: (context, value, child) {
-                                    if (value.userSubscription == null ||
-                                        value.userSubscription!
-                                                .subscriptionStatus ==
-                                            0) {
-                                      return Column(
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      UserCenterSubscription(
-                                                    pricePreMonth:
-                                                        widget.pricePreMonth,
-                                                    pricePersixMonths: widget
-                                                        .pricePersixMonths,
-                                                    pricePerthreeMonths: widget
-                                                        .pricePerthreeMonths,
-                                                    centerId: widget.centerId,
-                                                    userEmail: widget.userEmail,
+                                SizedBox(width: width * 0.04),
+                                Flexible(
+                                  child: Consumer<MyProvider>(
+                                    builder: (context, value, child) {
+                                      if (value.userSubscription == null ||
+                                          value.userSubscription!
+                                                  .subscriptionStatus ==
+                                              0) {
+                                        return Column(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UserCenterSubscription(
+                                                      pricePreMonth:
+                                                          widget.pricePreMonth,
+                                                      pricePersixMonths: widget
+                                                          .pricePersixMonths,
+                                                      pricePerthreeMonths: widget
+                                                          .pricePerthreeMonths,
+                                                      centerId: widget.centerId,
+                                                      userEmail:
+                                                          widget.userEmail,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                            icon: Image.asset(
-                                              "images/pro (1).png",
-                                              width: 25,
+                                                );
+                                              },
+                                              icon: Image.asset(
+                                                "images/pro (1).png",
+                                                width: width * 0.07,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            'Subscribe',
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          ),
-                                        ],
-                                      );
-                                    }
-
-                                    return SizedBox();
-                                  },
+                                            Text(
+                                              'PRO',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: width * 0.04),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                      return SizedBox();
+                                    },
+                                  ),
                                 ),
-                                SizedBox(width: 18),
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        _sendEmail();
-                                        // print("ssss :" + widget.centerEmail);
-                                      },
-                                      icon: Icon(Icons.email,
-                                          color: Color(0xFF1C8892)),
-                                    ),
-                                    Text(
-                                      'Email',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  ],
+                                SizedBox(width: width * 0.04),
+                                Flexible(
+                                  child: Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          _sendEmail();
+                                        },
+                                        icon: Icon(Icons.email,
+                                            color: Color(0xFF1C8892),
+                                            size: width * 0.07),
+                                      ),
+                                      Text(
+                                        'Email',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: width * 0.04),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: 40,
+                    height: height * 0.05,
                   ),
                   Text(
                     "Description:".toUpperCase(),
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: width * 0.04,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: height * 0.01,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.centerDescription),
+                      Text(
+                        widget.centerDescription,
+                        style: TextStyle(fontSize: width * 0.03),
+                      ),
                       SizedBox(
-                        height: 5,
+                        height: height * 0.01,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -354,19 +376,20 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                         },
                         child: Text(
                           widget.centerWebsite,
-                          style: TextStyle(color: Color(0xFF1C8892)),
+                          style: TextStyle(
+                              color: Color(0xFF1C8892), fontSize: width * 0.04),
                         ),
                       )
                     ],
                   ),
                   SizedBox(
-                    height: 40,
+                    height: height * 0.05,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width / 2,
+                        width: width / 2,
                         child: Column(
                           children: [
                             Row(
@@ -374,17 +397,20 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                 Icon(
                                   FontAwesomeIcons.locationDot,
                                   color: Color(0xFF1C8892),
+                                  size: width * 0.05,
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: width * 0.02,
                                 ),
                                 Flexible(
                                   child: ListTile(
                                       title: Text("Address",
                                           style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      subtitle: Text(widget.centerAddress1)),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: width * 0.04)),
+                                      subtitle: Text(widget.centerAddress1,
+                                          style: TextStyle(
+                                              fontSize: width * 0.03))),
                                 ),
                               ],
                             ),
@@ -393,37 +419,40 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                                 Icon(
                                   FontAwesomeIcons.clock,
                                   color: Color(0xFF1C8892),
+                                  size: width * 0.05,
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: width * 0.02,
                                 ),
                                 Flexible(
                                     child: ListTile(
                                         title: Text("Operating Hours",
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            )),
-                                        subtitle: Text(widget.operatingHours))),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: width * 0.04)),
+                                        subtitle: Text(widget.operatingHours,
+                                            style: TextStyle(
+                                                fontSize: width * 0.03)))),
                               ],
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width / 2.80,
+                        width: width / 2.80,
                         child: GestureDetector(
                           onTap: () {},
                           child: SvgPicture.asset(
                             "images/center_loc.svg",
                             fit: BoxFit.contain,
-                            width: 180,
+                            width: width * 0.5,
                           ),
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: 40,
+                    height: height * 0.05,
                   ),
                   Consumer<MyProvider>(builder: (context, value, child) {
                     if (value.userSubscription == null ||
@@ -434,30 +463,30 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
                           Text(
                             "Price details:".toUpperCase(),
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: width * 0.04,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
                           SizedBox(
-                            height: 5,
+                            height: height * 0.01,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(width * 0.02),
                                 child: Text(
                                   "Price for quickly checkups: " +
                                       widget.priceCheckups.toString(),
-                                  style: TextStyle(fontSize: 15),
+                                  style: TextStyle(fontSize: width * 0.03),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(width * 0.02),
                                 child: Text(
                                   "Price per day: " +
                                       widget.pricePreDay.toString(),
-                                  style: TextStyle(fontSize: 15),
+                                  style: TextStyle(fontSize: width * 0.03),
                                 ),
                               ),
                             ],
@@ -473,13 +502,13 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(width * 0.04),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: const Color(0xFF1C8892),
-              padding: const EdgeInsets.symmetric(
-                vertical: 5,
+              padding: EdgeInsets.symmetric(
+                vertical: height * 0.005,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(60),
@@ -527,12 +556,12 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
               }
             },
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(width * 0.02),
               child: Text(
                 "Fill form".toUpperCase(),
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: width * 0.035,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -552,14 +581,13 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
       }
     } catch (e) {
       print('Error launching phone call: $e');
-      // Handle the error here, such as showing an error dialog
     }
   }
 
   void _sendEmail() async {
     final Uri _emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: widget.centerEmail, // replace with your email address
+      path: widget.centerEmail,
       queryParameters: {
         'subject': 'Subject Here',
         'body': 'Body Here',
@@ -572,20 +600,16 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
       await launch(_emailLaunchUriString);
     } catch (e) {
       print('Error launching email: $e');
-      // Handle the error here.
     }
   }
 
   void _launchWebsite() async {
     final String url = widget.centerWebsite;
 
-    // Check if the URL is not empty and not null
-    if (url != true && url.isNotEmpty) {
-      // Check if the URL is valid
+    if (url.isNotEmpty) {
       if (await canLaunch(url)) {
         await launch(url);
       } else {
-        // If the URL is not valid, launch Google
         final String googleUrl = 'https://www.google.com';
         if (await canLaunch(googleUrl)) {
           await launch(googleUrl);
@@ -594,7 +618,6 @@ class _DetailedNurseCenter extends State<DetailedNurseCenter> {
         }
       }
     } else {
-      // If the URL is empty or null, launch Google
       final String googleUrl = 'https://www.google.com';
       if (await canLaunch(googleUrl)) {
         await launch(googleUrl);

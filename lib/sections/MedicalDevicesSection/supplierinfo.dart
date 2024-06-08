@@ -1,26 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:test/provider/myprovider.dart';
 
 class SupplierInfo extends StatefulWidget {
-  final String supplierName;
-  final String supplierPhoneNumber;
-  final String supplierEmailAddress;
-  final String supplierWebsite;
-  final String supplierLocation;
-  final String supplierDescription;
-  final String paymentOption;
-  final String logoImage;
+  final int index;
 
-  const SupplierInfo(
-      {super.key,
-      required this.supplierName,
-      required this.supplierPhoneNumber,
-      required this.supplierEmailAddress,
-      required this.supplierWebsite,
-      required this.supplierLocation,
-      required this.supplierDescription,
-      required this.paymentOption,
-      required this.logoImage});
+  const SupplierInfo({
+    super.key,
+    required this.index,
+  });
 
   @override
   State<SupplierInfo> createState() => _SupplierInfoState();
@@ -29,9 +18,13 @@ class SupplierInfo extends StatefulWidget {
 class _SupplierInfoState extends State<SupplierInfo> {
   @override
   Widget build(BuildContext context) {
-    String fullUrl = widget.supplierWebsite;
-    Uri uri = Uri.parse(fullUrl);
-    String websiteUrl = uri.host;
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
+
+    // String fullUrl = widget.supplierWebsite;
+    // Uri uri = Uri.parse(fullUrl);
+    // String websiteUrl = uri.host;
 
     return SafeArea(
       child: Scaffold(
@@ -39,7 +32,7 @@ class _SupplierInfoState extends State<SupplierInfo> {
         appBar: AppBar(
           title: Text(
             "Supplier Information",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: width * 0.05),
           ),
           centerTitle: true,
           backgroundColor: Color(0xFF1C8892),
@@ -50,143 +43,155 @@ class _SupplierInfoState extends State<SupplierInfo> {
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
               color: Colors.white,
+              size: width * 0.05,
             ),
           ),
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width / 5,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(13),
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(13),
-                        child: Image.network(
-                          widget.logoImage,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      widget.supplierName.toUpperCase(),
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: buildLocationRow(FontAwesomeIcons.mobile,
-                      "Supplier Phone Number ", widget.supplierPhoneNumber),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 35),
-                  child: Divider(
-                    thickness: 1,
-                    height: 25,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: buildLocationRow(FontAwesomeIcons.envelope,
-                      "Supplier Email Address", widget.supplierEmailAddress),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 35),
-                  child: Divider(
-                    thickness: 1,
-                    height: 25,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: buildLocationRow(
-                      FontAwesomeIcons.globe, "Supplier Website", websiteUrl),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 35),
-                  child: Divider(
-                    thickness: 1,
-                    height: 25,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: buildLocationRow(FontAwesomeIcons.locationArrow,
-                      "Supplier Location", widget.supplierLocation),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 35),
-                  child: Divider(
-                    thickness: 1,
-                    height: 25,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: buildLocationRow(FontAwesomeIcons.solidCreditCard,
-                      "Payment Option", widget.paymentOption),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 35),
-                  child: Divider(
-                    thickness: 1,
-                    height: 25,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.05, vertical: height * 0.02),
+            child: Consumer<MyProvider>(
+              builder: (context, value, child) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Icon(
-                        FontAwesomeIcons.info,
-                        color: Color(0xFF1C8892),
-                        size: 28,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Supplier Description",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                      Container(
+                        width: width / 5,
+                        height: height * 0.1,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(13),
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
                           ),
-                          SizedBox(height: 5),
-                          Container(
-                            width: MediaQuery.of(context).size.width -
-                                80, // Adjust width as needed
-                            child: Text(
-                              widget.supplierDescription,
-                              textAlign: TextAlign.justify,
-                            ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(13),
+                          child: Image.network(
+                            value.suppliers![widget.index].logoImage,
+                            fit: BoxFit.cover,
                           ),
-                        ],
+                        ),
+                      ),
+                      SizedBox(width: width * 0.04),
+                      Expanded(
+                        child: Text(
+                          value.suppliers![widget.index].name.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: width * 0.05,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(height: height * 0.05),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.01),
+                    child: buildLocationRow(
+                        FontAwesomeIcons.mobile,
+                        "Supplier Phone Number ",
+                        value.suppliers![widget.index].phoneNumber),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.1),
+                    child: Divider(
+                      thickness: 1,
+                      height: height * 0.03,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.01),
+                    child: buildLocationRow(
+                        FontAwesomeIcons.envelope,
+                        "Supplier Email Address",
+                        value.suppliers![widget.index].emailAddress),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.1),
+                    child: Divider(
+                      thickness: 1,
+                      height: height * 0.03,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.01),
+                    child: buildLocationRow(
+                        FontAwesomeIcons.globe,
+                        "Supplier Website",
+                        value.suppliers![widget.index].website),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.1),
+                    child: Divider(
+                      thickness: 1,
+                      height: height * 0.03,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.01),
+                    child: buildLocationRow(
+                        FontAwesomeIcons.locationArrow,
+                        "Supplier Location",
+                        value.suppliers![widget.index].location),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.1),
+                    child: Divider(
+                      thickness: 1,
+                      height: height * 0.03,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.01),
+                    child: buildLocationRow(
+                        FontAwesomeIcons.solidCreditCard,
+                        "Payment Option",
+                        value.suppliers![widget.index].paymentOption),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.1),
+                    child: Divider(
+                      thickness: 1,
+                      height: height * 0.03,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.01),
+                    child: Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.info,
+                          color: Color(0xFF1C8892),
+                          size: width * 0.07,
+                        ),
+                        SizedBox(width: width * 0.04),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Supplier Description",
+                              style: TextStyle(
+                                  fontSize: width * 0.04,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: height * 0.005),
+                            Container(
+                              width: width - 90, // Adjust width as needed
+                              child: Text(
+                                value.suppliers![widget.index].description,
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(fontSize: width * 0.035),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -195,25 +200,35 @@ class _SupplierInfoState extends State<SupplierInfo> {
   }
 
   Widget buildLocationRow(IconData iconData, String text1, String text2) {
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+    final height = mediaQuery.size.height;
+
     return Row(
       children: [
         Icon(
           iconData,
           color: Color(0xFF1C8892),
-          size: 28,
+          size: width * 0.07,
         ),
-        SizedBox(
-          width: 10,
-        ),
+        SizedBox(width: width * 0.04),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               text1,
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: width * 0.04, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 5),
-            Text(text2),
+            SizedBox(height: height * 0.005),
+            Container(
+              width: width * 0.65,
+              child: Text(
+                text2,
+                style: TextStyle(fontSize: width * 0.035),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         Expanded(child: Container()),

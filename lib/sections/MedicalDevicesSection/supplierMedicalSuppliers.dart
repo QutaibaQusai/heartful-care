@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:test/model/medicalDevicesSupplierModel.dart';
+import 'package:provider/provider.dart';
+import 'package:test/provider/myprovider.dart';
 import 'package:test/sections/MedicalDevicesSection/supplerDetails.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SupplierMedicalSupplier extends StatefulWidget {
@@ -17,14 +18,25 @@ class SupplierMedicalSupplier extends StatefulWidget {
 
 class _MedicalState extends State<SupplierMedicalSupplier> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MyProvider>().getSppliers();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
             "Suppliers",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: width * 0.05),
           ),
           backgroundColor: Color(0xFF1C8892),
           centerTitle: true,
@@ -35,51 +47,67 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
               color: Colors.white,
+              size: width * 0.05,
             ),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                FontAwesomeIcons.search,
+                color: Colors.white,
+                size: width * 0.05,
+              ),
+            ),
+          ],
         ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream:
-              FirebaseFirestore.instance.collection('Suppliers').snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        body: SingleChildScrollView(
+          child: displaySuppliers(),
+        ),
+      ),
+    );
+  }
 
-            List<MedicalSupplier> medicalSupplier = snapshot.data!.docs
-                .map((doc) =>
-                    MedicalSupplier.fromMap(doc.data() as Map<String, dynamic>))
-                .toList();
-
-            return ListView.builder(
-              itemCount: medicalSupplier.length,
-              itemBuilder: (context, index) {
-                var supplier = medicalSupplier[index];
-                return GestureDetector(
+  Widget displaySuppliers() {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return Consumer<MyProvider>(
+      builder: (context, value, child) {
+        if (value.isFetching) {
+          return Container(
+            height: height - 56,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF1C8892),
+              ),
+            ),
+          );
+        }
+        if (value.suppliers == null) {
+          return Container(
+            height: height - 56,
+            child: Center(child: Text("No Supplier yet")),
+          );
+        }
+        return ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: value.suppliers!.length,
+            itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         PageTransition(
                             child: SupplierDetails(
-                              name: supplier.name,
-                              phoneNumber: supplier.phoneNumber,
-                              emailAddress: supplier.emailAddress,
-                              website: supplier.website,
-                              location: supplier.location,
-                              description: supplier.description,
-                              paymentOption: supplier.paymentOption,
-                              logoImage: supplier.logoImage,
+                              index: index,
+                              supplierId: value.suppliers![index].Id,
                               userEmail: widget.userEmail,
-                              supplierCover: supplier.supplierCover,
-                              supplierId: snapshot.data!.docs[index].id,
                             ),
                             type: PageTransitionType.fade));
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 15),
+                    padding: EdgeInsets.symmetric(
+                        vertical: height * 0.01, horizontal: width * 0.04),
                     child: Container(
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
@@ -90,7 +118,7 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
                           width: 1.0,
                         ),
                       ),
-                      height: MediaQuery.of(context).size.height / 3.5,
+                      height: height * 0.3,
                       width: double.infinity,
                       child: Stack(
                         children: [
@@ -98,35 +126,47 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
                             children: [
                               Container(
                                 width: double.infinity,
-                                height: MediaQuery.of(context).size.height / 6,
+                                height: height * 0.15,
                                 child: Image.network(
-                                  supplier.supplierCover,
+                                  value.suppliers![index].supplierCover,
                                   fit: BoxFit.cover,
                                 ),
                               ),
                               SizedBox(
-                                height: 45,
+                                height: height * 0.09,
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.02),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      supplier.name.toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold),
+                                    Flexible(
+                                      child: Text(
+                                        value.suppliers![index].name
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: width * 0.045,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                     Row(
                                       children: [
                                         Icon(
                                           Icons.star,
                                           color: Colors.amber,
+                                          size: width * 0.05,
                                         ),
-                                        Text("4.7")
+                                        Text(
+                                          value
+                                              .calculateOverallRating()
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: width * 0.045),
+                                        )
                                       ],
                                     )
                                   ],
@@ -135,30 +175,32 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(width * 0.02),
                             child: Align(
                               alignment: AlignmentDirectional.topEnd,
                               child: CircleAvatar(
-                                radius: 20,
+                                radius: width * 0.06,
                                 backgroundColor: Colors.white,
                                 child: IconButton(
                                     onPressed: () {
-                                      _makePhoneCall(supplier.phoneNumber);
+                                      _makePhoneCall(
+                                          value.suppliers![index].phoneNumber);
                                     },
                                     icon: Icon(
                                       Icons.call,
                                       color: Color(0xFF1C8892),
+                                      size: width * 0.05,
                                     )),
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(width * 0.02),
                             child: Align(
                               alignment: AlignmentDirectional.centerStart,
                               child: Container(
-                                width: 100,
-                                height: 100,
+                                width: width * 0.25,
+                                height: width * 0.25,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: Colors.black,
@@ -166,7 +208,7 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
                                   ),
                                 ),
                                 child: Image.network(
-                                  supplier.logoImage,
+                                  value.suppliers![index].logoImage,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -175,13 +217,9 @@ class _MedicalState extends State<SupplierMedicalSupplier> {
                         ],
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ),
+                  ).animate().fade(),
+                ));
+      },
     );
   }
 

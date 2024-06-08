@@ -1,5 +1,6 @@
 class MedicalSupplier {
-  
+  String Id;
+
   final String name;
   final String phoneNumber;
   final String emailAddress;
@@ -12,6 +13,7 @@ class MedicalSupplier {
   final String supplierId;
 
   MedicalSupplier({
+    required this.Id,
     required this.name,
     required this.phoneNumber,
     required this.emailAddress,
@@ -24,8 +26,9 @@ class MedicalSupplier {
     required this.supplierId,
   });
 
-  factory MedicalSupplier.fromMap(Map<String, dynamic> map) {
+  factory MedicalSupplier.fromMap(String Id, Map<String, dynamic> map) {
     return MedicalSupplier(
+      Id: Id,
       name: map['supplier_Name'] ?? 'Not Found',
       phoneNumber: map['supplier_phoneNumber'] ?? 'Not Found',
       emailAddress: map['supplier_email'] ?? 'Not Found',

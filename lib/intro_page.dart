@@ -23,13 +23,13 @@ class _IntroPage extends State<IntroPage> {
   void initState() {
     _controller = PageController(initialPage: 0);
 
-    // check the saved the user data .
+    // check the saved user data.
     context.read<MyProvider>().GetUserlogin().then(
       (data) {
         print("is this empty  :${data.isEmpty} ");
 
         if (data.isNotEmpty) {
-          print("there is  data found :${data[0]} ");
+          print("there is data found :${data[0]} ");
 
           Navigator.push(
             context,
@@ -39,7 +39,7 @@ class _IntroPage extends State<IntroPage> {
                 duration: Duration(milliseconds: 500)),
           );
         } else {
-          print("there is no data saved !");
+          print("there is no data saved!");
         }
       },
     );
@@ -83,6 +83,9 @@ class _IntroPage extends State<IntroPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -102,59 +105,54 @@ class _IntroPage extends State<IntroPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                          child: Stack(
-                        children: [
-                          Image.asset(
-                            contents[i].image,
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.cover,
-                          ).animate().move(
-                                delay: 300.ms,
-                                duration: 0.5.seconds,
+                        child: Stack(
+                          children: [
+                            Image.asset(
+                              contents[i].image,
+                              width: screenWidth,
+                              height: screenHeight * 0.5,
+                              fit: BoxFit.cover,
+                            ).animate().move(
+                                  delay: 300.ms,
+                                  duration: 0.5.seconds,
+                                ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                icon: Icon(
+                                  FontAwesomeIcons.circleArrowRight,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                                onPressed: onSkipButtonPressed,
                               ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: Icon(
-                                FontAwesomeIcons.circleArrowRight,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              onPressed: onSkipButtonPressed,
                             ),
-                          )
-                        ],
-                      )),
+                          ],
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         child: Column(
                           children: [
                             Text(
                               contents[i].title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Color(0xFF1C8892),
-                                fontSize: 35,
+                                fontSize: screenWidth * 0.07,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(
                               height: 30,
                             ),
-                            Column(
-                              children: [
-                                Flexible(
-                                  flex: 0,
-                                  child: Text(
-                                    contents[i].discription,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Color.fromARGB(255, 29, 17, 17),
-                                      height: 1.8,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            Text(
+                              contents[i].discription,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 29, 17, 17),
+                                height: 1.8,
+                                fontSize: screenWidth * 0.04,
+                              ),
                             ),
                           ],
                         ),
@@ -168,7 +166,7 @@ class _IntroPage extends State<IntroPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 contents.length,
-                (index) => buildDot(index),
+                (index) => buildDot(index, screenWidth),
               ),
             ),
             Padding(
@@ -196,7 +194,7 @@ class _IntroPage extends State<IntroPage> {
                             ? "Get Started"
                             : "Next",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: screenWidth * 0.045,
                         ),
                       ),
                     ),
@@ -205,30 +203,32 @@ class _IntroPage extends State<IntroPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Already have an account?",
-                        style: TextStyle(
-                          fontSize: 16,
+                      Flexible(
+                        child: Text(
+                          "Already have an account?",
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.04,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       SizedBox(
                         width: 5,
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (ctx) {
-                            return LogInScreen();
-                          }));
-                        },
-                        child: Text(
-                          "Sign up",
-                          style: TextStyle(
+                        onTap: onSignInTextPressed,
+                        child: Flexible(
+                          child: Text(
+                            "Sign up",
+                            style: TextStyle(
                               color: const Color(0xFF1C8892),
-                              fontSize: 16,
-                              decoration: TextDecoration.underline),
+                              fontSize: screenWidth * 0.04,
+                              decoration: TextDecoration.underline,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],
@@ -240,7 +240,7 @@ class _IntroPage extends State<IntroPage> {
     );
   }
 
-  Container buildDot(int index) {
+  Container buildDot(int index, double screenWidth) {
     return Container(
       height: 9,
       width: currentIndex == index ? 15 : 10,

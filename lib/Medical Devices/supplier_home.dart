@@ -176,120 +176,121 @@ class _SuppliersHomeState extends State<SuppliersHome> {
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                         ),
-                        Consumer<MyProvider>(
-                          builder: (context, value, child) {
-                            if (value.orders == null) {
-                              return Center(
-                                  child: CircularProgressIndicator(
-                                color: Color(0xFF1C8892),
-                              ));
-                            }
-                            if (value.orders!.isEmpty) {
-                              return Center(child: Text("No Orders yet"));
-                            }
-                            return ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: value.orders!.length,
-                              itemBuilder: (context, index) {
-                                final order = value.orders![index];
-                                if (order.orderStatus != 0) {
-                                  return SizedBox.shrink();
-                                }
-                                return GestureDetector(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Container(
-                                      clipBehavior: Clip.antiAlias,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              6,
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          color: Color(0xFFD1E7E9),
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  3,
-                                              child: Center(
-                                                child: Container(
-                                                  padding: EdgeInsets.all(8),
-                                                  decoration: BoxDecoration(
-                                                      color: Color(0xFF1C8892),
-                                                      shape: BoxShape.circle),
-                                                  child: ClipOval(
-                                                    child: SizedBox.fromSize(
-                                                      size: Size.fromRadius(
-                                                          48), // Image radius
-                                                      child: order.userImage
-                                                              .isNotEmpty
-                                                          ? Image.network(
-                                                              order.userImage,
-                                                              fit: BoxFit.cover)
-                                                          : Image.network(
-                                                              "https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png",
-                                                              fit:
-                                                                  BoxFit.cover),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Flexible(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "${order.userName.toUpperCase()}",
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Text(order
-                                                      .userOrderTimeAndDate
-                                                      .toDate()
-                                                      .toString())
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      PageTransition(
-                                        child:
-                                            SupplierOrderDetails(index: index),
-                                        type: PageTransitionType.fade,
-                                      ),
-                                    );
-                                    print(order.orderStatus);
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
+
+                        // Consumer<MyProvider>(
+                        //   builder: (context, value, child) {
+                        //     if (value.orders == null) {
+                        //       return Center(
+                        //           child: CircularProgressIndicator(
+                        //         color: Color(0xFF1C8892),
+                        //       ));
+                        //     }
+                        //     if (value.orders!.isEmpty) {
+                        //       return Center(child: Text("No Orders yet"));
+                        //     }
+                        //     return ListView.builder(
+                        //       physics: NeverScrollableScrollPhysics(),
+                        //       shrinkWrap: true,
+                        //       itemCount: value.orders!.length,
+                        //       itemBuilder: (context, index) {
+                        //         final order = value.orders![index];
+                        //         if (order.orderStatus != 0) {
+                        //           return SizedBox.shrink();
+                        //         }
+                        //         return GestureDetector(
+                        //           child: Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 vertical: 8.0),
+                        //             child: Container(
+                        //               clipBehavior: Clip.antiAlias,
+                        //               height:
+                        //                   MediaQuery.of(context).size.height /
+                        //                       6,
+                        //               width: MediaQuery.of(context).size.width,
+                        //               decoration: BoxDecoration(
+                        //                   color: Color(0xFFD1E7E9),
+                        //                   borderRadius:
+                        //                       BorderRadius.circular(20)),
+                        //               child: Padding(
+                        //                 padding: const EdgeInsets.all(8.0),
+                        //                 child: Row(
+                        //                   crossAxisAlignment:
+                        //                       CrossAxisAlignment.center,
+                        //                   children: [
+                        //                     Container(
+                        //                       width: MediaQuery.of(context)
+                        //                               .size
+                        //                               .width /
+                        //                           3,
+                        //                       child: Center(
+                        //                         child: Container(
+                        //                           padding: EdgeInsets.all(8),
+                        //                           decoration: BoxDecoration(
+                        //                               color: Color(0xFF1C8892),
+                        //                               shape: BoxShape.circle),
+                        //                           child: ClipOval(
+                        //                             child: SizedBox.fromSize(
+                        //                               size: Size.fromRadius(
+                        //                                   48), // Image radius
+                        //                               child: order.userImage
+                        //                                       .isNotEmpty
+                        //                                   ? Image.network(
+                        //                                       order.userImage,
+                        //                                       fit: BoxFit.cover)
+                        //                                   : Image.network(
+                        //                                       "https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png",
+                        //                                       fit:
+                        //                                           BoxFit.cover),
+                        //                             ),
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                     SizedBox(
+                        //                       width: 5,
+                        //                     ),
+                        //                     Flexible(
+                        //                       child: Column(
+                        //                         crossAxisAlignment:
+                        //                             CrossAxisAlignment.start,
+                        //                         mainAxisAlignment:
+                        //                             MainAxisAlignment.center,
+                        //                         children: [
+                        //                           Text(
+                        //                             "${order.userName.toUpperCase()}",
+                        //                             style: TextStyle(
+                        //                                 fontSize: 18,
+                        //                                 fontWeight:
+                        //                                     FontWeight.bold),
+                        //                           ),
+                        //                           Text(order
+                        //                               .userOrderTimeAndDate
+                        //                               .toDate()
+                        //                               .toString())
+                        //                         ],
+                        //                       ),
+                        //                     )
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //           onTap: () {
+                        //             Navigator.push(
+                        //               context,
+                        //               PageTransition(
+                        //                 child:
+                        //                     SupplierOrderDetails(index: index),
+                        //                 type: PageTransitionType.fade,
+                        //               ),
+                        //             );
+                        //             print(order.orderStatus);
+                        //           },
+                        //         );
+                        //       },
+                        //     );
+                        //   },
+                        // ),
                       ],
                     ),
                   ),

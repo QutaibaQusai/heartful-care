@@ -1,39 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:test/provider/myprovider.dart';
-import 'package:test/sections/MedicalDevicesSection/ratingSupp.dart';
+import 'package:test/sections/MedicalDevicesSection/supplierRating.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierItemCart.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierDeviceDetails.dart';
 import 'package:test/sections/MedicalDevicesSection/supplierinfo.dart';
 
 class SupplierDetails extends StatefulWidget {
-  final String name;
-  final String phoneNumber;
-  final String emailAddress;
-  final String logoImage;
-  final String website;
-  final String location;
-  final String description;
-  final String paymentOption;
+  final int index;
   final String userEmail;
-  final String supplierCover;
   final String supplierId;
+
   const SupplierDetails({
     Key? key,
-    required this.name,
-    required this.phoneNumber,
-    required this.emailAddress,
-    required this.website,
-    required this.location,
-    required this.description,
-    required this.paymentOption,
-    required this.logoImage,
-    required this.userEmail,
-    required this.supplierCover,
+    required this.index,
     required this.supplierId,
+    required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -43,24 +29,30 @@ class SupplierDetails extends StatefulWidget {
 class _SupplierDetailsState extends State<SupplierDetails> {
   @override
   void initState() {
-    context.read<MyProvider>().getItems(supplier_id: widget.supplierId);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<MyProvider>();
+      provider.getItems(supplier_id: widget.supplierId);
+      provider.getUserSpplierReview(supplier_id: widget.supplierId);
+    });
   }
 
   double overallRating = 0.0;
-  List<bool> onClick = [true, false, false];
-
   @override
   Widget build(BuildContext context) {
-   
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text(
-            widget.name,
-            style: TextStyle(color: Colors.white),
+          title: Consumer<MyProvider>(
+            builder: (context, value, child) => Text(
+              value.suppliers![widget.index].name,
+              style: TextStyle(color: Colors.white, fontSize: width * 0.05),
+            ),
           ),
           centerTitle: true,
           backgroundColor: Color(0xFF1C8892),
@@ -75,72 +67,73 @@ class _SupplierDetailsState extends State<SupplierDetails> {
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
               color: Colors.white,
+              size: width * 0.05,
             ),
           ),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 3.3,
-                child: Stack(
-                  children: [
-                    Image.network(
-                      widget.supplierCover,
-                      fit: BoxFit.cover,
-                      height: MediaQuery.of(context).size.height / 5,
-                      width: double.infinity,
-                    ),
-                    Align(
-                      alignment: AlignmentDirectional.bottomCenter,
-                      child: Container(
-                        clipBehavior: Clip.antiAlias,
-                        width: MediaQuery.of(context).size.width / 1.2,
-                        height: MediaQuery.of(context).size.height / 4.3,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(13),
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 1.0,
+              Consumer<MyProvider>(
+                builder: (context, value, child) => Container(
+                  width: double.infinity,
+                  height: height / 3.3,
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        value.suppliers![widget.index].supplierCover,
+                        fit: BoxFit.cover,
+                        height: height / 5,
+                        width: double.infinity,
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional.bottomCenter,
+                        child: Container(
+                          clipBehavior: Clip.antiAlias,
+                          width: width / 1.2,
+                          height: height / 4.3,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(13),
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 1.0,
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: MediaQuery.of(context).size.height / 10,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width:
-                                          MediaQuery.of(context).size.width / 5,
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(13),
-                                        border: Border.all(
-                                          color: Colors.black,
-                                          width: 1.0,
+                          child: Padding(
+                            padding: EdgeInsets.all(width * 0.02),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: height / 10,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: width / 5,
+                                        height: height / 10,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                          border: Border.all(
+                                            color: Colors.black,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                          child: Image.network(
+                                            value.suppliers![widget.index]
+                                                .logoImage,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(13),
-                                        child: Image.network(
-                                          widget.logoImage,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: Container(
+                                      SizedBox(width: width * 0.02),
+                                      Expanded(
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -148,9 +141,10 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              widget.name,
+                                              value.suppliers![widget.index]
+                                                  .name,
                                               style: TextStyle(
-                                                  fontSize: 18,
+                                                  fontSize: width * 0.045,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Row(
@@ -158,26 +152,41 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                                 Icon(
                                                   Icons.star,
                                                   color: Colors.amber,
-                                                  size: 16,
+                                                  size: width * 0.04,
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                RatingSupplier(
-                                                                  userEmail: widget
-                                                                      .userEmail,
-                                                                  supplierId: widget
-                                                                      .supplierId,
-                                                                  onOverallRatingChanged:
-                                                                      (newOverallRating) {},
-                                                                )));
+                                                    Navigator.push(
+                                                        context,
+                                                        PageTransition(
+                                                            child:
+                                                                SupplierRating(
+                                                              userEmail: widget
+                                                                  .userEmail,
+                                                              supplierId: widget
+                                                                  .supplierId,
+                                                            ),
+                                                            type:
+                                                                PageTransitionType
+                                                                    .fade));
                                                   },
-                                                  child: Text(
-                                                    "(Reviews)",
-                                                    style: TextStyle(
-                                                        color: Colors.grey),
+                                                  child: Consumer<MyProvider>(
+                                                    builder: (context, value,
+                                                        child) {
+                                                      if (value
+                                                              .supplierReview ==
+                                                          null) {
+                                                        return SizedBox();
+                                                      }
+                                                      return Text(
+                                                        "(${value.supplierReview!.length.toString()} Ratings)",
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          fontSize:
+                                                              width * 0.035,
+                                                        ),
+                                                      );
+                                                    },
                                                   ),
                                                 )
                                               ],
@@ -185,152 +194,155 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                           ],
                                         ),
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                16,
-                                        child: Align(
-                                          alignment:
-                                              AlignmentDirectional.topEnd,
-                                          child: Container(
-                                            padding: EdgeInsets.all(4),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              color: Colors.transparent,
-                                              border: Border.all(width: 0),
+                                      GestureDetector(
+                                        child: Container(
+                                          width: width / 16,
+                                          child: Align(
+                                            alignment:
+                                                AlignmentDirectional.topEnd,
+                                            child: Container(
+                                              padding:
+                                                  EdgeInsets.all(width * 0.01),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                color: Colors.transparent,
+                                                border: Border.all(width: 0),
+                                              ),
+                                              child: Icon(
+                                                FontAwesomeIcons.info,
+                                                size: width * 0.03,
+                                                color: Colors.grey,
+                                              ),
                                             ),
-                                            child: Icon(
-                                              FontAwesomeIcons.info,
-                                              size: 12,
-                                              color: Colors.grey,
-                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                  child: SupplierInfo(
+                                                      index: widget.index),
+                                                  type:
+                                                      PageTransitionType.fade));
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: height / 10,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              _makePhoneCall(value
+                                                  .suppliers![widget.index]
+                                                  .phoneNumber);
+                                            },
+                                            icon: Icon(Icons.call,
+                                                color: Color(0xFF1C8892),
+                                                size: width * 0.07),
+                                          ),
+                                          Text(
+                                            'Call',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: width * 0.04),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                          left: BorderSide(
+                                            color: Colors.grey,
+                                            width: 1.0,
+                                          ),
+                                          right: BorderSide(
+                                            color: Colors.grey,
+                                            width: 1.0,
+                                          ),
+                                        )),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: width * 0.04),
+                                          child: Column(
+                                            children: [
+                                              IconButton(
+                                                onPressed: () {
+                                                  _launchWebsite(
+                                                      website: value
+                                                          .suppliers![
+                                                              widget.index]
+                                                          .website);
+                                                },
+                                                icon: Icon(Icons.link,
+                                                    color: Color(0xFF1C8892),
+                                                    size: width * 0.07),
+                                              ),
+                                              Text(
+                                                'Website',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: width * 0.04),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) => SupplierInfo(
-                                              supplierName: widget.name,
-                                              supplierPhoneNumber:
-                                                  widget.phoneNumber,
-                                              supplierEmailAddress:
-                                                  widget.emailAddress,
-                                              supplierWebsite: widget.website,
-                                              supplierLocation: widget.location,
-                                              supplierDescription:
-                                                  widget.description,
-                                              paymentOption:
-                                                  widget.paymentOption,
-                                              logoImage: widget.logoImage,
-                                            ),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              _sendEmail(
+                                                  emailAddress: value
+                                                      .suppliers![widget.index]
+                                                      .emailAddress);
+                                            },
+                                            icon: Icon(Icons.email,
+                                                color: Color(0xFF1C8892),
+                                                size: width * 0.07),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: MediaQuery.of(context).size.height / 10,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            _makePhoneCall(widget.phoneNumber);
-                                          },
-                                          icon: Icon(Icons.call,
-                                              color: Color(0xFF1C8892)),
-                                        ),
-                                        Text(
-                                          'Call',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                        left: BorderSide(
-                                          color: Colors.grey,
-                                          width: 1.0,
-                                        ),
-                                        right: BorderSide(
-                                          color: Colors.grey,
-                                          width: 1.0,
-                                        ),
-                                      )),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15),
-                                        child: Column(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                _launchWebsite();
-                                              },
-                                              icon: Icon(Icons.link,
-                                                  color: Color(0xFF1C8892)),
-                                            ),
-                                            Text(
-                                              'Website',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
+                                          Text(
+                                            'Email',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: width * 0.04),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            _sendEmail();
-                                          },
-                                          icon: Icon(Icons.email,
-                                              color: Color(0xFF1C8892)),
-                                        ),
-                                        Text(
-                                          'Email',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: height * 0.02,
               ),
-
-              // Display items .
               DisplayItems(),
             ],
           ),
         ),
         floatingActionButton: CircleAvatar(
-          radius: 25,
+          radius: width * 0.08,
           backgroundColor: Color(0xFF1C8892),
           child: IconButton(
             icon: Icon(
               FontAwesomeIcons.cartShopping,
-              size: 20,
+              size: width * 0.05,
               color: Colors.white,
             ),
             onPressed: () {
@@ -338,7 +350,8 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                   context,
                   PageTransition(
                     child: SupplierItemCart(
-                      userEmail: widget.userEmail, supplierId: widget.supplierId,
+                      userEmail: widget.userEmail,
+                      supplierId: widget.supplierId,
                     ),
                     type: PageTransitionType.bottomToTop,
                   ));
@@ -352,122 +365,146 @@ class _SupplierDetailsState extends State<SupplierDetails> {
   Widget DisplayItems() {
     double mainw = MediaQuery.of(context).size.width;
     double mainh = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Consumer<MyProvider>(
-      builder: (context, value, child) => value.items != null &&
-              value.items!.isNotEmpty
-          ? ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: value.items!.length,
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  //
-                  Navigator.push(
-                      context,
-                      PageTransition(
-                          child: SupplierDeviceDetails(
-                            index: index,
-                            userEmail: widget.userEmail,
-                            supplierName: widget.name, supplierId: widget.supplierId,
-                          ),
-                          type: PageTransitionType.fade));
-                  //
-                },
-                child: UnconstrainedBox(
-                  child: Container(
-                    margin: EdgeInsets.only(top: mainh * .005),
-                    width: mainw * .95,
-                    height: mainh * .2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height / 6,
-                          child: Row(
-                            children: [
-                              Container(
-                                height: double.infinity,
-                                width: MediaQuery.of(context).size.width / 3,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(13),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(13),
-                                  child: Image.network(
-                                    value.items![index].deviceImages[1],
-                                    width: double.infinity,
+      builder: (context, value, child) {
+        if (value.isFetching) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Color(0xFF1C8892),
+            ),
+          );
+        }
+        return value.items != null && value.items!.isNotEmpty
+            ? ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: value.items!.length,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            child: SupplierDeviceDetails(
+                              index: index,
+                              userEmail: widget.userEmail,
+                              supplierId: widget.supplierId,
+                              supplierName: value.suppliers![widget.index].name,
+                            ),
+                            type: PageTransitionType.fade));
+                  },
+                  child: UnconstrainedBox(
+                    child: Container(
+                      margin: EdgeInsets.only(top: mainh * .005),
+                      width: mainw * .95,
+                      height: mainh * .2,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) => Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: mainh / 6,
+                              child: Row(
+                                children: [
+                                  Container(
                                     height: double.infinity,
-                                    fit: BoxFit.cover,
+                                    width: mainw / 3,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(13),
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(13),
+                                      child: Image.network(
+                                        value.items![index].deviceImages[1],
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: double.infinity,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        value.items![index].deviceName
-                                            .toUpperCase(),
-                                        style: TextStyle(
-                                          fontSize: 19,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        value.items![index].deviceDescription,
-                                        overflow: TextOverflow.clip,
-                                        maxLines: 3,
-                                      ),
-                                      Expanded(child: Container()),
-                                      value.items![index].deviceBuyPrice !=
-                                                  null &&
-                                              value.items![index].deviceBuyPrice
+                                  SizedBox(
+                                    width: mainw * 0.04,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      height: double.infinity,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            value.items![index].deviceName
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                              fontSize: width * 0.045,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: mainh * 0.01,
+                                          ),
+                                          Text(
+                                            value.items![index]
+                                                .deviceDescription,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                              fontSize: width * 0.035,
+                                            ),
+                                          ),
+                                          Expanded(child: Container()),
+                                          value.items![index].deviceBuyPrice
                                                   .isNotEmpty
-                                          ? Text(
-                                              "Device Price: ${value.items![index].deviceBuyPrice}JD")
-                                          : Text(
-                                              "Rent per week: ${value.items![index].deviceRentPrice}JD")
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+                                              ? Text(
+                                                  "Device Price: ${value.items![index].deviceBuyPrice}JD",
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.04,
+                                                  ),
+                                                )
+                                              : Text(
+                                                  "Rent per week: ${value.items![index].deviceRentPrice}JD",
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.04,
+                                                  ),
+                                                )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            )
-          : value.items == null
-              ? Container(
-                  width: mainw,
-                  height: mainh * 10 / 100,
-                  alignment: Alignment.center,
-                  child: CircularProgressIndicator(),
-                )
-              : Container(
-                  width: mainw,
-                  height: mainh * 10 / 100,
-                  alignment: Alignment.center,
-                  child: Text("No Devices added yet"),
-                ),
+                ).animate().fade(),
+              )
+            : value.items == null
+                ? Container(
+                    width: mainw,
+                    height: mainh * 0.1,
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    width: mainw,
+                    height: mainh * 0.1,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "No Devices added yet",
+                      style: TextStyle(fontSize: width * 0.04),
+                    ),
+                  );
+      },
     );
   }
 
@@ -484,10 +521,10 @@ class _SupplierDetailsState extends State<SupplierDetails> {
     }
   }
 
-  void _sendEmail() async {
+  void _sendEmail({required String emailAddress}) async {
     final Uri _emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: widget.emailAddress,
+      path: emailAddress,
       queryParameters: {
         'subject': 'Subject Here',
         'body': 'Body Here',
@@ -503,8 +540,8 @@ class _SupplierDetailsState extends State<SupplierDetails> {
     }
   }
 
-  void _launchWebsite() async {
-    final String url = widget.website;
+  void _launchWebsite({required String website}) async {
+    final String url = website;
 
     if (url.isNotEmpty) {
       if (await canLaunch(url)) {

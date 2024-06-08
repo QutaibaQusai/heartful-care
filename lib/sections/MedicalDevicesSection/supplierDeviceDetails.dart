@@ -34,8 +34,10 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
 
   @override
   Widget build(BuildContext context) {
-    double mainw = MediaQuery.of(context).size.width;
-    double mainh = MediaQuery.of(context).size.height;
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+    final height = mediaQuery.size.height;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey[100],
@@ -47,6 +49,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
               color: Colors.white,
+              size: width * 0.05,
             ),
           ),
           backgroundColor: Color(0xFF1C8892),
@@ -54,6 +57,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
             "Device details",
             style: TextStyle(
               color: Colors.white,
+              fontSize: width * 0.045,
             ),
           ),
           centerTitle: true,
@@ -78,10 +82,12 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                         icon: Icon(
                           FontAwesomeIcons.cartShopping,
                           color: Colors.white,
+                          size: width * 0.05,
                         ),
                       ),
                       badgeContent: Text(value.cart.length.toString(),
-                          style: TextStyle(color: Colors.white)),
+                          style: TextStyle(
+                              color: Colors.white, fontSize: width * 0.035)),
                     )
                   : SizedBox(),
             ),
@@ -99,7 +105,8 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                 icon: Icon(
                   FontAwesomeIcons.list,
                   color: Colors.white,
-                ))
+                  size: width * 0.05,
+                )),
           ],
         ),
         body: SingleChildScrollView(
@@ -108,14 +115,14 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
               List<Widget> carouselItems = [
                 Image.network(
                   value.items![widget.index].deviceImages[0],
-                  width: 400,
+                  width: width * 0.8,
                 ),
                 Image.network(value.items![widget.index].deviceImages[1]),
                 Image.network(value.items![widget.index].deviceImages[2]),
               ];
 
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(width * 0.02),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -129,7 +136,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                             child: CarouselSlider(
                               items: carouselItems,
                               options: CarouselOptions(
-                                height: mainh * .50,
+                                height: height * 0.5,
                                 autoPlay: true,
                                 enlargeCenterPage: true,
                                 enableInfiniteScroll: true,
@@ -145,10 +152,12 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
+                                        padding: EdgeInsets.all(width * 0.02),
                                         child: Text(
                                           "Available",
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: width * 0.035),
                                         ),
                                       )),
                                 )
@@ -160,21 +169,23 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
+                                        padding: EdgeInsets.all(width * 0.02),
                                         child: Text(
                                           "Not Available",
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: width * 0.035),
                                         ),
                                       )),
                                 )
                         ],
                       ),
                     ),
-                    SizedBox(height: mainh * .02),
+                    SizedBox(height: height * 0.02),
                     Container(
                       color: Colors.white,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(width * 0.02),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -189,19 +200,21 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                       value.items![widget.index].deviceName
                                           .toUpperCase(),
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: width * 0.04,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 2.0,
                                       ),
                                     ),
-                                    SizedBox(height: mainh * .005),
+                                    SizedBox(height: height * 0.005),
                                     Text(
                                       "by ${widget.supplierName}",
-                                      style: TextStyle(color: Colors.grey[800]),
+                                      style: TextStyle(
+                                          color: Colors.grey[800],
+                                          fontSize: width * 0.035),
                                     )
                                   ],
                                 ),
-                                SizedBox(width: 15),
+                                SizedBox(width: width * 0.04),
                                 value.items![widget.index].deviceBuyPrice !=
                                             null &&
                                         value.items![widget.index]
@@ -213,7 +226,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               letterSpacing: 3,
-                                              fontSize: 16,
+                                              fontSize: width * 0.04,
                                               color: Color(0xFF1C8892)),
                                         ),
                                       )
@@ -224,33 +237,36 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 0,
-                                            fontSize: 14,
+                                            fontSize: width * 0.04,
                                             color: Color(0xFF1C8892),
                                           ),
                                         ),
                                       ),
                               ],
                             ),
-                            SizedBox(height: mainh * 0.04),
+                            SizedBox(height: height * 0.04),
                             Text("Description",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: 1,
-                                    fontSize: 16)),
-                            SizedBox(height: mainh * .005),
-                            Text(value.items![widget.index].deviceDescription),
+                                    fontSize: width * 0.045)),
+                            SizedBox(height: height * 0.005),
+                            Text(
+                              value.items![widget.index].deviceDescription,
+                              style: TextStyle(fontSize: width * 0.04),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    SizedBox(height: mainh * 0.02),
+                    SizedBox(height: height * 0.02),
                     value.items![widget.index].deviceRentPrice != null &&
                             value
                                 .items![widget.index].deviceRentPrice.isNotEmpty
                         ? Container(
                             color: Colors.white,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(width * 0.02),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -261,7 +277,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                       Text(
                                         "Price Details:",
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: width * 0.045,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -272,22 +288,25 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                               BorderRadius.circular(15),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(6.0),
+                                          padding: EdgeInsets.all(width * 0.02),
                                           child: Text(
                                             "Required",
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 10),
+                                                fontSize: width * 0.03),
                                           ),
                                         ),
                                       ).animate().move()
                                     ],
                                   ),
-                                  SizedBox(height: mainh * .005),
+                                  SizedBox(height: height * 0.005),
                                   Row(
                                     children: [
                                       Text(
-                                          "Rent ${value.items![widget.index].deviceRentPrice} per week"),
+                                        "Rent ${value.items![widget.index].deviceRentPrice} per week",
+                                        style:
+                                            TextStyle(fontSize: width * 0.04),
+                                      ),
                                       Spacer(flex: 5),
                                       DropdownButton<int>(
                                         value: weeks,
@@ -301,7 +320,10 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                                           (index) => DropdownMenuItem<int>(
                                             value: index + 1,
                                             child: Text(
-                                                '${index + 1} week${index + 1 > 1 ? 's' : ''}'),
+                                              '${index + 1} week${index + 1 > 1 ? 's' : ''}',
+                                              style: TextStyle(
+                                                  fontSize: width * 0.04),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -314,12 +336,12 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                         : SizedBox(),
                   ],
                 ),
-              );
+              ).animate().fade();
             },
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(width * 0.04),
           child: Consumer<MyProvider>(
             builder: (context, value, child) => ElevatedButton(
               style: ButtonStyle(
@@ -340,7 +362,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                       content: Text(
                         "Log in first",
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: width * 0.04,
                           fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
@@ -356,7 +378,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                         content: Text(
                           "${value.items![widget.index].deviceName} Not Available",
                           style: TextStyle(
-                            fontSize: 17,
+                            fontSize: width * 0.04,
                             fontFamily: GoogleFonts.poppins().fontFamily,
                           ),
                         ),
@@ -364,11 +386,9 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                     );
                   } else {
                     // add item to cart
-                    //
                     context
                         .read<MyProvider>()
                         .additem(item: value.items![widget.index]);
-                    //
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Color(0xFF1C8892),
@@ -377,7 +397,7 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                         content: Text(
                           "${value.items![widget.index].deviceName} added to cart ",
                           style: TextStyle(
-                            fontSize: 17,
+                            fontSize: width * 0.04,
                             fontFamily: GoogleFonts.poppins().fontFamily,
                           ),
                         ),
@@ -392,13 +412,14 @@ class _SupplierDeviceDetailsState extends State<SupplierDeviceDetails> {
                   Text(
                     "Add to Cart",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: width * 0.045,
                       color: Colors.white,
                     ),
                   ),
                   Icon(
                     FontAwesomeIcons.cartShopping,
                     color: Colors.white,
+                    size: width * 0.045,
                   ),
                 ],
               ),

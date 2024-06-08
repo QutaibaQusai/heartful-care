@@ -15,7 +15,7 @@ class SignUpSupplier extends StatefulWidget {
 }
 
 class _SignUpSupplierState extends State<SignUpSupplier> {
-  TextEditingController supplierName = TextEditingController();
+  TextEditingController supplierAdmainName = TextEditingController();
   TextEditingController supplierEmail = TextEditingController();
   TextEditingController supplierPassword = TextEditingController();
   bool showHidePassword = true;
@@ -59,7 +59,7 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: TextField(
-                    controller: supplierName,
+                    controller: supplierAdmainName,
                     cursorColor: Color(0xFF1C8892),
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
@@ -202,26 +202,17 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
                                     .instance
                                     .collection('Suppliers');
                                 await centers.doc(newUser.uid).set({
-                                  'Admin': supplierName.text,
+                                  'Admin': supplierAdmainName.text,
                                   'Email': supplierEmail.text,
                                   // You can add other fields here as necessary
                                 });
-
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SuppliersHome(
-                                      supplierEmail: supplierEmail.text,
-                                    ),
-                                  ),
-                                );
 
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     backgroundColor: Color(0xFF1C8892),
                                     behavior: SnackBarBehavior.floating,
                                     content: Text(
-                                      "Logged In Successfully",
+                                      "Signed Up Successfully",
                                       style: TextStyle(
                                         fontSize: 17,
                                         fontFamily:
@@ -231,7 +222,17 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
                                     duration: Duration(seconds: 2),
                                   ),
                                 );
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SuppliersHome(
+                                      supplierEmail: supplierEmail.text,
+                                    ),
+                                  ),
+                                );
                               }
+                              // await _showWelcomeDialog(context);
                             } catch (e) {
                               print("Error: $e");
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -287,6 +288,49 @@ class _SignUpSupplierState extends State<SignUpSupplier> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showWelcomeDialog(BuildContext context) async {
+    final TextEditingController phoneController = TextEditingController();
+    final TextEditingController addressController = TextEditingController();
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Welcome'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: phoneController,
+                decoration: InputDecoration(labelText: 'Phone Number'),
+              ),
+              TextField(
+                controller: addressController,
+                decoration: InputDecoration(labelText: 'Address'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Save'),
+              onPressed: () async {
+                // // Save additional information to Firestore
+                // await FirebaseFirestore.instance
+                //     .collection('Suppliers')
+                //     .doc(userId)
+                //     .update({
+                //   'Phone': phoneController.text,
+                //   'Address': addressController.text,
+                // });
+                // Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

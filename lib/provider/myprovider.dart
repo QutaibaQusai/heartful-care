@@ -2,61 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/model/devicesModel.dart';
+import 'package:test/model/medicalDevicesSupplierModel.dart';
+import 'package:test/model/reviewsSuppliersModel.dart';
 import 'package:test/model/userCenterSubscription.dart';
 import 'package:test/model/userInfo.dart';
 import 'package:test/model/usersOrderRequest.dart';
 
 class MyProvider with ChangeNotifier {
-  // items for specific one .
-  List<Devices>? items;
+  bool _isFetching = false;
+  bool get isFetching => _isFetching;
 
-  List<Devices> cart = [];
-
+////////////////////////////////////////////////////
   // saved credentials
   String? saved_email;
   String? saved_password;
 
-  // get items function .
-  Future getItems({required String supplier_id}) async {
-    if (items != null) {
-      items!.clear();
-      notifyListeners();
-    }
-    //  get data .
-    items = await FirebaseFirestore.instance
-        .collection("Devices")
-        .where("supplierId", isEqualTo: supplier_id)
-        .get()
-        .then((value) =>
-            value.docs.map((e) => Devices.fromMap(e.id, e.data())).toList());
-
-    print("data length is : ${items != null ? items!.length : "List is null"}");
-    notifyListeners();
-  }
-
-  void additem({required Devices item}) {
-    cart.add(item);
-    print("the cart has ${cart.length}");
-
-    notifyListeners();
-  }
-
-  void deleteitem({required int index}) {
-    cart.removeAt(index);
-    notifyListeners();
-  }
-
-  Future<void> saveCartItems(String orderId) async {
-    for (var item in cart) {
-      await FirebaseFirestore.instance
-          .collection('Device_order')
-          .doc(orderId)
-          .collection('CartItems')
-          .add(item.toMap());
-    }
-  }
-
-////////////////////////////////////////////////////
   // save data .
   Future SaveUserlogin(
       {required String email, required String password}) async {
@@ -174,7 +134,7 @@ class MyProvider with ChangeNotifier {
 
   // Orders list
   List<DeviceRequest>? orders;
-    // CartItems list for an order
+  // CartItems list for an order
   List<Devices>? cartItems;
 
   Future getOrder({required String supplier_id}) async {
@@ -187,7 +147,8 @@ class MyProvider with ChangeNotifier {
             .toList());
     notifyListeners();
   }
-    // Get CartItems for a specific order
+
+  // Get CartItems for a specific order
   Future<void> getCartItems(String orderId) async {
     cartItems = await FirebaseFirestore.instance
         .collection('Device_order')
@@ -199,13 +160,14 @@ class MyProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
   // Update order status
   Future<void> updateOrderStatus(String orderId, int status) async {
     await FirebaseFirestore.instance
         .collection('Device_order')
         .doc(orderId)
         .update({'orderStatus': status});
-    
+
     // Update the local order list
     orders = orders?.map((order) {
       if (order.id == orderId) {
@@ -223,8 +185,120 @@ class MyProvider with ChangeNotifier {
       }
       return order;
     }).toList();
-    
+
     notifyListeners();
   }
 
+  List<MedicalSupplier>? suppliers;
+
+  Future<void> getSppliers() async {
+    try {
+      _isFetching = true;
+      notifyListeners();
+
+      suppliers = await FirebaseFirestore.instance
+          .collection("Suppliers")
+          .get()
+          .then((value) => value.docs
+              .map((e) => MedicalSupplier.fromMap(e.id, e.data()))
+              .toList());
+
+      _isFetching = false;
+      notifyListeners();
+      print(
+          "suppliers length is : ${suppliers != null ? suppliers!.length : "List is null"}");
+    } catch (error) {
+      _isFetching = false;
+      notifyListeners();
+      print('Error fetching suppliers: $error');
+    }
+  }
+
+  ////////////////////////////////////////////////////
+  List<Reviews_Supplier>? supplierReview;
+
+  // get supplier Review function.
+  Future<void> getUserSpplierReview({required String supplier_id}) async {
+    try {
+      _isFetching = true;
+      notifyListeners();
+
+      supplierReview = await FirebaseFirestore.instance
+          .collection("Reviews_suppliers")
+          .where("supplierId", isEqualTo: supplier_id)
+          .get()
+          .then((value) => value.docs
+              .map((e) => Reviews_Supplier.fromMap(e.id, e.data()))
+              .toList());
+
+      _isFetching = false;
+      notifyListeners();
+      print(
+          "data length is : ${supplierReview != null ? supplierReview!.length : "List is null"}");
+    } catch (error) {
+      _isFetching = false;
+      notifyListeners();
+      print('Error fetching supplier reviews: $error');
+    }
+  }
+
+  double calculateOverallRating() {
+    if (supplierReview == null || supplierReview!.isEmpty) {
+      return 0.0;
+    }
+
+    double totalRating = 0.0;
+    for (var review in supplierReview!) {
+      totalRating += review.rating;
+      notifyListeners();
+    }
+
+    return totalRating / supplierReview!.length;
+  }
+
+  ////////////////////////////////////////////////////
+  // items for specific one .
+  List<Devices>? items;
+
+  List<Devices> cart = [];
+
+  // get items function .
+  Future getItems({required String supplier_id}) async {
+    if (items != null) {
+      items!.clear();
+      notifyListeners();
+    }
+    _isFetching = true;
+    notifyListeners();
+    //  get data .
+    items = await FirebaseFirestore.instance
+        .collection("Devices")
+        .where("supplierId", isEqualTo: supplier_id)
+        .get()
+        .then((value) =>
+            value.docs.map((e) => Devices.fromMap(e.id, e.data())).toList());
+    _isFetching = false;
+    notifyListeners();
+  }
+
+  void additem({required Devices item}) {
+    cart.add(item);
+
+    notifyListeners();
+  }
+
+  void deleteitem({required int index}) {
+    cart.removeAt(index);
+    notifyListeners();
+  }
+
+  Future<void> saveCartItems(String orderId) async {
+    for (var item in cart) {
+      await FirebaseFirestore.instance
+          .collection('Device_order')
+          .doc(orderId)
+          .collection('CartItems')
+          .add(item.toMap());
+    }
+  }
 }

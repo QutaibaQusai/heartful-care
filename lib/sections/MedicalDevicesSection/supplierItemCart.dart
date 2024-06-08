@@ -28,147 +28,153 @@ class _ItemCart extends State<SupplierItemCart> {
 
   @override
   Widget build(BuildContext context) {
-    double mainw = MediaQuery.of(context).size.width;
-    double mainh = MediaQuery.of(context).size.height;
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+    final height = mediaQuery.size.height;
+
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.supplierId,
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(0xFF1C8892),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icon(
-            FontAwesomeIcons.chevronLeft,
-            color: Colors.white,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Cart",
+            style: TextStyle(color: Colors.white, fontSize: width * 0.05),
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xFF1C8892),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              FontAwesomeIcons.chevronLeft,
+              color: Colors.white,
+              size: width * 0.05,
+            ),
           ),
         ),
-      ),
-      backgroundColor: Colors.grey[100],
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //
-
-            displayItems(),
-
-            //
-            SizedBox(
-              height: mainh * 1.5 / 100,
-            )
-          ],
+        backgroundColor: Colors.grey[100],
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              displayItems(),
+              SizedBox(height: height * 0.015),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar:
-          Consumer<MyProvider>(builder: (context, value, child) {
-        double totalBuyPrice = 0.0;
-        double totalRent = 0.0;
-        for (var item in value.cart) {
-          totalBuyPrice += double.tryParse(item.deviceBuyPrice) ?? 0.0;
-          totalRent += double.tryParse(item.deviceRentPrice) ?? 0.0;
-        }
-        int weeksForRent = widget.weekForRent ?? 1;
+        bottomNavigationBar: Consumer<MyProvider>(
+          builder: (context, value, child) {
+            double totalBuyPrice = 0.0;
+            double totalRent = 0.0;
+            for (var item in value.cart) {
+              totalBuyPrice += double.tryParse(item.deviceBuyPrice) ?? 0.0;
+              totalRent += double.tryParse(item.deviceRentPrice) ?? 0.0;
+            }
+            int weeksForRent = widget.weekForRent ?? 1;
 
-        double total = (totalBuyPrice + totalRent) * weeksForRent;
-        return value.cart.isNotEmpty
-            ? Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 20,
-                ),
-                // height: 174,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(0, -15),
-                      blurRadius: 20,
-                      color: const Color(0xFFDADADA).withOpacity(0.15),
-                    )
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text.rich(
-                            TextSpan(
-                              text: "Total:\n",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                              children: [
-                                TextSpan(
-                                  text: "${total.toString()} JD",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF1C8892),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: SupplierCheckout(
-                                        userEmail: widget.userEmail, supplierId: widget.supplierId,
-                                      ),
-                                      type: PageTransitionType.fade));
-                            },
-                            child: const Text(
-                              "Check Out",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
+            double total = (totalBuyPrice + totalRent) * weeksForRent;
+            return value.cart.isNotEmpty
+                ? Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: height * 0.02,
+                      horizontal: width * 0.05,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: const Offset(0, -15),
+                          blurRadius: 20,
+                          color: const Color(0xFFDADADA).withOpacity(0.15),
                         ),
                       ],
                     ),
-                  ],
-                ))
-            : Container(
-                width: 0,
-                height: 0,
-              );
-      }),
-    ));
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text.rich(
+                                TextSpan(
+                                  text: "Total:\n",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: width * 0.045),
+                                  children: [
+                                    TextSpan(
+                                      text: "${total.toString()} JD",
+                                      style: TextStyle(
+                                          fontSize: width * 0.04,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF1C8892),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      child: SupplierCheckout(
+                                        userEmail: widget.userEmail,
+                                        supplierId: widget.supplierId,
+                                      ),
+                                      type: PageTransitionType.fade,
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Check Out",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: width * 0.04),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(
+                    width: 0,
+                    height: 0,
+                  );
+          },
+        ),
+      ),
+    );
   }
 
   Widget displayItems() {
-    double mainw = MediaQuery.of(context).size.width;
-    double mainh = MediaQuery.of(context).size.height;
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+    final height = mediaQuery.size.height;
+
     return Consumer<MyProvider>(
       builder: (context, value, child) => value.cart != null &&
               value.cart.isNotEmpty
-          //
-          //if the list of cart is not empty
           ? ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: value.cart.length,
               itemBuilder: (context, index) => UnconstrainedBox(
                 child: Container(
-                  margin: EdgeInsets.only(top: mainh * .015),
-                  width: mainw * .95,
-                  height: mainh * .13,
+                  margin: EdgeInsets.only(top: height * 0.015),
+                  width: width * 0.95,
+                  height: height * 0.13,
                   alignment: Alignment.center,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -176,7 +182,7 @@ class _ItemCart extends State<SupplierItemCart> {
                       Row(
                         children: [
                           Container(
-                            width: mainh * .18,
+                            width: height * 0.18,
                             height: double.infinity,
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -184,19 +190,17 @@ class _ItemCart extends State<SupplierItemCart> {
                             ),
                             child: Center(
                               child: Container(
-                                height: 80,
-                                width: 80,
+                                height: width * 0.2,
+                                width: width * 0.2,
                                 child: Image.network(
                                   value.cart[index].deviceImages[1],
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
+                          SizedBox(width: width * 0.03),
                           Container(
-                            width: mainw * .40,
+                            width: width * 0.40,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,29 +210,29 @@ class _ItemCart extends State<SupplierItemCart> {
                                     value.cart[index].deviceName.toUpperCase(),
                                     maxLines: 2,
                                     style: TextStyle(
-                                        fontSize: 15,
+                                        fontSize: width * 0.04,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 Text(
                                   value.cart[index].deviceDescription,
                                   maxLines: 2,
+                                  style: TextStyle(fontSize: width * 0.035),
                                 ),
-                                // Spacer(),
-
-                                // // TODO
                                 value.cart[index].deviceBuyPrice != null &&
                                         value.cart[index].deviceBuyPrice
                                             .isNotEmpty
                                     ? Text(
                                         "${value.cart[index].deviceBuyPrice} JOD",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: width * 0.03),
                                       )
                                     : Text(
                                         "${value.cart[index].deviceRentPrice} JOD for ${widget.weekForRent} Week",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: width * 0.03),
                                       )
                               ],
                             ),
@@ -236,35 +240,33 @@ class _ItemCart extends State<SupplierItemCart> {
                         ],
                       ),
                       CircleAvatar(
-                        // backgroundColor: Colors.red,
+                        radius: width * 0.05,
                         child: IconButton(
-                            onPressed: () {
-                              // delete item
-                              context
-                                  .read<MyProvider>()
-                                  .deleteitem(index: index);
-                            },
-                            icon: Icon(FontAwesomeIcons.trashCan,
-                                color: Colors.red, size: 15)),
-                      )
+                          onPressed: () {
+                            context.read<MyProvider>().deleteitem(index: index);
+                          },
+                          icon: Icon(
+                            FontAwesomeIcons.trashCan,
+                            color: Colors.red,
+                            size: width * 0.05,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             )
-          //
-
-          //if list of cart is empty
           : Container(
               alignment: Alignment.center,
-              width: mainw,
-              height: mainh,
+              width: width,
+              height: height,
               child: Text(
-                "No Items found !",
+                "No Items found!",
                 textAlign: TextAlign.center,
+                style: TextStyle(fontSize: width * 0.05),
               ),
             ),
-      //
     );
   }
 }

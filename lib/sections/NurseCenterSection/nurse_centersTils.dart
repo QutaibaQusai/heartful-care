@@ -7,17 +7,19 @@ import 'package:test/sections/NurseCenterSection/nurseCenterDetailes.dart';
 
 class NurseCenters extends StatefulWidget {
   final String userEmail;
-  const NurseCenters({Key? key, required this.userEmail});
+  const NurseCenters({Key? key, required this.userEmail}) : super(key: key);
 
   @override
   State<NurseCenters> createState() => _NurseCentersState();
 }
 
 class _NurseCentersState extends State<NurseCenters> {
-  
-
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final height = mediaQuery.size.height;
+    final width = mediaQuery.size.width;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF1C8892),
@@ -25,7 +27,7 @@ class _NurseCentersState extends State<NurseCenters> {
           backgroundColor: Color(0xFF1C8892),
           title: Text(
             "Centers",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: width * 0.05),
           ),
           centerTitle: true,
           leading: IconButton(
@@ -35,6 +37,7 @@ class _NurseCentersState extends State<NurseCenters> {
             icon: Icon(
               FontAwesomeIcons.chevronLeft,
               color: Colors.white,
+              size: width * 0.05,
             ),
           ),
         ),
@@ -42,7 +45,7 @@ class _NurseCentersState extends State<NurseCenters> {
           children: [
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height / 4.5,
+              height: height / 4.5,
               decoration: BoxDecoration(
                 color: Color(0xFF1C8892),
               ),
@@ -50,7 +53,8 @@ class _NurseCentersState extends State<NurseCenters> {
                 children: [
                   SvgPicture.asset(
                     "images/centerSec.svg",
-                    width: 400,
+                    width: width,
+                    fit: BoxFit.cover,
                   ),
                 ],
               ),
@@ -64,7 +68,7 @@ class _NurseCentersState extends State<NurseCenters> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(width * 0.02),
                   child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('centers')
@@ -86,7 +90,7 @@ class _NurseCentersState extends State<NurseCenters> {
                         itemBuilder: (context, index) {
                           var center = nurseCenters[index];
                           return Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: EdgeInsets.all(width * 0.04),
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -150,87 +154,71 @@ class _NurseCentersState extends State<NurseCenters> {
                                   ],
                                 ),
                                 width: double.infinity,
-                                height:
-                                    MediaQuery.of(context).size.height / 6.5,
+                                height: height / 6.5,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          child: CircleAvatar(
-                                            radius: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                14,
-                                            backgroundImage: NetworkImage(
-                                              center.centerProfileImage,
+                                  padding: EdgeInsets.all(width * 0.02),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        width: width / 3,
+                                        child: CircleAvatar(
+                                          radius: height / 14,
+                                          backgroundImage: NetworkImage(
+                                            center.centerProfileImage,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              center.name,
+                                              style: TextStyle(
+                                                fontSize: width * 0.045,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                center.name,
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
+                                            SizedBox(height: height * 0.01),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  FontAwesomeIcons.calendarDays,
+                                                  size: width * 0.03,
                                                 ),
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        FontAwesomeIcons
-                                                            .calendarDays,
-                                                        size: 13,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Text(" " +
-                                                      center.operatingDays),
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        FontAwesomeIcons.clock,
-                                                        size: 13,
-                                                      ),
-                                                      Text(" " +
-                                                          center
-                                                              .operatingHours),
-                                                    ],
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                                                SizedBox(width: width * 0.01),
+                                                Text(
+                                                  center.operatingDays,
+                                                  style: TextStyle(
+                                                      fontSize: width * 0.035),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: height * 0.01),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  FontAwesomeIcons.clock,
+                                                  size: width * 0.03,
+                                                ),
+                                                SizedBox(width: width * 0.01),
+                                                Text(
+                                                  center.operatingHours,
+                                                  style: TextStyle(
+                                                      fontSize: width * 0.035),
+                                                ),
+                                              ],
+                                            )
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

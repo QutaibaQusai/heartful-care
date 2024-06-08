@@ -16,40 +16,47 @@ class SupplierDeviceInstruction extends StatefulWidget {
 class _SupplierDeviceInstructionState extends State<SupplierDeviceInstruction> {
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+    final height = mediaQuery.size.height;
+
     return SafeArea(
-        child: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Consumer<MyProvider>(
-          builder: (context, value, child) => Text(
-            "${value.items![widget.index].deviceName} Instructions",
-            style: TextStyle(color: Colors.white),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Consumer<MyProvider>(
+            builder: (context, value, child) => Text(
+              "Instructions",
+              style: TextStyle(color: Colors.white, fontSize: width * 0.05),
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xFF1C8892),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              FontAwesomeIcons.chevronLeft,
+              color: Colors.white,
+              size: width * 0.05,
+            ),
           ),
         ),
-        centerTitle: true,
-        backgroundColor: Color(0xFF1C8892),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icon(
-            FontAwesomeIcons.chevronLeft,
-            color: Colors.white,
+        body: Consumer<MyProvider>(
+          builder: (context, value, child) => Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(width * 0.04),
+                child: Text(
+                  value.items![widget.index].deviceInstruction,
+                  style: TextStyle(fontSize: width * 0.045),
+                ),
+              )
+            ],
           ),
         ),
       ),
-      body: Consumer<MyProvider>(
-          builder: (context, value, child) => Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      value.items![widget.index].deviceInstruction,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  )
-                ],
-              )),
-    ));
+    );
   }
 }

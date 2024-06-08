@@ -38,78 +38,87 @@ class _SettingFirstPage extends State<SettingFirstPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double baseWidth = 375.0;
+    double scaleFactor = screenWidth / baseWidth;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-
         shadowColor: Colors.transparent,
         automaticallyImplyLeading: false,
-       
-
         centerTitle: true,
         title: Text(
-          'Settings ',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'Settings',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22 * scaleFactor,
+          ),
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(10 * scaleFactor),
         child: ListView(
           children: [
-            buildSectionHeader(Icons.person, "Account"),
-            buildAccountOption(context, "Account Info"),
-            SizedBox(height: 5),
-            buildAccountOption(context, "Your Address"),
-            SizedBox(height: 5),
-            buildAccountOption(context, "Change Email"),
-            SizedBox(height: 5),
-            buildAccountOption(context, "Change Password"),
-            SizedBox(height: 5),
-            Divider(height: 20, thickness: 0.5),
-            SizedBox(height: 10),
-            buildSectionHeader(Icons.notifications, "Notifications"),
+            buildSectionHeader(Icons.person, "Account", scaleFactor),
+            buildAccountOption(context, "Account Info", scaleFactor),
+            SizedBox(height: 5 * scaleFactor),
+            buildAccountOption(context, "Your Address", scaleFactor),
+            SizedBox(height: 5 * scaleFactor),
+            buildAccountOption(context, "Change Email", scaleFactor),
+            SizedBox(height: 5 * scaleFactor),
+            buildAccountOption(context, "Change Password", scaleFactor),
+            SizedBox(height: 5 * scaleFactor),
+            Divider(height: 20 * scaleFactor, thickness: 0.5 * scaleFactor),
+            SizedBox(height: 10 * scaleFactor),
+            buildSectionHeader(
+                Icons.notifications, "Notifications", scaleFactor),
             buildNotificationOption(context, "News for you", notification1,
-                (value) => setState(() => notification1 = value)),
-          
-            Divider(height: 20, thickness: 0.5),
-            SizedBox(height: 10),
-            buildSectionHeader(Icons.language, "Language"),
-            buildLanguageOption(context),
-            Divider(height: 20, thickness: 0.5),
-            SizedBox(height: 10),
-        
-            buildSectionHeader(Icons.delete, "Delete account"),
-            buildDeleteOption(context),
-            Divider(height: 20, thickness: 0.5),
-            SizedBox(height: 10),
-            buildSectionHeader(Icons.exit_to_app, "Logout"),
-            buildLogoutOption(context),
-            Divider(height: 20, thickness: 0.5),
-            SizedBox(height: 10),
+                (value) => setState(() => notification1 = value), scaleFactor),
+            Divider(height: 20 * scaleFactor, thickness: 0.5 * scaleFactor),
+            SizedBox(height: 10 * scaleFactor),
+            buildSectionHeader(Icons.language, "Language", scaleFactor),
+            buildLanguageOption(context, scaleFactor),
+            Divider(height: 20 * scaleFactor, thickness: 0.5 * scaleFactor),
+            SizedBox(height: 10 * scaleFactor),
+            buildSectionHeader(Icons.delete, "Delete account", scaleFactor),
+            buildDeleteOption(context, scaleFactor),
+            Divider(height: 20 * scaleFactor, thickness: 0.5 * scaleFactor),
+            SizedBox(height: 10 * scaleFactor),
+            buildSectionHeader(Icons.exit_to_app, "Logout", scaleFactor),
+            buildLogoutOption(context, scaleFactor),
+            Divider(height: 20 * scaleFactor, thickness: 0.5 * scaleFactor),
+            SizedBox(height: 10 * scaleFactor),
           ],
         ),
       ),
     );
   }
 
-  Widget buildSectionHeader(IconData icon, String title) {
+  Widget buildSectionHeader(IconData icon, String title, double scaleFactor) {
     return Row(
       children: [
         Icon(
           icon,
           color: Color(0xFF1C8892),
+          size: 24 * scaleFactor,
         ),
-        SizedBox(width: 10),
+        SizedBox(width: 10 * scaleFactor),
         Text(
           title,
-          style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 19 * scaleFactor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );
   }
 
-  InkWell buildAccountOption(BuildContext context, String title) {
+  InkWell buildAccountOption(
+      BuildContext context, String title, double scaleFactor) {
     return InkWell(
       onTap: () {
         if (title == "Account Info") {
@@ -136,19 +145,21 @@ class _SettingFirstPage extends State<SettingFirstPage> {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        padding: EdgeInsets.symmetric(
+            vertical: 5 * scaleFactor, horizontal: 20 * scaleFactor),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               title,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 18 * scaleFactor,
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),
-            Icon(Icons.arrow_forward_ios, color: Colors.black),
+            Icon(Icons.arrow_forward_ios,
+                color: Colors.black, size: 16 * scaleFactor),
           ],
         ),
       ),
@@ -156,16 +167,17 @@ class _SettingFirstPage extends State<SettingFirstPage> {
   }
 
   Widget buildNotificationOption(BuildContext context, String title, bool value,
-      Function(bool) onChanged) {
+      Function(bool) onChanged, double scaleFactor) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+          vertical: 2 * scaleFactor, horizontal: 20 * scaleFactor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             title,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 18 * scaleFactor,
               fontWeight: FontWeight.w500,
               color: Colors.black,
             ),
@@ -217,50 +229,53 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     );
   }
 
-  Widget buildLanguageOption(BuildContext context) {
+  Widget buildLanguageOption(BuildContext context, double scaleFactor) {
     return GestureDetector(
       onTap: () {
         _showLanguageDialog(context);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        padding: EdgeInsets.symmetric(
+            vertical: 5 * scaleFactor, horizontal: 20 * scaleFactor),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               selectedLanguage,
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 17 * scaleFactor,
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),
-            Icon(Icons.arrow_drop_down, color: Colors.black),
+            Icon(Icons.arrow_drop_down,
+                color: Colors.black, size: 24 * scaleFactor),
           ],
         ),
       ),
     );
   }
 
-  Widget buildDeleteOption(BuildContext context) {
+  Widget buildDeleteOption(BuildContext context, double scaleFactor) {
     return GestureDetector(
       onTap: () {
         _showDeleteDialog(context);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        padding: EdgeInsets.symmetric(
+            vertical: 5 * scaleFactor, horizontal: 20 * scaleFactor),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Delete account',
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 17 * scaleFactor,
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),
-            Icon(Icons.delete, color: Colors.black),
+            Icon(Icons.delete, color: Colors.black, size: 24 * scaleFactor),
           ],
         ),
       ),
@@ -341,35 +356,36 @@ class _SettingFirstPage extends State<SettingFirstPage> {
     );
   }
 
-// Function to clear user data
+  // Function to clear user data
   Future<void> _clearUserData() async {
     // delete saved data .
     await context.read<MyProvider>().DeleteSavedUserLogin();
 
-    // go back to inro page
+    // go back to intro page
     Navigator.pushReplacement(context,
         PageTransition(child: IntroPage(), type: PageTransitionType.fade));
   }
 
-  Widget buildLogoutOption(BuildContext context) {
+  Widget buildLogoutOption(BuildContext context, double scaleFactor) {
     return GestureDetector(
       onTap: () {
         _showLogoutDialog(context);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        padding: EdgeInsets.symmetric(
+            vertical: 5 * scaleFactor, horizontal: 20 * scaleFactor),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Logout',
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 17 * scaleFactor,
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),
-            Icon(Icons.logout, color: Colors.black),
+            Icon(Icons.logout, color: Colors.black, size: 24 * scaleFactor),
           ],
         ),
       ),
