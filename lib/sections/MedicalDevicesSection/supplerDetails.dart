@@ -146,6 +146,8 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                               style: TextStyle(
                                                   fontSize: width * 0.045,
                                                   fontWeight: FontWeight.bold),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                             Row(
                                               children: [
@@ -303,7 +305,10 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                               _sendEmail(
                                                   emailAddress: value
                                                       .suppliers![widget.index]
-                                                      .emailAddress);
+                                                      .emailAddress,
+                                                  supplierName: value
+                                                      .suppliers![widget.index]
+                                                      .name);
                                             },
                                             icon: Icon(Icons.email,
                                                 color: Color(0xFF1C8892),
@@ -446,6 +451,8 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                               fontSize: width * 0.045,
                                               fontWeight: FontWeight.bold,
                                             ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.clip,
                                           ),
                                           SizedBox(
                                             height: mainh * 0.01,
@@ -467,12 +474,18 @@ class _SupplierDetailsState extends State<SupplierDetails> {
                                                   style: TextStyle(
                                                     fontSize: width * 0.04,
                                                   ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 )
                                               : Text(
                                                   "Rent per week: ${value.items![index].deviceRentPrice}JD",
                                                   style: TextStyle(
                                                     fontSize: width * 0.04,
                                                   ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 )
                                         ],
                                       ),
@@ -509,51 +522,54 @@ class _SupplierDetailsState extends State<SupplierDetails> {
   }
 
   void _makePhoneCall(String phoneNumber) async {
-    String telScheme = 'tel:$phoneNumber';
-    try {
-      if (await canLaunch(telScheme)) {
-        await launch(telScheme);
-      } else {
-        throw 'Could not launch $telScheme';
-      }
-    } catch (e) {
-      print('Error launching phone call: $e');
-    }
-  }
-
-  void _sendEmail({required String emailAddress}) async {
-    final Uri _emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: emailAddress,
-      queryParameters: {
-        'subject': 'Subject Here',
-        'body': 'Body Here',
-      },
+    final Uri url = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
     );
-
-    final String _emailLaunchUriString = _emailLaunchUri.toString();
-
-    try {
-      await launch(_emailLaunchUriString);
-    } catch (e) {
-      print('Error launching email: $e');
+    if (await canLaunch(url.toString())) {
+      await launch(url.toString());
+    } else {
+      print("Error launching phone call");
     }
   }
+  // String telScheme = 'tel:$phoneNumber';
+  // try {
+  //   if (await canLaunch(telScheme)) {
+  //     await launch(telScheme);
+  //   } else {
+  //     throw 'Could not launch $telScheme';
+  //   }
+  // } catch (e) {
+  //   print('Error launching phone call: $e');
+  // }
+}
 
-  void _launchWebsite({required String website}) async {
-    final String url = website;
+void _sendEmail(
+    {required String emailAddress, required String supplierName}) async {
+  final Uri _emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: emailAddress,
+    queryParameters: {
+      'subject': 'Subject Here',
+      'body': 'Body Here',
+    },
+  );
 
-    if (url.isNotEmpty) {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        final String googleUrl = 'https://www.google.com';
-        if (await canLaunch(googleUrl)) {
-          await launch(googleUrl);
-        } else {
-          throw 'Could not launch $googleUrl';
-        }
-      }
+  final String _emailLaunchUriString = _emailLaunchUri.toString();
+
+  try {
+    await launch(_emailLaunchUriString);
+  } catch (e) {
+    print('Error launching email: $e');
+  }
+}
+
+void _launchWebsite({required String website}) async {
+  final String url = website;
+
+  if (url.isNotEmpty) {
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
       final String googleUrl = 'https://www.google.com';
       if (await canLaunch(googleUrl)) {
@@ -561,6 +577,13 @@ class _SupplierDetailsState extends State<SupplierDetails> {
       } else {
         throw 'Could not launch $googleUrl';
       }
+    }
+  } else {
+    final String googleUrl = 'https://www.google.com';
+    if (await canLaunch(googleUrl)) {
+      await launch(googleUrl);
+    } else {
+      throw 'Could not launch $googleUrl';
     }
   }
 }

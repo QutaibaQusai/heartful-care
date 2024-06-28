@@ -21,7 +21,9 @@ class _YourChangeEmailPageState extends State<YourChangeEmailPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           title: Text(
             'Change email',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),

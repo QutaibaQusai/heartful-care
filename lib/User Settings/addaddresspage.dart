@@ -52,7 +52,9 @@ class _AddAddressPageState extends State<AddAddressPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           'Edit address',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),

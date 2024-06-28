@@ -29,7 +29,9 @@ class _AccountState extends State<Account> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO if the user not fill his data
     final isGuest = widget.userEmail.isEmpty;
+    // final userData = context.read<MyProvider>().userInfo != null;
     return RefreshIndicator(
       color: Colors.white,
       backgroundColor: Color(0xFF1C8892),
@@ -245,11 +247,12 @@ class _AccountState extends State<Account> {
                             _buildUserCard(
                                 FontAwesomeIcons.calendar,
                                 'Date of Birth',
-                                userInfo.dateOfBirth != null
+                                userInfo.dateOfBirth != null &&
+                                        userInfo.dateOfBirth!.isNotEmpty
                                     ? formatDate(
                                         DateTime.parse(userInfo.dateOfBirth!),
                                         [dd, '/', mm, '/', yyyy])
-                                    : ''),
+                                    : 'Not provided'),
                           ],
                         ),
                       ),
@@ -274,7 +277,7 @@ class _AccountState extends State<Account> {
           title,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(subtitle),
+        subtitle: Text(subtitle.isNotEmpty ? subtitle : 'Not provided'),
       ),
     );
   }

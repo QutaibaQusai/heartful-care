@@ -133,7 +133,9 @@ class _YourAccountInfoPageState extends State<YourAccountInfoPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           title: Row(
             children: [
               Spacer(),

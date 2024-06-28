@@ -17,6 +17,6 @@ List<Content> contents = [
     title: 'Medical Devices !',
     image: 'images/24.jpg',
     discription:
-        " Find the best medical devices available for you and explore a wide range of healthcare \nequipment.",
+        " Find the best medical devices available for you and explore a wide range of healthcare nequipment.",
   ),
 ];

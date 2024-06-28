@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:test/Medical%20Devices/supplierOrderDetails.dart';
 import 'package:test/provider/myprovider.dart';
 import 'package:test/Medical%20Devices/supplier_settings.dart';
 

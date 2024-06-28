@@ -24,7 +24,9 @@ class _YourChangePassPageState extends State<YourChangePassPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           title: Text(
             'Change password',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
