@@ -109,7 +109,7 @@ class _UserCenterSubscriptionState extends State<UserCenterSubscription> {
                             MaterialPageRoute(
                               builder: (context) =>
                                   SubscriptionConfirmationPage(
-                                planPrice: widget.pricePreMonth,
+                                planPrice: widget.pricePerthreeMonths,
                                 planDuration: "3",
                                 centerId: widget.centerId,
                                 userEmail: widget.userEmail,
@@ -148,7 +148,7 @@ class _UserCenterSubscriptionState extends State<UserCenterSubscription> {
                             MaterialPageRoute(
                               builder: (context) =>
                                   SubscriptionConfirmationPage(
-                                planPrice: widget.pricePreMonth,
+                                planPrice: widget.pricePersixMonths,
                                 planDuration: "6",
                                 centerId: widget.centerId,
                                 userEmail: widget.userEmail,
