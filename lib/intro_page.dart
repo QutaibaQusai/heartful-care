@@ -219,7 +219,7 @@ class _IntroPage extends State<IntroPage> {
                         onTap: onSignInTextPressed,
                         child: Flexible(
                           child: Text(
-                            "Sign up",
+                            "Sign in",
                             style: TextStyle(
                               color: const Color(0xFF1C8892),
                               fontSize: screenWidth * 0.04,

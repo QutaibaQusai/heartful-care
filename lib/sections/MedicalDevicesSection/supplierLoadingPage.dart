@@ -66,7 +66,7 @@ class _LoadingState extends State<SupplierLoadingPage> {
                                 'images/Animation - 1714757310336.json',
                                 width: 200),
                             Text(
-                              "please wait while center\n accept or reject your request"
+                              "please wait while supplier\n accept or reject your request"
                                   .toUpperCase(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -83,8 +83,7 @@ class _LoadingState extends State<SupplierLoadingPage> {
                             ),
                             Text(
                                 "Your request has been" +
-                                    " accepted ".toUpperCase() +
-                                    "we assigned ",
+                                    " accepted ".toUpperCase(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold))
@@ -98,7 +97,7 @@ class _LoadingState extends State<SupplierLoadingPage> {
                                 "images/Animation - 1714758913080.json",
                                 width: 180),
                             Text(
-                              'your request has been rejected please check another centers to help you'
+                              'your request has been rejected please check another supplier to help you'
                                   .toUpperCase(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
