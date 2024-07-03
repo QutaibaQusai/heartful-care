@@ -155,8 +155,8 @@ class _SupplierOrderDetailsState extends State<SupplierOrderDetails> {
                             ),
                             subtitle: Text(item.deviceDescription),
                             trailing: Text(item.deviceBuyPrice.isNotEmpty
-                                ? '\$${item.deviceBuyPrice}'
-                                : '\$${item.deviceRentPrice}per week'),
+                                ? 'JOD ${item.deviceBuyPrice}'
+                                : 'JOD ${item.deviceRentPrice} per week'),
                           ),
                           Divider()
                         ],
